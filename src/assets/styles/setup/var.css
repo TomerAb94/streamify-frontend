@@ -5,6 +5,11 @@
   --clr4: #95adbe;
   --clr5: #dff0ea;
 
+  --color-primary: #000000; /* Background dark */
+  --color-text-primary: #1f1f1f; /* Primary text */
+  --color-border: #282828; /* Borders */
+  --color-hover: #2A2A2A; /* Hover states */
+
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --gray1: #ddd;
@@ -14,4 +19,18 @@
 
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
+}
+
+:root {
+  --color-secondary: #191414; /* Background dark */
+  --color-accent: #1f1f1f; /* Accent gray */
+
+  --color-text-secondary: #b3b3b3; /* Secondary text */
+  --color-background: #121212; /* Main background */
+  --color-highlight: #1ed760; /* Highlight color */
+  --color-error: #e50914; /* Error / alert red */
+  --color-success: #3cb371; /* Success green */
+  --color-muted: #535353; /* Muted elements */
+  --color-border: #282828; /* Borders */
+  --color-hover: #282828; /* Hover states */
 }

@@ -18,37 +18,38 @@ import { AppFooter } from './cmps/AppFooter'
 import { UserMsg } from './cmps/UserMsg.jsx'
 import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
 
-
 export function RootCmp() {
-    return (
-        <div className="main-container">
-            <AppHeader />
-            <UserMsg />
+  return (
+    <>
+      <AppHeader />
 
-            <main>
-                <Routes>
-                    <Route path="" element={<HomePage />} />
-                    <Route path="about" element={<AboutUs />}>
-                        <Route path="team" element={<AboutTeam />} />
-                        <Route path="vision" element={<AboutVision />} />
-                    </Route>
-                    <Route path="car" element={<CarIndex />} />
-                    <Route path="station" element={<StationIndex />} />
-                    <Route path="car/:carId" element={<CarDetails />} />
-                    <Route path="station/:stationId" element={<StationDetails />} />
-                    <Route path="user/:id" element={<UserDetails />} />
-                    <Route path="review" element={<ReviewIndex />} />
-                    <Route path="chat" element={<ChatApp />} />
-                    <Route path="admin" element={<AdminIndex />} />
-                    <Route path="auth" element={<LoginSignup />}>
-                        <Route path="login" element={<Login />} />
-                        <Route path="signup" element={<Signup />} />
-                    </Route>
-                </Routes>
-            </main>
-            <AppFooter />
-        </div>
-    )
+      <div className="main-container">
+        <UserMsg />
+
+        <main>
+          <Routes>
+            <Route path="" element={<HomePage />} />
+            <Route path="about" element={<AboutUs />}>
+              <Route path="team" element={<AboutTeam />} />
+              <Route path="vision" element={<AboutVision />} />
+            </Route>
+            <Route path="car" element={<CarIndex />} />
+            <Route path="station" element={<StationIndex />} />
+            <Route path="car/:carId" element={<CarDetails />} />
+            <Route path="station/:stationId" element={<StationDetails />} />
+            <Route path="user/:id" element={<UserDetails />} />
+            <Route path="review" element={<ReviewIndex />} />
+            <Route path="chat" element={<ChatApp />} />
+            <Route path="admin" element={<AdminIndex />} />
+            <Route path="auth" element={<LoginSignup />}>
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+            </Route>
+          </Routes>
+        </main>
+      </div>
+      
+      <AppFooter />
+    </>
+  )
 }
-
-
