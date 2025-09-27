@@ -38,7 +38,10 @@
   display: flex;
   transform: translateY(-50%);
   color: var(--color-text-secondary);
+
    &:hover {
+    transition: 0.15s;
+
     cursor: pointer;
    color: var(--color-white-hover);
     }
@@ -52,5 +55,7 @@
 
 .browse:hover::before{
   color: var(--color-text-secondary);
+  cursor: default;
+
 }
 
