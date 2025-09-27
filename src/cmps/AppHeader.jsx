@@ -1,7 +1,7 @@
 import { styled, alpha } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
-import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
+import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser'
 import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
@@ -112,7 +112,9 @@ export function AppHeader() {
             placeholder="What do you want to play?"
             inputProps={{ 'aria-label': 'search' }}
           />
-<a className='browse'><OpenInBrowserIcon/></a>
+          <a className="browse">
+            <OpenInBrowserIcon />
+          </a>
         </Search>
       </div>
 
