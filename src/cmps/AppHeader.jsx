@@ -1,7 +1,7 @@
 import { styled, alpha } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
-
+import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import { Link, NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
@@ -23,7 +23,7 @@ export function AppHeader() {
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
-      width: 'auto',
+      width: '480px',
     },
   }))
 
@@ -112,6 +112,7 @@ export function AppHeader() {
             placeholder="What do you want to play?"
             inputProps={{ 'aria-label': 'search' }}
           />
+<a className='browse'><OpenInBrowserIcon/></a>
         </Search>
       </div>
 
@@ -122,13 +123,13 @@ export function AppHeader() {
           </NavLink>
         )}
         {user && (
-          <div className="user-info">
+          <button className="user-info">
             <Link to={`user/${user._id}`}>
               {user.imgUrl && <img src={user.imgUrl} />}
-              {user.fullname}
+              {/* {user.fullname} */}
             </Link>
-            <button onClick={onLogout}>logout</button>
-          </div>
+            {/* <button onClick={onLogout}>logout</button> */}
+          </button>
         )}
       </div>
     </header>

@@ -30,3 +30,27 @@
 .home-svg{
     color: var(--color-text-primary);
 }
+
+.browse{
+  position: absolute;
+  top:50%;
+  right: 12px;
+  display: flex;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+   &:hover {
+    cursor: pointer;
+   color: var(--color-white-hover);
+    }
+}
+
+.browse::before{
+  content: '|';
+ position: absolute;
+ left: -12px;
+}
+
+.browse:hover::before{
+  color: var(--color-text-secondary);
+}
+
