@@ -28,14 +28,15 @@ export function StationDetails() {
 
   return (
     <section className="station-details">
-      <Link to="/station">Back to list</Link>
+      <h1>Station-Details</h1>
+      {/* <Link to="/station">Back to list</Link>
       <h1>Station Details</h1>
       {station && <div>
         <h3>{station.title}</h3>
         <pre> {JSON.stringify(station, null, 2)} </pre>
       </div>
       }
-      <button onClick={() => { onAddStationMsg(station._id) }}>Add station msg</button>
+      <button onClick={() => { onAddStationMsg(station._id) }}>Add station msg</button> */}
 
     </section>
   )

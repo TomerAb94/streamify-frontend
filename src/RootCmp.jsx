@@ -1,54 +1,43 @@
 import React from 'react'
 import { Routes, Route } from 'react-router'
 
-import { HomePage } from './pages/HomePage'
-import { AboutUs, AboutTeam, AboutVision } from './pages/AboutUs'
-import { CarIndex } from './pages/CarIndex.jsx'
-import { StationIndex } from './pages/StationIndex.jsx'
-import { ReviewIndex } from './pages/ReviewIndex.jsx'
-import { ChatApp } from './pages/Chat.jsx'
-import { AdminIndex } from './pages/AdminIndex.jsx'
-
-import { CarDetails } from './pages/CarDetails'
-import { StationDetails } from './pages/StationDetails'
-import { UserDetails } from './pages/UserDetails'
-
 import { AppHeader } from './cmps/AppHeader'
 import { AppFooter } from './cmps/AppFooter'
 import { UserMsg } from './cmps/UserMsg.jsx'
+
+import { StationIndex } from './pages/StationIndex.jsx'
+import { StationDetails } from './cmps/StationDetails.jsx'
+import { StationList } from './cmps/StationList.jsx'
+import { StationPreview } from './cmps/StationPreview.jsx'
+import { StationFilter } from './cmps/StationFilter.jsx'
+import { TrackPreview } from './cmps/TrackPreview.jsx'
+
 import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
 
 export function RootCmp() {
   return (
     <>
       <AppHeader />
-
-      <div className="main-container">
-        <UserMsg />
-
-        <main>
+      <UserMsg />
+  
+        <main className="main-container">
+          <StationList />
           <Routes>
-            <Route path="" element={<HomePage />} />
-            <Route path="about" element={<AboutUs />}>
-              <Route path="team" element={<AboutTeam />} />
-              <Route path="vision" element={<AboutVision />} />
+            <Route element={<StationIndex />}>
+              <Route path="" element={<StationDetails />} />
+              <Route path="/search" element={<StationFilter />} />
+              <Route path="/station/:Id" element={<StationPreview />} />
+              <Route path="/track/:Id" element={<TrackPreview />} />
             </Route>
-            <Route path="car" element={<CarIndex />} />
-            <Route path="station" element={<StationIndex />} />
-            <Route path="car/:carId" element={<CarDetails />} />
-            <Route path="station/:stationId" element={<StationDetails />} />
-            <Route path="user/:id" element={<UserDetails />} />
-            <Route path="review" element={<ReviewIndex />} />
-            <Route path="chat" element={<ChatApp />} />
-            <Route path="admin" element={<AdminIndex />} />
+            {/* <TrackPreview /> */}
+
             <Route path="auth" element={<LoginSignup />}>
               <Route path="login" element={<Login />} />
               <Route path="signup" element={<Signup />} />
             </Route>
           </Routes>
         </main>
-      </div>
-      
+
       <AppFooter />
     </>
   )
