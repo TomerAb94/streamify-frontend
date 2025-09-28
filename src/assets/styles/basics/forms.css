@@ -1,6 +1,6 @@
 button {
   border-radius: 50%;
-  background-color: var(--color-border);
+  background-color: var(--color-text-primary);
   padding: 12px;
   display: flex;
   align-items: center;
@@ -15,6 +15,6 @@ button:hover {
   transform: scale(1.04);
   /* scale: 1.05; */
   background-color: var(--color-hover);
-  margin-inline-start: 8px;
+  /* margin-inline-start: 8px; */
   color: #fff;
 }
