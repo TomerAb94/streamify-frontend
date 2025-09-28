@@ -11,7 +11,7 @@
   --color-hover: #2A2A2A; /* Hover states */
   --color-text-secondary: #ababab; /* Secondary text */
   --color-white-hover:#ffffff;
-  
+  --color-white-fff:#fff;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --gray1: #ddd;
