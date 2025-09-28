@@ -51,9 +51,32 @@
 
     &:hover {
       &::before {
-        color: var(--color-text-secondary);
+        color: var(--color-white-hover);
         cursor: default;
       }
     }
   }
 }
+
+.search-bar {
+  & svg{
+    height: 20px;
+    width: 20px;
+    fill: var(--color-text-secondary);
+  }
+
+   & svg:hover{
+     fill: var(--color-white-hover);
+  }
+  & button:hover{
+    background-color: var(--color-hover);
+  }
+  & .btn-on{
+    fill: white;
+  }
+
+
+  
+  
+}
+
