@@ -1,41 +1,41 @@
 import { useState, useEffect } from 'react'
 
 export function StationFilter({ filterBy, setFilterBy }) {
-    const [ filterToEdit, setFilterToEdit ] = useState(structuredClone(filterBy))
+    // const [ filterToEdit, setFilterToEdit ] = useState(structuredClone(filterBy))
 
-    useEffect(() => {
-        setFilterBy(filterToEdit)
-    }, [filterToEdit])
+    // useEffect(() => {
+    //     setFilterBy(filterToEdit)
+    // }, [filterToEdit])
 
-    function handleChange(ev) {
-        const type = ev.target.type
-        const field = ev.target.name
-        let value
+    // function handleChange(ev) {
+    //     const type = ev.target.type
+    //     const field = ev.target.name
+    //     let value
 
-        switch (type) {
-            case 'text':
-            case 'radio':
-                value = field === 'sortDir' ? +ev.target.value : ev.target.value
-                if(!filterToEdit.sortDir) filterToEdit.sortDir = 1
-                break
-            case 'number':
-                value = +ev.target.value || ''
-                break
-        }
-        setFilterToEdit({ ...filterToEdit, [field]: value })
-    }
+    //     switch (type) {
+    //         case 'text':
+    //         case 'radio':
+    //             value = field === 'sortDir' ? +ev.target.value : ev.target.value
+    //             if(!filterToEdit.sortDir) filterToEdit.sortDir = 1
+    //             break
+    //         case 'number':
+    //             value = +ev.target.value || ''
+    //             break
+    //     }
+    //     setFilterToEdit({ ...filterToEdit, [field]: value })
+    // }
 
-    function clearFilter() {
-        setFilterToEdit({ ...filterToEdit, txt: '' })
-    }
+    // function clearFilter() {
+    //     setFilterToEdit({ ...filterToEdit, txt: '' })
+    // }
     
-    function clearSort() {
-        setFilterToEdit({ ...filterToEdit, sortField: '', sortDir: '' })
-    }
+    // function clearSort() {
+    //     setFilterToEdit({ ...filterToEdit, sortField: '', sortDir: '' })
+    // }
 
     return <section className="station-filter">
-            <h3>Filter:</h3>
-            <input
+            <h1>Station-Filter</h1>
+            {/* <input
                 type="text"
                 name="txt"
                 value={filterToEdit.txt}
@@ -83,6 +83,6 @@ export function StationFilter({ filterBy, setFilterBy }) {
             </div>
             <button 
                 className="btn-clear" 
-                onClick={clearSort}>Clear</button>
+                onClick={clearSort}>Clear</button> */}
     </section>
 }

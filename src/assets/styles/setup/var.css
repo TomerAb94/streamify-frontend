@@ -6,11 +6,13 @@
   --clr5: #dff0ea;
 
   --color-primary: #000000; /* Background dark */
+  --color-secondary: #1f1f1f; /* Background dark gray */
+  --color-primary-text:#ffffff; /* primary text white */
   --color-text-primary: #1f1f1f; /* Primary text */
   --color-border: #282828; /* Borders */
   --color-hover: #2A2A2A; /* Hover states */
+  --color-white-hover:#ffffff; /* Hover states */
   --color-text-secondary: #ababab; /* Secondary text */
-  --color-white-hover:#ffffff;
   
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
