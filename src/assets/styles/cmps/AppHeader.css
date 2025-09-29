@@ -20,75 +20,61 @@
     color: var(--clr1);
 
     & img {
-      width: 2em;
+      width: 32px;
+      height: 32px;
       aspect-ratio: 1;
       border-radius: 50%;
     }
   }
 
-  
-.login-link,.signup-link{
-	color: var(--color-text-secondary);
-   text-decoration: none;
-font-weight: 700;
-}
+  .login-link,
+  .signup-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 700;
+  }
 
-
-
-
-
-.user-profile{
-  width: 200px;
-  height: 48px;
-  display:flex;
-  justify-items: center;
-  font-size: 14px;
-  align-items: center;
-  gap:8px;
- 
-
-  & .login-link{
+  .user-profile {
+    width: 200px;
+    height: 48px;
     display: flex;
-    align-items: center;
     justify-items: center;
- 
-  height: 48px;
-  font-size: 16px;
-   background-color: var(--color-white-fff);
-   color: var(--color-primary);
-   border-radius: 9999px;
-   padding: 8px 32px;
-  
+    font-size: 14px;
+    align-items: center;
+    gap: 8px;
+
+    & .login-link {
+      display: flex;
+      align-items: center;
+      justify-items: center;
+
+      height: 48px;
+      font-size: 16px;
+      background-color: var(--color-white-fff);
+      color: var(--color-primary);
+      border-radius: 9999px;
+      padding: 8px 32px;
+    }
+
+    & .signup-link {
+      padding: 4px 16px 4px 8px;
+    }
+
+    & .login-link:hover {
+      transform: scale(1.04);
+      transition-duration: 50ms;
+      vertical-align: middle;
+    }
+
+   
+
+    & .signup-link:hover {
+      color: var(--color-white-hover);
+      transform: scale(1.04);
+      transition-duration: 50ms;
+      vertical-align: middle;
+    }
   }
-
-  & .signup-link{
-    padding: 4px 16px 4px 8px;
-  }
-
-    & .login-link:hover{
- 
- 
-  transform: scale(1.04);
-    transition-duration:50ms;
-    vertical-align: middle;
-  
-  }
-
-
-  
-  & .signup-link:hover{
-    color: var(--color-white-hover);
-    transform: scale(1.04);
-    transition-duration:50ms;
-    vertical-align: middle;
-  }
-
-
-
-}
-
-
-
 
   /* Browse icon styles */
   .browse {
@@ -107,13 +93,13 @@ font-weight: 700;
 
     &::before {
       content: '';
-  position: absolute;
-  left: -12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0.1px;
-  height: 24px;
-  background:rgba(255, 255, 255, 0.308)
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.1px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.308);
     }
 
     &:hover {
@@ -127,22 +113,19 @@ font-weight: 700;
 
 .search-bar {
   height: 100%;
-  & svg{
+  & svg {
     height: 24px;
     width: 24x;
     fill: var(--color-text-secondary);
   }
 
-   & svg:hover{
-     fill: var(--color-white-hover);
+  & svg:hover {
+    fill: var(--color-white-hover);
   }
-  & button:hover{
+  & button:hover {
     background-color: var(--color-hover);
   }
-  & .btn-on{
+  & .btn-on {
     fill: white;
   }
-
-  
 }
-

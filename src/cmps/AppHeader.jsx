@@ -170,6 +170,7 @@ export function AppHeader() {
         )}
 
         {user && (
+          
           <button className="user-info">
             <Link to={`user/${user._id}`}>
               {user.imgUrl && <img src={user.imgUrl} alt="user" />}
