@@ -1,4 +1,4 @@
-import { styled, alpha } from '@mui/material/styles'
+import { styled, } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
 import { Link, NavLink } from 'react-router-dom'
@@ -43,25 +43,24 @@ export function AppHeader() {
   }))
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: '#fff',
+  color: '#fff',
+  width: '480px',
+  height: '48px',
+  padding: '12px 96px 12px 48px',
+  borderRadius: '9999px',                
+  transition: 'box-shadow 0.2s ease',
+
+ 
+  '&.Mui-focused': {
+    boxShadow: 'inset 0 0 0 2px #fff',
+    cursor: 'unset',
+  },
+
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
     width: '100%',
-    height:'48px',
-    padding:'12px 96px 12px 48px',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      // paddingLeft: `calc(1em + ${theme.spacing(0.5)})`,
-      transition: theme.transitions.create('width'),
-      [theme.breakpoints.up('sm')]: {
-        width: '100%',
-        '&:focus': {
-          boxShadow: 'inset 0 0 0 2px #fff',
-          cursor: 'unset',
-          borderRadius: '9999px',
-        },
-      },
-    },
-  }))
+  },
+}));
 
   async function onLogout() {
     try {
