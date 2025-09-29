@@ -11,6 +11,7 @@
             grid-column: 1 / -1;
         }
     } */
+     height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight));
 }
 
 .sample-grid-layout {

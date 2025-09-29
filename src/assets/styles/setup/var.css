@@ -16,6 +16,10 @@
   --color-white-fff:#fff;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
+  --AppHeaderHeight:64px;
+  --FooterHeight:56px;
+
+
   --gray1: #ddd;
   --gray2: #aaa;
   --gray3: #777;
