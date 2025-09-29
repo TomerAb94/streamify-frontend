@@ -3,8 +3,8 @@
   grid-template-columns: auto 1fr auto;
   place-items: center;
   background-color: var(--color-primary);
-  padding: 8px ;
-  margin: -8px;
+  /* padding: 8px ; */
+  /* margin: -8px; */
   height: 64px;
   /* Search bar styles */
   .search-bar {
@@ -126,9 +126,10 @@ font-weight: 700;
 }
 
 .search-bar {
+  height: 100%;
   & svg{
-    height: 20px;
-    width: 20px;
+    height: 24px;
+    width: 24x;
     fill: var(--color-text-secondary);
   }
 
