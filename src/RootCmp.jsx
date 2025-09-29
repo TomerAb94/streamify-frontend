@@ -17,28 +17,21 @@ import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
 export function RootCmp() {
   return (
     <>
-      <AppHeader />
       <UserMsg />
-  
-        <main className="main-container">
-          <StationList />
-          <Routes>
-            <Route element={<StationIndex />}>
-              <Route path="" element={<StationDetails />} />
-              <Route path="/search" element={<StationFilter />} />
-              <Route path="/station/:Id" element={<StationPreview />} />
-              <Route path="/track/:Id" element={<TrackPreview />} />
-            </Route>
-            {/* <TrackPreview /> */}
+        <Routes>
+          <Route element={<StationIndex />}>
+            <Route path="" element={<StationDetails />} />
+            <Route path="/search" element={<StationFilter />} />
+            <Route path="/station/:Id" element={<StationPreview />} />
+            <Route path="/track/:Id" element={<TrackPreview />} />
+          </Route>
+          {/* <TrackPreview /> */}
 
-            <Route path="auth" element={<LoginSignup />}>
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-            </Route>
-          </Routes>
-        </main>
-
-      <AppFooter />
+          <Route path="auth" element={<LoginSignup />}>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+          </Route>
+        </Routes>
     </>
   )
 }

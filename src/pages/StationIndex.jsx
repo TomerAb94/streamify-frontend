@@ -16,6 +16,8 @@ import { userService } from '../services/user'
 
 import { StationList } from '../cmps/StationList'
 import { StationFilter } from '../cmps/StationFilter'
+import { AppHeader } from '../cmps/AppHeader'
+import { AppFooter } from '../cmps/AppFooter'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
@@ -61,19 +63,26 @@ export function StationIndex() {
   }
 
   return (
-    <section className="station-index">
-      {/* <header>
+    <div>
+      <AppHeader />
+      <section className="main-container">
+        <StationList />
+        {/* <header>
         <h2>Stations</h2>
         {userService.getLoggedinUser() && (
           <button onClick={onAddStation}>Add a Station</button>
         )}
       </header> */}
-      <Outlet />
-      {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
-      {/* <StationList  */}
-      {/* stations={stations}
+        <section className="station-index">
+          <Outlet />
+        </section>
+        {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
+        {/* <StationList  */}
+        {/* stations={stations}
                 onRemoveStation={onRemoveStation} 
                 onUpdateStation={onUpdateStation}/> */}
-    </section>
+      </section>
+      <AppFooter />
+    </div>
   )
 }
