@@ -40,12 +40,11 @@ export function StationIndex() {
 
   async function onAddStation() {
     const station = stationService.getEmptyStation()
-    station.title = prompt('Title?', 'Some Title')
     try {
       const savedStation = await addStation(station)
-      showSuccessMsg(`Station added (id: ${savedStation._id})`)
+      // showSuccessMsg(`Station added (id: ${savedStation._id})`)
     } catch (err) {
-      showErrorMsg('Cannot add station')
+      // showErrorMsg('Cannot add station')
     }
   }
 
@@ -66,7 +65,7 @@ export function StationIndex() {
     <div>
       <AppHeader />
       <section className="main-container">
-        <StationList />
+        <StationList stations={stations} onAddStation={onAddStation} />
         {/* <header>
         <h2>Stations</h2>
         {userService.getLoggedinUser() && (

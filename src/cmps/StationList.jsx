@@ -1,7 +1,12 @@
 import { userService } from '../services/user'
 import { StationPreview } from './StationPreview'
 
-export function StationList({ stations, onRemoveStation, onUpdateStation }) {
+export function StationList({
+  onAddStation,
+  stations,
+  onRemoveStation,
+  onUpdateStation,
+}) {
   function shouldShowActionBtns(station) {
     const user = userService.getLoggedinUser()
 
@@ -14,7 +19,7 @@ export function StationList({ stations, onRemoveStation, onUpdateStation }) {
     <section className="station-list-container">
       <header>
         <h3>Your Libary</h3>
-        <button>+</button>
+        <button onClick={() => onAddStation()}>+</button>
       </header>
 
       <div className="station-labels">
@@ -32,15 +37,16 @@ export function StationList({ stations, onRemoveStation, onUpdateStation }) {
         <li>liked songs</li>
         <li>recently played</li>
         <li>your playlists</li>
-        {/* {stations.map(station =>
+        {stations.map(station =>
                 <li key={station._id}>
                     <StationPreview station={station}/>
-                    {shouldShowActionBtns(station) && <div className="actions">
+                    {shouldShowActionBtns(station) && 
+                    <div className="actions">
                         <button onClick={() => onUpdateStation(station)}>Edit</button>
                         <button onClick={() => onRemoveStation(station._id)}>x</button>
                     </div>}
                 </li>)
-            } */}
+            }
       </ul>
     </section>
   )

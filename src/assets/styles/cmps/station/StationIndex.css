@@ -1,5 +1,7 @@
 .station-index {
   background-color: var(--color-secondary);
+  padding: 8px;
+  border-radius: 8px;
 
   & header {
     display: flex;

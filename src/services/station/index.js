@@ -6,22 +6,31 @@ import { stationService as local } from './station.service.local'
 import { stationService as remote } from './station.service.remote'
 
 function getEmptyStation() {
-	return {
-        _id: '',
-		title: makeId(),
-		msgs: [],
-	}
+  const user = userService.getLoggedinUser()
+  return {
+    _id: '',
+    title: 'My Playlist', //later add number of playilist
+    tags: [],
+    createdBy: {
+      _id: user._id,
+      fullname: user.fullname,
+      imgUrl: user.imgUrl,
+    },
+    likedByUsers: [],
+    songs: [],
+    reviews: [],
+  }
 }
 
 function getDefaultFilter() {
-    return {
-        txt: '',
-        sortField: '',
-        sortDir: '',
-    }
+  return {
+    txt: '',
+    sortField: '',
+    sortDir: '',
+  }
 }
 
-const service = (VITE_LOCAL === 'true') ? local : remote
+const service = VITE_LOCAL === 'true' ? local : remote
 export const stationService = { getEmptyStation, getDefaultFilter, ...service }
 
 // Easy access to this service from the dev tools console

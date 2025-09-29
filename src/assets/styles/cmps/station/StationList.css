@@ -1,12 +1,16 @@
 .station-list-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  padding: 8px;
+  border-radius: 8px;
 
-    display: flex;
-    flex-direction: column;
-    max-width: 420px;
-    
-    background-color: var(--color-secondary);
+  background-color: var(--color-secondary);
 
-    /* & li {
+  & header {
+    padding: 8px;
+  }
+  /* & li {
         display: grid;
         grid-template-columns: max-content auto;
         padding: .5em;
@@ -21,4 +25,3 @@
         }
     }  */
 }
-

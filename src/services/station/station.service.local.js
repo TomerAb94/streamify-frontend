@@ -36,7 +36,7 @@ async function query(filterBy = { txt: '' }) {
     )
   }
 
-  stations = stations.map(({ _id, title, owner }) => ({ _id, title, owner }))
+  stations = stations.map(({ _id, title }) => ({ _id, title }))
   return stations
 }
 
@@ -50,6 +50,8 @@ async function remove(stationId) {
 }
 
 async function save(station) {
+  console.log('station', station);
+  
   var savedStation
   if (station._id) {
     const stationToSave = {
