@@ -1,26 +1,30 @@
 .app-footer {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    place-items: center;
     justify-content: space-between;
-
-    min-height: 3.5rem;
-
-    padding: .8rem 1rem;
-    background-color: var(--clr4);
-
-    & p {
-        margin: 0;
-    }
     
-    > span {
-        font-size: .8em;
-        
-        &.local-services {
-            color: --var(clr1);
-        }
-        
-        &.remote-services {
-            color: --var(clr5);
-        }
-    }
+    background-color: var(--color-primary);
+
+    height: 72px;
+}
+
+.player-left {
+    display: flex;
+    padding-inline-start: 8px;
+}
+
+.player-left .cover {
+    width: 56px;
+    height: 56px;
+    background-color: red;
+}
+
+.player-center {
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+.player-center .transport {
+    display: flex;
 }
