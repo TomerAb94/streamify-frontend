@@ -1,2 +1,5 @@
 .home {
+    grid-area: station-index;
+    background-color: var(--color-secondary);
+    border-radius: 8px;
 }

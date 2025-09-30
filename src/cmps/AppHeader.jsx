@@ -83,7 +83,7 @@ export function AppHeader() {
   }
 
   return (
-    <header className="app-header">
+    <div className="app-header">
       <div className="logo" title="Streamify" onClick={onToggleHomeBtn}>
         <NavLink to="/">
           <svg xmlns="http://www.w3.org/2000/svg" height="52" width="52" viewBox="-33.4974 -55.829 290.3108 334.974">
@@ -180,6 +180,6 @@ export function AppHeader() {
           </button>
         )}
       </div>
-    </header>
+    </div>
   )
 }

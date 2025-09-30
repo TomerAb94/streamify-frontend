@@ -1,10 +1,11 @@
 .station-list-container {
+  grid-area: station-list;
   display: flex;
   flex-direction: column;
   max-width: 420px;
   padding: 8px;
   border-radius: 8px;
-
+  
   background-color: var(--color-secondary);
 
   & header {
