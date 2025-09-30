@@ -20,8 +20,11 @@ export function StationList({
     <section className="station-list-container">
       <header>
         <h3>Your Library</h3>
-        <button onClick={() => onAddStation()}>
-          <SvgIcon iconName="create" /> Create
+        <button className="create-btn" onClick={() => onAddStation()}>
+          <span className="create-icon">
+            <SvgIcon iconName="create" />
+          </span>
+          Create
         </button>
       </header>
 
@@ -38,7 +41,6 @@ export function StationList({
         </div>
 
         <ul className="station-list">
-
           {stations.map((station) => (
             <li key={station._id}>
               <StationPreview station={station} />

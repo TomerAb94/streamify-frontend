@@ -7,3 +7,8 @@
     font-family: Circular-btn;
     src: url(../../fonts/Circular/CircularStd-Medium.otf);
 }
+
+@font-face {
+    font-family: Circular-thin;
+    src: url(../../fonts/Circular/CircularSp-Book.woff2);
+}

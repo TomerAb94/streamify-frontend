@@ -1,25 +1,100 @@
 .station-preview {
   display: grid;
   grid-template-columns: auto 1fr;
+  position: relative;
+
   gap: 12px;
   color: var(--gray2);
-  cursor: pointer;
   border-radius: 6px;
   padding: 8px;
+  cursor: pointer;
+
+  > .station-data-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    font-family: Circular-thin;
+
+    > .station-title {
+      color: var(--color-primary-text);
+    }
+
+    > .station-mini-data {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8em;
+
+      > .station-type-owner {
+        > .station-type {
+          text-transform: capitalize;
+        }
+        > .station-type + span:before {
+          /* Targets span after .station-type */
+          content: ' • '; /* Adds bullet separator */
+          color: var(--gray2);
+        }
+      }
+    }
+  }
+
+  & .pin-svg {
+    fill: #1bc357;
+    height: 12px;
+    width: 12px;
+  }
 
   &:hover {
+    /* bgc when only hover */
     background-color: var(--color-hover-darker);
-  
-    .clicked{
-      background-color: var(--color-hover);
-    }
-}
 
-& .clicked{
+    &.clicked {
+      /* bgc when clicked and hover */
+      background-color: var(--color-hover-lighter);
+    }
+  }
+
+  &.clicked {
+    /* bgc when clicked */
     background-color: var(--color-hover);
-}
+  }
+
+  & .station-img-container {
+    position: relative;
+    width: 48px;
+    height: 48px;
+  }
 
   & .station-img {
     height: 48px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  & .play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
+
+  &:hover .play-overlay {
+    opacity: 1;
+  }
+
+  & .play-btn {
+    background: transparent;
+    fill: var(--color-white-fff);
+    display: flex;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
   }
 }
