@@ -17,7 +17,7 @@
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --AppHeaderHeight:64px;
-  --FooterHeight:56px;
+  --FooterHeight:72px;
 
 
   --gray1: #ddd;
