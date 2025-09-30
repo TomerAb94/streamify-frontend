@@ -8,6 +8,8 @@ button {
   margin: 0.5em;
   cursor: pointer;
   color: var(--color-primary-text);
+
+  font-family: Circular-btn;
 }
 
 button:hover {
@@ -18,3 +20,6 @@ button:hover {
   /* margin-inline-start: 8px; */
   color: #fff;
 }
+
+
+

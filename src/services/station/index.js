@@ -11,12 +11,15 @@ function getEmptyStation() {
     _id: '',
     title: 'My Playlist', //later add number of playilist
     tags: [],
+    stationImgUrl: 'https://res.cloudinary.com/dys1sj4cd/image/upload/v1699955746/note1_zaakp6.png',
+    stationType: 'playlist',
     createdBy: {
       _id: user._id,
       fullname: user.fullname,
       imgUrl: user.imgUrl,
     },
     likedByUsers: [],
+    isPinned: false,
     songs: [],
     reviews: [],
   }

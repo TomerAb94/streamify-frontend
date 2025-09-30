@@ -1,15 +1,31 @@
 import { Link } from 'react-router-dom'
+import { SvgIcon } from './SvgIcon'
 
 export function StationPreview({ station }) {
+  station.isPinned = true
   return (
     <article className="station-preview">
-      <p>{station.title}</p>
-      {/* <header>
-            <Link to={`/station/${station._id}`}>{station.title}</Link>
-        </header>
+      <div className="station-img-container">
+        <img
+          className="station-img"
+          src={station.stationImgUrl}
+          alt="Playlist Img"
+        />
+      </div>
 
-        {station.owner && <p>Owner: <span>{station.owner.fullname}</span></p>}
-         */}
+      <div className="station-data-container">
+        <p className="station-title">{station.title}</p>
+        <div className="station-mini-data">
+          {station.isPinned && (
+            <span>
+              <SvgIcon iconName="stationPin" />
+            </span>
+          )}
+          <span className="station-type-owner">
+            {station.stationType} • {station.createdBy.fullname}
+          </span>
+        </div>
+      </div>
     </article>
   )
 }

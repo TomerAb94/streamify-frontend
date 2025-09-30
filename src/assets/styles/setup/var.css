@@ -11,7 +11,8 @@
   --color-text-primary: #1f1f1f; /* Primary text */
   --color-border: #282828; /* Borders */
   --color-hover: #2A2A2A; /* Hover states */
-  --color-white-hover:#ffffff; /* Hover states */
+  --color-hover-darker:#1F1F1F; /* Darker Hover states */
+  --color-hover-lighter:#1F1F1F; /* Darker Hover states */
   --color-text-secondary: #ababab; /* Secondary text */
   --color-white-fff:#fff;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);

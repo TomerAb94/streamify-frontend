@@ -3,6 +3,7 @@ import { store } from '../store'
 import { ADD_STATION, REMOVE_STATION, SET_STATIONS, SET_STATION, UPDATE_STATION, ADD_STATION_MSG } from '../reducers/station.reducer'
 
 export async function loadStations(filterBy) {
+    
     try {
         const stations = await stationService.query(filterBy)
         store.dispatch(getCmdSetStations(stations))

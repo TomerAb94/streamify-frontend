@@ -36,7 +36,7 @@ async function query(filterBy = { txt: '' }) {
     )
   }
 
-  stations = stations.map(({ _id, title }) => ({ _id, title }))
+  // stations = stations.map(({ _id, title }) => ({ _id, title }))  
   return stations
 }
 
@@ -50,8 +50,8 @@ async function remove(stationId) {
 }
 
 async function save(station) {
-  console.log('station', station);
-  
+  console.log('station', station)
+
   var savedStation
   if (station._id) {
     const stationToSave = {
@@ -61,9 +61,14 @@ async function save(station) {
   } else {
     const stationToSave = {
       title: station.title,
-      // Later, owner is set by the backend
-      owner: userService.getLoggedinUser(),
-      msgs: [],
+      tages: station.tags,
+      stationImgUrl: station.stationImgUrl,
+      createdBy: userService.getLoggedinUser(), // Later, owner is set by the backend
+      likedByUsers: station.likedByUsers,
+      isPinned: station.isPinned,
+      stationType: station.stationType,
+      songs: station.songs,
+      reviews: station.reviews,
     }
     savedStation = await storageService.post(STORAGE_KEY, stationToSave)
   }
