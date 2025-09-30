@@ -1,5 +1,6 @@
 import { userService } from '../services/user'
 import { StationPreview } from './StationPreview'
+import { SvgIcon } from './SvgIcon'
 
 export function StationList({
   onAddStation,
@@ -18,8 +19,10 @@ export function StationList({
   return (
     <section className="station-list-container">
       <header>
-        <h3>Your Libary</h3>
-        <button onClick={() => onAddStation()}>+</button>
+        <h3>Your Library</h3>
+        <button onClick={() => onAddStation()}>
+          <SvgIcon iconName="create" /> Create
+        </button>
       </header>
 
       <div className="station-labels">
@@ -28,26 +31,29 @@ export function StationList({
         <button>Albums</button>
       </div>
 
-      <div className="search-bar">
-        <input type="text" placeholder="Search in your libary" />
-        <button>sort by</button>
-      </div>
+      <form className="station-list-form">
+        <div className="search-bar">
+          <input type="text" placeholder="Search in your library" />
+          <button>sort by</button>
+        </div>
 
-      <ul className="station-list">
-        <li>liked songs</li>
-        <li>recently played</li>
-        <li>your playlists</li>
-        {stations.map(station =>
-                <li key={station._id}>
-                    <StationPreview station={station}/>
-                    {shouldShowActionBtns(station) && 
-                    <div className="actions">
-                        <button onClick={() => onUpdateStation(station)}>Edit</button>
-                        <button onClick={() => onRemoveStation(station._id)}>x</button>
-                    </div>}
-                </li>)
-            }
-      </ul>
+        <ul className="station-list">
+
+          {stations.map((station) => (
+            <li key={station._id}>
+              <StationPreview station={station} />
+              {/* {shouldShowActionBtns(station) && (
+                <div className="actions">
+                  <button onClick={() => onUpdateStation(station)}>Edit</button>
+                  <button onClick={() => onRemoveStation(station._id)}>
+                    x
+                  </button>
+                </div>
+              )} */}
+            </li>
+          ))}
+        </ul>
+      </form>
     </section>
   )
 }
