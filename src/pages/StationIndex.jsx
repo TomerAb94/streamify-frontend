@@ -70,7 +70,7 @@ export function StationIndex() {
         )}
       </header> */}
       
-          <Outlet />
+          <Outlet context={stations}/>
       
         {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
         {/* <StationList  */}
