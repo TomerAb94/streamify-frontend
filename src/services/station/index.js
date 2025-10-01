@@ -23,6 +23,7 @@ import { stationService as remote } from './station.service.remote'
     isPinned: false,
     songs: [],
     reviews: [],
+    description: '',
   }
 }
 

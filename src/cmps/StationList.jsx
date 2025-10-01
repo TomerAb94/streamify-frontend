@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { StationPreview } from './StationPreview'
 import { SvgIcon } from './SvgIcon'
-import { Modal } from './Modal.jsx'
+import { ModalEdit } from './ModalEdit.jsx'
 
 export function StationList({
   onAddStation,
@@ -162,9 +162,9 @@ export function StationList({
       )}
 
       {isModalOpen && (
-        <Modal station={stationToEdit} isModalOpen={isModalOpen} closeModal={closeModal} updateStation={onUpdateStation}>
+        <ModalEdit station={stationToEdit} isModalOpen={isModalOpen} closeModal={closeModal} updateStation={onUpdateStation}>
           
-        </Modal>
+        </ModalEdit>
       )}
     </section>
   )

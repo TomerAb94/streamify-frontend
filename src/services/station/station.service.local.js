@@ -64,6 +64,7 @@ async function save(station) {
     stationType: station.stationType,
     songs: station.songs,
     reviews: station.reviews,
+    description: station.description,
   }
 
   if (station._id) {
