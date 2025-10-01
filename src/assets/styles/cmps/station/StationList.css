@@ -78,6 +78,13 @@
     }
   }
 
+  & .spacer{
+    background: hsla(0,0%,100%,.1);
+    height: 1px;
+    pointer-events: none;
+    width: 100%;
+  }
+
   & li {
     position: relative;
   }

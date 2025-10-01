@@ -121,15 +121,28 @@ export function StationList({
               </button>
             </li>
 
+<div className='spacer'></div>
+
+            <li>
+              <button
+                className="action-btn no-background"
+                onClick={() => onAddStation()}
+              >
+                <SvgIcon iconName="musicNote" /> <span>Create playlist</span>
+              </button>
+            </li>
+
             <li>
               <button
                 className="action-btn no-background"
                 onClick={() => {
-                  const station = stations.find(s => s._id === activeStationId)
+                  const station = stations.find(
+                    (s) => s._id === activeStationId
+                  )
                   togglePin(station)
                 }}
               >
-                {stations.find(s => s._id === activeStationId)?.isPinned ? (
+                {stations.find((s) => s._id === activeStationId)?.isPinned ? (
                   <>
                     <SvgIcon iconName="pin" />
                     <span>Unpin playlist</span>
@@ -144,7 +157,6 @@ export function StationList({
             </li>
           </ul>
         </div>
-
       )}
 
       <Modal isOpen={isModalOpen} onClose={closeModal}>
