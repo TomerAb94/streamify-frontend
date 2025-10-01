@@ -52,25 +52,24 @@ async function remove(stationId) {
 }
 
 async function save(station) {
-
   var savedStation
+
+  let stationToSave = {
+    title: station.title,
+    tages: station.tags,
+    stationImgUrl: station.stationImgUrl,
+    createdBy: userService.getLoggedinUser(), // Later, owner is set by the backend
+    likedByUsers: station.likedByUsers,
+    isPinned: station.isPinned,
+    stationType: station.stationType,
+    songs: station.songs,
+    reviews: station.reviews,
+  }
+
   if (station._id) {
-    const stationToSave = {
-      _id: station._id,
-    }
-    savedStation = await storageService.put(STORAGE_KEY, stationToSave)
+    ;(stationToSave._id = station._id),
+      (savedStation = await storageService.put(STORAGE_KEY, stationToSave))
   } else {
-    const stationToSave = {
-      title: station.title,
-      tages: station.tags,
-      stationImgUrl: station.stationImgUrl,
-      createdBy: userService.getLoggedinUser(), // Later, owner is set by the backend
-      likedByUsers: station.likedByUsers,
-      isPinned: station.isPinned,
-      stationType: station.stationType,
-      songs: station.songs,
-      reviews: station.reviews,
-    }
     savedStation = await storageService.post(STORAGE_KEY, stationToSave)
   }
   return savedStation

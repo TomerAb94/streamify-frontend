@@ -17,7 +17,7 @@
     font-family: Circular-thin;
 
     > .station-title {
-      color: var(--color-primary-text);
+      color: var(--color-text-primary);
     }
 
     > .station-mini-data {
@@ -40,9 +40,9 @@
   }
 
   & .pin-svg {
-    fill: #1bc357;
-    height: 12px;
-    width: 12px;
+    fill: var(--green-pin);
+    height: 11px;
+    width: 11px;
   }
 
   &:hover {

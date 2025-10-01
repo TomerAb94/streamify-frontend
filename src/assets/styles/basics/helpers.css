@@ -24,3 +24,7 @@
 .debug * {
     outline: 1px solid gold
 }
+
+.no-background{ 
+    background: none;
+}

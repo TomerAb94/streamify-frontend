@@ -6,16 +6,18 @@
   --clr5: #dff0ea;
 
   --color-primary: #000000; /* Background dark */
-  --color-secondary: #1f1f1f; /* Background dark gray */
-  --color-primary-text:#ffffff; /* primary text white */
-  --color-text-primary: #1f1f1f; /* Primary text */
-  --color-border: #282828; /* Borders */
+  --color-secondary: #121212; /* Background dark gray */
+  --color-secondery-2: #282828; /* Background dark gray lighter */
+  --color-text-primary:#ffffff; /* primary text white */
+  --color-text-secondary: #ababab; /* Secondary text */
+  --color-padding-btn: #1f1f1f; /* Primary text */
   --color-hover: #2A2A2A; /* Hover states */
   --color-hover-darker:#1F1F1F; /* Darker Hover states */
   --color-hover-lighter:#484848; /* Lighter Hover states */
-  --color-text-secondary: #ababab; /* Secondary text */
   --color-white-fff:#fff;
+  --green-pin:#1bc357;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
+
 
   --AppHeaderHeight:64px;
   --FooterHeight:72px;
@@ -31,7 +33,7 @@
 }
 
 :root {
-  --color-secondary: #191414; /* Background dark */
+
   --color-accent: #1f1f1f; /* Accent gray */
 
  
@@ -40,6 +42,6 @@
   --color-error: #e50914; /* Error / alert red */
   --color-success: #3cb371; /* Success green */
   --color-muted: #535353; /* Muted elements */
-  --color-border: #282828; /* Borders */
-  --color-hover: #282828; /* Hover states */
+   /* Borders */
+  /* Hover states */
 }

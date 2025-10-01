@@ -54,13 +54,12 @@ export function StationIndex() {
   }
 
   async function onUpdateStation(station) {
-    const speed = +prompt('New speed?', station.speed) || 0
-    if (speed === 0 || speed === station.speed) return
-
-    const stationToSave = { ...station, speed }
+    const stationToSave = { ...station }
+    console.log(stationToSave.isPinned);
+    
     try {
       const savedStation = await updateStation(stationToSave)
-      showSuccessMsg(`Station updated, new speed: ${savedStation.speed}`)
+      showSuccessMsg(`Station updated, new pin: ${savedStation.isPinned}`)
     } catch (err) {
       showErrorMsg('Cannot update station')
     }
@@ -70,7 +69,12 @@ export function StationIndex() {
     <section className="main-container">
       <AppHeader />
 
-      <StationList stations={stations} onAddStation={onAddStation} />
+      <StationList
+        stations={stations}
+        onAddStation={onAddStation}
+        onRemoveStation={onRemoveStation}
+        onUpdateStation={onUpdateStation}
+      />
 
       {/* <header>
         <h2>Stations</h2>
