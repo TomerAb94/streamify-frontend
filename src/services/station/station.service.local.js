@@ -13,6 +13,8 @@ export const stationService = {
 }
 window.cs = stationService
 
+export var stationsCount
+
 async function query(filterBy = { txt: '' }) {
   var stations = await storageService.query(STORAGE_KEY)
   const { txt, sortField, sortDir } = filterBy
@@ -36,7 +38,7 @@ async function query(filterBy = { txt: '' }) {
     )
   }
 
-  // stations = stations.map(({ _id, title }) => ({ _id, title }))  
+  // stations = stations.map(({ _id, title }) => ({ _id, title }))
   return stations
 }
 
@@ -50,7 +52,6 @@ async function remove(stationId) {
 }
 
 async function save(station) {
-  console.log('station', station)
 
   var savedStation
   if (station._id) {

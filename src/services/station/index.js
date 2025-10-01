@@ -5,11 +5,12 @@ import { getRandomIntInclusive, makeId } from '../util.service'
 import { stationService as local } from './station.service.local'
 import { stationService as remote } from './station.service.remote'
 
-function getEmptyStation() {
+ function getEmptyStation() {
   const user = userService.getLoggedinUser()
+
   return {
     _id: '',
-    title: 'My Playlist', //later add number of playilist
+    title: `My Playlist #`, //later add number of playilist
     tags: [],
     stationImgUrl: 'https://res.cloudinary.com/dys1sj4cd/image/upload/v1699955746/note1_zaakp6.png',
     stationType: 'playlist',

@@ -8,7 +8,7 @@ export function StationPreview({ station }) {
   }
 
   return (
-    <article className="station-preview">
+    <article className="station-preview" onClick={handlePlayClick}>
       <div className="station-img-container">
         <img
           className="station-img"
@@ -16,7 +16,7 @@ export function StationPreview({ station }) {
           alt={`${station.title} Cover`}
         />
         <div className="play-overlay">
-          <button className="play-btn" onClick={handlePlayClick}>
+          <button className="play-btn" onClick={(ev) => ev.preventDefault()}>
             <SvgIcon iconName="play" />
           </button>
         </div>
@@ -25,9 +25,7 @@ export function StationPreview({ station }) {
       <div className="station-data-container">
         <p className="station-title">{station.title}</p>
         <div className="station-mini-data">
-          {station.isPinned && (
-              <SvgIcon iconName="stationPin" />
-          )}
+          {station.isPinned && <SvgIcon iconName="stationPin" />}
           <span className="station-type-owner">
             <span className="station-type">{station.stationType}</span>
             <span>{station.createdBy.fullname}</span>

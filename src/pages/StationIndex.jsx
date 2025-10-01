@@ -2,7 +2,13 @@ import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 
-import { loadStations, addStation, updateStation, removeStation, addStationMsg } from '../store/actions/station.actions'
+import {
+  loadStations,
+  addStation,
+  updateStation,
+  removeStation,
+  addStationMsg,
+} from '../store/actions/station.actions'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { stationService } from '../services/station/'
@@ -15,7 +21,9 @@ import { AppFooter } from '../cmps/AppFooter'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
-  const stations = useSelector((storeState) => storeState.stationModule.stations)
+  const stations = useSelector(
+    (storeState) => storeState.stationModule.stations
+  )
 
   useEffect(() => {
     loadStations(filterBy)
@@ -31,7 +39,12 @@ export function StationIndex() {
   }
 
   async function onAddStation() {
+    const playlistStations = stations.filter(
+      (station) => station.stationType === 'playlist'
+    )
+    const count = playlistStations.length + 1
     const station = stationService.getEmptyStation()
+    station.title += count
     try {
       const savedStation = await addStation(station)
       // showSuccessMsg(`Station added (id: ${savedStation._id})`)
@@ -54,33 +67,27 @@ export function StationIndex() {
   }
 
   return (
+    <section className="main-container">
+      <AppHeader />
 
-      <section className="main-container">
-      
-          <AppHeader />
- 
-   
-  <StationList stations={stations} onAddStation={onAddStation} />
-  
-      
-        {/* <header>
+      <StationList stations={stations} onAddStation={onAddStation} />
+
+      {/* <header>
         <h2>Stations</h2>
         {userService.getLoggedinUser() && (
           <button onClick={onAddStation}>Add a Station</button>
         )}
       </header> */}
-      
-          <Outlet context={stations}/>
-      
-        {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
-        {/* <StationList  */}
-        {/* stations={stations}
+
+      <Outlet context={stations} />
+
+      {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
+      {/* <StationList  */}
+      {/* stations={stations}
                 onRemoveStation={onRemoveStation} 
                 onUpdateStation={onUpdateStation}/> */}
-       
-          <AppFooter />
-        
-      </section>
 
+      <AppFooter />
+    </section>
   )
 }
