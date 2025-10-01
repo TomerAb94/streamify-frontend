@@ -10,7 +10,7 @@
     align-items: center;
     height: 64px;
     & > *{
-          box-sizing: border-box;
+    box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     border-radius: 9999px;
     color: #FFF;
@@ -49,10 +49,31 @@
   justify-content: flex-start;
 height: 48px;
 gap: 8px;
+   box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    
+    color: #FFF;
+    transition-property: background-color, color;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.3,0,0,1);
+    display: inline-flex;
+  
+    -webkit-box-align: center;
+    align-items: center;
+   
+    background-color: #FFFFFF1A;
      img {
         height: 100%;
         object-fit: cover;
 
+    }
+
+    &:hover{
+        cursor: pointer;
+    }
+
+    &:focus{
+       
     }
 }
 
