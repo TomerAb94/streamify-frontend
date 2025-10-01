@@ -55,8 +55,7 @@ export function StationIndex() {
 
   async function onUpdateStation(station) {
     const stationToSave = { ...station }
-    console.log(stationToSave.isPinned);
-    
+
     try {
       const savedStation = await updateStation(stationToSave)
       showSuccessMsg(`Station updated, new pin: ${savedStation.isPinned}`)

@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import { userService } from '../services/user'
 import { StationPreview } from './StationPreview'
 import { SvgIcon } from './SvgIcon'
+import { Modal } from './Modal.jsx'
 
 export function StationList({
   onAddStation,
@@ -13,9 +13,12 @@ export function StationList({
   const [clickedStationId, setClickedStationId] = useState(null) //Click
   const [activeStationId, setActiveStationId] = useState(null) //Right Click
   const [actionPosition, setActionPosition] = useState({ x: 0, y: 0 }) //For action menu Right Click
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   function toggleActionMenu(ev, stationId) {
     ev.preventDefault()
+    ev.stopPropagation()
+
     setActionPosition({ x: ev.pageX, y: ev.pageY })
     setActiveStationId((prev) => (prev === stationId ? null : stationId))
   }
@@ -23,12 +26,27 @@ export function StationList({
   function handlePlayClick(station) {
     console.log(`Play playlist: ${station.title}`)
     setClickedStationId(station._id)
+    setActiveStationId(null)
   }
 
-  function togglePin(ev, station) {
-    ev.preventDefault()
+  function togglePin(station) {
     station.isPinned = !station.isPinned
     onUpdateStation(station)
+    setActiveStationId(null)
+  }
+
+  function openModal() {
+    setIsModalOpen(true)
+    setActiveStationId(null)
+  }
+
+  function closeModal() {
+    setIsModalOpen(false)
+  }
+
+  function handleRemoveStation(stationId) {
+    onRemoveStation(stationId)
+    setActiveStationId(null)
   }
 
   return (
@@ -69,50 +87,79 @@ export function StationList({
               onContextMenu={(ev) => toggleActionMenu(ev, station._id)}
             >
               <StationPreview station={station} />
-
-              {activeStationId === station._id && (
-                <ul
-                  className="action-menu"
-                  style={{
-                    position: 'fixed',
-                    left: `${actionPosition.x}px`,
-                    top: `${actionPosition.y}px`,
-                  }}
-                >
-                  <li>
-                    <button
-                      className="action-btn no-background "
-                      onClick={() => onRemoveStation(station._id)}
-                    >
-                      <SvgIcon iconName="profile" />{' '}
-                      <span>Remove from profile</span>
-                    </button>
-                  </li>
-
-                  <li>
-                    <button
-                      className="action-btn no-background"
-                      onClick={(ev) => togglePin(ev, station)}
-                    >
-                      {station.isPinned ? (
-                        <>
-                          <SvgIcon iconName="pin" />
-                          <span>Unpin playlist</span>
-                        </>
-                      ) : (
-                        <>
-                          <SvgIcon iconName="pinNoFill" />
-                          <span>Pin playlist</span>
-                        </>
-                      )}
-                    </button>
-                  </li>
-                </ul>
-              )}
             </li>
           ))}
         </ul>
       </form>
+
+      {activeStationId && (
+        <div
+          className="action-menu-container"
+          style={{
+            position: 'fixed',
+            left: `${actionPosition.x}px`,
+            top: `${actionPosition.y}px`,
+            zIndex: 1000,
+          }}
+        >
+          <ul className="action-menu">
+            <li>
+              <button
+                className="action-btn no-background"
+                onClick={() => openModal()}
+              >
+                <SvgIcon iconName="edit" /> <span>Edit details</span>
+              </button>
+            </li>
+
+            <li>
+              <button
+                className="action-btn no-background"
+                onClick={() => handleRemoveStation(activeStationId)}
+              >
+                <SvgIcon iconName="delete" /> <span>Delete</span>
+              </button>
+            </li>
+
+            <li>
+              <button
+                className="action-btn no-background"
+                onClick={() => {
+                  const station = stations.find(s => s._id === activeStationId)
+                  togglePin(station)
+                }}
+              >
+                {stations.find(s => s._id === activeStationId)?.isPinned ? (
+                  <>
+                    <SvgIcon iconName="pin" />
+                    <span>Unpin playlist</span>
+                  </>
+                ) : (
+                  <>
+                    <SvgIcon iconName="pinNoFill" />
+                    <span>Pin playlist</span>
+                  </>
+                )}
+              </button>
+            </li>
+          </ul>
+        </div>
+
+      )}
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <h2>Edit Station</h2>
+        {/* <form className="edit-station-form">
+          <input
+            type="text"
+            value={editedStation.title}
+            onChange={(e) =>
+              setEditedStation({ ...editedStation, title: e.target.value })
+            }
+          />
+          <button type="submit">Save</button>
+        </form> */}
+      </Modal>
     </section>
   )
 }

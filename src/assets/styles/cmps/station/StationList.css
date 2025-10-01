@@ -41,6 +41,7 @@
 
   & .action-menu {
     z-index: 1000;
+    width: 260px;
     background-color: var(--color-secondery-2);
     box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
@@ -62,8 +63,8 @@
         font-family: Circular-thin;
       }
 
-      & .profile-svg {
-        display: flex;
+      & .svg-action{
+         display: flex;
         align-items: center;
         width: 16px;
         height: 16px;
@@ -71,19 +72,7 @@
         background: none;
       }
 
-      & .pin-svg-no-fill {
-        display: flex;
-        align-items: center;
-        width: 16px;
-        height: 16px;
-        fill: var(--color-text-secondary);
-      }
-
       & .pin-svg{
-        display: flex;
-        align-items: center;
-        width: 16px;
-        height: 16px;
         fill: var(--green-pin);
       }
     }

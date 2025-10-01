@@ -18,6 +18,7 @@
 @import "cmps/AppHeader";
 @import "cmps/AppFooter";
 @import "cmps/UserMsg";
+@import "cmps/Modal";
 
 @import "cmps/car/CarIndex";
 @import "cmps/car/CarList";

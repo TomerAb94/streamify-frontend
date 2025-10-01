@@ -11,9 +11,9 @@ export function StationPreview({ station }) {
           alt={`${station.title} Cover`}
         />
         <div className="play-overlay">
-          <button className="play-btn">
+          <div className="play-btn">
             <SvgIcon iconName="play" />
-          </button>
+          </div>
         </div>
       </div>
 
