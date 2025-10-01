@@ -14,6 +14,7 @@ export function StationList({
   const [activeStationId, setActiveStationId] = useState(null) //Right Click
   const [actionPosition, setActionPosition] = useState({ x: 0, y: 0 }) //For action menu Right Click
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [stationToEdit, setStationToEdit] = useState(null)
 
   function toggleActionMenu(ev, stationId) {
     ev.preventDefault()
@@ -37,6 +38,7 @@ export function StationList({
 
   function openModal() {
     setIsModalOpen(true)
+    setStationToEdit(stations.find(station => station._id === activeStationId))
     setActiveStationId(null)
   }
 
@@ -121,7 +123,7 @@ export function StationList({
               </button>
             </li>
 
-<div className='spacer'></div>
+            <div className="spacer"></div>
 
             <li>
               <button
@@ -159,19 +161,11 @@ export function StationList({
         </div>
       )}
 
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <h2>Edit Station</h2>
-        {/* <form className="edit-station-form">
-          <input
-            type="text"
-            value={editedStation.title}
-            onChange={(e) =>
-              setEditedStation({ ...editedStation, title: e.target.value })
-            }
-          />
-          <button type="submit">Save</button>
-        </form> */}
-      </Modal>
+      {isModalOpen && (
+        <Modal station={stationToEdit} isModalOpen={isModalOpen} closeModal={closeModal} updateStation={onUpdateStation}>
+          
+        </Modal>
+      )}
     </section>
   )
 }

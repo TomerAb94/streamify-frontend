@@ -42,7 +42,7 @@
   & .action-menu {
     z-index: 1000;
     width: 260px;
-    background-color: var(--color-secondery-2);
+    background-color: var(--color-secondary-2);
     box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     padding: 4px;

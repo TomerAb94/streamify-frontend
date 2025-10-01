@@ -54,6 +54,8 @@ export function StationIndex() {
   }
 
   async function onUpdateStation(station) {
+    console.log('station to update:', station);
+    
     const stationToSave = { ...station }
 
     try {
