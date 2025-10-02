@@ -66,7 +66,7 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
             value={stationToEdit.description}
           />
 
-          <div 
+          <div
             className="station-img"
             onMouseEnter={() => setIsImgHovered(true)}
             onMouseLeave={() => setIsImgHovered(false)}
@@ -80,7 +80,8 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
                 iconName={isImgHovered ? 'edit' : 'musicNote'}
               />
             )}
-            
+            {isImgHovered && <SvgIcon className="modal-svg" iconName="edit" />}
+
             <input
               type="file"
               accept="image/*"
