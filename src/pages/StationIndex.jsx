@@ -10,6 +10,8 @@ import {
   addStationMsg,
 } from '../store/actions/station.actions'
 
+import { updateUser } from '../store/actions/user.actions'
+
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { stationService } from '../services/station/'
 import { userService } from '../services/user'
@@ -24,6 +26,7 @@ export function StationIndex() {
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
   )
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   useEffect(() => {
     loadStations(filterBy)
@@ -47,6 +50,10 @@ export function StationIndex() {
     station.title += count
     try {
       const savedStation = await addStation(station)
+      loggedInUser.ownedStationIds.push(savedStation._id)
+      const savedUser = await updateUser(loggedInUser)
+      console.log('savedUser:', savedUser)
+
       // showSuccessMsg(`Station added (id: ${savedStation._id})`)
     } catch (err) {
       // showErrorMsg('Cannot add station')
@@ -55,7 +62,7 @@ export function StationIndex() {
 
   async function onUpdateStation(station) {
     // console.log('station to update:', station);
-    
+
     const stationToSave = { ...station }
 
     try {
