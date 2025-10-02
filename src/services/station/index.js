@@ -13,8 +13,8 @@ function getEmptyStation() {
     _id: '',
     title: `My Playlist #`, //later add number of playilist
     tags: [],
-    stationImgUrl:
-      'https://res.cloudinary.com/dys1sj4cd/image/upload/v1699955746/note1_zaakp6.png',
+    stationImgUrl: '',
+    // 'https://res.cloudinary.com/dys1sj4cd/image/upload/v1699955746/note1_zaakp6.png'
     stationType: 'playlist',
     createdBy: {
       _id: user._id,
@@ -43,8 +43,7 @@ function getDefaultStation(user) {
     _id: '',
     title: 'Liked Songs',
     tags: ['Liked Songs'],
-    stationImgUrl:
-      'https://res.cloudinary.com/dsqh7gjeo/image/upload/v1691054400/xeflfwqi47t6mtx555kc.png',
+    stationImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-64.png',
     stationType: 'playlist',
     createdBy: {
       _id: user._id,

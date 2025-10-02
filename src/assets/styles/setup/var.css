@@ -17,6 +17,7 @@
   --color-hover-darker:#1F1F1F; /* Darker Hover states */
   --color-hover-lighter:#484848; /* Lighter Hover states */
   --color-white-fff:#fff;
+  --color-white-hover:#F0F0F0;
   --green-pin:#1bc357;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 

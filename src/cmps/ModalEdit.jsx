@@ -4,6 +4,7 @@ import { SvgIcon } from './SvgIcon'
 
 export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
   const [stationToEdit, setStationToEdit] = useState(station)
+  const [isImgHovered, setIsImgHovered] = useState(false)
 
   function handleChange(ev) {
     const field = ev.target.name
@@ -46,12 +47,23 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
             type="text"
             name="description"
             id="description"
-            placeholder='Add an optional description'
+            placeholder="Add an optional description"
             value={stationToEdit.description}
           />
 
-          <div className='station-img'>
-            <img src={stationToEdit.stationImgUrl} alt="Station Cover" />
+          <div
+            className="station-img"
+            onMouseEnter={() => setIsImgHovered(true)}
+            onMouseLeave={() => setIsImgHovered(false)}
+          >
+            {stationToEdit.stationImgUrl ? (
+              <img src={stationToEdit.stationImgUrl} alt="Station Cover" />
+            ) : (
+              <SvgIcon
+                className="modal-svg"
+                iconName={isImgHovered ? 'edit' : 'musicNote'}
+              />
+            )}
           </div>
 
           <button className="save-button" type="submit">

@@ -57,13 +57,39 @@
     grid-gap: 16px;
     padding: 0 24px 24px;
 
+    & .modal-svg {
+      fill: var(--color-text-secondary);
+      height: 48px;
+      width: 48px;
+    }
+
     > .station-img {
       grid-area: station-img;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
       border-radius: 4px;
       background-color: var(--color-secondary-2);
       width: 100%;
       height: 100%;
       object-fit: cover;
+
+      &:hover {
+        .modal-svg {
+          fill: var(--color-white-fff);
+        }
+      }
+
+      &:hover::after {
+        position: absolute;
+        content: 'Choose photo';
+        font-family: Circular-thin;
+        font-size: 0.8em;
+        right: 30%;
+        top: 66%;
+        color: var(--color-white-fff);
+      }
     }
 
     > .title {
@@ -90,12 +116,17 @@
       justify-self: end;
       align-self: center;
       border-radius: 9999px;
-      padding: 8px 32px;
+      padding: 8px 32px 8px 32px;
       background-color: var(--color-white-fff);
       color: var(--color-primary);
       min-block-size: 48px;
-      padding-inline: 32px;
       cursor: pointer;
+      font-size: in;
+
+      &:hover {
+        background-color: var(--color-white-hover);
+        padding: 17px 33px 17px 33px;
+      }
     }
 
     > .disclaimer {

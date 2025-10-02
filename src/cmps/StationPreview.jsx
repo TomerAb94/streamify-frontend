@@ -5,11 +5,16 @@ export function StationPreview({ station }) {
   return (
     <>
       <div className="station-img-container">
-        <img
-          className="station-img"
-          src={station.stationImgUrl}
-          alt={`${station.title} Cover`}
-        />
+        {station.stationImgUrl ? (
+          <img
+            className="station-img"
+            src={station.stationImgUrl}
+            alt={`${station.title} Cover`}
+          />
+        ) : (
+            <SvgIcon iconName="musicNote" />
+        )}
+
         <div className="play-overlay">
           <div className="play-btn">
             <SvgIcon iconName="play" />

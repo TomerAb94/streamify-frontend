@@ -67,7 +67,7 @@ export function StationListActions({
                 className="action-btn no-background"
                 onClick={() => onAddStation()}
               >
-                <SvgIcon iconName="musicNote" /> <span>Create playlist</span>
+                <SvgIcon iconName="musicNotePlus" /> <span>Create playlist</span>
               </button>
             </li>
           </>
