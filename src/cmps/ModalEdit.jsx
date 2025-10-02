@@ -19,6 +19,21 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
     closeModal()
   }
 
+  function handleFileChange(ev) {
+    const file = ev.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setStationToEdit({ ...stationToEdit, stationImgUrl: e.target.result })
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  function handleImageClick() {
+    document.getElementById('imageUpload').click()
+  }
+
   if (!isModalOpen) return null
   return (
     <>
@@ -51,10 +66,11 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
             value={stationToEdit.description}
           />
 
-          <div
+          <div 
             className="station-img"
             onMouseEnter={() => setIsImgHovered(true)}
             onMouseLeave={() => setIsImgHovered(false)}
+            onClick={handleImageClick}
           >
             {stationToEdit.stationImgUrl ? (
               <img src={stationToEdit.stationImgUrl} alt="Station Cover" />
@@ -64,6 +80,14 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
                 iconName={isImgHovered ? 'edit' : 'musicNote'}
               />
             )}
+            
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              id="imageUpload"
+            />
           </div>
 
           <button className="save-button" type="submit">
