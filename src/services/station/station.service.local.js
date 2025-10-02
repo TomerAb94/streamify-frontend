@@ -17,7 +17,14 @@ export var stationsCount
 
 async function query(filterBy = { txt: '' }) {
   var stations = await storageService.query(STORAGE_KEY)
-  const { txt, sortField, sortDir } = filterBy
+  const { txt, loggedinUser, sortField, sortDir } = filterBy
+  if (!loggedinUser) return []
+
+  if (loggedinUser) {
+    stations = stations.filter(
+      (station) => station.createdBy._id === loggedinUser._id
+    )
+  }
 
   if (txt) {
     const regex = new RegExp(filterBy.txt, 'i')

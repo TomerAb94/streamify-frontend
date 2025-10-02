@@ -1,6 +1,7 @@
 const { DEV, VITE_LOCAL } = import.meta.env
 
 import { getRandomIntInclusive, makeId } from '../util.service'
+import { userService } from '../user'
 
 import { stationService as local } from './station.service.local'
 import { stationService as remote } from './station.service.remote'
@@ -30,6 +31,7 @@ import { stationService as remote } from './station.service.remote'
 function getDefaultFilter() {
   return {
     txt: '',
+    loggedinUser: userService.getLoggedinUser(),
     sortField: '',
     sortDir: '',
   }

@@ -32,8 +32,8 @@ function remove(userId) {
 
 async function update({ _id, staionId, songId }) {
   const user = await storageService.get('user', _id)
-  user.likedStationIds.push(staionId)
-  user.likedSongIds.push(songId)
+  // user.likedStationIds.push(staionId)
+  // user.likedSongIds.push(songId)
   await storageService.put('user', user)
 
   // When admin updates other user's details, do not update loggedinUser
