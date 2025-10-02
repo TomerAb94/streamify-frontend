@@ -12,7 +12,9 @@ export function StationPreview({ station }) {
             alt={`${station.title} Cover`}
           />
         ) : (
+          <div className="station-img-placeholder">
             <SvgIcon iconName="musicNote" />
+          </div>
         )}
 
         <div className="play-overlay">

@@ -27,9 +27,7 @@
       font-size: 13px;
 
       > .station-type-owner {
-        c
-
-        > .station-type {
+        c > .station-type {
           text-transform: capitalize;
         }
         > .station-type + span:before {
@@ -99,17 +97,21 @@
     fill: var(--color-white-fff);
     display: flex;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
   }
-  & span {
+  & .station-img-placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    background-color: var(--color-secondary-2);
+    border-radius: 4px;
   }
   & .music-note-svg {
     fill: var(--color-text-secondary);
     height: 24px;
     width: 24px;
+    margin-top: 4px;
   }
 }
