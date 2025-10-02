@@ -20,9 +20,12 @@ import { StationList } from '../cmps/StationList'
 import { StationFilter } from '../cmps/StationFilter'
 import { AppHeader } from '../cmps/AppHeader'
 import { AppFooter } from '../cmps/AppFooter'
+import { ModalRemove } from '../cmps/ModalRemove'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
+  const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
+  const [stationToRemove, setStationToRemove] = useState(null)
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
   )
@@ -32,13 +35,34 @@ export function StationIndex() {
     loadStations(filterBy)
   }, [filterBy])
 
-  async function onRemoveStation(stationId) {
+  function onRemoveStation(stationId) {
+    if (!loggedInUser) {
+      showErrorMsg('You must be logged in to remove a station')
+      return
+    }
+
+    const station = stations.find((s) => s._id === stationId)
+    setStationToRemove(station)
+    setIsModalRemoveOpen(true)
+  }
+
+  async function onConfirmRemove(stationId) {
     try {
       await removeStation(stationId)
+      loggedInUser.ownedStationIds.splice(
+        loggedInUser.ownedStationIds.indexOf(stationId),
+        1
+      )
+      const savedUser = await updateUser(loggedInUser)
       showSuccessMsg('Station removed')
     } catch (err) {
       showErrorMsg('Cannot remove station')
     }
+  }
+
+  function closeModal() {
+    setIsModalRemoveOpen(false)
+    setStationToRemove(null)
   }
 
   async function onAddStation() {
@@ -101,6 +125,14 @@ export function StationIndex() {
                 onUpdateStation={onUpdateStation}/> */}
 
       <AppFooter />
+      {isModalRemoveOpen && (
+        <ModalRemove
+          station={stationToRemove}
+          isModalRemoveOpen={isModalRemoveOpen}
+          closeModal={closeModal}
+          onConfirmRemove={onConfirmRemove}
+        />
+      )}
     </section>
   )
 }

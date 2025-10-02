@@ -7,7 +7,7 @@ export function StationListActions({
   onAddStation,
   onRemoveStation,
   onUpdateStation,
-  onOpenModal,
+  onOpenModalEdit,
   onClose,
 }) {
   function handletogglePin(station) {
@@ -21,8 +21,8 @@ export function StationListActions({
     onClose()
   }
 
-  function handleOpenModal() {
-    onOpenModal()
+  function handleOpenModalEdit() {
+    onOpenModalEdit()
     onClose()
   }
 
@@ -45,7 +45,7 @@ export function StationListActions({
             <li>
               <button
                 className="action-btn no-background"
-                onClick={handleOpenModal}
+                onClick={handleOpenModalEdit}
               >
                 <SvgIcon iconName="edit" /> <span>Edit details</span>
               </button>

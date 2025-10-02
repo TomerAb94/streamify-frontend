@@ -14,7 +14,7 @@ export function StationList({
   const [clickedStationId, setClickedStationId] = useState(null) //Click
   const [activeStationId, setActiveStationId] = useState(null) //Right Click
   const [actionPosition, setActionPosition] = useState({ x: 0, y: 0 }) //For action menu Right Click
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false)
   const [stationToEdit, setStationToEdit] = useState(null)
 
   function toggleActionMenu(ev, stationId) {
@@ -31,13 +31,15 @@ export function StationList({
     setActiveStationId(null)
   }
 
-  function openModal() {
-    setIsModalOpen(true)
-    setStationToEdit(stations.find(station => station._id === activeStationId))
+  function openModalEdit() {
+    setIsModalEditOpen(true)
+    setStationToEdit(
+      stations.find((station) => station._id === activeStationId)
+    )
   }
 
   function closeModal() {
-    setIsModalOpen(false)
+    setIsModalEditOpen(false)
   }
 
   return (
@@ -90,15 +92,19 @@ export function StationList({
         onAddStation={onAddStation}
         onRemoveStation={onRemoveStation}
         onUpdateStation={onUpdateStation}
-        onOpenModal={openModal}
+        onOpenModalEdit={openModalEdit}
         onClose={() => setActiveStationId(null)}
       />
 
-      {isModalOpen && (
-        <ModalEdit station={stationToEdit} isModalOpen={isModalOpen} closeModal={closeModal} updateStation={onUpdateStation}>
-          
-        </ModalEdit>
+      {isModalEditOpen && (
+        <ModalEdit
+          station={stationToEdit}
+          isModalEditOpen={isModalEditOpen}
+          closeModal={closeModal}
+          updateStation={onUpdateStation}
+        ></ModalEdit>
       )}
+      
     </section>
   )
 }

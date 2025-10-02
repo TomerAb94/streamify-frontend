@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { SvgIcon } from './SvgIcon'
 
-export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
+export function ModalEdit({ station, isModalEditOpen, closeModal, updateStation }) {
   const [stationToEdit, setStationToEdit] = useState(station)
   const [isImgHovered, setIsImgHovered] = useState(false)
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false)
@@ -54,7 +54,7 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
     setIsActionMenuOpen(!isActionMenuOpen)
   }
 
-  if (!isModalOpen) return null
+  if (!isModalEditOpen) return null
   return (
     <>
       <section onClick={closeModal} className="modal-backdrop"></section>
