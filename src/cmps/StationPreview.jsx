@@ -23,7 +23,11 @@ export function StationPreview({ station }) {
           {station.isPinned && <SvgIcon iconName="pin" />}
           <span className="station-type-owner">
             <span className="station-type">{station.stationType}</span>
-            <span>{station.createdBy.fullname}</span>
+            {station.tags.includes('Liked Songs') ? (
+              <span> {station.songs.length} songs </span>
+            ) : (
+              <span>{station.createdBy.fullname}</span>
+            )}
           </span>
         </div>
       </div>

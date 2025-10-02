@@ -42,6 +42,10 @@ export function StationIndex() {
   }
 
   async function onAddStation() {
+    if (!loggedInUser) {
+      showErrorMsg('You must be logged in to add a station')
+      return
+    }
     const playlistStations = stations.filter(
       (station) => station.stationType === 'playlist'
     )
@@ -52,17 +56,14 @@ export function StationIndex() {
       const savedStation = await addStation(station)
       loggedInUser.ownedStationIds.push(savedStation._id)
       const savedUser = await updateUser(loggedInUser)
-      console.log('savedUser:', savedUser)
 
-      // showSuccessMsg(`Station added (id: ${savedStation._id})`)
+      showSuccessMsg(`Station added (id: ${savedStation._id})`)
     } catch (err) {
-      // showErrorMsg('Cannot add station')
+      showErrorMsg('Cannot add station')
     }
   }
 
   async function onUpdateStation(station) {
-    // console.log('station to update:', station);
-
     const stationToSave = { ...station }
 
     try {

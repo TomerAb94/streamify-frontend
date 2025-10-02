@@ -42,9 +42,9 @@ function getDefaultStation(user) {
   return {
     _id: '',
     title: 'Liked Songs',
-    tags: [],
+    tags: ['Liked Songs'],
     stationImgUrl:
-      'https://res.cloudinary.com/dys1sj4cd/image/upload/v1699955746/note1_zaakp6.png',
+      'https://res.cloudinary.com/dsqh7gjeo/image/upload/v1691054400/xeflfwqi47t6mtx555kc.png',
     stationType: 'playlist',
     createdBy: {
       _id: user._id,
@@ -52,7 +52,7 @@ function getDefaultStation(user) {
       imgUrl: user.imgUrl,
     },
     likedByUsers: [],
-    isPinned: false,
+    isPinned: true,
     songs: [],
     reviews: [],
     description: '',

@@ -63,7 +63,7 @@ async function save(station) {
 
   let stationToSave = {
     title: station.title,
-    tages: station.tags,
+    tags: station.tags,
     stationImgUrl: station.stationImgUrl,
     createdBy: userService.getLoggedinUser(), // Later, owner is set by the backend
     likedByUsers: station.likedByUsers,

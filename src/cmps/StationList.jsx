@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { StationPreview } from './StationPreview'
 import { SvgIcon } from './SvgIcon'
 import { ModalEdit } from './ModalEdit.jsx'
+import { StationListActions } from './StationListActions.jsx'
 
 export function StationList({
   onAddStation,
@@ -30,25 +31,13 @@ export function StationList({
     setActiveStationId(null)
   }
 
-  function togglePin(station) {
-    station.isPinned = !station.isPinned
-    onUpdateStation(station)
-    setActiveStationId(null)
-  }
-
   function openModal() {
     setIsModalOpen(true)
     setStationToEdit(stations.find(station => station._id === activeStationId))
-    setActiveStationId(null)
   }
 
   function closeModal() {
     setIsModalOpen(false)
-  }
-
-  function handleRemoveStation(stationId) {
-    onRemoveStation(stationId)
-    setActiveStationId(null)
   }
 
   return (
@@ -94,72 +83,16 @@ export function StationList({
         </ul>
       </form>
 
-      {activeStationId && (
-        <div
-          className="action-menu-container"
-          style={{
-            position: 'fixed',
-            left: `${actionPosition.x}px`,
-            top: `${actionPosition.y}px`,
-            zIndex: 1000,
-          }}
-        >
-          <ul className="action-menu">
-            <li>
-              <button
-                className="action-btn no-background"
-                onClick={() => openModal()}
-              >
-                <SvgIcon iconName="edit" /> <span>Edit details</span>
-              </button>
-            </li>
-
-            <li>
-              <button
-                className="action-btn no-background"
-                onClick={() => handleRemoveStation(activeStationId)}
-              >
-                <SvgIcon iconName="delete" /> <span>Delete</span>
-              </button>
-            </li>
-
-            <div className="spacer"></div>
-
-            <li>
-              <button
-                className="action-btn no-background"
-                onClick={() => onAddStation()}
-              >
-                <SvgIcon iconName="musicNote" /> <span>Create playlist</span>
-              </button>
-            </li>
-
-            <li>
-              <button
-                className="action-btn no-background"
-                onClick={() => {
-                  const station = stations.find(
-                    (s) => s._id === activeStationId
-                  )
-                  togglePin(station)
-                }}
-              >
-                {stations.find((s) => s._id === activeStationId)?.isPinned ? (
-                  <>
-                    <SvgIcon iconName="pin" />
-                    <span>Unpin playlist</span>
-                  </>
-                ) : (
-                  <>
-                    <SvgIcon iconName="pinNoFill" />
-                    <span>Pin playlist</span>
-                  </>
-                )}
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
+      <StationListActions
+        stations={stations}
+        activeStationId={activeStationId}
+        actionPosition={actionPosition}
+        onAddStation={onAddStation}
+        onRemoveStation={onRemoveStation}
+        onUpdateStation={onUpdateStation}
+        onOpenModal={openModal}
+        onClose={() => setActiveStationId(null)}
+      />
 
       {isModalOpen && (
         <ModalEdit station={stationToEdit} isModalOpen={isModalOpen} closeModal={closeModal} updateStation={onUpdateStation}>
