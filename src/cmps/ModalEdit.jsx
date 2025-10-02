@@ -5,6 +5,7 @@ import { SvgIcon } from './SvgIcon'
 export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
   const [stationToEdit, setStationToEdit] = useState(station)
   const [isImgHovered, setIsImgHovered] = useState(false)
+  const [isActionMenuOpen, setIsActionMenuOpen] = useState(false)
 
   function handleChange(ev) {
     const field = ev.target.name
@@ -32,6 +33,25 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
 
   function handleImageClick() {
     document.getElementById('imageUpload').click()
+  }
+
+  function handleImageClickFromMenu(ev) {
+    ev.preventDefault()
+    ev.stopPropagation()
+    document.getElementById('imageUpload').click()
+    setIsActionMenuOpen(false)
+  }
+
+  function handleRemovePhoto() {
+    setStationToEdit({ ...stationToEdit, stationImgUrl: '' })
+    setIsActionMenuOpen(false)
+  }
+
+  function toggleActionMenu(ev) {
+    ev.preventDefault()
+    ev.stopPropagation()
+
+    setIsActionMenuOpen(!isActionMenuOpen)
   }
 
   if (!isModalOpen) return null
@@ -82,7 +102,10 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
                 />
               )}
               {isImgHovered && (
-                <button className="dots-btn">
+                <button
+                  onClick={(ev) => toggleActionMenu(ev)}
+                  className="dots-btn"
+                >
                   <SvgIcon iconName="dots" />
                 </button>
               )}
@@ -107,12 +130,21 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
             choose to upload. Please make sure you have the right to upload the
             image.
           </p>
+
+          {isActionMenuOpen && (
+            <div className="action-menu">
+              <button onClick={handleImageClickFromMenu} className="action-btn no-background">
+                <SvgIcon iconName="photo" />
+                Change photo
+              </button>
+              <button onClick={handleRemovePhoto} className="action-btn no-background">
+                <SvgIcon iconName="trash" />
+                Remove photo
+              </button>
+            </div>
+          )}
         </form>
       </section>
     </>
   )
 }
-// 'album-image title'
-//       'album-image description'
-//       '. save-button'
-//       'disclaimer disclaimer'
