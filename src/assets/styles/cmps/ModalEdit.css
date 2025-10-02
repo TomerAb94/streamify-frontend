@@ -65,20 +65,48 @@
       position: relative;
       border-radius: 4px;
       background-color: var(--color-secondary-2);
-      
+
+      .dots-btn {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        top: 10px;
+        right: 10px;
+        cursor: auto;
+        z-index: 1002;
+        
+
+       &:hover {
+        .dots-svg {
+          fill: var(--color-white-fff);
+        }
+      }
+
+        & .dots-svg {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          fill: var(--color-text-secondary);
+          width: 16px;
+          height: 16px;
+        }
+      }
+
       & .modal-svg {
         position: absolute;
         fill: var(--color-text-secondary);
         height: 48px;
         width: 48px;
       }
-      
+
       > img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         border-radius: 4px;
-        z-index: 1000;
+        z-index: 1001;
 
         &:hover {
           opacity: 0.1;

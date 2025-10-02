@@ -27,11 +27,14 @@
       font-size: 13px;
 
       > .station-type-owner {
+        c
+
         > .station-type {
           text-transform: capitalize;
         }
         > .station-type + span:before {
-          content: ' • ';
+          content: '•';
+          margin: 0 2px;
           color: var(--gray2);
         }
       }

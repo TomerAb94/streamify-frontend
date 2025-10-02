@@ -72,14 +72,21 @@ export function ModalEdit({ station, isModalOpen, closeModal, updateStation }) {
             onMouseLeave={() => setIsImgHovered(false)}
             onClick={handleImageClick}
           >
-            {stationToEdit.stationImgUrl ? (
-              <img src={stationToEdit.stationImgUrl} alt="Station Cover" />
-            ) : (
-              <SvgIcon
-                className="modal-svg"
-                iconName={isImgHovered ? 'edit' : 'musicNote'}
-              />
-            )}
+            <>
+              {stationToEdit.stationImgUrl ? (
+                <img src={stationToEdit.stationImgUrl} alt="Station Cover" />
+              ) : (
+                <SvgIcon
+                  className="modal-svg"
+                  iconName={isImgHovered ? 'edit' : 'musicNote'}
+                />
+              )}
+              {isImgHovered && (
+                <button className="dots-btn">
+                  <SvgIcon iconName="dots" />
+                </button>
+              )}
+            </>
             {isImgHovered && <SvgIcon className="modal-svg" iconName="edit" />}
 
             <input
