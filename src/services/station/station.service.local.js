@@ -13,9 +13,18 @@ export const stationService = {
 }
 window.cs = stationService
 
+export var stationsCount
+
 async function query(filterBy = { txt: '' }) {
   var stations = await storageService.query(STORAGE_KEY)
-  const { txt, sortField, sortDir } = filterBy
+  const { txt, loggedinUser, sortField, sortDir } = filterBy
+  if (!loggedinUser) return []
+
+  if (loggedinUser) {
+    stations = stations.filter(
+      (station) => station.createdBy._id === loggedinUser._id
+    )
+  }
 
   if (txt) {
     const regex = new RegExp(filterBy.txt, 'i')
@@ -36,7 +45,7 @@ async function query(filterBy = { txt: '' }) {
     )
   }
 
-  // stations = stations.map(({ _id, title }) => ({ _id, title }))  
+  // stations = stations.map(({ _id, title }) => ({ _id, title }))
   return stations
 }
 
@@ -50,26 +59,25 @@ async function remove(stationId) {
 }
 
 async function save(station) {
-  console.log('station', station)
-
   var savedStation
+
+  let stationToSave = {
+    title: station.title,
+    tags: station.tags,
+    stationImgUrl: station.stationImgUrl,
+    createdBy: userService.getLoggedinUser(), // Later, owner is set by the backend
+    likedByUsers: station.likedByUsers,
+    isPinned: station.isPinned,
+    stationType: station.stationType,
+    songs: station.songs,
+    reviews: station.reviews,
+    description: station.description,
+  }
+
   if (station._id) {
-    const stationToSave = {
-      _id: station._id,
-    }
-    savedStation = await storageService.put(STORAGE_KEY, stationToSave)
+    ;(stationToSave._id = station._id),
+      (savedStation = await storageService.put(STORAGE_KEY, stationToSave))
   } else {
-    const stationToSave = {
-      title: station.title,
-      tages: station.tags,
-      stationImgUrl: station.stationImgUrl,
-      createdBy: userService.getLoggedinUser(), // Later, owner is set by the backend
-      likedByUsers: station.likedByUsers,
-      isPinned: station.isPinned,
-      stationType: station.stationType,
-      songs: station.songs,
-      reviews: station.reviews,
-    }
     savedStation = await storageService.post(STORAGE_KEY, stationToSave)
   }
   return savedStation

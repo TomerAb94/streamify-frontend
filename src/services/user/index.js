@@ -9,8 +9,8 @@ function getEmptyUser() {
     password: '',
     fullname: '',
     isAdmin: false,
-    likedStationIds: [],
-    likedSongIds: [],
+    ownedStationIds: [],
+    imgUrl: '',
   }
 }
 
