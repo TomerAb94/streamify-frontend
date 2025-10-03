@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
+import { SvgIcon } from './SvgIcon'
+
 
 export function HomePage() {
   const { stations } = useOutletContext()
@@ -22,7 +24,17 @@ export function HomePage() {
 <div className='user-stations'>
     {stations.map((station) => (
         <li key={station._id} className='user-station'>
-            {<img src={station.stationImgUrl} alt="" />}
+                  {station.stationImgUrl ? (
+                     <img
+                       className="station-img"
+                       src={station.stationImgUrl}
+                       alt={`${station.title} Cover`}
+                     />
+                   ) : (
+                     <div className="station-img-placeholder">
+                       <SvgIcon iconName="musicNote" />
+                     </div>
+                   )}
             {station.title}
             </li>
       ))}
