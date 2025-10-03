@@ -3,9 +3,12 @@
   background-color: var(--color-secondary);
   border-radius: 8px;
   padding: 0 40px;
+  
+
 }
 
 .stations-type {
+  
   display: flex;
   align-items: center;
   height: 64px;
@@ -32,12 +35,18 @@
 
 .user-stations {
   display: grid;
-  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+ 
   gap: 8px;
 
   list-style: none;
   padding: 0;
   margin: 0;
+
+  & > *{
+   flex: 0 0 auto;   /* לא מתכווץ ולא גדל אוטומטית */  
+  white-space: nowrap; /* מונע ירידת שורה */
+  }
 }
 
 .user-station {
@@ -48,7 +57,6 @@
   gap: 8px;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
-
   color: #fff;
   transition-property: background-color, color;
   transition-duration: 150ms;
@@ -69,27 +77,60 @@
     width: 48px;
     align-items: center;
     justify-content: center;
-    background-color: var(--color-secondary-2);
+    /* background-color: var(--color-secondary-2); */
   }
 
   .music-note-svg {
     height: 24px;
     width: 24px;
     fill: var(--color-text-secondary);
-
   }
 
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:focus {
+&:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.15);
+  .play-btn {
+    opacity: 1;
   }
 }
 
-@media (max-width: 700px) {
+  &:focus {
+  }
+
+
+.user-station:nth-child(2) {
+  color: red;
+}
+
+
+}
+
+.play-btn {
+  opacity: 0;
+  flex-shrink: 0;
+  margin-right: 8px;
+  margin-left: auto;
+  background-color: var(--green-play);
+  border-radius: 9999px;
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+}
+
+.play-btn .play-icon {
+  width: 16px;
+  height: 16px;
+  
+}
+
+@media (max-width: 1360px) {
   .user-stations {
     /* background-color: red; */
-    grid-template-columns: repeat(2, minmax(164px, 1fr));
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
   }
 }
