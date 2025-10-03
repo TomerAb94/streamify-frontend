@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import { StationPreview } from './StationPreview'
 import { SvgIcon } from './SvgIcon'
 import { ModalEdit } from './ModalEdit.jsx'
 import { StationListActions } from './StationListActions.jsx'
+import { debounce } from '../services/util.service'
 
 export function StationList({
   onAddStation,
@@ -11,11 +12,46 @@ export function StationList({
   onRemoveStation,
   onUpdateStation,
 }) {
+  const [stationsToShow, setStationsToShow] = useState(stations)
+  const [filterBy, setFilterBy] = useState({ txt: '', isPinned: true })
+
   const [clickedStationId, setClickedStationId] = useState(null) //Click
   const [activeStationId, setActiveStationId] = useState(null) //Right Click
   const [actionPosition, setActionPosition] = useState({ x: 0, y: 0 }) //For action menu Right Click
+
   const [isModalEditOpen, setIsModalEditOpen] = useState(false)
   const [stationToEdit, setStationToEdit] = useState(null)
+
+  useEffect(() => {
+    filterStations()
+  }, [stations, filterBy])
+  
+  const searchInputRef = useRef(null)
+
+  function filterStations() {
+    let filteredStations = [...stations]
+
+    if (filterBy.txt) {
+      const regex = new RegExp(filterBy.txt, 'i')
+      filteredStations = filteredStations.filter((station) =>
+        regex.test(station.title)
+      )
+    }
+
+    if (filterBy.isPinned) {
+      filteredStations.sort((a, b) => {
+        if (a.isPinned === b.isPinned) return 0
+        return a.isPinned ? -1 : 1
+      })
+    }
+
+    setStationsToShow(filteredStations)
+  }
+
+  function handleInput(ev) {
+    const txt = ev.target.value
+    debounce(() => setFilterBy((prev) => ({ ...prev, txt })), 300)()
+  }
 
   function toggleActionMenu(ev, stationId) {
     ev.preventDefault()
@@ -42,6 +78,10 @@ export function StationList({
     setIsModalEditOpen(false)
   }
 
+  function onFocusInput() {
+    searchInputRef.current.focus()
+  }
+
   return (
     <section
       className="station-list-container"
@@ -65,12 +105,29 @@ export function StationList({
 
       <form className="station-list-form">
         <div className="search-bar">
-          <input type="text" placeholder="Search in your library" />
-          <button>sort by</button>
+          <button onClick={onFocusInput} type="button" className="search-btn">
+            <SvgIcon iconName="search" className="search-icon" />
+          </button>
+          <div className="input-container">
+            <SvgIcon iconName="search" className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search in Your Library"
+              onInput={handleInput}
+              ref={searchInputRef}
+            />
+          </div>
         </div>
 
+        {stationsToShow.length === 0 && (
+          <div className="no-stations">
+            <h1>Couldn't find "{filterBy.txt}"</h1>
+            <p>Try searching again using different spelling or keyword.</p>
+          </div>
+        )}
+
         <ul className="station-list">
-          {stations.map((station) => (
+          {stationsToShow.map((station) => (
             <li
               key={station._id}
               className={`station-preview ${
@@ -86,7 +143,7 @@ export function StationList({
       </form>
 
       <StationListActions
-        stations={stations}
+        stations={stationsToShow}
         activeStationId={activeStationId}
         actionPosition={actionPosition}
         onAddStation={onAddStation}
@@ -104,7 +161,6 @@ export function StationList({
           updateStation={onUpdateStation}
         ></ModalEdit>
       )}
-      
     </section>
   )
 }

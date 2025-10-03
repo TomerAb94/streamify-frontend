@@ -27,9 +27,82 @@
     padding: 0 8px;
 
     > .search-bar {
+      position: relative;
       display: flex;
       justify-content: space-between;
       padding: 2px 8px 0;
+
+      & .input-container {
+        z-index: -1000;
+        opacity: 0;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: var(--color-secondary-2);
+        color: var(--color-text-secondary);
+        border-radius: 8px;
+        padding: 8px;
+        font-family: Circular;
+        font-size: 0.8rem;
+        width: fit-content;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+
+        > span {
+          display: flex;
+          align-items: center;
+        }
+
+        & .search-svg {
+          width: 16px;
+          height: 16px;
+
+          &:hover {
+            fill: var(--color-text-secondary);
+          }
+        }
+      }
+
+      & .input-container:has(input:focus) {
+        opacity: 1;
+        z-index: 1;
+        transform: scaleX(1);
+      }
+
+      & .input-container:has(input:not(:placeholder-shown)) {
+        opacity: 1;
+        z-index: 1;
+        transform: scaleX(1);
+      }
+
+      > .search-btn {
+        background: none;
+        border: none;
+        padding: 8px;
+
+        &:hover {
+          background-color: var(--color-hover-lighter);
+          border-radius: 50%;
+
+          &:hover .search-svg {
+            fill: var(--color-white-hover);
+          }
+        }
+
+        > .search-icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          > .search-svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--color-text-secondary);
+          }
+        }
+      }
     }
 
     > .station-list {
@@ -63,8 +136,8 @@
         font-family: Circular-thin;
       }
 
-      & .svg-action{
-         display: flex;
+      & .svg-action {
+        display: flex;
         align-items: center;
         width: 16px;
         height: 16px;
@@ -72,14 +145,14 @@
         background: none;
       }
 
-      & .pin-svg{
+      & .pin-svg {
         fill: var(--green-pin);
       }
     }
   }
 
-  & .spacer{
-    background: hsla(0,0%,100%,.1);
+  & .spacer {
+    background: hsla(0, 0%, 100%, 0.1);
     height: 1px;
     pointer-events: none;
     width: 100%;
@@ -113,5 +186,27 @@
     width: 16px;
     fill: var(--color-text-secondary);
     margin: 1px 6px 0 0;
+  }
+
+  .no-stations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin-top: 200px;
+
+    > h1,
+    h2 {
+      margin: 0;
+    }
+    > h1 {
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    > p {
+      font-size: 0.8rem;
+      font-family: Circular-thin;
+    }
   }
 }
