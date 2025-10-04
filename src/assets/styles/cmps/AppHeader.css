@@ -12,6 +12,7 @@
   .search-bar {
     display: flex;
     place-items: center;
+ 
   }
 
   /* User info styles */
@@ -82,21 +83,21 @@
   }
 
   /* Browse icon styles */
-  .browse {
-    position: absolute;
+  .browse-btn {
+    /* position: absolute;
     top: 50%;
     right: 12px;
     display: flex;
     transform: translateY(-50%);
-    color: var(--color-text-secondary);
+    color: var(--color-text-secondary); */
 
-    &:hover {
+    /* &:hover {
       transition: 0.15s;
       cursor: pointer;
       color: var(--color-white-hover);
-    }
+    } */
 
-    &::before {
+    /* &::before {
       content: '';
       position: absolute;
       left: -12px;
@@ -105,14 +106,14 @@
       width: 0.1px;
       height: 24px;
       background: rgba(255, 255, 255, 0.308);
-    }
+    } */
 
-    &:hover {
+    /* &:hover {
       &::before {
         color: var(--color-white-hover);
         cursor: default;
       }
-    }
+    } */
   }
 }
 
@@ -130,7 +131,107 @@
   & button:hover {
     background-color: var(--color-hover);
   }
-  & .btn-on {
-    fill: white;
+
+}
+
+.home-btn-container{
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+}
+
+.home-bold-svg svg,
+.browse-btn-bold svg{
+     fill: white;
+}
+
+
+.search-wrapper {
+  position: relative;
+  width: 474px;
+  height: 48px;
+}
+
+.search-wrapper input {
+  width: 100%;
+  height: 100%;
+  border-radius: 500px;
+  background-color: #1f1f1f;
+  border: none;
+  outline: none;
+  padding: 12px 48px 12px 48px; 
+  color: white;
+  font-size: 14px;
+
+  &:focus {
+    background-color: var(--color-hover);
+    -webkit-box-shadow: inset 0 0 0 2px #fff;
+    cursor: unset;
   }
+}
+
+.search-wrapper .browse {
+
+
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      &::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.1px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.308);
+    }
+
+     &:hover {
+      &::before {
+        color: var(--color-white-hover);
+        cursor: default; 
+        
+    
+      }
+    }
+}
+
+
+
+.browse-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-text-secondary);
+  display: flex;
+
+     &:hover {
+      transition: 0.3s;
+      cursor: pointer;
+      color: var(--color-white-hover);
+      scale: 1.05;
+    } 
+
+    
+    
+      
+
+
+}
+
+
+.glass-svg{
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

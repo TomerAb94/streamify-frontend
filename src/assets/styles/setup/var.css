@@ -9,24 +9,23 @@
   --color-secondary: #121212; /* Background dark gray */
   --color-secondary-1: #212121; /* Background dark gray */
   --color-secondary-2: #282828; /* Background dark gray lighter */
-  --color-secondary-3: #3E3E3E; /* Background dark gray lighter */
-  --color-text-primary:#ffffff; /* primary text white */
+  --color-secondary-3: #3e3e3e; /* Background dark gray lighter */
+  --color-text-primary: #ffffff; /* primary text white */
   --color-text-secondary: #ababab; /* Secondary text */
   --color-text-secondary-2: #DDDDDD; /* Secondary text lighter */
   --color-padding-btn: #1f1f1f; /* Primary text */
-  --color-hover: #2A2A2A; /* Hover states */
-  --color-hover-darker:#1F1F1F; /* Darker Hover states */
-  --color-hover-lighter:#484848; /* Lighter Hover states */
-  --color-white-fff:#fff;
-  --color-white-hover:#F0F0F0;
-  --green-pin:#1bc357;
+  --color-hover: #2a2a2a; /* Hover states */
+  --color-hover-darker: #1f1f1f; /* Darker Hover states */
+  --color-hover-lighter: #484848; /* Lighter Hover states */
+  --color-white-fff: #fff;
+  --color-white-hover: #f0f0f0;
+  --green-pin: #1bc357;
+  --green-play: #1ed760;
   --green-checked:#1ED760;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
-
-  --AppHeaderHeight:64px;
-  --FooterHeight:72px;
-
+  --AppHeaderHeight: 64px;
+  --FooterHeight: 72px;
 
   --gray1: #ddd;
   --gray2: #aaa;
@@ -38,15 +37,13 @@
 }
 
 :root {
-
   --color-accent: #1f1f1f; /* Accent gray */
 
- 
   --color-background: #121212; /* Main background */
   --color-highlight: #1ed760; /* Highlight color */
   --color-error: #e50914; /* Error / alert red */
   --color-success: #3cb371; /* Success green */
   --color-muted: #535353; /* Muted elements */
-   /* Borders */
+  /* Borders */
   /* Hover states */
 }
