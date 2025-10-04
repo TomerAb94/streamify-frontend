@@ -1,0 +1,191 @@
+const CLIENT_ID = 'bc0de1d56cf04139b055dab040514fc2'
+const CLIENT_SECRET = 'a95e1562557f434489e50790a67ab105'
+const TOKEN_URL = 'https://accounts.spotify.com/api/token'
+const API_BASE_URL = 'https://api.spotify.com/v1'
+
+let accessToken = null
+let tokenExpiryTime = null
+
+export const spotifyService = {
+  getAccessToken,
+  searchTracks,
+  searchArtists,
+  searchAlbums,
+  getTrack,
+  getArtist,
+  getAlbum,
+  initializePlayer,
+  playTrack,
+  pauseTrack,
+  getCurrentPlayback
+}
+
+async function getAccessToken() {
+  if (accessToken && tokenExpiryTime && Date.now() < tokenExpiryTime) {
+    return accessToken
+  }
+
+  const credentials = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
+  
+  try {
+    const response = await fetch(TOKEN_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials'
+    })
+
+    const data = await response.json()
+    
+    if (response.ok) {
+      accessToken = data.access_token
+      tokenExpiryTime = Date.now() + (data.expires_in * 1000)
+      return accessToken
+    } else {
+      throw new Error(`Token request failed: ${data.error}`)
+    }
+  } catch (error) {
+    console.error('Error getting access token:', error)
+    throw error
+  }
+}
+
+async function makeSpotifyRequest(endpoint) {
+  const token = await getAccessToken()
+  console.log(token);
+  
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error(`Spotify API request failed: ${response.status}`)
+  }
+
+  return response.json()
+}
+
+async function searchTracks(query, limit = 20, offset = 0) {
+  const endpoint = `/search?q=${encodeURIComponent(query)}&type=track&limit=${limit}&offset=${offset}`
+  return makeSpotifyRequest(endpoint)
+}
+
+async function searchArtists(query, limit = 20, offset = 0) {
+  const endpoint = `/search?q=${encodeURIComponent(query)}&type=artist&limit=${limit}&offset=${offset}`
+  return makeSpotifyRequest(endpoint)
+}
+
+async function searchAlbums(query, limit = 20, offset = 0) {
+  const endpoint = `/search?q=${encodeURIComponent(query)}&type=album&limit=${limit}&offset=${offset}`
+  return makeSpotifyRequest(endpoint)
+}
+
+async function getTrack(trackId) {
+  const endpoint = `/tracks/${trackId}`
+  return makeSpotifyRequest(endpoint)
+}
+
+async function getArtist(artistId) {
+  const endpoint = `/artists/${artistId}`
+  return makeSpotifyRequest(endpoint)
+}
+
+async function getAlbum(albumId) {
+  const endpoint = `/albums/${albumId}`
+  return makeSpotifyRequest(endpoint)
+}
+
+// Note: These functions require user authentication and Spotify Premium
+let player = null
+let deviceId = null
+
+async function initializePlayer(userAccessToken) {
+  return new Promise((resolve, reject) => {
+    const initPlayer = () => {
+      if (!window.Spotify) {
+        reject(new Error('Spotify Web Playback SDK not loaded'))
+        return
+      }
+
+      player = new window.Spotify.Player({
+        name: 'Your App Player',
+        getOAuthToken: cb => { cb(userAccessToken) },
+        volume: 0.5
+      })
+
+      player.addListener('ready', ({ device_id }) => {
+        deviceId = device_id
+        console.log('Ready with Device ID', device_id)
+        resolve(device_id)
+      })
+
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id)
+      })
+
+      player.addListener('authentication_error', ({ message }) => {
+        console.error('Authentication error:', message)
+        reject(new Error('Authentication failed'))
+      })
+
+      player.connect()
+    }
+
+    if (window.Spotify) {
+      initPlayer()
+    } else {
+      window.onSpotifyWebPlaybackSDKReady = initPlayer
+    }
+  })
+}
+
+async function playTrack(trackUri, userAccessToken) {
+  if (!deviceId) {
+    throw new Error('Player not initialized')
+  }
+
+  const response = await fetch(`${API_BASE_URL}/me/player/play?device_id=${deviceId}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${userAccessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      uris: [trackUri] // e.g., "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
+    })
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to play track: ${response.status}`)
+  }
+}
+
+async function pauseTrack(userAccessToken) {
+  const response = await fetch(`${API_BASE_URL}/me/player/pause`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${userAccessToken}`
+    }
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to pause: ${response.status}`)
+  }
+}
+
+async function getCurrentPlayback(userAccessToken) {
+  const response = await fetch(`${API_BASE_URL}/me/player`, {
+    headers: {
+      'Authorization': `Bearer ${userAccessToken}`
+    }
+  })
+
+  if (response.ok) {
+    return response.json()
+  }
+  return null
+}
