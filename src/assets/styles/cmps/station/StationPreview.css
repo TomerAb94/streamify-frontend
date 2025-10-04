@@ -27,7 +27,7 @@
       font-size: 13px;
 
       > .station-type-owner {
-        c > .station-type {
+         > .station-type {
           text-transform: capitalize;
         }
         > .station-type + span:before {
@@ -90,6 +90,7 @@
 
   &:hover .play-overlay {
     opacity: 1;
+    border-radius: 4px;
   }
 
   & .play-btn {

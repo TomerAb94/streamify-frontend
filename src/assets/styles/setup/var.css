@@ -12,6 +12,7 @@
   --color-secondary-3: #3e3e3e; /* Background dark gray lighter */
   --color-text-primary: #ffffff; /* primary text white */
   --color-text-secondary: #ababab; /* Secondary text */
+  --color-text-secondary-2: #DDDDDD; /* Secondary text lighter */
   --color-padding-btn: #1f1f1f; /* Primary text */
   --color-hover: #2a2a2a; /* Hover states */
   --color-hover-darker: #1f1f1f; /* Darker Hover states */
@@ -20,6 +21,7 @@
   --color-white-hover: #f0f0f0;
   --green-pin: #1bc357;
   --green-play: #1ed760;
+  --green-checked:#1ED760;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --AppHeaderHeight: 64px;

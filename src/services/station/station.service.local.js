@@ -60,6 +60,7 @@ async function remove(stationId) {
 
 async function save(station) {
   var savedStation
+console.log(station);
 
   let stationToSave = {
     title: station.title,
@@ -72,6 +73,7 @@ async function save(station) {
     songs: station.songs,
     reviews: station.reviews,
     description: station.description,
+    createdAt: station.createdAt
   }
 
   if (station._id) {
