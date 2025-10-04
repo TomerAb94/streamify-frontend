@@ -59,6 +59,11 @@ export function StationList({
       return a.isPinned ? -1 : 1
     })
 
+    filteredStations.sort((a, b) => {
+      if (a.tags.includes('Liked Songs') && !b.tags.includes('Liked Songs')) return -1
+      if (!a.tags.includes('Liked Songs') && b.tags.includes('Liked Songs')) return 1
+    })
+
     setStationsToShow(filteredStations)
   }
 
