@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
+import { NavLink } from 'react-router-dom'
 
 export function HomePage() {
   const { stations } = useOutletContext()
@@ -20,7 +21,7 @@ export function HomePage() {
 
       <div className="user-stations">
         {stations.map((station) => (
-          <li key={station._id} className="user-station">
+          <NavLink key={station._id} to={`/station/${station._id}`} className="user-station">
             <div className="img-title-station">
               {station.stationImgUrl ? (
                 <img className="station-img" src={station.stationImgUrl} alt={`${station.title} Cover`} />
@@ -29,11 +30,12 @@ export function HomePage() {
                   <SvgIcon iconName="musicNote" />
                 </div>
               )}
+
               {station.title}
             </div>
 
-            {<SvgIcon iconName="play" className="play-container" />}
-          </li>
+            <SvgIcon iconName="play" className="play-container" />
+          </NavLink>
         ))}
       </div>
       <section>
