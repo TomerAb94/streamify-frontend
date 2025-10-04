@@ -82,7 +82,7 @@
   }
 
   /* Browse icon styles */
-  .browse {
+  .browse-btn {
     position: absolute;
     top: 50%;
     right: 12px;
@@ -130,7 +130,17 @@
   & button:hover {
     background-color: var(--color-hover);
   }
-  & .btn-on {
-    fill: white;
-  }
+
 }
+
+.home-btn-container{
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+}
+
+.home-bold-svg svg,
+.browse-btn-bold svg{
+     fill: white;
+}
+
