@@ -55,7 +55,6 @@ export function StationList({
 
   function filterStations() {
     let filteredStations = [...stations]
-    console.log(filterBy)
 
     if (filterBy.txt) {
       const regex = new RegExp(filterBy.txt, 'i')

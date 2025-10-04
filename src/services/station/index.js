@@ -26,6 +26,7 @@ function getEmptyStation() {
     songs: [],
     reviews: [],
     description: '',
+    createdAt: Date.now(),
   }
 }
 
