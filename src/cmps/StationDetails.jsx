@@ -6,11 +6,9 @@ import { Link } from 'react-router-dom'
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { loadStation, addStationMsg } from '../store/actions/station.actions'
 
-
 export function StationDetails() {
-
-  const {stationId} = useParams()
-  const station = useSelector(storeState => storeState.stationModule.station)
+  const { stationId } = useParams()
+  const station = useSelector((storeState) => storeState.stationModule.station)
 
   useEffect(() => {
     loadStation(stationId)
@@ -18,13 +16,12 @@ export function StationDetails() {
 
   async function onAddStationMsg(stationId) {
     try {
-        await addStationMsg(stationId, 'bla bla ' + parseInt(Math.random()*10))
-        showSuccessMsg(`Station msg added`)
+      await addStationMsg(stationId, 'bla bla ' + parseInt(Math.random() * 10))
+      showSuccessMsg(`Station msg added`)
     } catch (err) {
-        showErrorMsg('Cannot add station msg')
-    }        
-
-}
+      showErrorMsg('Cannot add station msg')
+    }
+  }
 
   return (
     <section className="station-details">
@@ -37,7 +34,6 @@ export function StationDetails() {
       </div>
       }
       <button onClick={() => { onAddStationMsg(station._id) }}>Add station msg</button> */}
-
     </section>
   )
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { NavLink } from 'react-router-dom'
 
 import { StationPreview } from './StationPreview'
 import { SvgIcon } from './SvgIcon'
@@ -29,26 +30,6 @@ export function StationList({
   useEffect(() => {
     filterStations()
   }, [stations, filterBy])
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        sortMenuRef.current &&
-        !sortMenuRef.current.contains(event.target) &&
-        !event.target.closest('.sort-btn')
-      ) {
-        setIsSortMenuOpen(false)
-      }
-    }
-
-    if (isSortMenuOpen) {
-      document.addEventListener('click', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [isSortMenuOpen])
 
   const searchInputRef = useRef(null)
   const sortMenuRef = useRef(null)
@@ -94,9 +75,9 @@ export function StationList({
     setActiveStationId((prev) => (prev === stationId ? null : stationId))
   }
 
-  function handlePlayClick(station) {
-    console.log(`Play playlist: ${station.title}`)
-    setClickedStationId(station._id)
+  function handlePlayClick(stationId) {
+    console.log(`Play playlist: ${stationId}`)
+    setClickedStationId(stationId)
     setActiveStationId(null)
   }
 
@@ -176,16 +157,17 @@ export function StationList({
 
         <ul className="station-list">
           {stationsToShow.map((station) => (
-            <li
-              key={station._id}
-              className={`station-preview ${
-                clickedStationId === station._id ? 'clicked' : ''
-              }`}
-              onClick={() => handlePlayClick(station)}
-              onContextMenu={(ev) => toggleActionMenu(ev, station._id)}
-            >
-              <StationPreview station={station} />
-            </li>
+            <NavLink to={`/station/${station._id}`} key={station._id}>
+              <li
+                className={`station-preview ${
+                  clickedStationId === station._id ? 'clicked' : ''
+                }`}
+                onClick={() => handlePlayClick(station._id)}
+                onContextMenu={(ev) => toggleActionMenu(ev, station._id)}
+              >
+                <StationPreview station={station} />
+              </li>
+            </NavLink>
           ))}
         </ul>
       </form>
