@@ -102,6 +102,40 @@
             fill: var(--color-text-secondary);
           }
         }
+        
+      }
+
+      .sort-btn {
+        color: var(--color-text-secondary);
+        padding: 4px 0;
+        border-radius: 0;
+        gap: 4px;
+        background-color: inherit;
+        transition: scale 0.2s ease;
+
+        &:hover {
+          color: var(--color-hover-white);
+          scale: 1.02;
+    
+          & .list-svg {
+            fill: var(--color-white-hover);
+          }
+        }
+
+        .list-icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          & .list-svg {
+            width: 16px;
+            height: 16px;
+
+            &:hover {
+              fill: var(--color-white-hover);
+            }
+          }
+        }
       }
     }
 

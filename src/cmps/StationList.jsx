@@ -4,6 +4,7 @@ import { StationPreview } from './StationPreview'
 import { SvgIcon } from './SvgIcon'
 import { ModalEdit } from './ModalEdit.jsx'
 import { StationListActions } from './StationListActions.jsx'
+import { SortMenu } from './SortMenu.jsx'
 import { debounce } from '../services/util.service'
 
 export function StationList({
@@ -13,7 +14,9 @@ export function StationList({
   onUpdateStation,
 }) {
   const [stationsToShow, setStationsToShow] = useState(stations)
-  const [filterBy, setFilterBy] = useState({ txt: '', isPinned: true })
+  const [filterBy, setFilterBy] = useState({
+    sortBy: 'Recently Added',
+  })
 
   const [clickedStationId, setClickedStationId] = useState(null) //Click
   const [activeStationId, setActiveStationId] = useState(null) //Right Click
@@ -21,15 +24,38 @@ export function StationList({
 
   const [isModalEditOpen, setIsModalEditOpen] = useState(false)
   const [stationToEdit, setStationToEdit] = useState(null)
+  const [isSortMenuOpen, setIsSortMenuOpen] = useState(false)
 
   useEffect(() => {
     filterStations()
   }, [stations, filterBy])
-  
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        sortMenuRef.current &&
+        !sortMenuRef.current.contains(event.target) &&
+        !event.target.closest('.sort-btn')
+      ) {
+        setIsSortMenuOpen(false)
+      }
+    }
+
+    if (isSortMenuOpen) {
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [isSortMenuOpen])
+
   const searchInputRef = useRef(null)
+  const sortMenuRef = useRef(null)
 
   function filterStations() {
     let filteredStations = [...stations]
+    console.log(filterBy)
 
     if (filterBy.txt) {
       const regex = new RegExp(filterBy.txt, 'i')
@@ -38,12 +64,20 @@ export function StationList({
       )
     }
 
-    if (filterBy.isPinned) {
+    if (filterBy.sortBy === 'Recently Added') {
       filteredStations.sort((a, b) => {
-        if (a.isPinned === b.isPinned) return 0
-        return a.isPinned ? -1 : 1
+        return new Date(b.createdAt) - new Date(a.createdAt)
       })
     }
+
+    if (filterBy.sortBy === 'Alphabetical') {
+      filteredStations.sort((a, b) => a.title.localeCompare(b.title))
+    }
+
+    filteredStations.sort((a, b) => {
+      if (a.isPinned === b.isPinned) return 0
+      return a.isPinned ? -1 : 1
+    })
 
     setStationsToShow(filteredStations)
   }
@@ -82,6 +116,11 @@ export function StationList({
     searchInputRef.current.focus()
   }
 
+  function toggleSortMenu(ev) {
+    ev.stopPropagation()
+    setIsSortMenuOpen(!isSortMenuOpen)
+  }
+
   return (
     <section
       className="station-list-container"
@@ -116,6 +155,16 @@ export function StationList({
               onInput={handleInput}
               ref={searchInputRef}
             />
+          </div>
+          <button onClick={toggleSortMenu} className="sort-btn" type="button">
+            <span className="sort-title">{filterBy.sortBy}</span>
+            <SvgIcon iconName="defaultList" className="list-icon" />
+          </button>
+          <div
+            className={`context-menu ${isSortMenuOpen ? 'open' : ''}`}
+            ref={sortMenuRef}
+          >
+            <SortMenu setFilterBy={setFilterBy} />
           </div>
         </div>
 

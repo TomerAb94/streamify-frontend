@@ -12,6 +12,7 @@
   --color-secondary-3: #3E3E3E; /* Background dark gray lighter */
   --color-text-primary:#ffffff; /* primary text white */
   --color-text-secondary: #ababab; /* Secondary text */
+  --color-text-secondary-2: #DDDDDD; /* Secondary text lighter */
   --color-padding-btn: #1f1f1f; /* Primary text */
   --color-hover: #2A2A2A; /* Hover states */
   --color-hover-darker:#1F1F1F; /* Darker Hover states */
@@ -19,6 +20,7 @@
   --color-white-fff:#fff;
   --color-white-hover:#F0F0F0;
   --green-pin:#1bc357;
+  --green-checked:#1ED760;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
 

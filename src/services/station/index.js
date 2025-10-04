@@ -50,6 +50,7 @@ function getDefaultStation(user) {
       fullname: user.fullname,
       imgUrl: user.imgUrl,
     },
+    createdAt: Date.now(),
     likedByUsers: [],
     isPinned: true,
     songs: [],

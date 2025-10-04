@@ -1,0 +1,15 @@
+.context-menu {
+  visibility: hidden;
+  position: absolute;
+  top: 2em;
+  right: 0;
+  background-color: var(--color-secondary-2);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: var(--color-text-secondary);
+
+  &.open {
+    visibility: visible;
+    z-index: 100;
+  }
+}

@@ -20,6 +20,8 @@
 @import "cmps/UserMsg";
 @import "cmps/ModalEdit";
 @import "cmps/ModalRemove";
+@import "cmps/ContextMenu";
+@import "cmps/SortMenu";
 
 @import "cmps/car/CarIndex";
 @import "cmps/car/CarList";
