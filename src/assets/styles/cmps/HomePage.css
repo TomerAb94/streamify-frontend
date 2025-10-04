@@ -140,6 +140,6 @@
 @media (max-width: 1360px) {
   .user-stations {
     /* background-color: red; */
-    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
 }
