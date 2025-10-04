@@ -21,32 +21,24 @@ export function HomePage() {
       <div className="user-stations">
         {stations.map((station) => (
           <li key={station._id} className="user-station">
-            <div className='img-title-station'>
-               {station.stationImgUrl ? (
-              <img className="station-img" src={station.stationImgUrl} alt={`${station.title} Cover`} />
-            ) : (
-              <div className="station-img-placeholder">
-                <SvgIcon iconName="musicNote" />
-              </div>
-            )}
-                {station.title}
+            <div className="img-title-station">
+              {station.stationImgUrl ? (
+                <img className="station-img" src={station.stationImgUrl} alt={`${station.title} Cover`} />
+              ) : (
+                <div className="station-img-placeholder">
+                  <SvgIcon iconName="musicNote" />
+                </div>
+              )}
+              {station.title}
             </div>
-           
-        
-            {
-              <SvgIcon  iconName="play" className="play-container" />
-         
-                
-          
-            }
+
+            {<SvgIcon iconName="play" className="play-container" />}
           </li>
         ))}
-       
-        
       </div>
-       <section>
+      <section>
         <h2>Your Shows</h2>
-        </section>
+      </section>
     </section>
   )
 }
