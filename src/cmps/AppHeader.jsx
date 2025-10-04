@@ -105,6 +105,7 @@ export function AppHeader() {
   </button>
 
   <div className="search-wrapper">
+     <span> <SvgIcon iconName="magnifyingGlass" /></span>
     <input
       type="text"
       name="upper-search"
@@ -118,6 +119,8 @@ export function AppHeader() {
         <SvgIcon iconName="browseBold" className="browse-btn browse-btn-bold" />
       )}
     </span>
+
+   
   </div>
 </div>
 
