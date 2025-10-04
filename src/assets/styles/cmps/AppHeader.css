@@ -12,6 +12,7 @@
   .search-bar {
     display: flex;
     place-items: center;
+ 
   }
 
   /* User info styles */
@@ -83,20 +84,20 @@
 
   /* Browse icon styles */
   .browse-btn {
-    position: absolute;
+    /* position: absolute;
     top: 50%;
     right: 12px;
     display: flex;
     transform: translateY(-50%);
-    color: var(--color-text-secondary);
+    color: var(--color-text-secondary); */
 
-    &:hover {
+    /* &:hover {
       transition: 0.15s;
       cursor: pointer;
       color: var(--color-white-hover);
-    }
+    } */
 
-    &::before {
+    /* &::before {
       content: '';
       position: absolute;
       left: -12px;
@@ -105,14 +106,14 @@
       width: 0.1px;
       height: 24px;
       background: rgba(255, 255, 255, 0.308);
-    }
+    } */
 
-    &:hover {
+    /* &:hover {
       &::before {
         color: var(--color-white-hover);
         cursor: default;
       }
-    }
+    } */
   }
 }
 
@@ -144,3 +145,70 @@
      fill: white;
 }
 
+
+.search-wrapper {
+  position: relative;
+  width: 474px;
+  height: 48px;
+}
+
+.search-wrapper input {
+  width: 100%;
+  height: 100%;
+  border-radius: 500px;
+  background-color: #1f1f1f;
+  border: none;
+  outline: none;
+  padding: 12px 48px 12px 48px; /* השאר מקום ל־browse בצד */
+  color: white;
+  font-size: 14px;
+}
+
+.search-wrapper .browse {
+
+
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+      &::before {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0.1px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.308);
+    }
+
+     &:hover {
+      &::before {
+        color: var(--color-white-hover);
+        cursor: default; 
+        
+    
+      }
+    }
+}
+
+
+
+.browse-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-white-hover);
+  display: flex;
+
+     &:hover {
+      transition: 0.3s;
+      cursor: pointer;
+      color: var(--color-white-hover);
+      scale: 1.05;
+    } 
+
+}

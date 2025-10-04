@@ -13,53 +13,54 @@ export function AppHeader() {
   const [homeBtn, setHomeBtn] = useState(false)
   const [browseBtn, setBrowseBtn] = useState(false)
 
-  const navigate = useNavigate()
 
-  const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: '9999px',
-    backgroundColor: '#1f1f1f',
-    '&:hover': {
-      backgroundColor: '#2a2a2a',
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: '480px',
-    },
-  }))
+ 
 
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#d1d1d1',
-    scale: '1.1',
-  }))
+  // const Search = styled('div')(({ theme }) => ({
+  //   position: 'relative',
+  //   borderRadius: '9999px',
+  //   backgroundColor: '#1f1f1f',
+  //   '&:hover': {
+  //     backgroundColor: '#2a2a2a',
+  //   },
+  //   marginLeft: 0,
+  //   width: '100%',
+  //   [theme.breakpoints.up('sm')]: {
+  //     marginLeft: theme.spacing(1),
+  //     width: '480px',
+  //   },
+  // }))
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: '#fff',
-    width: '480px',
-    height: '48px',
-    padding: '12px 96px 12px 48px',
-    borderRadius: '9999px',
-    transition: 'box-shadow 0.2s ease',
+  // const SearchIconWrapper = styled('div')(({ theme }) => ({
+  //   padding: theme.spacing(0, 2),
+  //   height: '100%',
+  //   position: 'absolute',
+  //   pointerEvents: 'none',
+  //   display: 'flex',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   color: '#d1d1d1',
+  //   scale: '1.1',
+  // }))
 
-    '&.Mui-focused': {
-      boxShadow: 'inset 0 0 0 2px #fff',
-      cursor: 'unset',
-    },
+  // const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  //   color: '#fff',
+  //   width: '480px',
+  //   height: '48px',
+  //   padding: '12px 96px 12px 48px',
+  //   borderRadius: '9999px',
+  //   transition: 'box-shadow 0.2s ease',
 
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      width: '100%',
-    },
-  }))
+  //   '&.Mui-focused': {
+  //     boxShadow: 'inset 0 0 0 2px #fff',
+  //     cursor: 'unset',
+  //   },
+
+  //   '& .MuiInputBase-input': {
+  //     padding: theme.spacing(1, 1, 1, 0),
+  //     width: '100%',
+  //   },
+  // }))
 
   async function onLogout() {
     try {
@@ -94,30 +95,31 @@ export function AppHeader() {
         </NavLink>
       </div>
 
-      <div className="search-bar">
-        <NavLink to="/">
-          <button className="home-btn-container" title="Home" onClick={onToggleHomeBtn}>
-            {!homeBtn ? (
-              <SvgIcon iconName="home" className="home-btn" />
-            ) : (
-              <SvgIcon iconName="homeBold" className="home-bold-svg" />
-            )}
-          </button>
-        </NavLink>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase placeholder="What do you want to play?" inputProps={{ 'aria-label': 'search' }} />
-          <a className="browse" onClick={onToggleBrowseBtn}>
-            {!browseBtn ? (
-              <SvgIcon iconName="browse" className="browse-btn" />
-            ) : (
-              <SvgIcon iconName="browseBold" className="browse-btn browse-btn-bold" />
-            )}
-          </a>
-        </Search>
-      </div>
+    <div className="search-bar">
+  <button className="home-btn-container" title="Home" onClick={onToggleHomeBtn}>
+    {!homeBtn ? (
+      <SvgIcon iconName="home" className="home-btn" />
+    ) : (
+      <SvgIcon iconName="homeBold" className="home-bold-svg" />
+    )}
+  </button>
+
+  <div className="search-wrapper">
+    <input
+      type="text"
+      name="upper-search"
+      id="upper-search"
+      placeholder="What do you want to play?"
+    />
+    <span className="browse" onClick={onToggleBrowseBtn}>
+      {!browseBtn ? (
+        <SvgIcon iconName="browse" className="browse-btn" />
+      ) : (
+        <SvgIcon iconName="browseBold" className="browse-btn browse-btn-bold" />
+      )}
+    </span>
+  </div>
+</div>
 
       <div className="user-profile">
         {!user && (
