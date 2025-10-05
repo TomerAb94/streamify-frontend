@@ -17,10 +17,10 @@ export function AppHeader() {
   const navigate = useNavigate()
 const location = useLocation()
  
- console.log(location.pathname)
+//  console.log(location.pathname)
 
- window.homeBtn = homeBtn
- window.browseBtn=browseBtn
+//  window.homeBtn = homeBtn
+//  window.browseBtn=browseBtn
 
   // const Search = styled('div')(({ theme }) => ({
   //   position: 'relative',
