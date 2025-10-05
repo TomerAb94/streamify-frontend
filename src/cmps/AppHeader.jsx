@@ -12,7 +12,7 @@ import { SvgIcon } from './SvgIcon'
 export function AppHeader() {
 
   const user = useSelector((storeState) => storeState.userModule.user)
-  const [homeBtn, setHomeBtn] = useState(false)
+  const [homeBtn, setHomeBtn] = useState(true)
   const [browseBtn, setBrowseBtn] = useState(false)
   const navigate = useNavigate()
 const location = useLocation()
