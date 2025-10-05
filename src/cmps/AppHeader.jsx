@@ -1,20 +1,26 @@
 import { styled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink,useLocation} from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
 import { useState } from 'react'
 import { SvgIcon } from './SvgIcon'
+
 export function AppHeader() {
+
   const user = useSelector((storeState) => storeState.userModule.user)
   const [homeBtn, setHomeBtn] = useState(false)
   const [browseBtn, setBrowseBtn] = useState(false)
-
-
+  const navigate = useNavigate()
+const location = useLocation()
  
+ console.log(location.pathname)
+
+ window.homeBtn = homeBtn
+ window.browseBtn=browseBtn
 
   // const Search = styled('div')(({ theme }) => ({
   //   position: 'relative',
@@ -62,6 +68,14 @@ export function AppHeader() {
   //   },
   // }))
 
+  function backToHome() {
+    navigate('/')
+  }
+
+  function backToBrowse() {
+    navigate('/browse')
+  }
+
   async function onLogout() {
     try {
       await logout()
@@ -82,6 +96,8 @@ export function AppHeader() {
     setHomeBtn(false)
   }
 
+
+
   return (
     <div className="app-header">
       <div className="logo" title="Streamify" onClick={onToggleHomeBtn}>
@@ -96,12 +112,19 @@ export function AppHeader() {
       </div>
 
     <div className="search-bar">
-  <button className="home-btn-container" title="Home" onClick={onToggleHomeBtn}>
-    {!homeBtn ? (
-      <SvgIcon iconName="home" className="home-btn" />
+  <button className="home-btn-container" title="Home" onClick={
+    ()=>{
+      onToggleHomeBtn()
+      backToHome()
+    }} >
+    {!homeBtn ||  location.pathname!=='/'? (
+      
+      <SvgIcon iconName="home" className="home-btn"/>
+   
     ) : (
       <SvgIcon iconName="homeBold" className="home-bold-svg" />
     )}
+
   </button>
 
   <div className="search-wrapper">
@@ -112,7 +135,11 @@ export function AppHeader() {
       id="upper-search"
       placeholder="What do you want to play?"
     />
-    <span className="browse" onClick={onToggleBrowseBtn}>
+    <span className="browse" onClick={
+      ()=>{
+        onToggleBrowseBtn()
+        backToBrowse()
+        }}>
       {!browseBtn ? (
         <SvgIcon iconName="browse" className="browse-btn" />
       ) : (

@@ -12,9 +12,15 @@ export function StationDetails() {
   const {stationId} = useParams()
   const station = useSelector(storeState => storeState.stationModule.station)
 
+
+ 
+
   useEffect(() => {
     loadStation(stationId)
-  }, [stationId])
+
+  }, [])
+
+  console.log(stationId)
 
   async function onAddStationMsg(stationId) {
     try {
@@ -26,9 +32,12 @@ export function StationDetails() {
 
 }
 
+if (!station) return <div>Loading...</div>
+
   return (
     <section className="station-details">
-      <h1>Station-Details</h1>
+      <h1>{station.title}</h1>
+     
       {/* <Link to="/station">Back to list</Link>
       <h1>Station Details</h1>
       {station && <div>

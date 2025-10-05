@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
-import { NavLink } from 'react-router-dom'
+import { NavLink,useNavigate } from 'react-router-dom'
 
 export function HomePage() {
   const { stations } = useOutletContext()
+
 
   useEffect(() => {
     console.log(stations)

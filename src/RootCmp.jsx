@@ -10,6 +10,7 @@ import { StationFilter } from './cmps/StationFilter.jsx'
 import { TrackPreview } from './cmps/TrackPreview.jsx'
 
 import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
+import { Browse } from './cmps/Browse.jsx'
 
 export function RootCmp() {
   return (
@@ -19,8 +20,9 @@ export function RootCmp() {
           <Route element={<StationIndex />}>
             <Route path="" element={<HomePage />} />
             <Route path="/search" element={<StationFilter />} />
-            <Route path="/station/:Id" element={<StationDetails />} />
+            <Route path="/station/:stationId" element={<StationDetails />} />
             <Route path="/track/:Id" element={<TrackPreview />} />
+            <Route path="/browse" element={<Browse />}/>
           </Route>
 
           <Route path="auth" element={<LoginSignup />}>
