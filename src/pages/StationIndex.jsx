@@ -2,13 +2,9 @@ import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 
-import {
-  loadStations,
-  addStation,
-  updateStation,
-  removeStation,
-  addStationMsg,
-} from '../store/actions/station.actions'
+import { spotifyService } from '../services/spotify.service'
+
+import { loadStations, addStation, updateStation, removeStation, addStationMsg } from '../store/actions/station.actions'
 
 import { updateUser } from '../store/actions/user.actions'
 
@@ -21,19 +17,20 @@ import { StationFilter } from '../cmps/StationFilter'
 import { AppHeader } from '../cmps/AppHeader'
 import { AppFooter } from '../cmps/AppFooter'
 import { ModalRemove } from '../cmps/ModalRemove'
+import {trackService} from '../services/track/index'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
- 
-  const stations = useSelector(
-    (storeState) => storeState.stationModule.stations
-  )
+
+  const stations = useSelector((storeState) => storeState.stationModule.stations)
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   useEffect(() => {
     loadStations(filterBy)
+      spotifyService.searchTracks('adele')
+      .then((res) => console.log('res:', res))
   }, [filterBy])
 
   function onRemoveStation(stationId) {
@@ -50,10 +47,7 @@ export function StationIndex() {
   async function onConfirmRemove(stationId) {
     try {
       await removeStation(stationId)
-      loggedInUser.ownedStationIds.splice(
-        loggedInUser.ownedStationIds.indexOf(stationId),
-        1
-      )
+      loggedInUser.ownedStationIds.splice(loggedInUser.ownedStationIds.indexOf(stationId), 1)
       const savedUser = await updateUser(loggedInUser)
       showSuccessMsg('Station removed')
     } catch (err) {
@@ -71,9 +65,7 @@ export function StationIndex() {
       showErrorMsg('You must be logged in to add a station')
       return
     }
-    const playlistStations = stations.filter(
-      (station) => station.stationType === 'playlist'
-    )
+    const playlistStations = stations.filter((station) => station.stationType === 'playlist')
     const count = playlistStations.length + 1
     const station = stationService.getEmptyStation()
     station.title += count
@@ -99,9 +91,23 @@ export function StationIndex() {
     }
   }
 
+
+    async function onAddTrack() {
+      const track = trackService.getEmptyTrack()
+      console.log(track)
+
+
+    try {
+    
+     
+    } catch (err) {
+      showErrorMsg('Cannot update station')
+    }
+  }
+
   return (
     <section className="main-container">
-      <AppHeader />
+      <AppHeader filterBy={filterBy} setFilterBy={setFilterBy} />
 
       <StationList
         stations={stations}
@@ -118,7 +124,6 @@ export function StationIndex() {
       </header> */}
 
       <Outlet context={{ stations }} />
-     
 
       {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
       {/* <StationList  */}

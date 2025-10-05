@@ -6,6 +6,7 @@ const API_BASE_URL = 'https://api.spotify.com/v1'
 let accessToken = null
 let tokenExpiryTime = null
 
+
 export const spotifyService = {
   getAccessToken,
   searchTracks,
@@ -54,7 +55,7 @@ async function getAccessToken() {
 
 async function makeSpotifyRequest(endpoint) {
   const token = await getAccessToken()
-  console.log(token);
+  // console.log(token);
   
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     headers: {

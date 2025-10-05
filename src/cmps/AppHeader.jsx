@@ -1,72 +1,42 @@
 import { styled } from '@mui/material/styles'
 import InputBase from '@mui/material/InputBase'
 import SearchIcon from '@mui/icons-material/Search'
-import { Link, NavLink,useLocation} from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SvgIcon } from './SvgIcon'
+import { debounce } from '../services/util.service'
+import { useParams } from 'react-router-dom'
 
-export function AppHeader() {
-
+export function AppHeader({ filterBy, setFilterBy }) {
   const user = useSelector((storeState) => storeState.userModule.user)
   const [homeBtn, setHomeBtn] = useState(true)
   const [browseBtn, setBrowseBtn] = useState(false)
   const navigate = useNavigate()
-const location = useLocation()
- 
-//  console.log(location.pathname)
+  const location = useLocation()
 
-//  window.homeBtn = homeBtn
-//  window.browseBtn=browseBtn
+  console.log()
 
-  // const Search = styled('div')(({ theme }) => ({
-  //   position: 'relative',
-  //   borderRadius: '9999px',
-  //   backgroundColor: '#1f1f1f',
-  //   '&:hover': {
-  //     backgroundColor: '#2a2a2a',
-  //   },
-  //   marginLeft: 0,
-  //   width: '100%',
-  //   [theme.breakpoints.up('sm')]: {
-  //     marginLeft: theme.spacing(1),
-  //     width: '480px',
-  //   },
-  // }))
+  useEffect(() => {
+    if (filterBy.txt.length > 0) {
+      navigate(`/search/${filterBy.txt}`)
+    }
+    else if (filterBy.txt.length === 0) {
+      setBrowseBtn(true)
+      navigate(`/search`)
+    }
+  }, [filterBy])
 
-  // const SearchIconWrapper = styled('div')(({ theme }) => ({
-  //   padding: theme.spacing(0, 2),
-  //   height: '100%',
-  //   position: 'absolute',
-  //   pointerEvents: 'none',
-  //   display: 'flex',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   color: '#d1d1d1',
-  //   scale: '1.1',
-  // }))
+  window.filterBy = filterBy
+  function handleInput({ target }) {
+    const txt = target.value
 
-  // const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  //   color: '#fff',
-  //   width: '480px',
-  //   height: '48px',
-  //   padding: '12px 96px 12px 48px',
-  //   borderRadius: '9999px',
-  //   transition: 'box-shadow 0.2s ease',
-
-  //   '&.Mui-focused': {
-  //     boxShadow: 'inset 0 0 0 2px #fff',
-  //     cursor: 'unset',
-  //   },
-
-  //   '& .MuiInputBase-input': {
-  //     padding: theme.spacing(1, 1, 1, 0),
-  //     width: '100%',
-  //   },
-  // }))
+     debounce(() => setFilterBy((prev) => ({ ...prev, txt })), 300)()
+  
+  }
 
   function backToHome() {
     navigate('/')
@@ -96,8 +66,6 @@ const location = useLocation()
     setHomeBtn(false)
   }
 
-
-
   return (
     <div className="app-header">
       <div className="logo" title="Streamify" onClick={onToggleHomeBtn}>
@@ -111,45 +79,54 @@ const location = useLocation()
         </NavLink>
       </div>
 
-    <div className="search-bar">
-  <button className="home-btn-container" title="Home" onClick={
-    ()=>{
-      onToggleHomeBtn()
-      backToHome()
-    }} >
-    {!homeBtn ||  location.pathname!=='/'? (
-      
-      <SvgIcon iconName="home" className="home-btn"/>
-   
-    ) : (
-      <SvgIcon iconName="homeBold" className="home-bold-svg" />
-    )}
+      <div className="search-bar">
+        <button
+          className="home-btn-container"
+          title="Home"
+          onClick={() => {
+            onToggleHomeBtn()
+            backToHome()
+          }}
+        >
+          {!homeBtn || location.pathname !== '/' ? (
+            <SvgIcon iconName="home" className="home-btn" />
+          ) : (
+            <SvgIcon iconName="homeBold" className="home-bold-svg" />
+          )}
+        </button>
 
-  </button>
+        <div className="search-wrapper">
+          <span>
+            {' '}
+            <SvgIcon iconName="magnifyingGlass" />
+          </span>
+          <input
+            type="text"
+            name="upper-search"
+            id="upper-search"
+            placeholder="What do you want to play?"
+            onInput={(ev) => {
+              handleInput(ev)
 
-  <div className="search-wrapper">
-     <span> <SvgIcon iconName="magnifyingGlass" /></span>
-    <input
-      type="text"
-      name="upper-search"
-      id="upper-search"
-      placeholder="What do you want to play?"
-    />
-    <span className="browse" onClick={
-      ()=>{
-        onToggleBrowseBtn()
-        backToBrowse()
-        }}>
-      {!browseBtn ? (
-        <SvgIcon iconName="browse" className="browse-btn" />
-      ) : (
-        <SvgIcon iconName="browseBold" className="browse-btn browse-btn-bold" />
-      )}
-    </span>
+              // {<NavLink to={`/search/${filterBy}`}></NavLink>}
+            }}
+          />
 
-   
-  </div>
-</div>
+          <span
+            className="browse"
+            onClick={() => {
+              onToggleBrowseBtn()
+              backToBrowse()
+            }}
+          >
+            {!browseBtn ? (
+              <SvgIcon iconName="browse" className="browse-btn" />
+            ) : (
+              <SvgIcon iconName="browseBold" className="browse-btn browse-btn-bold" />
+            )}
+          </span>
+        </div>
+      </div>
 
       <div className="user-profile">
         {!user && (
