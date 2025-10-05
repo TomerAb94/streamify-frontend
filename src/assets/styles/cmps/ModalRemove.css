@@ -41,13 +41,17 @@
 
     > button {
       margin: 0;
-      padding: 8px 32px;
+      padding: 12px 32px;
       border-radius: 9999px;
       background-color: aliceblue;
       color: var(--color-primary);
 
       &.confirm-button {
         background-color: #1ed760;
+
+        &:focus {
+          border: 1px solid blue;
+        }
       }
 
       &.cancel-button {

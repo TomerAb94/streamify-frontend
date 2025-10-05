@@ -60,7 +60,7 @@ async function remove(stationId) {
 
 async function save(station) {
   var savedStation
-console.log(station);
+// console.log(station)
 
   let stationToSave = {
     title: station.title,

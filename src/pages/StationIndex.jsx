@@ -26,6 +26,7 @@ export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
+ 
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
   )
@@ -115,12 +116,13 @@ export function StationIndex() {
           <button onClick={onAddStation}>Add a Station</button>
         )}
       </header> */}
-      
-          <Outlet context={{stations}}/>
-      
-        {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
-        {/* <StationList  */}
-        {/* stations={stations}
+
+      <Outlet context={{ stations }} />
+     
+
+      {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
+      {/* <StationList  */}
+      {/* stations={stations}
                 onRemoveStation={onRemoveStation} 
                 onUpdateStation={onUpdateStation}/> */}
 
