@@ -26,7 +26,7 @@ export function StationFilter() {
     }
   }
   const handlePlayPause = () => {
-    setIsPlaying(!playing);
+    setIsPlaying(!isPlaying);
   };
 
   const handleNext = () => {
@@ -103,7 +103,7 @@ async function getYoutubeId(str) {
             <li key={artist.id}>{artist.name}</li>
           ))}
        <button onClick={()=>onPlay(track.name)}>Play</button>
-   
+        <button onClick={()=>handlePlayPause()}>Pause</button>
         </li>
       ))}
       </ul>
