@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux'
+import { SvgIcon } from './SvgIcon'
 
 export function AppFooter() {
 
@@ -13,29 +14,40 @@ export function AppFooter() {
                 </div>
                 <div className="btn-like">
                     <button className="btn-mini-liked" aria-checked="false" aria-label="Add to Liked Songs">
-                        +
+                        <SvgIcon iconName="addLikedSong" className="liked-icon"/>
+                        <SvgIcon iconName="doneLikedSong" className="liked-icon is-on"/>
                     </button>
                 </div>
             </div>
 
             <div className="player-center">
                 <div className="transport">
-                    <button aria-label="Shuffle">Shuffle</button>
-                    <button aria-label="Previous">Previous</button>
-                    <button aria-label="Play">Play</button>
-                    <button aria-label="Next">Next</button>
-                    <button aria-label="Repeat">Repeat</button>
+                    <button aria-label="Shuffle">
+                        <SvgIcon iconName="shuffle" className="shuffle"/>
+                    </button>
+                    <button aria-label="Previous">
+                        <SvgIcon iconName="previous" className="previous"/>
+                    </button>
+                    <button aria-label="Play">
+                        <SvgIcon iconName="play" className="play"/>
+                    </button>
+                    <button aria-label="Next">
+                        <SvgIcon iconName="next" className="next"/>
+                    </button>
+                    <button aria-label="Repeat">
+                        <SvgIcon iconName="repeat" className="repeat"/>
+                    </button>
                 </div>
                 <div className="track-timeline">
-                    <span className="time">0:00</span>
+                    <span className="time-zero">0:00</span>
                     <input type="range" min="0" max="100" defaultValue="0" aria-label="Seek" />
-                    <span className="time">3:45</span>
+                    <span className="time-end">3:45</span>
                 </div>
             </div>
 
             <div className="player-right">
                 <div className="volume">
-                    Volume
+                        <SvgIcon iconName="volume" className="volume"/>
                     <input type="range" min="0" max="100" defaultValue="80" aria-label="Volume" />
                 </div>
             </div>

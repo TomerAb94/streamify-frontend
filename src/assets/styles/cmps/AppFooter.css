@@ -1,31 +1,72 @@
 .app-footer {
     grid-area: app-footer;
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    place-items: center;
-    justify-content: space-between;
+    grid-template-columns: minmax(220px, auto) 1fr minmax(220px, auto);
+    align-items: center;
     
     background-color: var(--color-primary);
 
     height: 72px;
+
+}
+
+.app-footer button {
+    background-color: transparent;
 }
 
 .player-left {
     display: flex;
+    align-items: center;
     padding-inline-start: 8px;
+    min-width: 0;
+
+    > .cover {
+        width: 56px;
+        height: 56px;
+        background-color: red;
+        margin-inline-end: 8px;
+    }
+
+    > .mini-track .artist {
+        color: var(--color-text-secondary);
+    }
+
+    > .btn-like {
+        gap: 12px;
+        margin: 0 8px;
+    }
 }
 
-.player-left .cover {
-    width: 56px;
-    height: 56px;
-    background-color: red;
+.svg-icon {
+    > svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        color: var(--color-text-secondary);
+        transition: fill .15s ease, color .15s ease;
+    }
+
+    &:hover svg {
+        color: var(--color-white-fff);
+
+    }
 }
 
 .player-center {
     display: grid;
     grid-template-rows: auto auto;
-}
+    justify-items: stretch;
 
-.player-center .transport {
-    display: flex;
+    > .transport {
+        display: flex;
+        justify-self: center;
+    }
+
+    > .track-timeline {
+        display: flex;
+        justify-self: center;
+        
+        gap: 8px;
+
+    }
 }
