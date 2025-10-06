@@ -8,8 +8,8 @@ export function StationFilter() {
   const params = useParams()
   const [tracks, setTracks] = useState([])
   const [isPlaying, setIsPlaying] = useState(false)
-  const [trackId, setTrackId] = useState(null);
-//   const currentVideo = playlist[currentIndex];
+  const [trackId, setTrackId] = useState(null)
+  //   const currentVideo = playlist[currentIndex];
 
   useEffect(() => {
     if (params.searchStr || params.searchStr !== '') {
@@ -26,93 +26,102 @@ export function StationFilter() {
     }
   }
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
+    setIsPlaying(!isPlaying)
+  }
 
   const handleNext = () => {
     if (trackId < playlist.length - 1) {
-      setTrackId(trackId + 1);
-      setIsPlaying(false); // Pause on switch
+      setTrackId(trackId + 1)
+      setIsPlaying(false) // Pause on switch
     }
-  };
+  }
 
   const handlePrev = () => {
     if (trackId > 0) {
-      setTrackId(trackId - 1);
-      setIsPlaying(false); // Pause on switch
+      setTrackId(trackId - 1)
+      setIsPlaying(false) // Pause on switch
     }
-  };
+  }
 
   const handleEnded = () => {
-    handleNext(); // Auto-advance to next video
-  };
-async function onPlay(trackName) {
-    console.log(trackName)
-   const youtubeId = await getYoutubeId(trackName)
-   console.log('youtubeId:', youtubeId)
-   setTrackId(youtubeId)
-   console.log('trackId:', trackId)
-   setIsPlaying(true)
-
+    handleNext() // Auto-advance to next video
   }
-//   var song = spotifyService.getArtist('1HY2Jd0NmPuamShAr6KMms').then((res) => console.log(res))
+  async function onPlay(trackName) {
+    console.log(trackName)
+    const youtubeId = await getYoutubeId(trackName)
+    console.log('youtubeId:', youtubeId)
+    setTrackId(youtubeId)
+    console.log('trackId:', trackId)
+    setIsPlaying(true)
+  }
+  //   var song = spotifyService.getArtist('1HY2Jd0NmPuamShAr6KMms').then((res) => console.log(res))
 
   var res = youtubeService.getVideos('adelle - Someone Like You').then((res) => console.log('youtube:', res[0]))
 
-async function getYoutubeId(str) {
-  try {
-    const res = await youtubeService.getVideos(str)
-//    console.log(res[0].id)
-    if (!res || !res.length) return null
-    return res[0].id
-  } catch (err) {
-    console.error('Error fetching YouTube URL:', err)
-    return null
+  async function getYoutubeId(str) {
+    try {
+      const res = await youtubeService.getVideos(str)
+      if (!res || !res.length) return null
+      return res[0].id
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
   }
-}
 
-//   var test = getYoutubeUrl('die')
-//   console.log(test)
-
+  function formatDuration(durationMs) {
+    const totalSeconds = Math.floor(durationMs / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
 
   console.log('tracks:', tracks)
 
   if (!tracks || tracks.length === 0) return <div>loading...</div>
 
   return (
-    <section className="station-filter">
-      <h1>Station-Filter</h1>
-<div className='youtube-video'> 
-              <ReactPlayer
-         src={`https://www.youtube.com/watch?v=${trackId}`}
-        playing={isPlaying}
-        controls={false} // Hide native controls
-        // width="100%"
-        // height="auto"
-        // style={{ aspectRatio: '16/9' }}
-        onEnded={handleEnded}
-      />
-</div>
+    <section className="station-filter ">
+      <div className="youtube-video">
+        <ReactPlayer
+          src={`https://www.youtube.com/watch?v=${trackId}`}
+          playing={isPlaying}
+          controls={false} // Hide native controls
+          // width="100%"
+          // height="auto"
+          // style={{ aspectRatio: '16/9' }}
+          onEnded={handleEnded}
+        />
+      </div>
 
-<ul>
-      {tracks.map((track) => (
-        
-        <li key={track.id}>
-          {track.name}
-          {track.artists.map((artist) => (
-            <li key={artist.id}>{artist.name}</li>
-          ))}
-       <button onClick={()=>onPlay(track.name)}>Play</button>
-        <button onClick={()=>handlePlayPause()}>Pause</button>
-        </li>
-      ))}
+      <ul>
+        {tracks.map((track) => (
+          <li className="track-preview" key={track.id}>
+            <h3 className="track-name">{track.name}</h3>
+
+            <div className="track-artists">
+              {track.artists.map((artist) => (
+                <li key={artist.id}>{artist.name}</li>
+              ))}
+            </div>
+            {track.album?.images?.[0]?.url && (
+              <img src={track.album.images[0].url} alt={`${track.name} cover`} width="100" />
+            )}
+            <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+
+            <div>
+              <button onClick={() => onPlay(track.name)}>Play</button>
+              <button onClick={() => handlePlayPause()}>Pause</button>
+            </div>
+          </li>
+        ))}
       </ul>
     </section>
   )
 }
 //     <div>
 //       <h3>Current Video: {currentIndex + 1} of {playlist.length}</h3>
-    
+
 //       <div style={{ marginTop: '10px' }}>
 //         <button onClick={handlePrev} disabled={currentIndex === 0}>
 //           Previous

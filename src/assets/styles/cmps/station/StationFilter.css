@@ -1,3 +1,14 @@
 .youtube-video{
     display: none;
 }
+
+.station-filter{
+    grid-area: station-index;
+    display: grid;
+    background-color: grey;
+}
+
+.track-preview{
+    display: grid;
+    grid-auto-flow: column;
+}
