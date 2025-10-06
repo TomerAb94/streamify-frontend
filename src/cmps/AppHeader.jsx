@@ -106,9 +106,7 @@ export function AppHeader({ filterBy, setFilterBy }) {
             id="upper-search"
             placeholder="What do you want to play?"
             onInput={(ev) => {
-              handleInput(ev)
-
-              // {<NavLink to={`/search/${filterBy}`}></NavLink>}
+            handleInput(ev)
             }}
           />
 

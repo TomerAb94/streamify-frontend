@@ -1,93 +1,149 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router'
+import { spotifyService } from '../services/spotify.service'
+import ReactPlayer from 'react-player'
+import { youtubeService } from '../services/youtube.service'
 
+export function StationFilter() {
+  const params = useParams()
+  const [tracks, setTracks] = useState([])
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [trackId, setTrackId] = useState(null);
+//   const currentVideo = playlist[currentIndex];
 
+  useEffect(() => {
+    if (params.searchStr || params.searchStr !== '') {
+      loadTracks()
+    }
+  }, [params.searchStr])
 
-export function StationFilter({ filterBy, setFilterBy }) {
+  async function loadTracks() {
+    try {
+      const res = await spotifyService.searchTracks(params.searchStr)
+      setTracks(res.tracks.items)
+    } catch (err) {
+      console.error('Error loading tracks:', err)
+    }
+  }
+  const handlePlayPause = () => {
+    setIsPlaying(!playing);
+  };
 
+  const handleNext = () => {
+    if (trackId < playlist.length - 1) {
+      setTrackId(trackId + 1);
+      setIsPlaying(false); // Pause on switch
+    }
+  };
 
+  const handlePrev = () => {
+    if (trackId > 0) {
+      setTrackId(trackId - 1);
+      setIsPlaying(false); // Pause on switch
+    }
+  };
 
-    // const [ filterToEdit, setFilterToEdit ] = useState(structuredClone(filterBy))
+  const handleEnded = () => {
+    handleNext(); // Auto-advance to next video
+  };
+async function onPlay(trackName) {
+    console.log(trackName)
+   const youtubeId = await getYoutubeId(trackName)
+   console.log('youtubeId:', youtubeId)
+   setTrackId(youtubeId)
+   console.log('trackId:', trackId)
+   setIsPlaying(true)
 
-    // useEffect(() => {
-    //     setFilterBy(filterToEdit)
-    // }, [filterToEdit])
+  }
+//   var song = spotifyService.getArtist('1HY2Jd0NmPuamShAr6KMms').then((res) => console.log(res))
 
-    // function handleChange(ev) {
-    //     const type = ev.target.type
-    //     const field = ev.target.name
-    //     let value
+  var res = youtubeService.getVideos('adelle - Someone Like You').then((res) => console.log('youtube:', res[0]))
 
-    //     switch (type) {
-    //         case 'text':
-    //         case 'radio':
-    //             value = field === 'sortDir' ? +ev.target.value : ev.target.value
-    //             if(!filterToEdit.sortDir) filterToEdit.sortDir = 1
-    //             break
-    //         case 'number':
-    //             value = +ev.target.value || ''
-    //             break
-    //     }
-    //     setFilterToEdit({ ...filterToEdit, [field]: value })
-    // }
-
-    // function clearFilter() {
-    //     setFilterToEdit({ ...filterToEdit, txt: '' })
-    // }
-    
-    // function clearSort() {
-    //     setFilterToEdit({ ...filterToEdit, sortField: '', sortDir: '' })
-    // }
-
-    return <section className="station-filter">
-            <h1>Station-Filter</h1>
-            {/* <input
-                type="text"
-                name="txt"
-                value={filterToEdit.txt}
-                placeholder="Free text"
-                onChange={handleChange}
-                required
-            />
-            <button 
-                className="btn-clear" 
-                onClick={clearFilter}>Clear</button>
-            <h3>Sort:</h3>
-            <div className="sort-field">
-                <label>
-                    <span>Title</span>
-                    <input
-                        type="radio"
-                        name="sortField"
-                        value="title"
-                        checked={filterToEdit.sortField === 'title'}            
-                        onChange={handleChange}
-                    />
-                </label>
-            </div>
-            <div className="sort-dir">
-                <label>
-                    <span>Asce</span>
-                    <input
-                        type="radio"
-                        name="sortDir"
-                        value="1"
-                        checked={filterToEdit.sortDir === 1}                        
-                        onChange={handleChange}
-                    />
-                </label>
-                <label>
-                    <span>Desc</span>
-                    <input
-                        type="radio"
-                        name="sortDir"
-                        value="-1"
-                        onChange={handleChange}
-                        checked={filterToEdit.sortDir === -1}                        
-                    />
-                </label>
-            </div>
-            <button 
-                className="btn-clear" 
-                onClick={clearSort}>Clear</button> */}
-    </section>
+async function getYoutubeId(str) {
+  try {
+    const res = await youtubeService.getVideos(str)
+//    console.log(res[0].id)
+    if (!res || !res.length) return null
+    return res[0].id
+  } catch (err) {
+    console.error('Error fetching YouTube URL:', err)
+    return null
+  }
 }
+
+//   var test = getYoutubeUrl('die')
+//   console.log(test)
+
+
+  console.log('tracks:', tracks)
+
+  if (!tracks || tracks.length === 0) return <div>loading...</div>
+
+  return (
+    <section className="station-filter">
+      <h1>Station-Filter</h1>
+<div className='youtube-video'> 
+              <ReactPlayer
+         src={`https://www.youtube.com/watch?v=${trackId}`}
+        playing={isPlaying}
+        controls={false} // Hide native controls
+        // width="100%"
+        // height="auto"
+        // style={{ aspectRatio: '16/9' }}
+        onEnded={handleEnded}
+      />
+</div>
+
+<ul>
+      {tracks.map((track) => (
+        
+        <li key={track.id}>
+          {track.name}
+          {track.artists.map((artist) => (
+            <li key={artist.id}>{artist.name}</li>
+          ))}
+       <button onClick={()=>onPlay(track.name)}>Play</button>
+   
+        </li>
+      ))}
+      </ul>
+    </section>
+  )
+}
+//     <div>
+//       <h3>Current Video: {currentIndex + 1} of {playlist.length}</h3>
+    
+//       <div style={{ marginTop: '10px' }}>
+//         <button onClick={handlePrev} disabled={currentIndex === 0}>
+//           Previous
+//         </button>
+//         <button onClick={handlePlayPause} style={{ margin: '0 10px' }}>
+//           {playing ? 'Pause' : 'Play'}
+//         </button>
+//         <button onClick={handleNext} disabled={currentIndex === playlist.length - 1}>
+//           Next
+//         </button>
+//       </div>
+//       {/* Optional: List of thumbnails/titles for selection */}
+//       <ul style={{ marginTop: '20px', listStyle: 'none', padding: 0 }}>
+//         {playlist.map((url, index) => (
+//           <li key={index}>
+//             <button
+//               onClick={() => {
+//                 setCurrentIndex(index);
+//                 setPlaying(false);
+//               }}
+//               style={{
+//                 width: '100%',
+//                 marginBottom: '5px',
+//                 background: index === currentIndex ? '#e0e0e0' : 'transparent'
+//               }}
+//             >
+//               Video {index + 1}
+//             </button>
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }

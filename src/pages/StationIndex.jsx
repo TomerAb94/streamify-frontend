@@ -29,8 +29,7 @@ export function StationIndex() {
 
   useEffect(() => {
     loadStations(filterBy)
-      spotifyService.searchTracks('adele')
-      .then((res) => console.log('res:', res))
+      
   }, [filterBy])
 
   function onRemoveStation(stationId) {

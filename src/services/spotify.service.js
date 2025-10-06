@@ -70,8 +70,8 @@ async function makeSpotifyRequest(endpoint) {
   return response.json()
 }
 
-async function searchTracks(query, limit = 20, offset = 0) {
-  const endpoint = `/search?q=${encodeURIComponent(query)}&type=track&limit=${limit}&offset=${offset}`
+async function searchTracks(query, limit = 5, offset = 0) {
+  const endpoint = `/search?q=${encodeURIComponent(query)}&type=track&artist&album&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
 }
 
@@ -94,6 +94,14 @@ async function getArtist(artistId) {
   const endpoint = `/artists/${artistId}`
   return makeSpotifyRequest(endpoint)
 }
+
+
+
+
+
+
+
+
 
 async function getAlbum(albumId) {
   const endpoint = `/albums/${albumId}`
@@ -190,3 +198,5 @@ async function getCurrentPlayback(userAccessToken) {
   }
   return null
 }
+
+
