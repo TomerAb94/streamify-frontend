@@ -31,10 +31,7 @@ export function AppHeader() {
   
   function handleInput({ target }) {
     const txt = target.value
-console.log(txt);
-
      debounce(() => setSearchBy(txt), 300)()
-  
   }
 
   function backToHome() {

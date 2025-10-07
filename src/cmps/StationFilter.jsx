@@ -3,14 +3,14 @@ import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
 
-import { addTrack } from '../store/actions/track.actions'
+import { addTrack, removeTrack } from '../store/actions/track.actions'
 import { trackService } from '../services/track'
 
 export function StationFilter() {
   const params = useParams()
   const [searchedTracks, setSearchedTracks] = useState([])
 
-  const [trackToPlay, setTrackToPlay] = useState(trackService.getEmptyTrack())
+  const [trackToPlay, setTrackToPlay] = useState(null)
 
   useEffect(() => {
     if (params.searchStr || params.searchStr !== '') {
@@ -50,12 +50,30 @@ export function StationFilter() {
   //   handleNext() // Auto-advance to next video
   // }
 
-  async function onPlay(trackName) {
-    const youtubeId = await getYoutubeId(trackName)
-    trackToPlay.youtubeId = youtubeId
-    trackToPlay.isPlaying = true
-    setTrackToPlay(trackToPlay)
-    addTrack(trackToPlay)
+  async function onPlay(track) {
+    // Remove currently playing track if exists
+    if (trackToPlay) {
+      await removeTrack(trackToPlay._id)
+    }
+    // Create track object from Spotify track data
+    const trackToSave = {
+      name: track.name,
+      imgUrl: track.album?.images?.[0]?.url || null,
+      artists: track.artists.map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+      })),
+      duration_ms: track.duration_ms,
+      isPlaying: true,
+    }
+
+    // Get YouTube ID and add it to track
+    const youtubeId = await getYoutubeId(track.name)
+    trackToSave.youtubeId = youtubeId
+    
+    // Save track and set as currently playing
+    const savedTrack = await addTrack(trackToSave)
+    setTrackToPlay(savedTrack)
   }
 
   async function getYoutubeId(str) {
@@ -103,7 +121,7 @@ export function StationFilter() {
             </div>
 
             <div>
-              <button onClick={() => onPlay(track.name)}>Play</button>
+              <button onClick={() => onPlay(track)}>Play</button>
               {/* <button onClick={() => handlePlayPause()}>Pause</button> */}
             </div>
           </li>
