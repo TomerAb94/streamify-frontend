@@ -32,7 +32,9 @@
 }
 
 .track-num,
-.track-duration {
+.track-duration,
+.track-fast-play
+ {
   text-align: center;
   width: 60px;
   font-family: Circular-thin;

@@ -4,12 +4,15 @@ import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
 import { addTrack, removeTrack } from '../store/actions/track.actions'
 import { trackService } from '../services/track'
+import { SvgIcon } from './SvgIcon'
 
 
 export function StationFilter() {
   const params = useParams()
   const [searchedTracks, setSearchedTracks] = useState([])
   const [trackToPlay, setTrackToPlay] = useState(null)
+
+  const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
   useEffect(() => {
     if (params.searchStr || params.searchStr !== '') {
@@ -64,6 +67,15 @@ export function StationFilter() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
+  function handleMouseEnter(idx) {
+    
+    setHoveredTrackIdx(idx)
+  }
+
+  function handleMouseLeave() {
+    setHoveredTrackIdx(null)
+  }
+ 
   if (!searchedTracks?.length) return <div>Loading...</div>
 
   return (
@@ -80,8 +92,13 @@ export function StationFilter() {
         </thead>
         <tbody>
           {searchedTracks.map((track, idx) => (
-            <tr className="track-preview" key={track.id}>
-              <td className="track-num">{idx + 1}</td>
+            <tr className="track-preview" key={track.id} onMouseEnter={()=>handleMouseEnter(idx)} onMouseLeave={()=>handleMouseLeave()}>
+              
+              {hoveredTrackIdx === idx  ? 
+              <td className="track-fast-play" > <SvgIcon iconName="play" className="play" /></td>
+              :
+              <td className="track-num">{idx + 1}</td>}
+              
               <td className="track-title-cell">
                 <div className="track-info">
                   {track.album?.images?.[0]?.url && (
