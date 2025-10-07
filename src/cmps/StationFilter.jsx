@@ -95,7 +95,8 @@ export function StationFilter() {
             <tr className="track-preview" key={track.id} onMouseEnter={()=>handleMouseEnter(idx)} onMouseLeave={()=>handleMouseLeave()}>
               
               {hoveredTrackIdx === idx  ? 
-              <td className="track-fast-play" > <SvgIcon iconName="play" className="play" /></td>
+              <td className="track-fast-play" onClick={()=>onPlay(track)} 
+              > <SvgIcon iconName="play" className="play" /></td>
               :
               <td className="track-num">{idx + 1}</td>}
               
