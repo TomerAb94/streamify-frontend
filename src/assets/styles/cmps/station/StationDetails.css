@@ -107,14 +107,25 @@
     padding: 24px;
     margin: 24px 0px 0px;
 
-    & .no-songs-input {
-      background-color: hsla(0, 0%, 100%, 0.1);
-      color: hsla(0, 0%, 100%, 0.7);
-      border-radius: 4px;
-      width: fit-content;
+    & .no-songs {
+      & .search-wrapper {
+        svg {
+          width: 20px;
+          height: 20px;
+          fill: var(--color-text-secondary);
+          cursor: text;
+        }
 
-      &:focus {
-         box-shadow: none;
+        > .no-songs-input {
+          background-color: hsla(0, 0%, 100%, 0.1);
+          color: hsla(0, 0%, 100%, 0.7);
+          border-radius: 4px;
+          width: fit-content;
+
+          &:focus {
+            box-shadow: none;
+          }
+        }
       }
     }
   }

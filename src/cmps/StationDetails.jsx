@@ -48,7 +48,7 @@ export function StationDetails() {
           })
       }
     }
-  }, [stationId])
+  }, [station])
 
   function handleInput({ target }) {
     const txt = target.value
@@ -177,4 +177,4 @@ export function StationDetails() {
       </div>
     </section>
   )
-}
+}    
