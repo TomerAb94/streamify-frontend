@@ -1,40 +1,39 @@
-import { styled } from '@mui/material/styles'
-import InputBase from '@mui/material/InputBase'
-import SearchIcon from '@mui/icons-material/Search'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
+
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
-import { useEffect, useState } from 'react'
 import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
 import { useParams } from 'react-router-dom'
 
-export function AppHeader({ filterBy, setFilterBy }) {
+export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
+  const [searchBy, setSearchBy] = useState('')
   const [homeBtn, setHomeBtn] = useState(true)
   const [browseBtn, setBrowseBtn] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
-  console.log()
-
   useEffect(() => {
-    if (filterBy.txt.length > 0) {
-      navigate(`/search/${filterBy.txt}`)
+    if (searchBy.length > 0) {
+      navigate(`/search/${searchBy}`)
     }
-    else if (filterBy.txt.length === 0) {
+    else if (searchBy.length === 0) {
       setBrowseBtn(true)
       navigate(`/search`)
     }
-  }, [filterBy])
+  }, [searchBy])
 
-  window.filterBy = filterBy
+  // window.filterBy = filterBy
+  
   function handleInput({ target }) {
     const txt = target.value
+console.log(txt);
 
-     debounce(() => setFilterBy((prev) => ({ ...prev, txt })), 300)()
+     debounce(() => setSearchBy(txt), 300)()
   
   }
 

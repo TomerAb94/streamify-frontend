@@ -1,62 +1,62 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
-import ReactPlayer from 'react-player'
 import { youtubeService } from '../services/youtube.service'
+
+import { addTrack } from '../store/actions/track.actions'
+import { trackService } from '../services/track'
 
 export function StationFilter() {
   const params = useParams()
-  const [tracks, setTracks] = useState([])
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [trackId, setTrackId] = useState(null)
-  //   const currentVideo = playlist[currentIndex];
+  const [searchedTracks, setSearchedTracks] = useState([])
+
+  const [trackToPlay, setTrackToPlay] = useState(trackService.getEmptyTrack())
 
   useEffect(() => {
     if (params.searchStr || params.searchStr !== '') {
-      loadTracks()
+      loadSearchedTracks()
     }
   }, [params.searchStr])
 
-  async function loadTracks() {
+  async function loadSearchedTracks() {
     try {
       const res = await spotifyService.searchTracks(params.searchStr)
-      setTracks(res.tracks.items)
+
+      setSearchedTracks(res.tracks.items)
     } catch (err) {
       console.error('Error loading tracks:', err)
     }
   }
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying)
-  }
 
-  const handleNext = () => {
-    if (trackId < playlist.length - 1) {
-      setTrackId(trackId + 1)
-      setIsPlaying(false) // Pause on switch
-    }
-  }
+  // const handlePlayPause = () => {
+  //   setIsPlaying(!isPlaying)
+  // }
 
-  const handlePrev = () => {
-    if (trackId > 0) {
-      setTrackId(trackId - 1)
-      setIsPlaying(false) // Pause on switch
-    }
-  }
+  // const handleNext = () => {
+  //   if (trackId < playlist.length - 1) {
+  //     setTrackId(trackId + 1)
+  //     setIsPlaying(false) // Pause on switch
+  //   }
+  // }
 
-  const handleEnded = () => {
-    handleNext() // Auto-advance to next video
-  }
+  // const handlePrev = () => {
+  //   if (trackId > 0) {
+  //     setTrackId(trackId - 1)
+  //     setIsPlaying(false) // Pause on switch
+  //   }
+  // }
+
+  // const handleEnded = () => {
+  //   handleNext() // Auto-advance to next video
+  // }
+
   async function onPlay(trackName) {
-    console.log(trackName)
     const youtubeId = await getYoutubeId(trackName)
-    console.log('youtubeId:', youtubeId)
-    setTrackId(youtubeId)
-    console.log('trackId:', trackId)
-    setIsPlaying(true)
+    trackToPlay.youtubeId = youtubeId
+    trackToPlay.isPlaying = true
+    setTrackToPlay(trackToPlay)
+    addTrack(trackToPlay)
   }
-  //   var song = spotifyService.getArtist('1HY2Jd0NmPuamShAr6KMms').then((res) => console.log(res))
-
-  var res = youtubeService.getVideos('adelle - Someone Like You').then((res) => console.log('youtube:', res[0]))
 
   async function getYoutubeId(str) {
     try {
@@ -76,42 +76,35 @@ export function StationFilter() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
-  console.log('tracks:', tracks)
-
-  if (!tracks || tracks.length === 0) return <div>loading...</div>
+  if (!searchedTracks || searchedTracks.length === 0)
+    return <div>loading...</div>
 
   return (
     <section className="station-filter ">
-      <div className="youtube-video">
-        <ReactPlayer
-          src={`https://www.youtube.com/watch?v=${trackId}`}
-          playing={isPlaying}
-          controls={false} // Hide native controls
-          // width="100%"
-          // height="auto"
-          // style={{ aspectRatio: '16/9' }}
-          onEnded={handleEnded}
-        />
-      </div>
-
       <ul>
-        {tracks.map((track) => (
+        {searchedTracks.map((track) => (
           <li className="track-preview" key={track.id}>
             <h3 className="track-name">{track.name}</h3>
 
             <div className="track-artists">
               {track.artists.map((artist) => (
-                <li key={artist.id}>{artist.name}</li>
+                <div key={artist.id}>{artist.name}</div>
               ))}
             </div>
             {track.album?.images?.[0]?.url && (
-              <img src={track.album.images[0].url} alt={`${track.name} cover`} width="100" />
+              <img
+                src={track.album.images[0].url}
+                alt={`${track.name} cover`}
+                width="100"
+              />
             )}
-            <div className="track-duration">{formatDuration(track.duration_ms)}</div>
+            <div className="track-duration">
+              {formatDuration(track.duration_ms)}
+            </div>
 
             <div>
               <button onClick={() => onPlay(track.name)}>Play</button>
-              <button onClick={() => handlePlayPause()}>Pause</button>
+              {/* <button onClick={() => handlePlayPause()}>Pause</button> */}
             </div>
           </li>
         ))}

@@ -3,6 +3,7 @@ import { legacy_createStore as createStore, combineReducers } from 'redux'
 import { carReducer } from './reducers/car.reducer'
 import { stationReducer } from './reducers/station.reducer'
 import { userReducer } from './reducers/user.reducer'
+import { trackReducer } from './reducers/track.reducer'
 import { reviewReducer } from './reducers/review.reducer'
 import { systemReducer } from './reducers/system.reducer'
 
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   userModule: userReducer,
   systemModule: systemReducer,
   reviewModule: reviewReducer,
+  trackModule: trackReducer,
 })
 
 const middleware = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

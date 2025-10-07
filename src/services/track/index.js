@@ -9,13 +9,8 @@ import { trackService as remote } from './track.service.remote'
 function getEmptyTrack() {
 	return {
         _id: '',
-		title: '',
-		artist: '',
-		duration: '' || 0,
-		imgurl:'',
-		youtubeId:'',
-		embeddedUrl:'',
-		likedBy:[]
+		youtubeId: '',
+		isPlaying: false,
 	}
 }
 

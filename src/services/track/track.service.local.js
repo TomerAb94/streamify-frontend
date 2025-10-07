@@ -33,23 +33,20 @@ async function remove(trackId) {
 }
 
 async function save(track) {
+  console.log('track to save:', track)
+  
   var savedTrack
   if (track._id) {
     const trackToSave = {
       _id: track._id,
+      youtubeId: track.youtubeId,
+      isPlaying: track.isPlaying,
     }
     savedTrack = await storageService.put(STORAGE_KEY, trackToSave)
   } else {
     const trackToSave = {
-      title: '',
-      artist: '',
-      duration: '' || 0,
-      imgurl: '',
-      youtubeId: '',
-      embeddedUrl: '',
-      likedBy: [],
-      // Later, owner is set by the backend
-      owner: userService.getLoggedinUser(),
+      youtubeId: track.youtubeId,
+      isPlaying: track.isPlaying,
     }
     savedTrack = await storageService.post(STORAGE_KEY, trackToSave)
   }
