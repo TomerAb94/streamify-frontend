@@ -44,7 +44,7 @@ function getDefaultStation(user) {
     _id: '',
     title: 'Liked Songs',
     tags: ['Liked Songs'],
-    stationImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-64.png',
+    stationImgUrl: 'https://misc.scdn.co/liked-songs/liked-songs-300.jpg',
     stationType: 'playlist',
     createdBy: {
       _id: user._id,

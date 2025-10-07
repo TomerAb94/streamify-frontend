@@ -53,6 +53,10 @@
       /* bgc when clicked and hover */
       background-color: var(--color-hover-lighter);
     }
+
+    & .play{
+      fill: var(--color-white-fff);
+    }
   }
 
   &.clicked {

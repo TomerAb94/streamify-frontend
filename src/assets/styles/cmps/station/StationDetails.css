@@ -1,0 +1,121 @@
+.station-details {
+  color: var(--color-white-fff);
+  border-radius: 8px;
+
+  & .details-header {
+    position: relative;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 24px;
+
+    > .station-img {
+      min-width: 128px;
+      max-width: 232px;
+
+      > img {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    > .station-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      margin-left: 20px;
+      width: 100%;
+
+      & h1 {
+        font-size: 3.5rem;
+        margin: 0;
+        white-space: nowrap;
+      }
+
+      & .creator-info {
+        display: flex;
+        align-items: center;
+        font-size: 0.8rem;
+        /* justify-content: center; */
+        /* margin-top: 8px; */
+
+        > img {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        > .creator-name {
+          position: relative;
+          margin-left: 2px;
+        }
+        > .creator-name + span:before {
+          content: '•';
+          margin: 0 4px;
+          color: var(--color-text-secondary);
+          font-family: Circular-thin;
+        }
+        > .songs-count {
+          color: var(--color-text-secondary);
+        }
+      }
+    }
+  }
+
+  & .station-btns-container {
+    position: relative;
+
+    & .action-btns {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 24px;
+      z-index: 1;
+
+      & .play-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--green-pin);
+        padding: 28px;
+
+        &:hover {
+          background-color: var(--green-play);
+        }
+
+        > .play {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          > svg {
+            width: 24px;
+            height: 24px;
+            fill: black;
+          }
+        }
+      }
+    }
+  }
+
+  & .song-list {
+    padding: 24px;
+    margin: 24px 0px 0px;
+
+    & .no-songs-input {
+      background-color: hsla(0, 0%, 100%, 0.1);
+      color: hsla(0, 0%, 100%, 0.7);
+      border-radius: 4px;
+      width: fit-content;
+
+      &:focus {
+         box-shadow: none;
+      }
+    }
+  }
+}

@@ -19,7 +19,7 @@ export function AppFooter() {
     <footer className="app-footer full">
       <div className="player-left">
         <div className="cover" aria-hidden="true">
-          Cover
+          <img src={playlist[0]?.imgUrl} alt="" />
         </div>
         <div className="mini-track">
           <div className="title">Track title</div>
