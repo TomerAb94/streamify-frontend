@@ -83,11 +83,11 @@ export function StationFilter() {
       <h2>Songs</h2>
       <table className="track-list">
         <thead>
-          <tr>
+          <tr className='table-header'>
             <th className='table-header-text'>#</th>
             <th className='table-header-text'>Title</th>
             <th className='table-header-text'>Album</th>
-            <th className='table-header-text'>Duration</th>
+            <th className='table-header-text'><SvgIcon iconName="duration" className="duration" /></th>
           </tr>
         </thead>
         <tbody>

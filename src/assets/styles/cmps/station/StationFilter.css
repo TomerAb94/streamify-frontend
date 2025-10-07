@@ -1,40 +1,51 @@
-.youtube-video{
-    display: none;
+.youtube-video {
+  display: none;
 }
 
 .station-filter {
-    grid-area: station-index;
+  grid-area: station-index;
   width: 100%;
   padding: 20px;
   background-color: var(--color-secondary);
-
 }
 
 .track-list {
   width: 100%;
+  min-width: 700px;
   border-collapse: collapse;
+  table-layout: auto;
+}
+
+.track-title-cell {
+  min-width: 220px;
+}
+
+.track-album-cell {
+  min-width: 120px;
 }
 
 .track-list th {
   text-align: left;
   padding: 10px 8px;
- font-family: Circular-thin;
+  font-family: Circular-thin;
   color: var(--songs-table-color);
- 
-  border-bottom: 1px solid #333;
-  
+
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+}
+
+.track-list th:nth-child(1) {
+  text-align: center;
 }
 
 .track-list td {
   padding: 10px 8px;
-  border-bottom: 1px solid #222;
+  /* border-bottom: 1px solid #222; */
   vertical-align: middle;
 }
 
 .track-num,
 .track-duration,
-.track-fast-play
- {
+.track-fast-play {
   text-align: center;
   width: 60px;
   font-family: Circular-thin;
@@ -61,15 +72,14 @@
 }
 
 .track-name {
-
   color: #fff;
 }
 
-.track-artists span{
+.track-artists span {
   font-size: 0.9em;
-  color:var(--songs-table-color);
+  color: var(--songs-table-color);
 
-  font-family: Circular-medium;
+  font-family: Circular-thin;
 }
 
 .track-preview:hover {
@@ -87,14 +97,35 @@
   cursor: default;
 }
 
-.track-album-cell{
-    color: var(--songs-table-color);
-    font-family: Circular-thin;
+.track-album-cell {
+  color: var(--songs-table-color);
+  font-family: Circular-thin;
 }
 
-th.tabel-header-text{
+th.tabel-header-text {
   font-family: Circular-thin;
   color: var(--songs-table-color);
-font-weight: lighter;
+  font-weight: lighter;
 }
 
+.duration {
+  display: flex;
+  pointer-events: none;
+  justify-content: center;
+  align-content: center;
+}
+
+.track-preview:hover {
+  .svg-icon .play {
+    fill: #fff;
+  }
+
+  .track-artists span{
+    color: #fff;
+    font-weight: 500;
+    
+  }
+  .track-album-cell{
+    color: #fff;
+  }
+}
