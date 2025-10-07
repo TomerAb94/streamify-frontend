@@ -7,6 +7,21 @@
     background-color: var(--color-primary);
 
     height: 72px;
+    
+    .svg-icon {
+    > svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        color: var(--color-text-secondary);
+        transition: fill .15s ease, color .15s ease;
+    }
+
+    &:hover svg {
+        color: var(--color-white-fff);
+
+    }
+}
 
 }
 
@@ -37,20 +52,7 @@
     }
 }
 
-.svg-icon {
-    > svg {
-        width: 20px;
-        height: 20px;
-        fill: currentColor;
-        color: var(--color-text-secondary);
-        transition: fill .15s ease, color .15s ease;
-    }
 
-    &:hover svg {
-        color: var(--color-white-fff);
-
-    }
-}
 
 .player-center {
     display: grid;

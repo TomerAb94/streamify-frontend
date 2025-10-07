@@ -35,7 +35,7 @@ export function HomePage() {
               {station.title}
             </div>
 
-            <SvgIcon iconName="play" className="play-container" />
+            <SvgIcon iconName="playHomePage" className="play-container" />
           </NavLink>
         ))}
       </div>
