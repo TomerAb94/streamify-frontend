@@ -6,7 +6,6 @@ import { addTrack, removeTrack } from '../store/actions/track.actions'
 import { trackService } from '../services/track'
 import { SvgIcon } from './SvgIcon'
 
-
 export function StationFilter() {
   const params = useParams()
   const [searchedTracks, setSearchedTracks] = useState([])
@@ -68,14 +67,13 @@ export function StationFilter() {
   }
 
   function handleMouseEnter(idx) {
-    
     setHoveredTrackIdx(idx)
   }
 
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
   }
- 
+
   if (!searchedTracks?.length) return <div>Loading...</div>
 
   return (
@@ -83,31 +81,36 @@ export function StationFilter() {
       <h2>Songs</h2>
       <table className="track-list">
         <thead>
-          <tr className='table-header'>
-            <th className='table-header-text'>#</th>
-            <th className='table-header-text'>Title</th>
-            <th className='table-header-text'>Album</th>
-            <th className='table-header-text'><SvgIcon iconName="duration" className="duration" /></th>
+          <tr className="table-header">
+            <th className="table-header-text">#</th>
+            <th className="table-header-text">Title</th>
+            <th className="table-header-text">Album</th>
+            <th className="table-header-text">
+              <SvgIcon iconName="duration" className="duration" />
+            </th>
           </tr>
         </thead>
         <tbody>
           {searchedTracks.map((track, idx) => (
-            <tr className="track-preview" key={track.id} onMouseEnter={()=>handleMouseEnter(idx)} onMouseLeave={()=>handleMouseLeave()}>
-              
-              {hoveredTrackIdx === idx  ? 
-              <td className="track-fast-play" onClick={()=>onPlay(track)} 
-              > <SvgIcon iconName="play" className="play" /></td>
-              :
-              <td className="track-num">{idx + 1}</td>}
-              
+            <tr
+              className="track-preview"
+              key={track.id}
+              onMouseEnter={() => handleMouseEnter(idx)}
+              onMouseLeave={() => handleMouseLeave()}
+            >
+              {hoveredTrackIdx === idx ? (
+                <td className="track-fast-play" onClick={() => onPlay(track)}>
+                  {' '}
+                  <SvgIcon iconName="play" className="play" />
+                </td>
+              ) : (
+                <td className="track-num">{idx + 1}</td>
+              )}
+
               <td className="track-title-cell">
                 <div className="track-info">
                   {track.album?.images?.[0]?.url && (
-                    <img
-                      src={track.album.images[0].url}
-                      alt={`${track.name} cover`}
-                      className="track-img"
-                    />
+                    <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
                   )}
                   <div className="track-text">
                     <span className="track-name">{track.name}</span>

@@ -23,6 +23,9 @@
   --green-play: #1ed760;
   --green-checked:#1ED760;
   --songs-table-color:#b3b3b3;
+  
+  --input-color-txt:#1F1F1F;
+
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --AppHeaderHeight: 64px;

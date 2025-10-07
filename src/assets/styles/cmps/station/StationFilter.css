@@ -85,6 +85,19 @@
 .track-preview:hover {
   background-color: rgba(255, 255, 255, 0.05);
   cursor: pointer;
+  .svg-icon .play {
+    fill: #fff;
+    height: 16px;
+    width: 16px;
+  }
+
+  .track-artists span {
+    color: #fff;
+    font-weight: 500;
+  }
+  .track-album-cell {
+    color: #fff;
+  }
 }
 
 .track-list thead tr {
@@ -102,30 +115,20 @@
   font-family: Circular-thin;
 }
 
-th.tabel-header-text {
+th.table-header-text {
   font-family: Circular-thin;
   color: var(--songs-table-color);
   font-weight: lighter;
 }
 
-.duration {
-  display: flex;
-  pointer-events: none;
-  justify-content: center;
-  align-content: center;
+th.table-header-text:last-child {
+  text-align: center;
+  vertical-align: middle;
 }
 
-.track-preview:hover {
-  .svg-icon .play {
-    fill: #fff;
-  }
-
-  .track-artists span{
-    color: #fff;
-    font-weight: 500;
-    
-  }
-  .track-album-cell{
-    color: #fff;
-  }
+.duration-svg {
+  fill: var(--songs-table-color);
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
 }
