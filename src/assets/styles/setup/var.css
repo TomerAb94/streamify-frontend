@@ -22,6 +22,7 @@
   --green-pin: #1bc357;
   --green-play: #1ed760;
   --green-checked:#1ED760;
+  --songs-table-color:#b3b3b3;
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --AppHeaderHeight: 64px;

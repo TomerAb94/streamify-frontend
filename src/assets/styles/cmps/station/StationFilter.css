@@ -2,13 +2,97 @@
     display: none;
 }
 
-.station-filter{
+.station-filter {
     grid-area: station-index;
-    display: grid;
-    background-color: grey;
+  width: 100%;
+  padding: 20px;
+  background-color: var(--color-secondary);
+
 }
 
-.track-preview{
-    display: grid;
-    grid-auto-flow: column;
+.track-list {
+  width: 100%;
+  border-collapse: collapse;
 }
+
+.track-list th {
+  text-align: left;
+  padding: 10px 8px;
+ font-family: Circular-thin;
+  color: var(--songs-table-color);
+ 
+  border-bottom: 1px solid #333;
+  
+}
+
+.track-list td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #222;
+  vertical-align: middle;
+}
+
+.track-num,
+.track-duration {
+  text-align: center;
+  width: 60px;
+  font-family: Circular-thin;
+  color: var(--songs-table-color);
+}
+
+.track-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.track-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.track-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.track-name {
+
+  color: #fff;
+}
+
+.track-artists span{
+  font-size: 0.9em;
+  color:var(--songs-table-color);
+
+  font-family: Circular-medium;
+}
+
+.track-preview:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+.track-list thead tr {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.track-list thead tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: default;
+}
+
+.track-album-cell{
+    color: var(--songs-table-color);
+    font-family: Circular-thin;
+}
+
+th.tabel-header-text{
+  font-family: Circular-thin;
+  color: var(--songs-table-color);
+font-weight: lighter;
+}
+
