@@ -79,58 +79,56 @@ export function StationFilter() {
   return (
     <section className="station-filter">
       <h2>Songs</h2>
-      <table className="track-list">
-        <thead>
-          <tr className="table-header">
-            <th className="table-header-text">#</th>
-            <th className="table-header-text">Title</th>
-            <th className="table-header-text">Album</th>
-            <th className="table-header-text">
-              <SvgIcon iconName="duration" className="duration" />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {searchedTracks.map((track, idx) => (
-            <tr
-              className="track-preview"
-              key={track.id}
-              onMouseEnter={() => handleMouseEnter(idx)}
-              onMouseLeave={() => handleMouseLeave()}
-            >
-              {hoveredTrackIdx === idx ? (
-                <td className="track-fast-play" onClick={() => onPlay(track)}>
-                  {' '}
-                  <SvgIcon iconName="play" className="play" />
-                </td>
-              ) : (
-                <td className="track-num">{idx + 1}</td>
-              )}
+<section className="track-list">
+  <div className="track-header">
+    <div className='first-col-header'>#</div>
+    <div>Title</div>
+    <div>Album</div>
+    <div className='duration-header-icon'><SvgIcon iconName="duration" className="duration" /></div>
+  </div>
 
-              <td className="track-title-cell">
-                <div className="track-info">
-                  {track.album?.images?.[0]?.url && (
-                    <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
-                  )}
-                  <div className="track-text">
-                    <span className="track-name">{track.name}</span>
-                    <span className="track-artists">
-                      {track.artists.map((artist, i) => (
-                        <span key={artist.id}>
-                          {artist.name}
-                          {i < track.artists.length - 1 ? ', ' : ''}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
-                </div>
-              </td>
-              <td className="track-album-cell">{track.album?.name}</td>
-              <td className="track-duration">{formatDuration(track.duration_ms)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+  {searchedTracks.map((track, idx) => (
+    <div
+      className="track-row"
+      key={track.id}
+      onMouseEnter={() => handleMouseEnter(idx)}
+      onMouseLeave={() => handleMouseLeave()}
+    >
+      <div className="track-num">
+        {hoveredTrackIdx === idx ? (
+          <SvgIcon iconName="play" className="play" onClick={() => onPlay(track)} />
+          
+        ) : (
+          idx + 1
+        )}
+      </div>
+
+      <div className="track-title">
+        {track.album?.images?.[0]?.url && (
+          <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
+        )}
+        <div className="track-text">
+          <span className="track-name">{track.name}</span>
+          <div className="track-artists">
+            {track.artists.map((artist, i) => (
+              <span key={artist.id}>
+                {artist.name}
+                {i < track.artists.length - 1 ? ', ' : ''}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="track-album">{track.album?.name}</div>
+      <div className="track-duration">
+        {formatDuration(track.duration_ms)}
+        <SvgIcon iconName="addLikedSong" className="add-liked-song" />
+      </div>
+    </div>
+  ))}
+</section>
+
     </section>
   )
 }
