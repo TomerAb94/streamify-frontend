@@ -107,45 +107,6 @@ function getCmdAddTrackMsg(msg) {
     }
 }
 
-
-//track-player actions
-
-export async function playTrack(track) {
-  try {
-    const savedTrack = track._id ? track : await addTrack(track)
-    await loadTrack(savedTrack._id)
-
-    store.dispatch(setCurrentTrack(savedTrack))
-    store.dispatch(setIsPlaying(true))
-
-  } catch (err) {
-    console.log('Cannot play track', err)
-  }
-}
-export function setCurrentTrack(track) {
-  return { type: SET_CURRENT_TRACK, track }
-}
-
-export function setIsPlaying(isPlaying) {
-  return { type: SET_IS_PLAYING, isPlaying }
-}
-
-export function setVolume(volume) {
-  return { type: SET_VOLUME, volume }
-}
-
-export function setProgressPct(progressPct) {
-  return { type: SET_PROGRESS_PCT, progressPct }
-}
-
-export function setDurationSec(durationSec) {
-  return { type: SET_DURATION_SEC, durationSec }
-
-}
-export function setSeekToSec(seconds) {
-  return { type: SET_SEEK_TO_SEC, seconds }
-}
-
 // unitTestActions()
 async function unitTestActions() {
     await loadTracks()

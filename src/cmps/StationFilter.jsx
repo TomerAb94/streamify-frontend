@@ -3,8 +3,11 @@ import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
 
-import { addTrack, playTrack, removeTrack, updateTrack } from '../store/actions/track.actions'
-import { trackService } from '../services/track'
+import {
+  addTrack,
+  removeTrack,
+  updateTrack,
+} from '../store/actions/track.actions'
 import { SvgIcon } from './SvgIcon'
 
 export function StationFilter() {
@@ -22,44 +25,33 @@ export function StationFilter() {
 
   async function loadSearchedTracks() {
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr)
+      const spotifyTracks = await spotifyService.getSearchedTracks(
+        params.searchStr
+      )
       setSearchedTracks(spotifyTracks)
-      console.log('spotifyTracks:', spotifyTracks);
-      
+      // console.log('spotifyTracks:', spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)
     }
   }
 
   async function onPlay(track) {
-    console.log('playing track', track)
-    if (trackToPlay && trackToPlay._id) await removeTrack(trackToPlay._id)
-
-    const trackToSave = {
-      name: track.name,
-      imgUrl: track.album?.images?.[0]?.url || null,
-      artists: track.artists.map((artist) => ({
-        id: artist.id,
-        name: artist.name,
-      })),
-      duration_ms: track.duration_ms,
-      isPlaying: true,
-      spotifyId: track.id,
+    if (trackToPlay && trackToPlay._id) {
+      // console.log('removing track', trackToPlay)
+      await removeTrack(trackToPlay._id)
     }
 
     const youtubeId = await getYoutubeId(track.name)
     track.youtubeId = youtubeId
     track.isPlaying = true
 
-    const savedTrack = await addTrack(trackToSave)
-    // setTrackToPlay(savedTrack)
-    console.log('Track to save', trackToSave);
-    
-    await playTrack(trackToSave)
+    const savedTrack = await addTrack(track)
+    setTrackToPlay(savedTrack)
+    // console.log('Track to save', trackToPlay)
   }
 
   async function onPause(track) {
-    console.log('pausing track', track)
+    // console.log('pausing track', track)
     track.isPlaying = false
     const savedTrack = await updateTrack(track)
 
@@ -85,8 +77,8 @@ export function StationFilter() {
 
   function handleMouseEnter(idx, trackToPlay, spotifyId) {
     setHoveredTrackIdx(idx)
-    console.log(trackToPlay)
-    console.log(spotifyId)
+    // console.log(trackToPlay)
+    // console.log(spotifyId)
   }
 
   function handleMouseLeave() {
@@ -116,28 +108,38 @@ export function StationFilter() {
             onMouseLeave={handleMouseLeave}
           >
             <div className="track-num">
-              {trackToPlay.isPlaying && trackToPlay.spotifyId === track.id ? (
-
-                <div className='playing-track'>
-
-                  <img src="https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg" alt="" className='equalizer' />
-                   <SvgIcon iconName="pause" className="pause" onClick={() => onPause(trackToPlay)} />
-                  </div>
-               
-                
+              {trackToPlay.isPlaying &&
+              trackToPlay.spotifyId === track.spotifyId ? (
+                <div className="playing-track">
+                  <img
+                    src="https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg"
+                    alt=""
+                    className="equalizer"
+                  />
+                  <SvgIcon
+                    iconName="pause"
+                    className="pause"
+                    onClick={() => onPause(trackToPlay)}
+                  />
+                </div>
               ) : hoveredTrackIdx === idx ? (
-                <SvgIcon iconName="play" className="play" onClick={() => onPlay(track)} />
+                <SvgIcon
+                  iconName="play"
+                  className="play"
+                  onClick={() => onPlay(track)}
+                />
               ) : (
                 idx + 1
-              )
-              
-              
-              }
+              )}
             </div>
 
             <div className="track-title">
-              {track.album?.images?.[0]?.url && (
-                <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
+              {track.album?.imgUrl && (
+                <img
+                  src={track.album.imgUrl}
+                  alt={`${track.name} cover`}
+                  className="track-img"
+                />
               )}
               <div className="track-text">
                 <span className="track-name">{track.name}</span>
@@ -154,7 +156,7 @@ export function StationFilter() {
 
             <div className="track-album">{track.album?.name}</div>
             <div className="track-duration">
-              {formatDuration(track.duration_ms)}
+              {formatDuration(track.duration)}
               <SvgIcon iconName="addLikedSong" className="add-liked-song" />
             </div>
           </div>

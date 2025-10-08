@@ -11,19 +11,19 @@ export const SET_CURRENT_TRACK = 'SET_CURRENT_TRACK'
 export const SET_IS_PLAYING = 'SET_IS_PLAYING'
 export const SET_VOLUME = 'SET_VOLUME'
 export const SET_PROGRESS_PCT = 'SET_PROGRESS_PCT'
-export const SET_DURATION_SEC = 'SET_DURATION_SEC' 
-export const SET_SEEK_TO_SEC = 'SET_SEEK_TO_SEC' 
+export const SET_DURATION_SEC = 'SET_DURATION_SEC'
+export const SET_SEEK_TO_SEC = 'SET_SEEK_TO_SEC'
 
 const initialState = {
   tracks: [],
   track: null,
 
-  currentTrack: null,
-  isPlaying: false,
-  volume: 0.8,
-  progressPct: 0,
-  durationSec: 0,
-  seekToSec: null,
+  // currentTrack: null,
+  // isPlaying: false,
+  // volume: 0.8,
+  // progressPct: 0,
+  // durationSec: 0,
+  // seekToSec: null,
 }
 
 export function trackReducer(state = initialState, action) {
@@ -40,9 +40,7 @@ export function trackReducer(state = initialState, action) {
       const lastRemovedTrack = state.tracks.find(
         (track) => track._id === action.trackId
       )
-      tracks = state.tracks.filter(
-        (track) => track._id !== action.trackId
-      )
+      tracks = state.tracks.filter((track) => track._id !== action.trackId)
       newState = { ...state, tracks, lastRemovedTrack }
       break
     case ADD_TRACK:
@@ -65,24 +63,6 @@ export function trackReducer(state = initialState, action) {
         }
         break
       }
-    case SET_CURRENT_TRACK:
-      newState = { ...state, currentTrack: action.track }
-      break
-    case SET_IS_PLAYING:
-      newState = { ...state, isPlaying: action.isPlaying }
-      break
-    case SET_VOLUME:
-      newState = { ...state, volume: action.volume }
-      break
-    case SET_PROGRESS_PCT:
-      newState = { ...state, progressPct: action.progressPct }
-      break
-    case SET_DURATION_SEC:
-      newState = { ...state, durationSec: action.durationSec }
-      break
-    case SET_SEEK_TO_SEC:
-      newState = { ...state, seekToSec: action.seconds }
-      break
     default:
   }
   return newState
