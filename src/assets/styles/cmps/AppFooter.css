@@ -40,6 +40,16 @@
         height: 56px;
         background-color: red;
         margin-inline-end: 8px;
+        overflow: hidden;
+        border-radius: 4px;
+        flex: 0 0 56px;
+
+        > img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     > .mini-track .artist {

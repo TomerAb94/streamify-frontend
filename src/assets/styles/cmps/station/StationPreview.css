@@ -53,6 +53,12 @@
       /* bgc when clicked and hover */
       background-color: var(--color-hover-lighter);
     }
+
+    & .play{
+      width: 20px;
+      height: 20px;
+      fill: var(--color-white-fff);
+    }
   }
 
   &.clicked {
@@ -86,6 +92,15 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
+
+    > .play-btn{
+      
+      > span{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 
   &:hover .play-overlay {

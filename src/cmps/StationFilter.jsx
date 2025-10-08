@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
-import { addTrack, removeTrack, updateTrack } from '../store/actions/track.actions'
+
+import { addTrack, playTrack, removeTrack, updateTrack } from '../store/actions/track.actions'
 import { trackService } from '../services/track'
 import { SvgIcon } from './SvgIcon'
 
@@ -48,7 +49,10 @@ export function StationFilter() {
     trackToSave.youtubeId = youtubeId
 
     const savedTrack = await addTrack(trackToSave)
-    setTrackToPlay(savedTrack)
+    // setTrackToPlay(savedTrack)
+    console.log('Track to save', trackToSave);
+    
+    await playTrack(trackToSave)
   }
 
   async function onPause(track) {
