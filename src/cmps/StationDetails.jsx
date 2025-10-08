@@ -11,6 +11,7 @@ import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
 import { spotifyService } from '../services/spotify.service'
 import { updateStation } from '../store/actions/station.actions'
+import { TrackList } from './TrackList'
 
 export function StationDetails() {
   const { stationId } = useParams()
@@ -23,7 +24,7 @@ export function StationDetails() {
     loadStation(stationId)
   }, [stationId])
 
-  // useEffect(() => {
+  // useEffect(() => {SF
   //   if (searchBy.length > 0) {
   //     loadSearchedTracks()
   //   }
@@ -63,8 +64,8 @@ export function StationDetails() {
   async function loadSearchedTracks(searchTerm = searchBy) {
     if (!searchTerm) return
     try {
-      const res = await spotifyService.searchTracks(searchTerm)
-      setSearchedTracks(res.tracks.items)
+      const spotifyTracks = await spotifyService.getSearchedTracks(searchTerm)
+      setSearchedTracks(spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)
     }
@@ -73,7 +74,7 @@ export function StationDetails() {
   async function onAddTrack(track) {
     const stationToSave = { ...station }
     console.log('Adding track to station:', stationToSave)
-    stationToSave.songs.push(track)
+    stationToSave.tracks.push(track)
 
     try {
       await updateStation(stationToSave)
@@ -81,6 +82,19 @@ export function StationDetails() {
     } catch (err) {
       showErrorMsg('Failed to add track')
     }
+  }
+
+  async function onPlay(track) {
+    console.log('Playing track:', track)
+
+    // if (trackToPlay) await removeTrack(trackToPlay._id)
+
+    // const youtubeId = await getYoutubeId(track.name)
+    // track.youtubeId = youtubeId
+    // track.isPlaying = true
+
+    // const savedTrack = await addTrack(track)
+    // setTrackToPlay(savedTrack)
   }
 
   if (!station) return <div>Loading...</div>
@@ -103,7 +117,7 @@ export function StationDetails() {
             <div className="creator-info">
               <img src={station.createdBy.imgUrl} alt="Profile Image" />
               <span className="creator-name">{station.createdBy.fullname}</span>
-              <span className="songs-count">{station.songs.length} songs</span>
+              <span className="songs-count">{station.tracks.length} songs</span>
             </div>
           </div>
         </header>
@@ -118,7 +132,9 @@ export function StationDetails() {
         </div>
 
         <div className="song-list">
-          {station.songs.length === 0 && (
+          <TrackList tracks={station.tracks} onPlay={onPlay} />
+
+          {station.tracks.length === 0 && (
             <div className="no-songs">
               <h2>Let's find something for your playlist</h2>
 
@@ -177,4 +193,4 @@ export function StationDetails() {
       </div>
     </section>
   )
-}    
+}

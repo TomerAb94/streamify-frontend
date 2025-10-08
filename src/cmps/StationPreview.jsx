@@ -31,7 +31,7 @@ export function StationPreview({ station }) {
           <span className="station-type-owner">
             <span className="station-type">{station.stationType}</span>
             {station.tags.includes('Liked Songs') ? (
-              <span> {station.songs.length} songs </span>
+              <span> {station.tracks.length} songs </span>
             ) : (
               <span>{station.createdBy.fullname}</span>
             )}

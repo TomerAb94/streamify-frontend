@@ -34,11 +34,15 @@ async function remove(trackId) {
 
 async function save(track) {
   console.log('track to save:', track)
-  
   var savedTrack
   if (track._id) {
     const trackToSave = {
       _id: track._id,
+      spotifyId: track.spotifyId,
+      name: track.name,
+      album: track.album,
+      artists: track.artists,
+      duration: track.duration,
       youtubeId: track.youtubeId,
       isPlaying: track.isPlaying,
       imgUrl: track.imgUrl,
@@ -49,6 +53,11 @@ async function save(track) {
       youtubeId: track.youtubeId,
       isPlaying: track.isPlaying,
       imgUrl: track.imgUrl,
+      spotifyId: track.spotifyId,
+      name: track.name,
+      album: track.album,
+      artists: track.artists,
+      duration: track.duration,
     }
     savedTrack = await storageService.post(STORAGE_KEY, trackToSave)
   }

@@ -6,7 +6,6 @@ const API_BASE_URL = 'https://api.spotify.com/v1'
 let accessToken = null
 let tokenExpiryTime = null
 
-
 export const spotifyService = {
   getAccessToken,
   searchTracks,
@@ -18,7 +17,8 @@ export const spotifyService = {
   initializePlayer,
   playTrack,
   pauseTrack,
-  getCurrentPlayback
+  getCurrentPlayback,
+  getSearchedTracks,
 }
 
 async function getAccessToken() {
@@ -27,22 +27,22 @@ async function getAccessToken() {
   }
 
   const credentials = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
-  
+
   try {
     const response = await fetch(TOKEN_URL, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${credentials}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
+        Authorization: `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: 'grant_type=client_credentials'
+      body: 'grant_type=client_credentials',
     })
 
     const data = await response.json()
-    
+
     if (response.ok) {
       accessToken = data.access_token
-      tokenExpiryTime = Date.now() + (data.expires_in * 1000)
+      tokenExpiryTime = Date.now() + data.expires_in * 1000
       return accessToken
     } else {
       throw new Error(`Token request failed: ${data.error}`)
@@ -56,11 +56,11 @@ async function getAccessToken() {
 async function makeSpotifyRequest(endpoint) {
   const token = await getAccessToken()
   // console.log(token);
-  
+
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     headers: {
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   })
 
   if (!response.ok) {
@@ -70,18 +70,45 @@ async function makeSpotifyRequest(endpoint) {
   return response.json()
 }
 
+async function getSearchedTracks(query, limit = 5, offset = 0) {
+  const tracksFromSpotify = await searchTracks(query, limit, offset)
+  let tracks = tracksFromSpotify.tracks.items
+  tracks = tracks.map((track) => {
+    return {
+      spotifyId: track.id,
+      name: track.name,
+      album: { name: track.album.name, imgUrl: track.album.images[0].url },
+      artists: [{
+        names: track.artists.map((artist) => artist.name).join(', '),
+        id: track.artists.map((artist) => artist.id),
+      }],
+      duration: track.duration_ms,
+      isPlaying: false,
+      youtubeId: null,
+    }
+  })
+  return tracks
+  // console.log('tracks:', tracks)
+}
+
 async function searchTracks(query, limit = 5, offset = 0) {
-  const endpoint = `/search?q=${encodeURIComponent(query)}&type=track&artist&album&limit=${limit}&offset=${offset}`
+  const endpoint = `/search?q=${encodeURIComponent(
+    query
+  )}&type=track&artist&album&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
 }
 
 async function searchArtists(query, limit = 20, offset = 0) {
-  const endpoint = `/search?q=${encodeURIComponent(query)}&type=artist&limit=${limit}&offset=${offset}`
+  const endpoint = `/search?q=${encodeURIComponent(
+    query
+  )}&type=artist&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
 }
 
 async function searchAlbums(query, limit = 20, offset = 0) {
-  const endpoint = `/search?q=${encodeURIComponent(query)}&type=album&limit=${limit}&offset=${offset}`
+  const endpoint = `/search?q=${encodeURIComponent(
+    query
+  )}&type=album&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
 }
 
@@ -94,14 +121,6 @@ async function getArtist(artistId) {
   const endpoint = `/artists/${artistId}`
   return makeSpotifyRequest(endpoint)
 }
-
-
-
-
-
-
-
-
 
 async function getAlbum(albumId) {
   const endpoint = `/albums/${albumId}`
@@ -122,8 +141,10 @@ async function initializePlayer(userAccessToken) {
 
       player = new window.Spotify.Player({
         name: 'Your App Player',
-        getOAuthToken: cb => { cb(userAccessToken) },
-        volume: 0.5
+        getOAuthToken: (cb) => {
+          cb(userAccessToken)
+        },
+        volume: 0.5,
       })
 
       player.addListener('ready', ({ device_id }) => {
@@ -157,16 +178,19 @@ async function playTrack(trackUri, userAccessToken) {
     throw new Error('Player not initialized')
   }
 
-  const response = await fetch(`${API_BASE_URL}/me/player/play?device_id=${deviceId}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `Bearer ${userAccessToken}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      uris: [trackUri] // e.g., "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
-    })
-  })
+  const response = await fetch(
+    `${API_BASE_URL}/me/player/play?device_id=${deviceId}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${userAccessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uris: [trackUri], // e.g., "spotify:track:4iV5W9uYEdYUVa79Axb7Rh"
+      }),
+    }
+  )
 
   if (!response.ok) {
     throw new Error(`Failed to play track: ${response.status}`)
@@ -177,8 +201,8 @@ async function pauseTrack(userAccessToken) {
   const response = await fetch(`${API_BASE_URL}/me/player/pause`, {
     method: 'PUT',
     headers: {
-      'Authorization': `Bearer ${userAccessToken}`
-    }
+      Authorization: `Bearer ${userAccessToken}`,
+    },
   })
 
   if (!response.ok) {
@@ -189,8 +213,8 @@ async function pauseTrack(userAccessToken) {
 async function getCurrentPlayback(userAccessToken) {
   const response = await fetch(`${API_BASE_URL}/me/player`, {
     headers: {
-      'Authorization': `Bearer ${userAccessToken}`
-    }
+      Authorization: `Bearer ${userAccessToken}`,
+    },
   })
 
   if (response.ok) {
@@ -198,5 +222,3 @@ async function getCurrentPlayback(userAccessToken) {
   }
   return null
 }
-
-

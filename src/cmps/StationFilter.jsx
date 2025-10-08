@@ -21,8 +21,10 @@ export function StationFilter() {
 
   async function loadSearchedTracks() {
     try {
-      const res = await spotifyService.searchTracks(params.searchStr)
-      setSearchedTracks(res.tracks.items)
+      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr)
+      setSearchedTracks(spotifyTracks)
+      console.log('spotifyTracks:', spotifyTracks);
+      
     } catch (err) {
       console.error('Error loading tracks:', err)
     }
@@ -31,21 +33,11 @@ export function StationFilter() {
   async function onPlay(track) {
     if (trackToPlay) await removeTrack(trackToPlay._id)
 
-    const trackToSave = {
-      name: track.name,
-      imgUrl: track.album?.images?.[0]?.url || null,
-      artists: track.artists.map((artist) => ({
-        id: artist.id,
-        name: artist.name,
-      })),
-      duration_ms: track.duration_ms,
-      isPlaying: true,
-    }
-
     const youtubeId = await getYoutubeId(track.name)
-    trackToSave.youtubeId = youtubeId
+    track.youtubeId = youtubeId
+    track.isPlaying = true
 
-    const savedTrack = await addTrack(trackToSave)
+    const savedTrack = await addTrack(track)
     setTrackToPlay(savedTrack)
   }
 
@@ -94,7 +86,7 @@ export function StationFilter() {
           {searchedTracks.map((track, idx) => (
             <tr
               className="track-preview"
-              key={track.id}
+              key={track.spotifyId}
               onMouseEnter={() => handleMouseEnter(idx)}
               onMouseLeave={() => handleMouseLeave()}
             >
@@ -109,8 +101,8 @@ export function StationFilter() {
 
               <td className="track-title-cell">
                 <div className="track-info">
-                  {track.album?.images?.[0]?.url && (
-                    <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
+                  {track.album?.imgUrl && (
+                    <img src={track.album.imgUrl} alt={`${track.album.name} cover`} className="track-img" />
                   )}
                   <div className="track-text">
                     <span className="track-name">{track.name}</span>
@@ -126,7 +118,7 @@ export function StationFilter() {
                 </div>
               </td>
               <td className="track-album-cell">{track.album?.name}</td>
-              <td className="track-duration">{formatDuration(track.duration_ms)}</td>
+              <td className="track-duration">{formatDuration(track.duration)}</td>
             </tr>
           ))}
         </tbody>

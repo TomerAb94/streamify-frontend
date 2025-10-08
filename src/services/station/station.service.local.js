@@ -70,7 +70,7 @@ async function save(station) {
     likedByUsers: station.likedByUsers,
     isPinned: station.isPinned,
     stationType: station.stationType,
-    songs: station.songs,
+    tracks: station.tracks,
     reviews: station.reviews,
     description: station.description,
     createdAt: station.createdAt

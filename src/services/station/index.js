@@ -23,7 +23,7 @@ function getEmptyStation() {
     },
     likedByUsers: [],
     isPinned: false,
-    songs: [],
+    tracks: [],
     reviews: [],
     description: '',
     createdAt: Date.now(),
@@ -54,7 +54,7 @@ function getDefaultStation(user) {
     createdAt: Date.now(),
     likedByUsers: [],
     isPinned: true,
-    songs: [],
+    tracks: [],
     reviews: [],
     description: '',
   }
