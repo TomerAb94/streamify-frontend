@@ -90,39 +90,40 @@
 
   &:hover {
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.15);
-.play-container {
-      opacity: 1;
-      margin-right: 8px;
-     
-    }
+
   }
 
-  &:focus {
-  }
+
 
   .user-station:nth-child(2) {
     color: red;
   }
 }
 
-.play-btn {
+.playHomePage {
   width: 16px;
   height: 16px;
 }
 
-.play-container {
+ .play-container {
     opacity: 0;
-  background-color: var(--green-play);
+  background-color: var(--green-play);  
   border-radius: 50%;
- 
   z-index: 10;
   flex-shrink: 0;
-
   width: 32px;
   height: 32px;
   align-items: flex-start
+
+ 
 }
+
+.playHomePage path {
+  fill: black;
+}
+
+
+
 
 .img-title-station{
   gap: 5px;
@@ -142,9 +143,23 @@
 }
 
 
+
+
+.user-station:hover .play-container {
+  opacity: 1;
+  margin-right: 8px;
+}
+
+.play-container:hover {
+    transition: scale 0.3s;
+  scale: 1.05;
+}
+
+
 @media (max-width: 1360px) {
   .user-stations {
     /* background-color: red; */
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
 }
+
