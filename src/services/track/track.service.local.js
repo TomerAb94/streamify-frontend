@@ -45,7 +45,7 @@ async function save(track) {
       duration: track.duration,
       youtubeId: track.youtubeId,
       isPlaying: track.isPlaying,
-      imgUrl: track.imgUrl,
+      spotifyId:track.spotifyId
     }
     savedTrack = await storageService.put(STORAGE_KEY, trackToSave)
   } else {
