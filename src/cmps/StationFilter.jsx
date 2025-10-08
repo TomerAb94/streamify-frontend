@@ -3,7 +3,7 @@ import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
 
-import { addTrack, removeTrack } from '../store/actions/track.actions'
+import { addTrack, playTrack, removeTrack } from '../store/actions/track.actions'
 import { trackService } from '../services/track'
 
 export function StationFilter() {
@@ -73,7 +73,10 @@ export function StationFilter() {
     
     // Save track and set as currently playing
     const savedTrack = await addTrack(trackToSave)
-    setTrackToPlay(savedTrack)
+    // setTrackToPlay(savedTrack)
+    console.log('Track to save', trackToSave);
+    
+    await playTrack(trackToSave)
   }
 
   async function getYoutubeId(str) {

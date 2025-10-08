@@ -1,6 +1,6 @@
 import { trackService } from '../../services/track'
 import { store } from '../store'
-import { ADD_TRACK, REMOVE_TRACK, SET_TRACKS, SET_TRACK, UPDATE_TRACK, ADD_TRACK_MSG } from '../reducers/track.reducer'
+import { ADD_TRACK, REMOVE_TRACK, SET_TRACKS, SET_TRACK, UPDATE_TRACK, ADD_TRACK_MSG, SET_CURRENT_TRACK, SET_IS_PLAYING, SET_VOLUME, SET_PROGRESS_PCT, SET_DURATION_SEC, SET_SEEK_TO_SEC } from '../reducers/track.reducer'
 
 export async function loadTracks(filterBy) {
     
@@ -105,6 +105,45 @@ function getCmdAddTrackMsg(msg) {
         type: ADD_TRACK_MSG,
         msg
     }
+}
+
+
+//track-player actions
+
+export async function playTrack(track) {
+  try {
+    const savedTrack = track._id ? track : await addTrack(track)
+    await loadTrack(savedTrack._id)
+
+    store.dispatch(setCurrentTrack(savedTrack))
+    store.dispatch(setIsPlaying(true))
+
+  } catch (err) {
+    console.log('Cannot play track', err)
+  }
+}
+export function setCurrentTrack(track) {
+  return { type: SET_CURRENT_TRACK, track }
+}
+
+export function setIsPlaying(isPlaying) {
+  return { type: SET_IS_PLAYING, isPlaying }
+}
+
+export function setVolume(volume) {
+  return { type: SET_VOLUME, volume }
+}
+
+export function setProgressPct(progressPct) {
+  return { type: SET_PROGRESS_PCT, progressPct }
+}
+
+export function setDurationSec(durationSec) {
+  return { type: SET_DURATION_SEC, durationSec }
+
+}
+export function setSeekToSec(seconds) {
+  return { type: SET_SEEK_TO_SEC, seconds }
 }
 
 // unitTestActions()
