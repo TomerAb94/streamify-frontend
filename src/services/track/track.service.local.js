@@ -41,12 +41,14 @@ async function save(track) {
       _id: track._id,
       youtubeId: track.youtubeId,
       isPlaying: track.isPlaying,
+      spotifyId:track.spotifyId
     }
     savedTrack = await storageService.put(STORAGE_KEY, trackToSave)
   } else {
     const trackToSave = {
       youtubeId: track.youtubeId,
       isPlaying: track.isPlaying,
+      spotifyId:track.spotifyId
     }
     savedTrack = await storageService.post(STORAGE_KEY, trackToSave)
   }

@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
-import { addTrack, removeTrack } from '../store/actions/track.actions'
+import { addTrack, removeTrack, updateTrack } from '../store/actions/track.actions'
 import { trackService } from '../services/track'
 import { SvgIcon } from './SvgIcon'
 
 export function StationFilter() {
   const params = useParams()
   const [searchedTracks, setSearchedTracks] = useState([])
-  const [trackToPlay, setTrackToPlay] = useState(null)
+  const [trackToPlay, setTrackToPlay] = useState({ isPlaying: false })
 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
@@ -29,7 +29,8 @@ export function StationFilter() {
   }
 
   async function onPlay(track) {
-    if (trackToPlay) await removeTrack(trackToPlay._id)
+    console.log('playing track', track)
+    if (trackToPlay && trackToPlay._id) await removeTrack(trackToPlay._id)
 
     const trackToSave = {
       name: track.name,
@@ -40,12 +41,21 @@ export function StationFilter() {
       })),
       duration_ms: track.duration_ms,
       isPlaying: true,
+      spotifyId: track.id,
     }
 
     const youtubeId = await getYoutubeId(track.name)
     trackToSave.youtubeId = youtubeId
 
     const savedTrack = await addTrack(trackToSave)
+    setTrackToPlay(savedTrack)
+  }
+
+  async function onPause(track) {
+    console.log('pausing track', track)
+    track.isPlaying = false
+    const savedTrack = await updateTrack(track)
+
     setTrackToPlay(savedTrack)
   }
 
@@ -66,8 +76,10 @@ export function StationFilter() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
-  function handleMouseEnter(idx) {
+  function handleMouseEnter(idx, trackToPlay, spotifyId) {
     setHoveredTrackIdx(idx)
+    console.log(trackToPlay)
+    console.log(spotifyId)
   }
 
   function handleMouseLeave() {
@@ -79,56 +91,68 @@ export function StationFilter() {
   return (
     <section className="station-filter">
       <h2>Songs</h2>
-<section className="track-list">
-  <div className="track-header">
-    <div className='first-col-header'>#</div>
-    <div>Title</div>
-    <div>Album</div>
-    <div className='duration-header-icon'><SvgIcon iconName="duration" className="duration" /></div>
-  </div>
-
-  {searchedTracks.map((track, idx) => (
-    <div
-      className="track-row"
-      key={track.id}
-      onMouseEnter={() => handleMouseEnter(idx)}
-      onMouseLeave={() => handleMouseLeave()}
-    >
-      <div className="track-num">
-        {hoveredTrackIdx === idx ? (
-          <SvgIcon iconName="play" className="play" onClick={() => onPlay(track)} />
-          
-        ) : (
-          idx + 1
-        )}
-      </div>
-
-      <div className="track-title">
-        {track.album?.images?.[0]?.url && (
-          <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
-        )}
-        <div className="track-text">
-          <span className="track-name">{track.name}</span>
-          <div className="track-artists">
-            {track.artists.map((artist, i) => (
-              <span key={artist.id}>
-                {artist.name}
-                {i < track.artists.length - 1 ? ', ' : ''}
-              </span>
-            ))}
+      <section className="track-list">
+        <div className="track-header">
+          <div className="first-col-header">#</div>
+          <div>Title</div>
+          <div>Album</div>
+          <div className="duration-header-icon">
+            <SvgIcon iconName="duration" className="duration" />
           </div>
         </div>
-      </div>
 
-      <div className="track-album">{track.album?.name}</div>
-      <div className="track-duration">
-        {formatDuration(track.duration_ms)}
-        <SvgIcon iconName="addLikedSong" className="add-liked-song" />
-      </div>
-    </div>
-  ))}
-</section>
+        {searchedTracks.map((track, idx) => (
+          <div
+            className="track-row"
+            key={track.id}
+            onMouseEnter={() => handleMouseEnter(idx, trackToPlay, track.id)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="track-num">
+              {trackToPlay.isPlaying && trackToPlay.spotifyId === track.id ? (
 
+                <div className='playing-track'>
+
+                  <img src="https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg" alt="" className='equalizer' />
+                   <SvgIcon iconName="pause" className="pause" onClick={() => onPause(trackToPlay)} />
+                  </div>
+               
+                
+              ) : hoveredTrackIdx === idx ? (
+                <SvgIcon iconName="play" className="play" onClick={() => onPlay(track)} />
+              ) : (
+                idx + 1
+              )
+              
+              
+              }
+            </div>
+
+            <div className="track-title">
+              {track.album?.images?.[0]?.url && (
+                <img src={track.album.images[0].url} alt={`${track.name} cover`} className="track-img" />
+              )}
+              <div className="track-text">
+                <span className="track-name">{track.name}</span>
+                <div className="track-artists">
+                  {track.artists.map((artist, i) => (
+                    <span key={artist.id}>
+                      {artist.name}
+                      {i < track.artists.length - 1 ? ', ' : ''}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="track-album">{track.album?.name}</div>
+            <div className="track-duration">
+              {formatDuration(track.duration_ms)}
+              <SvgIcon iconName="addLikedSong" className="add-liked-song" />
+            </div>
+          </div>
+        ))}
+      </section>
     </section>
   )
 }

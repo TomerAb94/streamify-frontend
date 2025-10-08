@@ -4,6 +4,7 @@
 
 .station-filter{
   grid-area: station-index;
+  background-color: var(--color-secondary);
 }
 
 .track-list {
@@ -73,7 +74,7 @@
     fill: #fff;
     height: 16px;
     width: 16px;
-    cursor: pointer;;
+    cursor: pointer;
   }
     &:hover {
     .track-artists{
@@ -81,6 +82,12 @@
   }
   .track-album{
     color: #fff;
+  }
+  .pause{
+     fill: #fff;
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
   }
   }
 }
@@ -111,3 +118,26 @@
   height: 16px;
 }
 
+.playing-track {
+  position: relative;
+
+  .equalizer,
+  .pause {
+    transition: opacity 0.2s ease;
+  }
+
+  .pause {
+    opacity: 0;
+    position: absolute;
+    inset: 0;
+  }
+
+  &:hover {
+    .equalizer {
+      opacity: 0;
+    }
+    .pause {
+      opacity: 1;
+    }
+  }
+}
