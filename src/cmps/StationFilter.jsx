@@ -110,18 +110,18 @@ export function StationFilter() {
             <div className="track-num">
               {trackToPlay.isPlaying &&
               trackToPlay.spotifyId === track.spotifyId ? (
-                <div className="playing-track">
-                  <img
-                    src="https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg"
-                    alt=""
-                    className="equalizer"
-                  />
-                  <SvgIcon
-                    iconName="pause"
-                    className="pause"
-                    onClick={() => onPause(trackToPlay)}
-                  />
-                </div>
+              <div className="track-num">
+  {trackToPlay.isPlaying && trackToPlay.spotifyId === track.spotifyId
+    ? (hoveredTrackIdx === idx
+        ? <SvgIcon iconName="pause" className="pause" onClick={() => onPause(trackToPlay)} />
+        : <SvgIcon iconName="equalizer" className="equalizer" />
+      )
+    : (hoveredTrackIdx === idx
+        ? <SvgIcon iconName="play" className="play" onClick={() => onPlay(track)} />
+        : idx + 1
+      )
+  }
+</div>
               ) : hoveredTrackIdx === idx ? (
                 <SvgIcon
                   iconName="play"

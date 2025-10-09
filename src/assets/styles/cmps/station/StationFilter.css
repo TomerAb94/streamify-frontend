@@ -35,9 +35,22 @@
 }
 
 .track-num{
+  
   justify-self: center;
   color: var(--songs-table-color);
+
+  .pause{
+    height: 16px;
+    width: 16px;
+    display: flex;
+  }
+
 }
+
+
+
+
+
 .track-text{
 
   .track-artists{
@@ -71,10 +84,11 @@
   }
 
   .play{
+    display: flex;
     fill: #fff;
-    height: 16px;
-    width: 16px;
-    cursor: pointer;
+    height: 14px;
+    width: 14px;
+   
   }
     &:hover {
     .track-artists{
@@ -85,9 +99,9 @@
   }
   .pause{
      fill: #fff;
-    height: 16px;
-    width: 16px;
-    cursor: pointer;
+    height: 14px;
+    width: 14px;
+  
   }
   }
 }
@@ -113,31 +127,114 @@
 }
 
 .duration-svg{
+
   fill: var(--songs-table-color);
   width: 16px;
   height: 16px;
 }
 
 .playing-track {
-  position: relative;
-
-  .equalizer,
+  display: flex;
+  /* position: relative; */
+  width: 100%;
+  .equalizer-svg,
   .pause {
     transition: opacity 0.2s ease;
+    height: 16px;
+    width:16px;
   }
 
   .pause {
+    display: none;
+    
     opacity: 0;
     position: absolute;
     inset: 0;
   }
 
+
+
   &:hover {
     .equalizer {
-      opacity: 0;
+      display: none;
     }
     .pause {
+
+      display: flex;
+     
       opacity: 1;
     }
   }
 }
+
+
+
+#bar1 {
+
+  animation: bar1 1.2s infinite linear;
+}
+
+#bar2 {
+  animation: bar2 0.8s infinite linear;
+}
+
+#bar3 {
+  animation: bar3 1s infinite linear;
+}
+
+#bar4 {
+  animation: bar4 0.7s infinite linear;
+}
+
+@keyframes bar1 {
+  0% {
+    height: 2px;
+  }
+  50% {
+    height: 7px;
+  }
+  100% {
+    height: 2px;
+  }
+}
+
+@keyframes bar2 {
+  0% {
+    height: 5px;
+  }
+  40% {
+    height: 1px;
+  }
+  80% {
+    height: 7px;
+  }
+  100% {
+    height: 5px;
+  }
+}
+
+@keyframes bar3 {
+  0% {
+    height: 7px;
+  }
+  50% {
+    height: 0;
+  }
+  100% {
+    height: 7px;
+  }
+}
+
+@keyframes bar4 {
+  0% {
+    height: 2px;
+  }
+  50% {
+    height: 7px;
+  }
+  100% {
+    height: 2px;
+  }
+}
+
+
