@@ -2,6 +2,10 @@
   grid-area: station-index;
   color: var(--color-white-fff);
   border-radius: 8px;
+  overflow-y: scroll;
+
+  scrollbar-width: thin;
+  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
 
   & .details-header {
     position: relative;
@@ -41,8 +45,6 @@
         display: flex;
         align-items: center;
         font-size: 0.8rem;
-        /* justify-content: center; */
-        /* margin-top: 8px; */
 
         > img {
           width: 24px;
@@ -61,7 +63,7 @@
           color: var(--color-text-secondary);
           font-family: Circular-thin;
         }
-        > .songs-count {
+        > .tracks-count {
           color: var(--color-text-secondary);
         }
       }
@@ -75,7 +77,7 @@
       position: relative;
       display: flex;
       align-items: center;
-      padding: 24px;
+      padding: 20px;
       z-index: 1;
 
       & .play-btn {
@@ -83,7 +85,7 @@
         align-items: center;
         justify-content: center;
         background-color: var(--green-pin);
-        padding: 28px;
+        padding: 22px;
 
         &:hover {
           background-color: var(--green-play);
@@ -104,30 +106,119 @@
     }
   }
 
-  & .song-list {
-    padding: 24px;
-    margin: 24px 0px 0px;
+  & .track-list {
+    padding: 0 24px;
+  }
 
-    & .no-songs {
-      & .search-wrapper {
-        svg {
-          width: 20px;
-          height: 20px;
-          fill: var(--color-text-secondary);
-          cursor: text;
+  & .search-tracks {
+    padding: 0 24px;
+    margin: 24px;
+
+    & .search-wrapper {
+      width: 100%;
+      svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--color-text-secondary);
+        cursor: text;
+      }
+
+      > .search-tracks-input {
+        background-color: hsla(0, 0%, 100%, 0.1);
+        color: hsla(0, 0%, 100%, 0.7);
+        border-radius: 4px;
+        width: 40%;
+
+        &:focus {
+          box-shadow: none;
         }
+      }
 
-        > .no-songs-input {
-          background-color: hsla(0, 0%, 100%, 0.1);
-          color: hsla(0, 0%, 100%, 0.7);
+      & .search-track-list {
+        margin-top: 40px;
+        display: grid;
+        grid-template-rows: 35px;
+        grid-auto-rows: 55px;
+        gap: 8px;
+        padding-bottom: 50px;
+
+        & .search-track-row {
+          display: grid;
+          grid-template-columns:  minmax(430px, 1.5fr) minmax(285px, 1fr) 220px;
+          grid-template-rows: 100%;
+          align-items: center;
+          padding: 8px 16px;
+          color: var(--songs-table-color);
           border-radius: 4px;
-          width: fit-content;
+          transition: background-color 0.2s;
 
-          &:focus {
-            box-shadow: none;
+          &:hover {
+            > * {
+              color: var(--color-white-fff);
+            }
+          }
+
+          & .search-track-title {
+            display: flex;
+            align-items: center;
+
+            & .search-track-img {
+              width: 40px;
+              height: 40px;
+              margin-right: 8px;
+              border-radius: 4px;
+            }
+
+            & .search-track-name {
+              color: var(--color-white-fff);
+            }
+
+            & .search-track-artists {
+              font-family: Circular-thin;
+            }
+          }
+
+          & .search-track-album {
+            font-family: Circular-thin;
+          }
+
+          & .btn-container {
+            display: flex;
+            justify-content: flex-end;
+            & .add-btn {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: transparent;
+              border: 1px solid var(--color-text-secondary);
+              border-radius: 9999px;
+              width: fit-content;
+              padding: 4px 16px;
+              font-size: 1.1rem;
+              color: var(--color-white-fff);
+              margin: 0;
+
+              &:hover {
+                scale: 1.1;
+                border-color: var(--color-white-fff);
+              }
+            }
           }
         }
       }
     }
+  }
+}
+
+& .track-row:hover,
+.search-track-row:hover {
+  background-color: hsla(0, 0%, 100%, 0.1);
+}
+
+& .svg-icon {
+  > svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color-text-secondary);
   }
 }

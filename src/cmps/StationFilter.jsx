@@ -112,7 +112,7 @@ export function StationFilter() {
       console.log('Track already in Liked Songs:', track)
       return
     }
-
+    delete track.isPlaying
     console.log('likedSongs:', likedSongs)
     likedSongs.tracks.push(track)
     await updateStation(likedSongs)
