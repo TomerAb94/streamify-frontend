@@ -1,20 +1,32 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router'
+import { useSelector } from 'react-redux'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
-
+import { stationService } from '../services/station/index'
 import {
   addTrack,
   removeTrack,
   updateTrack,
 } from '../store/actions/track.actions'
+
+
+
 import { SvgIcon } from './SvgIcon'
+import { loadStations,updateStation} from '../store/actions/station.actions'
+
+
 
 export function StationFilter() {
   const params = useParams()
+  // const [trackToPlay, setTrackToPlay] = useState({ isPlaying: false })
+   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+  const stations = useSelector(
+    (storeState) => storeState.stationModule.stations
+  )
   const [searchedTracks, setSearchedTracks] = useState([])
-  const [trackToPlay, setTrackToPlay] = useState({ isPlaying: false })
-
+  
+ 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
   useEffect(() => {
@@ -35,10 +47,18 @@ export function StationFilter() {
     }
   }
 
+function getPlayingTrack(){
+ if (!playlist || !playlist.length) return false
+ const playingTrack = playlist.find(track => track.isPlaying)
+ return playingTrack ? playingTrack : false
+}
+
   async function onPlay(track) {
-    if (trackToPlay && trackToPlay._id) {
+    const playingTrack = getPlayingTrack()
+
+    if (playingTrack && playingTrack._id) {
       // console.log('removing track', trackToPlay)
-      await removeTrack(trackToPlay._id)
+      await removeTrack(playingTrack._id)
     }
 
     const youtubeId = await getYoutubeId(track.name)
@@ -46,7 +66,7 @@ export function StationFilter() {
     track.isPlaying = true
 
     const savedTrack = await addTrack(track)
-    setTrackToPlay(savedTrack)
+   await updateTrack(savedTrack)
     // console.log('Track to save', trackToPlay)
   }
 
@@ -55,7 +75,7 @@ export function StationFilter() {
     track.isPlaying = false
     const savedTrack = await updateTrack(track)
 
-    setTrackToPlay(savedTrack)
+    await updateTrack(savedTrack)
   }
 
   async function getYoutubeId(str) {
@@ -75,15 +95,34 @@ export function StationFilter() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
-  function handleMouseEnter(idx, trackToPlay, spotifyId) {
+  function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
-    // console.log(trackToPlay)
-    // console.log(spotifyId)
   }
 
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
   }
+
+async function onAddToLikedSongs(track) {
+    
+ 
+    
+    // console.log('Adding to Liked Songs:', track)
+    const likedSongs = stations.find(station => station.title === 'Liked Songs')
+    if (!likedSongs) return
+
+    const isTrackInLikedSongs = likedSongs.tracks.some(t => t.spotifyId === track.spotifyId)
+    if (isTrackInLikedSongs) {
+       console.log('Track already in Liked Songs:', track)
+      return
+    }
+  
+    
+    console.log('likedSongs:', likedSongs)
+    likedSongs.tracks.push(track)
+    await updateStation(likedSongs)
+    // console.log('Updated likedSongs:', likedSongs)
+  }
 
   if (!searchedTracks?.length) return <div>Loading...</div>
 
@@ -104,16 +143,16 @@ export function StationFilter() {
           <div
             className="track-row"
             key={track.id}
-            onMouseEnter={() => handleMouseEnter(idx, trackToPlay, track.id)}
+            onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
           >
             <div className="track-num">
-              {trackToPlay.isPlaying &&
-              trackToPlay.spotifyId === track.spotifyId ? (
+              {getPlayingTrack().isPlaying &&
+              getPlayingTrack().spotifyId === track.spotifyId ? (
               <div className="track-num">
-  {trackToPlay.isPlaying && trackToPlay.spotifyId === track.spotifyId
+  {getPlayingTrack().isPlaying && getPlayingTrack().spotifyId === track.spotifyId
     ? (hoveredTrackIdx === idx
-        ? <SvgIcon iconName="pause" className="pause" onClick={() => onPause(trackToPlay)} />
+        ? <SvgIcon iconName="pause" className="pause" onClick={() => onPause(getPlayingTrack())} />
         : <SvgIcon iconName="equalizer" className="equalizer" />
       )
     : (hoveredTrackIdx === idx
@@ -156,7 +195,8 @@ export function StationFilter() {
 
             <div className="track-album">{track.album?.name}</div>
             <div className="track-duration-container">
-               <SvgIcon iconName="addLikedSong" className="addLikedSong" title="Add to Liked Songs" />
+               <SvgIcon iconName="addLikedSong" className="addLikedSong" title="Add to Liked Songs" 
+               onClick={() => onAddToLikedSongs(track)} />
               <span className='track-duration'>{formatDuration(track.duration)}</span>
              
             </div>

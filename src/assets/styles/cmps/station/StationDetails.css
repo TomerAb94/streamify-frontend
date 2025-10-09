@@ -1,4 +1,5 @@
 .station-details {
+  grid-area: station-index;
   color: var(--color-white-fff);
   border-radius: 8px;
 

@@ -17,6 +17,12 @@ import { Browse } from './cmps/Browse.jsx'
 export function RootCmp() {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
 
+  function getPlayingTrack(){
+    if (!playlist || !playlist.length) return false
+ const playingTrack = playlist.find(track => track.isPlaying)
+ return playingTrack
+}
+
   return (
     <>
       <UserMsg />
@@ -38,11 +44,12 @@ export function RootCmp() {
 
       <div className="youtube-video">
         <ReactPlayer
-          src={`https://www.youtube.com/watch?v=${playlist[0]?.youtubeId}`}
-          playing={playlist[0]?.isPlaying}
+          src={`https://www.youtube.com/watch?v=${getPlayingTrack() ? getPlayingTrack().youtubeId : ''}`}
+          playing={getPlayingTrack() ? true : false}
           controls={false} // Hide native controls
         />
       </div>
     </>
   )
 }
+

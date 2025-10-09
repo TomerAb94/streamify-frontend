@@ -3,7 +3,7 @@ import { store } from '../store'
 import { ADD_STATION, REMOVE_STATION, SET_STATIONS, SET_STATION, UPDATE_STATION, ADD_STATION_MSG } from '../reducers/station.reducer'
 
 export async function loadStations(filterBy) {
-    
+      
     try {
         const stations = await stationService.query(filterBy)
         store.dispatch(getCmdSetStations(stations))
@@ -11,6 +11,7 @@ export async function loadStations(filterBy) {
         console.log('Cannot load stations', err)
         throw err
     }
+    
 }
 
 export async function loadStation(stationId) {
@@ -38,11 +39,13 @@ export async function addStation(station) {
     try {
         const savedStation = await stationService.save(station)
         store.dispatch(getCmdAddStation(savedStation))
+        
         return savedStation
     } catch (err) {
         console.log('Cannot add station', err)
         throw err
     }
+    
 }
 
 export async function updateStation(station) {

@@ -6,9 +6,10 @@ import { updateTrack } from '../store/actions/track.actions'
 export function AppFooter() {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
 
-  function onPlayPause(track) {
+ async function onPlayPause(track) {
+    
     track.isPlaying = !track.isPlaying
-    updateTrack(track)
+    await updateTrack(track)
   }
 
   function isPlaylistPlaying() {

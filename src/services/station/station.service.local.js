@@ -21,30 +21,19 @@ async function query(filterBy = { txt: '' }) {
   if (!loggedinUser) return []
 
   if (loggedinUser) {
-    stations = stations.filter(
-      (station) => station.createdBy._id === loggedinUser._id
-    )
+    stations = stations.filter((station) => station.createdBy._id === loggedinUser._id)
   }
-
+  
   if (txt) {
     const regex = new RegExp(filterBy.txt, 'i')
-    stations = stations.filter(
-      (station) => regex.test(station.title) || regex.test(station.description)
-    )
+    stations = stations.filter((station) => regex.test(station.title) || regex.test(station.description))
   }
   if (sortField === 'title') {
-    stations.sort(
-      (station1, station2) =>
-        station1[sortField].localeCompare(station2[sortField]) * +sortDir
-    )
+    stations.sort((station1, station2) => station1[sortField].localeCompare(station2[sortField]) * +sortDir)
   }
   if (sortField === '') {
-    stations.sort(
-      (station1, station2) =>
-        (station1[sortField] - station2[sortField]) * +sortDir
-    )
+    stations.sort((station1, station2) => (station1[sortField] - station2[sortField]) * +sortDir)
   }
-
   // stations = stations.map(({ _id, title }) => ({ _id, title }))
   return stations
 }
@@ -60,7 +49,7 @@ async function remove(stationId) {
 
 async function save(station) {
   var savedStation
-// console.log(station)
+  console.log(station)
 
   let stationToSave = {
     title: station.title,
@@ -73,12 +62,11 @@ async function save(station) {
     tracks: station.tracks,
     reviews: station.reviews,
     description: station.description,
-    createdAt: station.createdAt
+    createdAt: station.createdAt,
   }
 
   if (station._id) {
-    ;(stationToSave._id = station._id),
-      (savedStation = await storageService.put(STORAGE_KEY, stationToSave))
+    ;(stationToSave._id = station._id), (savedStation = await storageService.put(STORAGE_KEY, stationToSave))
   } else {
     savedStation = await storageService.post(STORAGE_KEY, stationToSave)
   }
