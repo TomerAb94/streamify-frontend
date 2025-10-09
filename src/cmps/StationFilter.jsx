@@ -155,9 +155,10 @@ export function StationFilter() {
             </div>
 
             <div className="track-album">{track.album?.name}</div>
-            <div className="track-duration">
-              {formatDuration(track.duration)}
-              <SvgIcon iconName="addLikedSong" className="add-liked-song" />
+            <div className="track-duration-container">
+               <SvgIcon iconName="addLikedSong" className="addLikedSong" title="Add to Liked Songs" />
+              <span className='track-duration'>{formatDuration(track.duration)}</span>
+             
             </div>
           </div>
         ))}

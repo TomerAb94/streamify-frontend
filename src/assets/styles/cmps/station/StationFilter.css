@@ -20,7 +20,7 @@
 .track-header,
 .track-row {
   display: grid;
-  grid-template-columns: 40px minmax(430px,1.5fr) minmax(285px,1fr) 80px;
+  grid-template-columns: 40px minmax(430px,1.5fr) minmax(285px,1fr) 220px;
   grid-template-rows: 100%;
   align-items: center;
   padding: 8px 16px;
@@ -61,7 +61,7 @@
 }
 
 .duration-header-icon
-,.track-duration{
+,.track-duration-container{
   justify-self: center;
 }
 
@@ -78,7 +78,7 @@
   border-radius: 4px;
   transition: background-color 0.2s;
 
-  .track-album,.track-duration{
+  .track-album,.track-duration-container{
   color: var(--songs-table-color);
     font-family: Circular-thin;;
   }
@@ -103,6 +103,16 @@
     width: 14px;
   
   }
+  .addLikedSong{
+    fill: var(--songs-table-color)
+
+   
+  }
+  .addLikedSong:hover{
+    fill: #fff;
+    cursor: pointer;
+  }
+  
   }
 }
 
@@ -120,10 +130,6 @@
 .track-title{
   display: flex;
  
-}
-
-.track-duration{
-  display: flex;
 }
 
 .duration-svg{
@@ -238,3 +244,16 @@
 }
 
 
+.track-duration-container{
+  display: flex;
+  align-items: center;
+  position: relative;
+  .addLikedSong{
+    position: absolute;
+    left : -50px;
+    height: 16px;
+    width: 16px;
+    fill: var(--color-secondary);
+  }
+  
+}
