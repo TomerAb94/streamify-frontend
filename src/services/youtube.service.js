@@ -19,16 +19,16 @@ function getVideos(keyword) {
 	}
 
 	return axios.get(`${ytURL}&q=${keyword}`).then(({ data }) => {
-		console.log(data)
+		// console.log(data)
 		gVideoMap[keyword] = data.items.map(_getVideoInfo)
-		console.log(gVideoMap[keyword])
+		// console.log(gVideoMap[keyword])
 		saveToStorage(VIDEOS_STORAGE_KEY, gVideoMap)
 		return gVideoMap[keyword]
 	})
 }
 
 function _getVideoInfo(video) {
-	console.log(video)
+
 	const { id, snippet } = video
 	const { title, thumbnails } = snippet
 

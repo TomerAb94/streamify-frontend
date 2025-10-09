@@ -33,7 +33,7 @@ async function remove(trackId) {
 }
 
 async function save(track) {
-  console.log('track to save:', track)
+  
   var savedTrack
   if (track._id) {
     const trackToSave = {

@@ -46,7 +46,7 @@ export async function addTrack(track) {
 }
 
 export async function updateTrack(track) {
-    console.log('track to update:', track);
+    
     
     try {
         const savedTrack = await trackService.save(track)
