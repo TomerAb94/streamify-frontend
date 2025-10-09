@@ -208,9 +208,8 @@
       }
     }
   }
-}
 
-& .track-row:hover,
+  & .track-row:hover,
 .search-track-row:hover {
   background-color: hsla(0, 0%, 100%, 0.1);
 }
@@ -222,3 +221,6 @@
     fill: var(--color-text-secondary);
   }
 }
+}
+
+
