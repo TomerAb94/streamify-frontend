@@ -70,7 +70,7 @@
     
     color: var(--songs-table-color);
   
-    border-bottom: 1px solid #282828;
+    border-bottom: 1px solid hsla(0,0%,100%,.1);
 }
 
 .track-row {
