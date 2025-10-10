@@ -86,8 +86,6 @@ export function StationDetails() {
   }
 
   async function onPlay(track) {
-    console.log(playlist)
-
     // Clear existing playlist
     if (playlist && playlist.length) {
       await setTracks([])
@@ -115,10 +113,10 @@ export function StationDetails() {
     const playingTrackIdx = playlistQueue.findIndex(
       (t) => t.spotifyId === track.spotifyId
     )
-
     if (playingTrackIdx !== -1) {
       playlistQueue[playingTrackIdx].isPlaying = true // set isPlaying to true for the track to play
     }
+    console.log('playlistQueue:', playlistQueue)
 
     // Set the entire playlist at once instead of adding tracks individually
     await setTracks(playlistQueue)
@@ -174,14 +172,17 @@ export function StationDetails() {
 
       <div className="station-btns-container">
         <div className="action-btns">
-          <button className="play-btn">
+          <button
+            onClick={() => onPlay(station.tracks[0])}
+            className="play-btn"
+          >
             <SvgIcon iconName="play" className="play" />
           </button>
           {/* <SvgIcon iconName="shuffle" /> */}
         </div>
       </div>
 
-      <TrackList tracks={station.tracks} onPlay={onPlay} onPause={onPause} />
+      <TrackList tracks={station.tracks} playlist={playlist} onPlay={onPlay} onPause={onPause} />
 
       <div className="search-tracks">
         <h2>Let's find something for your playlist</h2>
@@ -227,7 +228,12 @@ export function StationDetails() {
 
                   <div className="search-track-album">{track.album?.name}</div>
                   <div className="btn-container">
-                    <button onClick={() => onAddTrack(track)} className="add-btn">Add</button>
+                    <button
+                      onClick={() => onAddTrack(track)}
+                      className="add-btn"
+                    >
+                      Add
+                    </button>
                   </div>
                 </div>
               ))}

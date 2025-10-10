@@ -22,6 +22,7 @@ export async function loadTracks(filterBy) {
 export async function setTracks(tracks) {
   try {
     store.dispatch(getCmdSetTracks(tracks))
+    return tracks
   } catch (err) {
     console.log('Cannot set tracks', err)
     throw err

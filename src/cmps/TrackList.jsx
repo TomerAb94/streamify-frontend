@@ -1,27 +1,28 @@
 import { useState } from 'react'
 import { SvgIcon } from './SvgIcon'
 
-export function TrackList({ tracks, onPlay, onPause }) {
+export function TrackList({ tracks, playlist, onPlay, onPause }) {
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
-
+  
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
   }
-
+  
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
   }
-
+  
   function formatDuration(durationMs) {
     const totalSeconds = Math.floor(durationMs / 1000)
     const minutes = Math.floor(totalSeconds / 60)
     const seconds = totalSeconds % 60
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
-
+  
   function getPlayingTrack() {
-    if (!tracks || !tracks.length) return false
-    const playingTrack = tracks.find((track) => track.isPlaying)
+    if (!playlist || !playlist.length) return false
+    const playingTrack = playlist.find((track) => track.isPlaying)
+    console.log('Playing track from playlist:', playingTrack);
     return playingTrack ? playingTrack : false
   }
 
