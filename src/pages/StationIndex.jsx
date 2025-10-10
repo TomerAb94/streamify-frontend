@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
 import ReactPlayer from 'react-player'
@@ -25,6 +25,8 @@ import { AppHeader } from '../cmps/AppHeader'
 import { AppFooter } from '../cmps/AppFooter'
 import { ModalRemove } from '../cmps/ModalRemove'
 import { trackService } from '../services/track/index'
+import { TrackPreview } from '../cmps/TrackPreview'
+import { SvgIcon } from '../cmps/SvgIcon'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
@@ -35,6 +37,10 @@ export function StationIndex() {
     (storeState) => storeState.stationModule.stations
   )
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+  const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+
+  const queueRef = useRef(null)
+  const mainContainerRef = useRef(null)
 
   useEffect(() => {
     loadStations(filterBy)
@@ -103,6 +109,11 @@ export function StationIndex() {
     }
   }
 
+  function onToggleQueue() {
+    queueRef.current.classList.toggle('open')
+    mainContainerRef.current.classList.toggle('sidebar-open')
+  }
+
   // async function onAddTrack() {
   //   const track = trackService.getEmptyTrack()
   //   console.log(track)
@@ -114,7 +125,7 @@ export function StationIndex() {
   // }
 
   return (
-    <section className="main-container">
+    <section ref={mainContainerRef} className="main-container">
       <AppHeader />
 
       <StationList
@@ -124,22 +135,44 @@ export function StationIndex() {
         onUpdateStation={onUpdateStation}
       />
 
-      {/* <header>
-        <h2>Stations</h2>
-        {userService.getLoggedinUser() && (
-          <button onClick={onAddStation}>Add a Station</button>
-        )}
-      </header> */}
-
       <Outlet context={{ stations }} />
 
-      {/* <StationFilter filterBy={filterBy} setFilterBy={setFilterBy} /> */}
-      {/* <StationList  */}
-      {/* stations={stations}
-                onRemoveStation={onRemoveStation} 
-                onUpdateStation={onUpdateStation}/> */}
+      <div ref={queueRef} className="queue">
+        <header>
+          <h1>Queue</h1>
+          <button onClick={onToggleQueue}>
+            <SvgIcon iconName="close" />
+          </button>
+        </header>
+        <div className="queue-track-list">
+          <div className='track-area'>
+            <h2>Now playing</h2>
+            {playlist.map((track, idx) => {
+              if (track.isPlaying) {
+                return (
+                  <TrackPreview
+                    track={track}
+                    idx={idx}
+                    isPlaying={track.isPlaying}
+                  />
+                )
+              }
+            })}
+          </div>
+          <div className='track-area'>
+            <h2>Next:</h2>
+            {playlist.map((track, idx) => (
+              <TrackPreview
+                track={track}
+                idx={idx}
+                isPlaying={track.isPlaying}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
 
-      <AppFooter />
+      <AppFooter onToggleQueue={onToggleQueue} />
       {isModalRemoveOpen && (
         <ModalRemove
           station={stationToRemove}
@@ -148,7 +181,6 @@ export function StationIndex() {
           onConfirmRemove={onConfirmRemove}
         />
       )}
-
     </section>
   )
 }

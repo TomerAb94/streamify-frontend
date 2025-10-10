@@ -1,20 +1,25 @@
 .main-container {
   display: grid;
-  grid-template-columns: minmax(100px,420px) 1fr 1fr;
+  grid-template-columns: minmax(100px, 420px) auto-fill minmax(100px, 420px);
   grid-template-rows: var(--AppHeaderHeight) auto var(--FooterHeight);
 
-
-grid-template-areas: 
-'app-header app-header app-header'
-'station-list station-index station-index'
-'app-footer app-footer app-footer'
-;
-
+  grid-template-areas:
+    'app-header app-header app-header'
+    'station-list station-index station-index'
+    'app-footer app-footer app-footer';
 
   gap: 8px;
   padding: 8px;
 
   background-color: var(--color-primary);
+
+  /* When queue is open, change the grid layout */
+  &.sidebar-open {
+    grid-template-areas:
+      'app-header app-header app-header'
+      'station-list station-index side-bar'
+      'app-footer app-footer app-footer';
+  }
   /* >* {
         grid-column: 2;
 
@@ -23,11 +28,8 @@ grid-template-areas:
         }
     } */
 
-
-
-
-height: 100%;
-     /* height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight)); */
+  height: 100%;
+  /* height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight)); */
 }
 
 .sample-grid-layout {

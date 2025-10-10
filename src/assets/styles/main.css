@@ -22,6 +22,7 @@
 @import "cmps/ModalRemove";
 @import "cmps/ContextMenu";
 @import "cmps/SortMenu";
+@import "cmps/SideBar";
 
 @import "cmps/car/CarIndex";
 @import "cmps/car/CarList";
@@ -33,6 +34,8 @@
 @import "cmps/station/StationPreview";
 @import "cmps/station/StationFilter";
 @import "cmps/station/StationDetails";
+
+@import "cmps/track/TrackPreview";
 
 @import "cmps/review/ReviewEdit";
 @import "cmps/review/ReviewList";

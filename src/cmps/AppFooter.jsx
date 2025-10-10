@@ -3,7 +3,7 @@ import { SvgIcon } from './SvgIcon'
 
 import { updateTrack } from '../store/actions/track.actions'
 
-export function AppFooter() {
+export function AppFooter({ onToggleQueue }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
 
  async function onPlayPause(track) {
@@ -72,6 +72,8 @@ export function AppFooter() {
           <span className="time-end">3:45</span>
         </div>
       </div>
+
+         <button onClick={onToggleQueue}>clicl</button>
 
       <div className="player-right">
         <div className="volume">

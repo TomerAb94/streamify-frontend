@@ -22,7 +22,6 @@ export function TrackList({ tracks, playlist, onPlay, onPause }) {
   function getPlayingTrack() {
     if (!playlist || !playlist.length) return false
     const playingTrack = playlist.find((track) => track.isPlaying)
-    console.log('Playing track from playlist:', playingTrack);
     return playingTrack ? playingTrack : false
   }
 

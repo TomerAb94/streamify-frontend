@@ -8,7 +8,7 @@ export function HomePage() {
 
 
   useEffect(() => {
-    console.log(stations)
+    // console.log(stations)
   }, [stations])
 
   if (!stations) return <>loading...</>

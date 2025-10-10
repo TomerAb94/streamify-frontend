@@ -1,0 +1,76 @@
+& .queue {
+  display: none;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
+  background-color: var(--color-secondary);
+  grid-area: side-bar;
+  position: relative;
+  border-radius: 8px;
+
+  &.open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* header */
+  > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    padding: 8px 16px;
+
+    > h1 {
+      margin: 0;
+      padding: 0 6px;
+      font-size: 1.1rem;
+    }
+
+    /* close btn */
+    > button {
+      background: none;
+      padding: 8px;
+
+      &:hover {
+        background-color: var(--color-hover);
+
+        & .close-svg {
+          fill: var(--color-text-primary);
+        }
+      }
+
+      > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        > .close-svg {
+          height: 16px;
+          width: 16px;
+          fill: var(--color-text-secondary);
+        }
+      }
+    }
+  }
+
+  /* track list */
+  & .queue-track-list {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 24px;
+
+    & .track-area {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      > h2 {
+        margin: 0;
+        padding-inline: 8px;
+        font-size: 1.1rem;
+      }
+    }
+  }
+}

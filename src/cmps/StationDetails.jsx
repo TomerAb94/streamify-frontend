@@ -116,7 +116,7 @@ export function StationDetails() {
     if (playingTrackIdx !== -1) {
       playlistQueue[playingTrackIdx].isPlaying = true // set isPlaying to true for the track to play
     }
-    console.log('playlistQueue:', playlistQueue)
+    // console.log('playlistQueue:', playlistQueue)
 
     // Set the entire playlist at once instead of adding tracks individually
     await setTracks(playlistQueue)
