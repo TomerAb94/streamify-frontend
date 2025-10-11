@@ -1,30 +1,99 @@
 .app-footer {
-    grid-area: app-footer;
-    display: grid;
-    grid-template-columns: minmax(220px, auto) 1fr minmax(220px, auto);
+  grid-area: app-footer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: var(--color-primary);
+
+  /* Left area */
+  & .track-info {
+    display: flex;
     align-items: center;
-    
-    background-color: var(--color-primary);
+    min-width: 180px;
+    width: 30%;
+    padding-inline-start: 8px;
+    gap: 8px;
 
-    height: 72px;
-    
-    .svg-icon {
-    > svg {
-        width: 20px;
-        height: 20px;
-        fill: currentColor;
+    > .track-cover {
+      border-radius: 4px;
+      width: 56px;
+      height: 56px;
+      overflow: hidden;
+      background-color: var(--color-secondary);
+
+      > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    > .mini-track {
+      display: flex;
+      flex-direction: column;
+      margin: 0 8px;
+      font-family: Circular-thin;
+
+      > .title {
+        font-size: 0.875rem;
+      }
+      > .artist {
+        font-size: 0.75rem;
         color: var(--color-text-secondary);
-        transition: fill .15s ease, color .15s ease;
+      }
     }
 
-    &:hover svg {
-        color: var(--color-white-fff);
+    & button {
+      background: none;
+      padding: 8px;
 
+      &:hover {
+        & svg {
+          fill: var(--color-white-fff);
+        }
+      }
+
+      & svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--color-text-secondary);
+      }
     }
-}
+  }
+  /* Center area */
+  & .player-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 
-}
+    > .player-btns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
+      & button {
+        background: none;
+        padding: 8px;
+
+        &:hover {
+          & svg {
+            fill: var(--color-white-fff);
+          }
+        }
+
+        & svg {
+          width: 16px;
+          height: 16px;
+          fill: var(--color-text-secondary);
+        }
+      }
+    }
+  }
+}
+/* 
 .app-footer button {
     background-color: transparent;
 }
@@ -82,3 +151,25 @@
 
     }
 }
+
+
+.player-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-inline-end: 8px;
+    gap: 16px;
+
+    .volume {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #fff;
+
+        input[type="range"] {
+            width: 100px;
+            background-color: white;
+        }
+    }
+ */
+/* } */

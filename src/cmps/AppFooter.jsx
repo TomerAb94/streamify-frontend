@@ -1,12 +1,21 @@
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 
-import { setIsPlaying, setCurrentTrack } from '../store/actions/track.actions'
+import {
+  setIsPlaying,
+  setCurrentTrack,
+  setVolume,
+} from '../store/actions/track.actions'
 
 export function AppFooter({ onToggleQueue }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
+  const volume = useSelector((storeState) => storeState.trackModule.volume)
 
   async function onPlayPause() {
     try {
@@ -18,10 +27,12 @@ export function AppFooter({ onToggleQueue }) {
 
   async function onNext() {
     if (!currentTrack || !currentTrack.nextId) return
-    
+
     try {
       // Find the next track in the playlist using nextId
-      const nextTrack = playlist.find(track => track.spotifyId === currentTrack.nextId)
+      const nextTrack = playlist.find(
+        (track) => track.spotifyId === currentTrack.nextId
+      )
       if (nextTrack) {
         await setCurrentTrack(nextTrack)
         await setIsPlaying(true)
@@ -33,10 +44,12 @@ export function AppFooter({ onToggleQueue }) {
 
   async function onPrevious() {
     if (!currentTrack || !currentTrack.prevId) return
-    
+
     try {
       // Find the previous track in the playlist using prevId
-      const prevTrack = playlist.find(track => track.spotifyId === currentTrack.prevId)
+      const prevTrack = playlist.find(
+        (track) => track.spotifyId === currentTrack.prevId
+      )
       if (prevTrack) {
         await setCurrentTrack(prevTrack)
         await setIsPlaying(true)
@@ -46,46 +59,46 @@ export function AppFooter({ onToggleQueue }) {
     }
   }
 
+  function handleChangeVolume(event) {
+    const newVolume = event.target.value / 100 // Convert to 0-1 range
+    setVolume(newVolume)
+  }
+
   return (
-    <footer className="app-footer full">
-      <div className="player-left">
-        <div className="cover" aria-hidden="true">
+    <footer className="app-footer">
+      <div className="track-info">
+        <div className="track-cover">
           {currentTrack?.album?.imgUrl ? (
-            <img 
-              src={currentTrack.album.imgUrl} 
+            <img
+              src={currentTrack.album.imgUrl}
               alt={`${currentTrack.name} cover`}
               className="cover-img"
             />
           ) : (
-            <div className="cover-placeholder">♪</div>
+            <div className="cover-placeholder"></div>
           )}
         </div>
         <div className="mini-track">
-          <div className="title">
-            {currentTrack?.name || 'No track selected'}
-          </div>
+          <div className="title">{currentTrack?.name || ''}</div>
           <div className="artist">
-            {currentTrack?.artists?.map(artist => artist.name).join(', ') || 'Unknown artist'}
+            {currentTrack?.artists?.map((artist) => artist.name).join(', ') ||
+              ''}
           </div>
         </div>
         <div className="btn-like">
-          <button
-            className="btn-mini-liked"
-            aria-checked="false"
-            aria-label="Add to Liked Songs"
-          >
+          <button className="btn-mini-liked">
             <SvgIcon iconName="addLikedSong" className="liked-icon" />
-            <SvgIcon iconName="doneLikedSong" className="liked-icon is-on" />
+            {/* <SvgIcon iconName="doneLikedSong" className="liked-icon is-on" /> */}
           </button>
         </div>
       </div>
 
-      <div className="player-center">
-        <div className="transport">
+      <div className="player-container">
+        <div className="player-btns">
           <button aria-label="Shuffle">
             <SvgIcon iconName="shuffle" className="shuffle" />
           </button>
-          <button 
+          <button
             onClick={onPrevious}
             disabled={!currentTrack || !currentTrack.prevId}
             aria-label="Previous"
@@ -99,7 +112,7 @@ export function AppFooter({ onToggleQueue }) {
               <SvgIcon iconName="play" className="play" />
             )}
           </button>
-          <button 
+          <button
             onClick={onNext}
             disabled={!currentTrack || !currentTrack.nextId}
             aria-label="Next"
@@ -111,19 +124,14 @@ export function AppFooter({ onToggleQueue }) {
           </button>
         </div>
         <div className="track-timeline">
-          <span className="time-zero">0:00</span>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            defaultValue="0"
-            aria-label="Seek"
-          />
-          <span className="time-end">3:45</span>
+          <span className="time-zero"></span>
+          <input type="range" min="0" max={currentTrack?.duration} />
+          <span className="time-end">{currentTrack?.duration}</span>
         </div>
       </div>
 
-        <button 
+      <div className="player-right">
+        <button
           onClick={onToggleQueue}
           className="queue-btn"
           aria-label="Toggle queue"
@@ -132,15 +140,14 @@ export function AppFooter({ onToggleQueue }) {
           click
           {/* <SvgIcon iconName="queue" /> */}
         </button>
-
-      <div className="player-right">
         <div className="volume">
-          <SvgIcon iconName="volume" className="volume" />
+          {/* <SvgIcon iconName="volume" className="volume" /> */}
           <input
+            onInput={handleChangeVolume}
             type="range"
             min="0"
             max="100"
-            defaultValue="80"
+            defaultValue={volume * 100}
             aria-label="Volume"
           />
         </div>

@@ -9,8 +9,8 @@ import {
   ADD_TRACK_MSG,
   SET_CURRENT_TRACK,
   SET_IS_PLAYING,
-  // SET_VOLUME,
-  // SET_PROGRESS_PCT,
+  SET_VOLUME,
+  // SET_PROGRESS_SEC,
   // SET_DURATION_SEC,
   // SET_SEEK_TO_SEC,
 } from '../reducers/track.reducer'
@@ -98,17 +98,18 @@ export function setIsPlaying(isPlaying) {
   store.dispatch(getCmdSetIsPlaying(isPlaying))
 }
 
-// export function setVolume(volume) {
-//   store.dispatch(getCmdSetVolume(volume))
-// }
+export function setVolume(volume) {
+  store.dispatch(getCmdSetVolume(volume))
+}
 
-// export function setProgressPct(progressPct) {
-//   store.dispatch(getCmdSetProgressPct(progressPct))
+// export function setProgressSec(progressSec) {
+//   store.dispatch(getCmdSetProgressSec(progressSec))
 // }
 
 // export function setDurationSec(durationSec) {
 //   store.dispatch(getCmdSetDurationSec(durationSec))
 // }
+
 
 // export function setSeekToSec(seekToSec) {
 //   store.dispatch(getCmdSetSeekToSec(seekToSec))
@@ -190,26 +191,26 @@ function getCmdSetVolume(volume) {
   }
 }
 
-function getCmdSetProgressPct(progressPct) {
-  return {
-    type: SET_PROGRESS_PCT,
-    progressPct,
-  }
-}
+// function getCmdSetProgressSec(progressSec) {
+//   return {
+//     type: SET_PROGRESS_SEC,
+//     progressSec,
+//   }
+// }
 
-function getCmdSetDurationSec(durationSec) {
-  return {
-    type: SET_DURATION_SEC,
-    durationSec,
-  }
-}
+// function getCmdSetDurationSec(durationSec) {
+//   return {
+//     type: SET_DURATION_SEC,
+//     durationSec,
+//   }
+// }
 
-function getCmdSetSeekToSec(seekToSec) {
-  return {
-    type: SET_SEEK_TO_SEC,
-    seekToSec,
-  }
-}
+// function getCmdSetSeekToSec(seekToSec) {
+//   return {
+//     type: SET_SEEK_TO_SEC,
+//     seekToSec,
+//   }
+// }
 
 // unitTestActions()
 async function unitTestActions() {

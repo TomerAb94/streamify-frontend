@@ -3,11 +3,7 @@ import { useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
-import { stationService } from '../services/station/index'
 import {
-  addTrack,
-  removeTrack,
-  updateTrack,
   setTracks,
   setCurrentTrack,
   setIsPlaying,
@@ -85,13 +81,6 @@ export function StationFilter() {
       console.error('Error fetching YouTube URL:', err)
       return null
     }
-  }
-
-  function formatDuration(durationMs) {
-    const totalSeconds = Math.floor(durationMs / 1000)
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
   function handleMouseEnter(idx) {
@@ -207,7 +196,7 @@ export function StationFilter() {
                 onClick={() => onAddToLikedSongs(track)}
               />
               <span className="track-duration">
-                {formatDuration(track.duration)}
+                {track.duration}
               </span>
             </div>
           </div>

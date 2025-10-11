@@ -83,13 +83,21 @@ async function getSearchedTracks(query, limit = 5, offset = 0) {
         name: track.artists.map((artist) => artist.name).join(', '),
         id: track.artists.map((artist) => artist.id),
       }],
-      duration: track.duration_ms,
+      duration: formatDuration(track.duration_ms),
       youtubeId: null,
     }
   })
   
   return tracks
 }
+
+  function formatDuration(durationMs) {
+    const totalSeconds = Math.floor(durationMs / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
 
 async function searchTracks(query, limit = 5, offset = 0) {
   const endpoint = `/search?q=${encodeURIComponent(

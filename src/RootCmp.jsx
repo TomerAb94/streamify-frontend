@@ -22,6 +22,10 @@ export function RootCmp() {
     (storeState) => storeState.trackModule.isPlaying
   )
 
+  const volume = useSelector(
+    (storeState) => storeState.trackModule.volume
+  )
+
   return (
     <>
       <UserMsg />
@@ -47,6 +51,7 @@ export function RootCmp() {
             currentTrack?.youtubeId || ''
           }`}
           playing={isPlaying}
+          volume={volume}
           controls={false} // Hide native controls
         />
       </div>

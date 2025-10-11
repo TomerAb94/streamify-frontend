@@ -10,7 +10,7 @@ export const ADD_TRACK_MSG = 'ADD_TRACK_MSG'
 export const SET_CURRENT_TRACK = 'SET_CURRENT_TRACK'
 export const SET_IS_PLAYING = 'SET_IS_PLAYING'
 export const SET_VOLUME = 'SET_VOLUME'
-export const SET_PROGRESS_PCT = 'SET_PROGRESS_PCT'
+export const SET_PROGRESS_SEC = 'SET_PROGRESS_SEC'
 export const SET_DURATION_SEC = 'SET_DURATION_SEC'
 export const SET_SEEK_TO_SEC = 'SET_SEEK_TO_SEC'
 
@@ -21,8 +21,8 @@ const initialState = {
   // Player state
   currentTrack: null,
   isPlaying: false,
-  // volume: 0.8,
-  // progressPct: 0,
+  volume: 0.8,
+  // progressSec: 0,
   // durationSec: 0,
   // seekToSec: null,
 }
@@ -64,7 +64,7 @@ export function trackReducer(state = initialState, action) {
         }
         break
       }
-    
+
     // Player actions
     case SET_CURRENT_TRACK:
       newState = { ...state, currentTrack: action.track }
@@ -72,7 +72,13 @@ export function trackReducer(state = initialState, action) {
     case SET_IS_PLAYING:
       newState = { ...state, isPlaying: action.isPlaying }
       break
-    
+    case SET_VOLUME:
+      newState = { ...state, volume: action.volume }
+      break
+    // case SET_PROGRESS_SEC:
+    //   newState = { ...state, progressSec: action.progressSec }
+    //   break
+
     default:
   }
   return newState

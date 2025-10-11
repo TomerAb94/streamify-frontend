@@ -14,13 +14,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
   }
-  
-  function formatDuration(durationMs) {
-    const totalSeconds = Math.floor(durationMs / 1000)
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
+
   
   function isTrackCurrentlyPlaying(track) {
     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
@@ -90,7 +84,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
           <div className="track-album">{track.album?.name}</div>
           <div className="track-duration-container">
             <span className="track-duration">
-              {formatDuration(track.duration)}
+              {track.duration}
             </span>
           </div>
         </div>
