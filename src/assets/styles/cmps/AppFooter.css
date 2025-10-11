@@ -185,7 +185,7 @@
         height: 4px;
         border-radius: 2px;
         cursor: pointer;
-        background: var(--color-secondary-3);
+        /* background: var(--color-secondary-3); */
 
          &::-webkit-slider-thumb {
           appearance: none;

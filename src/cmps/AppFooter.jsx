@@ -21,6 +21,10 @@ export function AppFooter({ onToggleQueue }) {
   const [isQueueOpen, setIsQueueOpen] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [previousVolume, setPreviousVolume] = useState(1)
+  const [isVolumeHover, setIsVolumeHover] = useState(false)
+
+  const handleMouseEnterVolume = () => setIsVolumeHover(true)
+  const handleMouseLeaveVolume = () => setIsVolumeHover(false)
 
   function handleToggleQueue() {
     setIsQueueOpen(!isQueueOpen)
@@ -183,10 +187,25 @@ export function AppFooter({ onToggleQueue }) {
           <input
             className="volume-input"
             onInput={handleChangeVolume}
+            onMouseEnter={handleMouseEnterVolume}
+            onMouseLeave={handleMouseLeaveVolume}
             type="range"
             min="0"
             max="100"
             value={volume * 100}
+            style={{
+              background: `linear-gradient(to right, ${
+                isVolumeHover
+                  ? 'var(--green-clicked)'
+                  : 'var(--color-white-fff)'
+              } 0%, ${
+                isVolumeHover
+                  ? 'var(--green-clicked)'
+                  : 'var(--color-white-fff)'
+              } ${volume * 100}%, var(--color-secondary-3) ${
+                volume * 100
+              }%, var(--color-secondary-3) 100%)`,
+            }}
             aria-label="Volume"
           />
         </div>
