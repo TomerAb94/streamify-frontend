@@ -11,6 +11,10 @@
   &.open {
     display: flex;
     flex-direction: column;
+
+    & .queue-icon{
+      color: green;
+    }
   }
 
   /* header */

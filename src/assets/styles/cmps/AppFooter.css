@@ -3,6 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 8px;
 
   background-color: var(--color-primary);
 
@@ -67,16 +68,54 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 40%;
 
     > .player-btns {
       display: flex;
-      align-items: center;
+      /* align-items: center; */
       justify-content: center;
+      gap: 16px;
+      margin-bottom: 8px;
+
+      > .left-btns,
+      .right-btns {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        & span {
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      > .play-btn {
+        > button {
+          background-color: var(--color-white-fff);
+          border-radius: 9999px;
+
+          &:hover {
+            background-color: var(--color-white-hover);
+          }
+
+          > span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            > svg {
+              width: 16;
+              height: 16;
+              fill: var(--color-primary);
+            }
+          }
+        }
+      }
 
       & button {
         background: none;
         padding: 8px;
+        margin: 0;
 
         &:hover {
           & svg {
@@ -91,85 +130,125 @@
         }
       }
     }
+    & .track-timeline {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      > .time {
+        font-size: 0.75rem;
+        color: var(--color-text-secondary);
+        font-family: Circular-thin;
+      }
+
+      > .time-range {
+        --webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        margin: 0 8px;
+        height: 4px;
+        border-radius: 2px;
+        cursor: pointer;
+        background: var(--color-secondary-3);
+
+        &::-webkit-slider-thumb {
+          appearance: none;
+        }
+
+        &:hover {
+          &::-webkit-slider-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--color-white-fff);
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+    }
+  }
+
+  /* Right area */
+  & .extra-btns {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & .volume-container {
+      display: flex;
+      align-items: center;
+
+      & .volume-input {
+        --webkit-appearance: none;
+        appearance: none;
+        height: 4px;
+        border-radius: 2px;
+        cursor: pointer;
+        background: var(--color-secondary-3);
+
+         &::-webkit-slider-thumb {
+          appearance: none;
+        }
+
+        &:hover {
+          &::-webkit-slider-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--color-white-fff);
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+          }
+        }
+      }
+    }
+
+    & button {
+      background: none;
+      margin: 0;
+      padding: 8x;
+    }
+
+    & span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+
+      &:hover {
+        > svg {
+          fill: var(--color-white-hover);
+        }
+      }
+
+      > svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--color-text-secondary);
+        cursor: pointer;
+      }
+    }
+
+    & .queue-btn {
+      position: relative;
+      &.active {
+        & svg {
+          fill: var(--green-clicked);
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 80%;
+          right: 50%;
+          translate: 50%;
+          width: 4px;
+          height: 4px;
+          background-color: var(--green-clicked);
+          border-radius: 50%;
+        }
+      }
+    }
   }
 }
-/* 
-.app-footer button {
-    background-color: transparent;
-}
-
-.player-left {
-    display: flex;
-    align-items: center;
-    padding-inline-start: 8px;
-    min-width: 0;
-
-    > .cover {
-        width: 56px;
-        height: 56px;
-        background-color: red;
-        margin-inline-end: 8px;
-        overflow: hidden;
-        border-radius: 4px;
-        flex: 0 0 56px;
-
-        > img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-
-    > .mini-track .artist {
-        color: var(--color-text-secondary);
-    }
-
-    > .btn-like {
-        gap: 12px;
-        margin: 0 8px;
-    }
-}
-
-
-
-.player-center {
-    display: grid;
-    grid-template-rows: auto auto;
-    justify-items: stretch;
-
-    > .transport {
-        display: flex;
-        justify-self: center;
-    }
-
-    > .track-timeline {
-        display: flex;
-        justify-self: center;
-        
-        gap: 8px;
-
-    }
-}
-
-
-.player-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-inline-end: 8px;
-    gap: 16px;
-
-    .volume {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background-color: #fff;
-
-        input[type="range"] {
-            width: 100px;
-            background-color: white;
-        }
-    }
- */
-/* } */

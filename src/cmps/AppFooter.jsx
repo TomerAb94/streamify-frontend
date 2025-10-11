@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 
@@ -16,6 +17,15 @@ export function AppFooter({ onToggleQueue }) {
     (storeState) => storeState.trackModule.isPlaying
   )
   const volume = useSelector((storeState) => storeState.trackModule.volume)
+
+  const [isQueueOpen, setIsQueueOpen] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
+  const [previousVolume, setPreviousVolume] = useState(1)
+
+  function handleToggleQueue() {
+    setIsQueueOpen(!isQueueOpen)
+    onToggleQueue()
+  }
 
   async function onPlayPause() {
     try {
@@ -62,6 +72,22 @@ export function AppFooter({ onToggleQueue }) {
   function handleChangeVolume(event) {
     const newVolume = event.target.value / 100 // Convert to 0-1 range
     setVolume(newVolume)
+    if (newVolume === 0) {
+      setIsMuted(true)
+    } else {
+      setIsMuted(false)
+    }
+  }
+
+  function handleToggleMute() {
+    if (volume > 0) {
+      setPreviousVolume(volume) // Store current volume before muting
+      setVolume(0)
+      setIsMuted(true)
+    } else {
+      setVolume(previousVolume) // Restore previous volume
+      setIsMuted(false)
+    }
   }
 
   return (
@@ -95,59 +121,72 @@ export function AppFooter({ onToggleQueue }) {
 
       <div className="player-container">
         <div className="player-btns">
-          <button aria-label="Shuffle">
-            <SvgIcon iconName="shuffle" className="shuffle" />
-          </button>
-          <button
-            onClick={onPrevious}
-            disabled={!currentTrack || !currentTrack.prevId}
-            aria-label="Previous"
-          >
-            <SvgIcon iconName="previous" className="previous" />
-          </button>
-          <button onClick={onPlayPause} aria-label="Play">
-            {isPlaying ? (
-              <SvgIcon iconName="pause" className="pause" />
-            ) : (
-              <SvgIcon iconName="play" className="play" />
-            )}
-          </button>
-          <button
-            onClick={onNext}
-            disabled={!currentTrack || !currentTrack.nextId}
-            aria-label="Next"
-          >
-            <SvgIcon iconName="next" className="next" />
-          </button>
-          <button aria-label="Repeat">
-            <SvgIcon iconName="repeat" className="repeat" />
-          </button>
+          <div className="left-btns">
+            <button aria-label="Shuffle">
+              <SvgIcon iconName="shuffle" className="shuffle" />
+            </button>
+            <button
+              onClick={onPrevious}
+              disabled={!currentTrack || !currentTrack.prevId}
+              aria-label="Previous"
+            >
+              <SvgIcon iconName="previous" className="previous" />
+            </button>
+          </div>
+          <div className="play-btn">
+            <button onClick={onPlayPause} aria-label="Play">
+              {isPlaying ? (
+                <SvgIcon iconName="pause" className="pause" />
+              ) : (
+                <SvgIcon iconName="play" className="play" />
+              )}
+            </button>
+          </div>
+          <div className="right-btns">
+            <button
+              onClick={onNext}
+              disabled={!currentTrack || !currentTrack.nextId}
+              aria-label="Next"
+            >
+              <SvgIcon iconName="next" className="next" />
+            </button>
+            <button aria-label="Repeat">
+              <SvgIcon iconName="repeat" className="repeat" />
+            </button>
+          </div>
         </div>
         <div className="track-timeline">
-          <span className="time-zero"></span>
-          <input type="range" min="0" max={currentTrack?.duration} />
-          <span className="time-end">{currentTrack?.duration}</span>
+          <span className="time">0:00</span>
+          <input
+            className="time-range"
+            type="range"
+            min="0"
+            max={currentTrack?.duration}
+          />
+          <span className="time">{currentTrack?.duration}</span>
         </div>
       </div>
 
-      <div className="player-right">
+      <div className="extra-btns">
         <button
-          onClick={onToggleQueue}
-          className="queue-btn"
-          aria-label="Toggle queue"
-          title="Show queue"
+          onClick={handleToggleQueue}
+          className={`queue-btn ${isQueueOpen ? 'active' : ''}`}
+          title="Queue"
         >
-          click
-          {/* <SvgIcon iconName="queue" /> */}
+          <SvgIcon iconName="queue" />
         </button>
-        <div className="volume">
-          {/* <SvgIcon iconName="volume" className="volume" /> */}
+
+        <div className="volume-container">
+          <button onClick={handleToggleMute}>
+            <SvgIcon iconName={isMuted || volume === 0 ? 'mute' : 'volume'} />
+          </button>
           <input
+            className="volume-input"
             onInput={handleChangeVolume}
             type="range"
             min="0"
             max="100"
-            defaultValue={volume * 100}
+            value={volume * 100}
             aria-label="Volume"
           />
         </div>
