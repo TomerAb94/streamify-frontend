@@ -16,6 +16,8 @@ import {
   addTrack,
   updateTrack,
   setTracks,
+  setCurrentTrack,
+  setIsPlaying,
 } from '../store/actions/track.actions'
 import { youtubeService } from '../services/youtube.service'
 
@@ -23,6 +25,8 @@ export function StationDetails() {
   const { stationId } = useParams()
   const station = useSelector((storeState) => storeState.stationModule.station)
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
 
   const [searchBy, setSearchBy] = useState('')
   const [searchedTracks, setSearchedTracks] = useState([])
@@ -109,23 +113,20 @@ export function StationDetails() {
       })
     )
 
-    // find index of the track to play
-    const playingTrackIdx = playlistQueue.findIndex(
-      (t) => t.spotifyId === track.spotifyId
-    )
-    if (playingTrackIdx !== -1) {
-      playlistQueue[playingTrackIdx].isPlaying = true // set isPlaying to true for the track to play
-    }
-    // console.log('playlistQueue:', playlistQueue)
-
-    // Set the entire playlist at once instead of adding tracks individually
+    // Set the entire playlist at once
     await setTracks(playlistQueue)
+    
+    // Set the current track and start playing
+    const trackToPlay = playlistQueue.find(t => t.spotifyId === track.spotifyId)
+    if (trackToPlay) {
+      await setCurrentTrack(trackToPlay)
+      await setIsPlaying(true)
+    }
   }
 
-  function getPlayingTrack() {
-    if (!playlist || !playlist.length) return false
-    const playingTrack = playlist.find((track) => track.isPlaying)
-    return playingTrack ? playingTrack : false
+  function isStationCurrentlyPlaying() {
+    if (!currentTrack || !station || !station.tracks) return false
+    return station.tracks.some(track => track.spotifyId === currentTrack.spotifyId)
   }
 
   async function getYoutubeId(str) {
@@ -139,12 +140,12 @@ export function StationDetails() {
     }
   }
 
-  async function onPause(track) {
-    // console.log('pausing track', track)
-    track.isPlaying = false
-    const savedTrack = await updateTrack(track)
+  async function onPause() {
+    await setIsPlaying(false)
+  }
 
-    await updateTrack(savedTrack)
+  async function onResume() {
+    await setIsPlaying(true)
   }
 
   if (!station) return <div>Loading...</div>
@@ -172,17 +173,26 @@ export function StationDetails() {
 
       <div className="station-btns-container">
         <div className="action-btns">
-          {getPlayingTrack().isPlaying ? (
+          {(isStationCurrentlyPlaying() && isPlaying) ? (
             <button
-              onClick={() => onPause(getPlayingTrack())}
+              onClick={onPause}
               className="play-btn"
             >
               <SvgIcon iconName="pause" className="pause" />
             </button>
           ) : (
             <button
-              onClick={() => onPlay(station.tracks[0])}
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && isStationCurrentlyPlaying() && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(station.tracks[0])
+                }
+              }}
               className="play-btn"
+              disabled={!station.tracks || station.tracks.length === 0}
             >
               <SvgIcon iconName="play" className="play" />
             </button>
@@ -193,7 +203,6 @@ export function StationDetails() {
 
       <TrackList
         tracks={station.tracks}
-        playlist={playlist}
         onPlay={onPlay}
         onPause={onPause}
       />

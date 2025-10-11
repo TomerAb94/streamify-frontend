@@ -1,7 +1,18 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 
-export function StationPreview({ station }) {
+export function StationPreview({ station, onPlay, onPlayStation, onPause }) {
+  // Use the new player state
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+
+  // Check if any track from this station is currently playing
+  function isStationPlaying() {
+    if (!currentTrack) return false
+    return station.tracks.some(track => track.spotifyId === currentTrack.spotifyId) && isPlaying
+  }
+
   return (
     <>
       <div className="station-img-container">
@@ -18,9 +29,29 @@ export function StationPreview({ station }) {
         )}
 
         <div className="play-overlay">
-          <div className="play-btn">
-            <SvgIcon iconName="play" />
-          </div>
+          {isStationPlaying() ? (
+            <div
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onPause()
+              }}
+              className="play-btn"
+            >
+              <SvgIcon iconName="pause" className="pause" />
+            </div>
+          ) : (
+            <div
+              className="play-btn"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onPlayStation(station)
+              }}
+            >
+              <SvgIcon iconName="play" />
+            </div>
+          )}
         </div>
       </div>
 

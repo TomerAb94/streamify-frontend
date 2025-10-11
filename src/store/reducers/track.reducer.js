@@ -16,10 +16,11 @@ export const SET_SEEK_TO_SEC = 'SET_SEEK_TO_SEC'
 
 const initialState = {
   tracks: [],
-  track: null,
+  // track: null,
 
-  // currentTrack: null,
-  // isPlaying: false,
+  // Player state
+  currentTrack: null,
+  isPlaying: false,
   // volume: 0.8,
   // progressPct: 0,
   // durationSec: 0,
@@ -63,6 +64,15 @@ export function trackReducer(state = initialState, action) {
         }
         break
       }
+    
+    // Player actions
+    case SET_CURRENT_TRACK:
+      newState = { ...state, currentTrack: action.track }
+      break
+    case SET_IS_PLAYING:
+      newState = { ...state, isPlaying: action.isPlaying }
+      break
+    
     default:
   }
   return newState

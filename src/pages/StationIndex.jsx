@@ -38,6 +38,8 @@ export function StationIndex() {
   )
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
 
   const queueRef = useRef(null)
   const mainContainerRef = useRef(null)
@@ -130,6 +132,7 @@ export function StationIndex() {
 
       <StationList
         stations={stations}
+        playlist={playlist}
         onAddStation={onAddStation}
         onRemoveStation={onRemoveStation}
         onUpdateStation={onUpdateStation}
@@ -145,30 +148,37 @@ export function StationIndex() {
           </button>
         </header>
         <div className="queue-track-list">
-          <div className='track-area'>
-            <h2>Now playing</h2>
-            {playlist.map((track, idx) => {
-              if (track.isPlaying) {
-                return (
-                  <TrackPreview
-                    track={track}
-                    idx={idx}
-                    isPlaying={track.isPlaying}
-                  />
-                )
-              }
-            })}
-          </div>
-          <div className='track-area'>
-            <h2>Next:</h2>
-            {playlist.map((track, idx) => (
+          {currentTrack && (
+            <div className='track-area'>
+              <h2>Now playing</h2>
               <TrackPreview
-                track={track}
-                idx={idx}
-                isPlaying={track.isPlaying}
+                key={`current-${currentTrack.spotifyId}`}
+                track={currentTrack}
+                idx={0}
+                isPlaying={isPlaying}
               />
-            ))}
-          </div>
+            </div>
+          )}
+          
+          {playlist.length > 0 && (
+            <div className='track-area'>
+              <h2>Next ({playlist.length})</h2>
+              {playlist.map((track, idx) => (
+                <TrackPreview
+                  key={`queue-${track.spotifyId}-${idx}`}
+                  track={track}
+                  idx={idx + 1}
+                  isPlaying={false}
+                />
+              ))}
+            </div>
+          )}
+          
+          {!currentTrack && playlist.length === 0 && (
+            <div className="empty-queue">
+              <p>No tracks in queue</p>
+            </div>
+          )}
         </div>
       </div>
 

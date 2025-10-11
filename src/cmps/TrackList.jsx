@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 
-export function TrackList({ tracks, playlist, onPlay, onPause }) {
+export function TrackList({ tracks, onPlay, onPause }) {
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   
   function handleMouseEnter(idx) {
@@ -19,10 +22,8 @@ export function TrackList({ tracks, playlist, onPlay, onPause }) {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
   
-  function getPlayingTrack() {
-    if (!playlist || !playlist.length) return false
-    const playingTrack = playlist.find((track) => track.isPlaying)
-    return playingTrack ? playingTrack : false
+  function isTrackCurrentlyPlaying(track) {
+    return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
   }
 
   return (
@@ -39,35 +40,21 @@ export function TrackList({ tracks, playlist, onPlay, onPause }) {
       {tracks.map((track, idx) => (
         <div
           className="track-row"
-          key={idx}
+          key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
         >
           <div className="track-num">
-            {getPlayingTrack().isPlaying &&
-            getPlayingTrack().spotifyId === track.spotifyId ? (
-              <div className="track-num">
-                {getPlayingTrack().isPlaying &&
-                getPlayingTrack().spotifyId === track.spotifyId ? (
-                  hoveredTrackIdx === idx ? (
-                    <SvgIcon
-                      iconName="pause"
-                      className="pause"
-                      onClick={() => onPause(getPlayingTrack())}
-                    />
-                  ) : (
-                    <SvgIcon iconName="equalizer" className="equalizer" />
-                  )
-                ) : hoveredTrackIdx === idx ? (
-                  <SvgIcon
-                    iconName="play"
-                    className="play"
-                    onClick={() => onPlay(track)}
-                  />
-                ) : (
-                  idx + 1
-                )}
-              </div>
+            {isTrackCurrentlyPlaying(track) ? (
+              hoveredTrackIdx === idx ? (
+                <SvgIcon
+                  iconName="pause"
+                  className="pause"
+                  onClick={() => onPause()}
+                />
+              ) : (
+                <SvgIcon iconName="equalizer" className="equalizer" />
+              )
             ) : hoveredTrackIdx === idx ? (
               <SvgIcon
                 iconName="play"

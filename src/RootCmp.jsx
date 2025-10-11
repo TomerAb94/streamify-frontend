@@ -15,14 +15,12 @@ import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
 import { Browse } from './cmps/Browse.jsx'
 
 export function RootCmp() {
-  const playlist = useSelector((storeState) => storeState.trackModule.tracks)
-
-  function getPlayingTrack(){
-    if (!playlist || !playlist.length) return false
- const playingTrack = playlist.find(track => track.isPlaying)
- return playingTrack
-}
-
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
 
   return (
     <>
@@ -45,12 +43,13 @@ export function RootCmp() {
 
       <div className="youtube-video">
         <ReactPlayer
-          src={`https://www.youtube.com/watch?v=${getPlayingTrack() ? getPlayingTrack().youtubeId : ''}`}
-          playing={getPlayingTrack() ? true : false}
+          src={`https://www.youtube.com/watch?v=${
+            currentTrack?.youtubeId || ''
+          }`}
+          playing={isPlaying}
           controls={false} // Hide native controls
         />
       </div>
     </>
   )
 }
-

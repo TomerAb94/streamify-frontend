@@ -10,7 +10,6 @@ function getEmptyTrack() {
 	return {
         _id: '',
 		youtubeId: '',
-		isPlaying: false,
 	}
 }
 

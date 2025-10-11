@@ -7,6 +7,12 @@ import {
   SET_TRACK,
   UPDATE_TRACK,
   ADD_TRACK_MSG,
+  SET_CURRENT_TRACK,
+  SET_IS_PLAYING,
+  // SET_VOLUME,
+  // SET_PROGRESS_PCT,
+  // SET_DURATION_SEC,
+  // SET_SEEK_TO_SEC,
 } from '../reducers/track.reducer'
 
 export async function loadTracks(filterBy) {
@@ -83,6 +89,47 @@ export async function addTrackMsg(trackId, txt) {
   }
 }
 
+// Player actions
+export function setCurrentTrack(track) {
+  store.dispatch(getCmdSetCurrentTrack(track))
+}
+
+export function setIsPlaying(isPlaying) {
+  store.dispatch(getCmdSetIsPlaying(isPlaying))
+}
+
+// export function setVolume(volume) {
+//   store.dispatch(getCmdSetVolume(volume))
+// }
+
+// export function setProgressPct(progressPct) {
+//   store.dispatch(getCmdSetProgressPct(progressPct))
+// }
+
+// export function setDurationSec(durationSec) {
+//   store.dispatch(getCmdSetDurationSec(durationSec))
+// }
+
+// export function setSeekToSec(seekToSec) {
+//   store.dispatch(getCmdSetSeekToSec(seekToSec))
+// }
+
+// // Convenience action to play a track (sets both current track and playing state)
+// export function playTrack(track) {
+//   store.dispatch(getCmdSetCurrentTrack(track))
+//   store.dispatch(getCmdSetIsPlaying(true))
+// }
+
+// // Convenience action to pause (keeps current track, just stops playing)
+// export function pauseTrack() {
+//   store.dispatch(getCmdSetIsPlaying(false))
+// }
+
+// // Convenience action to resume (plays the current track)
+// export function resumeTrack() {
+//   store.dispatch(getCmdSetIsPlaying(true))
+// }
+
 // Command Creators:
 function getCmdSetTracks(tracks) {
   return {
@@ -118,6 +165,49 @@ function getCmdAddTrackMsg(msg) {
   return {
     type: ADD_TRACK_MSG,
     msg,
+  }
+}
+
+// Player command creators
+function getCmdSetCurrentTrack(track) {
+  return {
+    type: SET_CURRENT_TRACK,
+    track,
+  }
+}
+
+function getCmdSetIsPlaying(isPlaying) {
+  return {
+    type: SET_IS_PLAYING,
+    isPlaying,
+  }
+}
+
+function getCmdSetVolume(volume) {
+  return {
+    type: SET_VOLUME,
+    volume,
+  }
+}
+
+function getCmdSetProgressPct(progressPct) {
+  return {
+    type: SET_PROGRESS_PCT,
+    progressPct,
+  }
+}
+
+function getCmdSetDurationSec(durationSec) {
+  return {
+    type: SET_DURATION_SEC,
+    durationSec,
+  }
+}
+
+function getCmdSetSeekToSec(seekToSec) {
+  return {
+    type: SET_SEEK_TO_SEC,
+    seekToSec,
   }
 }
 

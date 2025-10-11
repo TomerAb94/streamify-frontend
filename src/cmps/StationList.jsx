@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 import { StationPreview } from './StationPreview'
@@ -7,13 +8,19 @@ import { ModalEdit } from './ModalEdit.jsx'
 import { StationListActions } from './StationListActions.jsx'
 import { SortMenu } from './SortMenu.jsx'
 import { debounce } from '../services/util.service'
+import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions.js'
+import { youtubeService } from '../services/youtube.service.js'
 
 export function StationList({
-  onAddStation,
   stations,
+  playlist,
+  onAddStation,
   onRemoveStation,
   onUpdateStation,
 }) {
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  
   const [stationsToShow, setStationsToShow] = useState(stations)
   const [filterBy, setFilterBy] = useState({
     sortBy: 'Recently Added',
@@ -60,8 +67,10 @@ export function StationList({
     })
 
     filteredStations.sort((a, b) => {
-      if (a.tags.includes('Liked Songs') && !b.tags.includes('Liked Songs')) return -1
-      if (!a.tags.includes('Liked Songs') && b.tags.includes('Liked Songs')) return 1
+      if (a.tags.includes('Liked Songs') && !b.tags.includes('Liked Songs'))
+        return -1
+      if (!a.tags.includes('Liked Songs') && b.tags.includes('Liked Songs'))
+        return 1
     })
 
     setStationsToShow(filteredStations)
@@ -81,7 +90,6 @@ export function StationList({
   }
 
   function handlePlayClick(stationId) {
-    console.log(`Play playlist: ${stationId}`)
     setClickedStationId(stationId)
     setActiveStationId(null)
   }
@@ -104,6 +112,81 @@ export function StationList({
   function toggleSortMenu(ev) {
     ev.stopPropagation()
     setIsSortMenuOpen(!isSortMenuOpen)
+  }
+
+  async function onPlay(track, station) {
+    try {
+      // Clear existing playlist
+      if (playlist && playlist.length) {
+        await setTracks([])
+      }
+
+      // Build the playlist queue with navigation IDs and YouTube IDs
+      const playlistQueue = await Promise.all(
+        station.tracks.map(async (track, index) => {
+          return {
+            ...track,
+            nextId:
+              index < station.tracks.length - 1
+                ? station.tracks[index + 1].spotifyId
+                : station.tracks[0].spotifyId,
+            prevId:
+              index > 0
+                ? station.tracks[index - 1].spotifyId
+                : station.tracks[station.tracks.length - 1].spotifyId,
+            youtubeId: await getYoutubeId(track.name),
+          }
+        })
+      )
+
+      // Set the playlist in the store
+      await setTracks(playlistQueue)
+
+      // Find the track to play and set it as current
+      const trackToPlay = playlistQueue.find(t => t.spotifyId === track.spotifyId)
+      if (trackToPlay) {
+        setCurrentTrack(trackToPlay)
+        setIsPlaying(true)
+      }
+    } catch (err) {
+      console.error('Error playing track:', err)
+    }
+  }
+
+  function onPause() {
+    // Simply pause - don't change the current track
+    setIsPlaying(false)
+  }
+
+  function onResume() {
+    // Just resume playing the current track
+    setIsPlaying(true)
+  }
+
+  function isStationCurrentlySelected(station) {
+    if (!currentTrack || !station || !station.tracks) return false
+    return station.tracks.some(track => track.spotifyId === currentTrack.spotifyId)
+  }
+
+  async function onPlayStation(station) {
+    // If there's a current track from this station that's paused, just resume
+    if (currentTrack && isStationCurrentlySelected(station) && !isPlaying) {
+      onResume()
+    } else {
+      // Otherwise start playing from first track
+      await onPlay(station.tracks[0], station)
+    }
+  }
+
+  async function getYoutubeId(str) {
+    // console.log('Getting YouTube ID for:', str)
+    try {
+      const res = await youtubeService.getVideos(str)
+      return res?.[0]?.id || null
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
   }
 
   return (
@@ -170,7 +253,7 @@ export function StationList({
                 onClick={() => handlePlayClick(station._id)}
                 onContextMenu={(ev) => toggleActionMenu(ev, station._id)}
               >
-                <StationPreview station={station} />
+                <StationPreview station={station} onPlay={onPlay} onPlayStation={onPlayStation} onPause={onPause} />
               </li>
             </NavLink>
           ))}

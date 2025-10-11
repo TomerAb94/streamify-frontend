@@ -99,6 +99,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        > svg{
+          width: 20px;
+          height: 20px;
+          fill: var(--color-white-fff);
+        }
       }
     }
   }

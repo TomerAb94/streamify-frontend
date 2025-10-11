@@ -84,7 +84,6 @@ async function getSearchedTracks(query, limit = 5, offset = 0) {
         id: track.artists.map((artist) => artist.id),
       }],
       duration: track.duration_ms,
-      isPlaying: false,
       youtubeId: null,
     }
   })
