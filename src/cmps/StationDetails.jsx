@@ -172,17 +172,31 @@ export function StationDetails() {
 
       <div className="station-btns-container">
         <div className="action-btns">
-          <button
-            onClick={() => onPlay(station.tracks[0])}
-            className="play-btn"
-          >
-            <SvgIcon iconName="play" className="play" />
-          </button>
+          {getPlayingTrack().isPlaying ? (
+            <button
+              onClick={() => onPause(getPlayingTrack())}
+              className="play-btn"
+            >
+              <SvgIcon iconName="pause" className="pause" />
+            </button>
+          ) : (
+            <button
+              onClick={() => onPlay(station.tracks[0])}
+              className="play-btn"
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
           {/* <SvgIcon iconName="shuffle" /> */}
         </div>
       </div>
 
-      <TrackList tracks={station.tracks} playlist={playlist} onPlay={onPlay} onPause={onPause} />
+      <TrackList
+        tracks={station.tracks}
+        playlist={playlist}
+        onPlay={onPlay}
+        onPause={onPause}
+      />
 
       <div className="search-tracks">
         <h2>Let's find something for your playlist</h2>

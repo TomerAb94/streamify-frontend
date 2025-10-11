@@ -91,7 +91,7 @@
           background-color: var(--green-play);
         }
 
-        > .play {
+        > .play, .pause {
           display: flex;
           align-items: center;
           justify-content: center;
