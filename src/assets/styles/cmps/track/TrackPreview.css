@@ -38,6 +38,10 @@
     > .track-name {
       font-family: Circular-thin;
       font-size: 1rem;
+
+      &.playing {
+        color: var(--green-checked);
+      }
     }
 
     > .artist-name {

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export function TrackPreview({ track, idx, isPlaying }) {
+export function TrackPreview({ track, idx, playingClass }) {
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
   function handleMouseEnter(idx) {
@@ -21,7 +21,7 @@ export function TrackPreview({ track, idx, isPlaying }) {
       </div>
 
       <div className="track-info">
-        <span className="track-name">{track.name}</span>
+        <span className={`track-name ${playingClass}`}>{track.name}</span>
         <span className="artist-name">{track.artists.map(artist => artist.name).join(', ')}</span>
       </div>
     </section>

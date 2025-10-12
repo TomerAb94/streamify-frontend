@@ -24,6 +24,7 @@ export function PlaylistQueue({
               key={`current-${currentTrack.spotifyId}`}
               track={currentTrack}
               idx={0}
+              playingClass="playing"
             />
           </div>
         )}
@@ -31,13 +32,16 @@ export function PlaylistQueue({
         {playlist.length > 0 && (
           <div className="track-area">
             <h2>Next from: {station.title}</h2>
-            {playlist.map((track, idx) => (
-              <TrackPreview
-                key={`queue-${track.spotifyId}-${idx}`}
-                track={track}
-                idx={idx + 1}
-              />
-            ))}
+            {playlist.map((track, idx) => {
+              if (track.spotifyId === currentTrack?.spotifyId) return null
+              return (
+                <TrackPreview
+                  key={`queue-${track.spotifyId}-${idx}`}
+                  track={track}
+                  idx={idx + 1}
+                />
+              )
+            })}
           </div>
         )}
 
