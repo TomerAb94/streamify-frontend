@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 import { SvgIcon } from './SvgIcon'
 import { TrackPreview } from './TrackPreview'
 
@@ -9,8 +11,9 @@ export function PlaylistQueue({
   onToggleQueue,
   isQueueOpen,
   onPlay,
-  onPause
+  onPause,
 }) {
+    
   // Sort playlist by following nextId chain starting from currentTrack
   function getSortedNextTracks() {
     if (!currentTrack || !playlist.length) return []
@@ -48,7 +51,7 @@ export function PlaylistQueue({
 
   return (
     <div className={`queue ${isQueueOpen ? 'open' : ''}`}>
-      <header>
+      <header className="queue-header">
         <h1>Queue</h1>
         <button onClick={onToggleQueue}>
           <SvgIcon iconName="close" />
@@ -58,7 +61,10 @@ export function PlaylistQueue({
         {currentTrack && (
           <div className="track-area">
             <h2>Now playing</h2>
-            <div onClick={() => isPlaying ? onPause() : onPlay(currentTrack)} className="playing">
+            <div
+              onClick={() => (isPlaying ? onPause() : onPlay(currentTrack))}
+              className="playing"
+            >
               <TrackPreview track={currentTrack} isPlaying={isPlaying} />
             </div>
           </div>

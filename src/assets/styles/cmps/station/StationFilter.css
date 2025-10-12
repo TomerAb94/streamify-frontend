@@ -2,75 +2,66 @@
   display: none;
 }
 
-.station-filter{
+.station-filter {
   grid-area: station-index;
   background-color: var(--color-secondary);
 }
 
 .track-list {
   display: grid;
-   grid-template-rows: 35px;
+  grid-template-rows: 35px;
   grid-auto-rows: 55px;
   gap: 8px;
-
-
-
 }
 
 .track-header,
 .track-row {
   display: grid;
-  grid-template-columns: 40px minmax(430px,1.5fr) minmax(285px,1fr) 220px;
+  grid-template-columns: 40px minmax(430px, 1.5fr) minmax(285px, 1fr) 220px;
   grid-template-rows: 100%;
   align-items: center;
   padding: 8px 16px;
-  
 }
 
-
-
-.first-col-header{
+.first-col-header {
   justify-self: center;
-  
 }
 
-.track-num{
-  
+.track-num {
   justify-self: center;
   color: var(--songs-table-color);
 
-  .pause{
+  .pause {
     height: 16px;
     width: 16px;
     display: flex;
   }
-
+}
+.track-num.playing {
+  color: var(--green-checked);
 }
 
-
-
-
-
-.track-text{
-
-  .track-artists{
-    color: var(--songs-table-color);
-    font-family: Circular-thin;;
+.track-text {
+  .playing {
+    color: var(--green-checked);
   }
-
+  .track-artists {
+    color: var(--songs-table-color);
+    font-family: Circular-thin;
+  }
 }
 
-.duration-header-icon
-,.track-duration-container{
+.duration-header-icon,
+.track-duration-container {
   justify-self: center;
 }
 
 .track-header {
-     font-family: 'Circular-thin';
-    
-    color: var(--songs-table-color);
-  
-    border-bottom: 1px solid hsla(0,0%,100%,.1);
+  font-family: 'Circular-thin';
+
+  color: var(--songs-table-color);
+
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
 }
 
 .track-row {
@@ -78,41 +69,37 @@
   border-radius: 4px;
   transition: background-color 0.2s;
 
-  .track-album,.track-duration-container{
-  color: var(--songs-table-color);
-    font-family: Circular-thin;;
+  .track-album,
+  .track-duration-container {
+    color: var(--songs-table-color);
+    font-family: Circular-thin;
   }
 
-  .play{
+  .play {
     display: flex;
     fill: #fff;
     height: 14px;
     width: 14px;
-   
   }
-    &:hover {
-    .track-artists{
-    color: #fff;
-  }
-  .track-album{
-    color: #fff;
-  }
-  .pause{
-     fill: #fff;
-    height: 14px;
-    width: 14px;
-  
-  }
-  .addLikedSong{
-    fill: var(--songs-table-color)
-
-   
-  }
-  .addLikedSong:hover{
-    fill: #fff;
-    cursor: pointer;
-  }
-  
+  &:hover {
+    .track-artists {
+      color: #fff;
+    }
+    .track-album {
+      color: #fff;
+    }
+    .pause {
+      fill: #fff;
+      height: 14px;
+      width: 14px;
+    }
+    .addLikedSong {
+      fill: var(--songs-table-color);
+    }
+    .addLikedSong:hover {
+      fill: #fff;
+      cursor: pointer;
+    }
   }
 }
 
@@ -127,13 +114,11 @@
   border-radius: 4px;
 }
 
-.track-title{
+.track-title {
   display: flex;
- 
 }
 
-.duration-svg{
-
+.duration-svg {
   fill: var(--songs-table-color);
   width: 16px;
   height: 16px;
@@ -147,36 +132,30 @@
   .pause {
     transition: opacity 0.2s ease;
     height: 16px;
-    width:16px;
+    width: 16px;
   }
 
   .pause {
     display: none;
-    
+
     opacity: 0;
     position: absolute;
     inset: 0;
   }
-
-
 
   &:hover {
     .equalizer {
       display: none;
     }
     .pause {
-
       display: flex;
-     
+
       opacity: 1;
     }
   }
 }
 
-
-
 #bar1 {
-
   animation: bar1 1.2s infinite linear;
 }
 
@@ -243,17 +222,15 @@
   }
 }
 
-
-.track-duration-container{
+.track-duration-container {
   display: flex;
   align-items: center;
   position: relative;
-  .addLikedSong{
+  .addLikedSong {
     position: absolute;
-    left : -50px;
+    left: -50px;
     height: 16px;
     width: 16px;
     fill: var(--color-secondary);
   }
-  
 }

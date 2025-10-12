@@ -8,7 +8,11 @@ import { ModalEdit } from './ModalEdit.jsx'
 import { StationListActions } from './StationListActions.jsx'
 import { SortMenu } from './SortMenu.jsx'
 import { debounce } from '../services/util.service'
-import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions.js'
+import {
+  setTracks,
+  setCurrentTrack,
+  setIsPlaying,
+} from '../store/actions/track.actions.js'
 import { youtubeService } from '../services/youtube.service.js'
 
 export function StationList({
@@ -18,9 +22,13 @@ export function StationList({
   onRemoveStation,
   onUpdateStation,
 }) {
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
-  
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
+
   const [stationsToShow, setStationsToShow] = useState(stations)
   const [filterBy, setFilterBy] = useState({
     sortBy: 'Recently Added',
@@ -143,7 +151,9 @@ export function StationList({
       await setTracks(playlistQueue)
 
       // Find the track to play and set it as current
-      const trackToPlay = playlistQueue.find(t => t.spotifyId === track.spotifyId)
+      const trackToPlay = playlistQueue.find(
+        (t) => t.spotifyId === track.spotifyId
+      )
       if (trackToPlay) {
         setCurrentTrack(trackToPlay)
         setIsPlaying(true)
@@ -165,7 +175,9 @@ export function StationList({
 
   function isStationCurrentlySelected(station) {
     if (!currentTrack || !station || !station.tracks) return false
-    return station.tracks.some(track => track.spotifyId === currentTrack.spotifyId)
+    return station.tracks.some(
+      (track) => track.spotifyId === currentTrack.spotifyId
+    )
   }
 
   async function onPlayStation(station) {
@@ -253,7 +265,11 @@ export function StationList({
                 onClick={() => handlePlayClick(station._id)}
                 onContextMenu={(ev) => toggleActionMenu(ev, station._id)}
               >
-                <StationPreview station={station} onPlay={onPlay} onPlayStation={onPlayStation} onPause={onPause} />
+                <StationPreview
+                  station={station}
+                  onPlayStation={onPlayStation}
+                  onPause={onPause}
+                />
               </li>
             </NavLink>
           ))}

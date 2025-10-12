@@ -38,7 +38,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="track-num">
+          <div className={`track-num ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
             {isTrackCurrentlyPlaying(track) ? (
               hoveredTrackIdx === idx ? (
                 <SvgIcon
@@ -60,7 +60,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
             )}
           </div>
 
-          <div className="track-title">
+          <div className={`track-title ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
             {track.album?.imgUrl && (
               <img
                 src={track.album.imgUrl}

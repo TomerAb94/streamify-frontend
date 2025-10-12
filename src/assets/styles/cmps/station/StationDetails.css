@@ -108,6 +108,7 @@
 
   & .track-list {
     padding: 0 24px;
+    font-family: Circular-thin;
   }
 
   & .search-tracks {
@@ -231,5 +232,9 @@
       height: 24px;
       fill: var(--color-text-secondary);
     }
+  }
+
+  & .playing{
+    color: var(--green-checked);
   }
 }

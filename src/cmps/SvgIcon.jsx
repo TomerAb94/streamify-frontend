@@ -58,10 +58,7 @@ function _getIcon(iconName) {
   </g>
 </svg>,
         queue:<svg data-encore-id="icon" role="img" aria-hidden="true" className="e-91000-icon e-91000-baseline" viewBox="0 0 16 16"><path d="M15 15H1v-1.5h14zm0-4.5H1V9h14zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5m2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2z"></path></svg>,
-
-
-
-    
+        volumeFull:<svg data-encore-id="icon" role="img" aria-hidden="true" className="e-91000-icon e-91000-baseline CicqRGKm_zeaoHcbASTP" viewBox="0 0 16 16" ><path d="M10.016 1.125A.75.75 0 0 0 8.99.85l-6.925 4a3.64 3.64 0 0 0 0 6.299l6.925 4a.75.75 0 0 0 1.125-.65v-13a.75.75 0 0 0-.1-.375zM11.5 5.56a2.75 2.75 0 0 1 0 4.88z"></path><path d="M16 8a5.75 5.75 0 0 1-4.5 5.614v-1.55a4.252 4.252 0 0 0 0-8.127v-1.55A5.75 5.75 0 0 1 16 8"></path></svg>,
     
     }
     return icons[iconName]

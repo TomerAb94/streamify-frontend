@@ -1,29 +1,30 @@
 & .queue {
   display: none;
-  overflow-y: scroll;
   scrollbar-width: thin;
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
   background-color: var(--color-secondary);
   grid-area: side-bar;
   position: relative;
   border-radius: 8px;
+  overflow-y: hidden;
 
   &.open {
     display: flex;
     flex-direction: column;
 
-    & .queue-icon{
-      color: green;
+    & .queue-icon {
+      color: var(--green-clicked);
     }
   }
 
   /* header */
-  > header {
+  > .queue-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    /* position: sticky; */
     padding: 8px 16px;
+    /* box-shadow: 0 6px 10px rgba(0,0,0,.6); */
 
     > h1 {
       margin: 0;
@@ -64,6 +65,7 @@
     flex-direction: column;
     padding: 16px;
     gap: 24px;
+    overflow-y: scroll;
 
     & .track-area {
       display: flex;
@@ -78,4 +80,3 @@
     }
   }
 }
-

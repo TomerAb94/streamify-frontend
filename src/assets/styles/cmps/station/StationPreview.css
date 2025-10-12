@@ -11,38 +11,63 @@
 
   > .station-data-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    font-family: Circular-thin;
+    justify-content: space-between;
+    > .station-data-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      font-family: Circular-thin;
 
-    > .station-title {
-      color: var(--color-text-primary);
+      > .station-title {
+        color: var(--color-text-primary);
+
+        &.playing {
+          color: var(--green-checked);
+        }
+      }
+
+      > .station-mini-data {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+
+        > .station-type-owner {
+          > .station-type {
+            text-transform: capitalize;
+          }
+          > .station-type + span:before {
+            content: '•';
+            margin: 0 2px;
+            color: var(--gray2);
+          }
+        }
+      }
     }
 
-    > .station-mini-data {
+    > span {
+      opacity: 0;
       display: flex;
       align-items: center;
-      gap: 6px;
-      font-size: 13px;
+      padding: 8px;
 
-      > .station-type-owner {
-         > .station-type {
-          text-transform: capitalize;
-        }
-        > .station-type + span:before {
-          content: '•';
-          margin: 0 2px;
-          color: var(--gray2);
-        }
+      &.playing {
+        opacity: 1;
+      }
+
+      > svg {
+        height: 16px;
+        width: 16px;
+        fill: var(--green-pin);
       }
     }
   }
 
   & .pin-svg {
     fill: var(--green-pin);
-    height: 11px;
-    width: 11px;
+    height: 12px;
+    width: 12px;
   }
 
   &:hover {
@@ -54,7 +79,7 @@
       background-color: var(--color-hover-lighter);
     }
 
-    & .play{
+    & .play {
       width: 20px;
       height: 20px;
       fill: var(--color-white-fff);
@@ -93,14 +118,13 @@
     justify-content: center;
     opacity: 0;
 
-    > .play-btn{
-      
-      > span{
+    > .play-btn {
+      > span {
         display: flex;
         justify-content: center;
         align-items: center;
 
-        > svg{
+        > svg {
           width: 20px;
           height: 20px;
           fill: var(--color-white-fff);

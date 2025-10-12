@@ -144,7 +144,7 @@ export function StationFilter() {
             onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="track-num">
+            <div className={`track-num ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
               {isTrackCurrentlyPlaying(track) ? (
                 hoveredTrackIdx === idx ? (
                   <SvgIcon
@@ -175,7 +175,7 @@ export function StationFilter() {
                 />
               )}
               <div className="track-text">
-                <span className="track-name">{track.name}</span>
+                <span className={`track-name ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>{track.name}</span>
                 <div className="track-artists">
                   {track.artists.map((artist, i) => (
                     <span key={artist.id}>

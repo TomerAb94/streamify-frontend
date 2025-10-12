@@ -1,16 +1,23 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 
-export function StationPreview({ station, onPlay, onPlayStation, onPause }) {
+export function StationPreview({ station, onPlayStation, onPause }) {
   // Use the new player state
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
 
   // Check if any track from this station is currently playing
   function isStationPlaying() {
     if (!currentTrack) return false
-    return station.tracks.some(track => track.spotifyId === currentTrack.spotifyId) && isPlaying
+    return (
+      station.tracks.some(
+        (track) => track.spotifyId === currentTrack.spotifyId
+      ) && isPlaying
+    )
   }
 
   return (
@@ -56,18 +63,26 @@ export function StationPreview({ station, onPlay, onPlayStation, onPause }) {
       </div>
 
       <div className="station-data-container">
-        <p className="station-title">{station.title}</p>
-        <div className="station-mini-data">
-          {station.isPinned && <SvgIcon iconName="pin" />}
-          <span className="station-type-owner">
-            <span className="station-type">{station.stationType}</span>
-            {station.tags.includes('Liked Songs') ? (
-              <span> {station.tracks.length} songs </span>
-            ) : (
-              <span>{station.createdBy.fullname}</span>
-            )}
-          </span>
+        <div className="station-data-wrapper">
+          <p className={`station-title ${isStationPlaying() ? 'playing' : ''}`}>
+            {station.title}
+          </p>
+          <div className="station-mini-data">
+            {station.isPinned && <SvgIcon iconName="pin" />}
+            <span className="station-type-owner">
+              <span className="station-type">{station.stationType}</span>
+              {station.tags.includes('Liked Songs') ? (
+                <span> {station.tracks.length} songs </span>
+              ) : (
+                <span>{station.createdBy.fullname}</span>
+              )}
+            </span>
+          </div>
         </div>
+        <SvgIcon
+          iconName="volumeFull"
+          className={`${isStationPlaying() ? 'playing' : ''}`}
+        />
       </div>
     </>
   )
