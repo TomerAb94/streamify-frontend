@@ -27,6 +27,7 @@ import { ModalRemove } from '../cmps/ModalRemove'
 import { trackService } from '../services/track/index'
 import { TrackPreview } from '../cmps/TrackPreview'
 import { SvgIcon } from '../cmps/SvgIcon'
+import { PlaylistQueue } from '../cmps/PlaylistQueue'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
@@ -36,6 +37,7 @@ export function StationIndex() {
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
   )
+  const station = useSelector((storeState) => storeState.stationModule.station)
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
@@ -140,47 +142,7 @@ export function StationIndex() {
 
       <Outlet context={{ stations }} />
 
-      <div ref={queueRef} className="queue">
-        <header>
-          <h1>Queue</h1>
-          <button onClick={onToggleQueue}>
-            <SvgIcon iconName="close" />
-          </button>
-        </header>
-        <div className="queue-track-list">
-          {currentTrack && (
-            <div className='track-area'>
-              <h2>Now playing</h2>
-              <TrackPreview
-                key={`current-${currentTrack.spotifyId}`}
-                track={currentTrack}
-                idx={0}
-                isPlaying={isPlaying}
-              />
-            </div>
-          )}
-          
-          {playlist.length > 0 && (
-            <div className='track-area'>
-              <h2>Next ({playlist.length})</h2>
-              {playlist.map((track, idx) => (
-                <TrackPreview
-                  key={`queue-${track.spotifyId}-${idx}`}
-                  track={track}
-                  idx={idx + 1}
-                  isPlaying={false}
-                />
-              ))}
-            </div>
-          )}
-          
-          {!currentTrack && playlist.length === 0 && (
-            <div className="empty-queue">
-              <p>No tracks in queue</p>
-            </div>
-          )}
-        </div>
-      </div>
+      <PlaylistQueue playlist={playlist} station={station} currentTrack={currentTrack} onToggleQueue={onToggleQueue} queueRef={queueRef}  />
 
       <AppFooter onToggleQueue={onToggleQueue} />
       {isModalRemoveOpen && (
