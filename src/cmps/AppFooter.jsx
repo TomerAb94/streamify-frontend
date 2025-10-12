@@ -8,7 +8,7 @@ import {
   setVolume,
 } from '../store/actions/track.actions'
 
-export function AppFooter({ onToggleQueue }) {
+export function AppFooter({ onToggleQueue, isQueueOpen }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -18,7 +18,6 @@ export function AppFooter({ onToggleQueue }) {
   )
   const volume = useSelector((storeState) => storeState.trackModule.volume)
 
-  const [isQueueOpen, setIsQueueOpen] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [previousVolume, setPreviousVolume] = useState(1)
   const [isVolumeHover, setIsVolumeHover] = useState(false)
@@ -27,7 +26,6 @@ export function AppFooter({ onToggleQueue }) {
   const handleMouseLeaveVolume = () => setIsVolumeHover(false)
 
   function handleToggleQueue() {
-    setIsQueueOpen(!isQueueOpen)
     onToggleQueue()
   }
 

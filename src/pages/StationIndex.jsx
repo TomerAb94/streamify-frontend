@@ -33,6 +33,7 @@ export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
+  const [isQueueOpen, setIsQueueOpen] = useState(false)
 
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
@@ -43,7 +44,6 @@ export function StationIndex() {
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
 
-  const queueRef = useRef(null)
   const mainContainerRef = useRef(null)
 
   useEffect(() => {
@@ -114,8 +114,7 @@ export function StationIndex() {
   }
 
   function onToggleQueue() {
-    queueRef.current.classList.toggle('open')
-    mainContainerRef.current.classList.toggle('sidebar-open')
+    setIsQueueOpen(!isQueueOpen)
   }
 
   // async function onAddTrack() {
@@ -129,7 +128,7 @@ export function StationIndex() {
   // }
 
   return (
-    <section ref={mainContainerRef} className="main-container">
+    <section ref={mainContainerRef} className={`main-container ${isQueueOpen ? 'sidebar-open' : ''}`}>
       <AppHeader />
 
       <StationList
@@ -142,9 +141,9 @@ export function StationIndex() {
 
       <Outlet context={{ stations }} />
 
-      <PlaylistQueue playlist={playlist} station={station} currentTrack={currentTrack} onToggleQueue={onToggleQueue} queueRef={queueRef}  />
+      <PlaylistQueue playlist={playlist} station={station} currentTrack={currentTrack} onToggleQueue={onToggleQueue} isQueueOpen={isQueueOpen} />
 
-      <AppFooter onToggleQueue={onToggleQueue} />
+      <AppFooter onToggleQueue={onToggleQueue} isQueueOpen={isQueueOpen} />
       {isModalRemoveOpen && (
         <ModalRemove
           station={stationToRemove}
@@ -152,7 +151,7 @@ export function StationIndex() {
           closeModal={closeModal}
           onConfirmRemove={onConfirmRemove}
         />
-      )}
+      )}  
     </section>
   )
 }

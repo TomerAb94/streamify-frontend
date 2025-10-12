@@ -38,10 +38,6 @@
     > .track-name {
       font-family: Circular-thin;
       font-size: 1rem;
-
-      &.playing {
-        color: var(--green-checked);
-      }
     }
 
     > .artist-name {
@@ -50,4 +46,9 @@
       color: var( --songs-table-color);
     }
   }
+}
+
+/* Style track name when parent div has playing class */
+.playing .track-preview .track-info .track-name {
+  color: var(--green-checked);
 }

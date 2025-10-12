@@ -5,11 +5,44 @@ export function PlaylistQueue({
   playlist,
   currentTrack,
   onToggleQueue,
-  queueRef,
+  isQueueOpen,
   station,
 }) {
+  
+  // Sort playlist by following nextId chain starting from currentTrack
+  function getSortedNextTracks() {
+    if (!currentTrack || !playlist.length) return []
+    
+    const sortedTracks = []
+    const seenTrackIds = new Set([currentTrack.spotifyId]) // Track current track to avoid duplicates
+    let nextTrackId = currentTrack.nextId
+    
+    // Follow the nextId chain
+    while (nextTrackId && sortedTracks.length < playlist.length) {
+      const nextTrack = playlist.find(track => track.spotifyId === nextTrackId)
+      
+      // If track found and not already processed
+      if (nextTrack && !seenTrackIds.has(nextTrack.spotifyId)) {
+        sortedTracks.push(nextTrack)
+        seenTrackIds.add(nextTrack.spotifyId)
+        nextTrackId = nextTrack.nextId
+      } else {
+        break // Chain broken or circular reference
+      }
+    }
+    
+    // Add any remaining tracks that weren't in the nextId chain (fallback)
+    playlist.forEach(track => {
+      if (!seenTrackIds.has(track.spotifyId)) {
+        sortedTracks.push(track)
+        seenTrackIds.add(track.spotifyId)
+      }
+    })
+    
+    return sortedTracks
+  }
   return (
-    <div ref={queueRef} className="queue">
+    <div className={`queue ${isQueueOpen ? 'open' : ''}`}>
       <header>
         <h1>Queue</h1>
         <button onClick={onToggleQueue}>
@@ -20,28 +53,20 @@ export function PlaylistQueue({
         {currentTrack && (
           <div className="track-area">
             <h2>Now playing</h2>
-            <TrackPreview
-              key={`current-${currentTrack.spotifyId}`}
-              track={currentTrack}
-              idx={0}
-              playingClass="playing"
-            />
+            <div className="playing">
+              <TrackPreview track={currentTrack} />
+            </div>
           </div>
         )}
 
-        {playlist.length > 0 && (
+        {getSortedNextTracks().length > 0 && (
           <div className="track-area">
-            <h2>Next from: {station.title}</h2>
-            {playlist.map((track, idx) => {
-              if (track.spotifyId === currentTrack?.spotifyId) return null
-              return (
-                <TrackPreview
-                  key={`queue-${track.spotifyId}-${idx}`}
-                  track={track}
-                  idx={idx + 1}
-                />
-              )
-            })}
+            <h2>Next from: {station?.title || 'Playlist'}</h2>
+            {getSortedNextTracks().map((track) => (
+              <div key={track.spotifyId}>
+                <TrackPreview track={track} />
+              </div>
+            ))}
           </div>
         )}
 
