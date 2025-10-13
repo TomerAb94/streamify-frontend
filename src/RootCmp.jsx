@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Routes, Route } from 'react-router'
 import { useSelector } from 'react-redux'
 import ReactPlayer from 'react-player'
@@ -14,6 +14,8 @@ import { TrackDetails } from './cmps/TrackDetails.jsx'
 import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
 import { Browse } from './cmps/Browse.jsx'
 
+import { setProgressSec, setSeekToSec } from './store/actions/track.actions.js'
+
 export function RootCmp() {
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -25,6 +27,24 @@ export function RootCmp() {
   const volume = useSelector(
     (storeState) => storeState.trackModule.volume
   )
+
+  const seekToSec = useSelector((storeState) => storeState.trackModule.seekToSec)
+
+  // A ref to the ReactPlayer instance, required for seekTo() on player
+  const playerRef = useRef(null)
+
+  // Sync the player's progress (seconds played) - from player → to Redux
+  const handleTimeUpdate = useCallback(() => {
+    const time = playerRef.current?.currentTime
+    if (typeof time === 'number') setProgressSec(time)
+  }, [])
+
+  // Listen for "seekToSec" intent in Redux - from UI → to player
+  useEffect(() => {
+    if (seekToSec === null) return
+    if (playerRef.current) playerRef.current.currentTime = seekToSec
+    setSeekToSec(null)
+  }, [seekToSec])
 
   return (
     <>
@@ -47,12 +67,14 @@ export function RootCmp() {
 
       <div className="youtube-video">
         <ReactPlayer
+          ref={playerRef}
           src={`https://www.youtube.com/watch?v=${
             currentTrack?.youtubeId || ''
           }`}
           playing={isPlaying}
           volume={volume}
           controls={false} // Hide native controls
+          onTimeUpdate={handleTimeUpdate}
         />
       </div>
     </>
