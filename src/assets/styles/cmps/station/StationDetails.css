@@ -159,6 +159,9 @@
             > * {
               color: var(--color-white-fff);
             }
+            & .search-track-artists{
+              color: var(--songs-table-color);
+            }
           }
 
           & .search-track-title {

@@ -1,0 +1,53 @@
+.artist-details {
+  grid-area: station-index;
+  width: 100%;
+  border-radius: 8px;
+  overflow-y: overlay;
+  
+  scrollbar-width: thin;
+  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
+  
+  > .artist-details-header {
+    width: 100%;
+
+    > .img-header-container {
+      position: relative;
+      height: 40vh;
+      width: 100%;
+
+      > img {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      > .artist-details-info {
+        position: absolute;
+        bottom: 40px;
+        left: 24px;
+        display: flex;
+        flex-direction: column;
+        /* gap: 8px; */
+
+        > h1 {
+          font-size: 5rem;
+          overflow-wrap: break-word;
+          margin-bottom: 10px;
+        }
+
+        > .followers {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  & svg {
+    width: 24px;
+    height: 24px;
+    fill: red;
+  }
+}

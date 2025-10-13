@@ -91,14 +91,15 @@ export function AppFooter({ onToggleQueue, isQueueOpen }) {
       setIsMuted(false)
     }
   }
-
   return (
     <footer className="app-footer">
       <div className="track-info">
         <div className="track-cover">
-          {currentTrack?.album?.imgUrl ? (
+          {currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0] ? (
             <img
-              src={currentTrack.album.imgUrl}
+              src={
+                currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0]
+              }
               alt={`${currentTrack.name} cover`}
               className="cover-img"
             />

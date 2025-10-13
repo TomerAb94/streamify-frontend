@@ -20,6 +20,7 @@ export const spotifyService = {
   getCurrentPlayback,
   getSearchedTracks,
   getFullTrackData,
+  getArtistData,
 }
 
 async function getAccessToken() {
@@ -183,6 +184,22 @@ async function getFullTrackData(trackId) {
 async function getArtist(artistId) {
   const endpoint = `/artists/${artistId}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getArtistData(artistId) {
+  let artist = await getArtist(artistId)
+  let tracks = await getSearchedTracks(artist.name, 5)
+
+  artist = {
+    id: artist.id,
+    name: artist.name,
+    imgUrls: artist.images.map((img) => img.url),
+    followers: artist.followers.total,
+    genres: artist.genres,
+    topTracks: tracks,
+  }
+  
+  return artist
 }
 
 async function getAlbum(albumId) {

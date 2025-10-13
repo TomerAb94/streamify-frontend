@@ -9,7 +9,8 @@ import { StationIndex } from './pages/StationIndex.jsx'
 import { HomePage } from './cmps/HomePage.jsx'
 import { StationDetails } from './cmps/StationDetails.jsx'
 import { StationFilter } from './cmps/StationFilter.jsx'
-import { TrackDetails } from './cmps/TrackDetails.jsx'
+import { TrackDetails } from './pages/TrackDetails.jsx'
+import { ArtistDetails } from './pages/ArtistDetails.jsx'
 
 import { LoginSignup, Login, Signup } from './pages/LoginSignup.jsx'
 import { Browse } from './cmps/Browse.jsx'
@@ -36,6 +37,7 @@ export function RootCmp() {
           <Route path="/search/:searchStr" element={<StationFilter />} />
           <Route path="/station/:stationId" element={<StationDetails />} />
           <Route path="/track/:Id" element={<TrackDetails />} />
+          <Route path="/artist/:Id" element={<ArtistDetails />} />
           <Route path="/browse" element={<Browse />} />
         </Route>
 

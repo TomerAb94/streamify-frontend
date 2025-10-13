@@ -36,8 +36,9 @@
 @import "cmps/station/StationFilter";
 @import "cmps/station/StationDetails";
 
-@import "cmps/track/TrackDetails";
+@import "cmps/track/TrackDetails";           
 @import "cmps/track/TrackPreview";
+@import "cmps/track/ArtistDetails";           
 
 @import "cmps/review/ReviewEdit";
 @import "cmps/review/ReviewList";

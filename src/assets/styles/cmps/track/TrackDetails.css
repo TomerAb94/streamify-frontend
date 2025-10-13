@@ -3,7 +3,7 @@
   border-radius: 8px;
   width: 100%;
 
-  overflow-y: scroll;
+  overflow-y: overlay;
 
   scrollbar-width: thin;
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
@@ -27,7 +27,7 @@
         height: 100%;
         width: 100%;
         box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
-        /* object-fit: cover; */
+        object-fit: cover;
       }
     }
 
@@ -67,7 +67,8 @@
           }
         }
 
-        > span:not(:first-child, :last-child) {
+        > a,
+        span:not(:first-child, :last-child) {
           position: relative;
 
           &::after {
@@ -140,46 +141,50 @@
       align-items: flex-start;
     }
 
-    > .artist-data {
+    > .artist-link {
       grid-column: 4/6;
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-gap: 16px;
-      grid-row: 1;
-      padding: 8px;
-      border-radius: 4px;
-      height: fit-content;
 
-      &:hover {
-        background-color: hsla(0, 0%, 100%, 0.1);
-      }
+      > .artist-data {
+        grid-column: 4/6;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-gap: 16px;
+        grid-row: 1;
+        padding: 8px;
+        border-radius: 4px;
+        height: fit-content;
 
-      > .artist-img {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
-
-        > img {
-          border-radius: 50%;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center center;
+        &:hover {
+          background-color: hsla(0, 0%, 100%, 0.1);
         }
-      }
 
-      > .artist-mini-data {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        > .artist-img {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
 
-        > p {
-          padding-bottom: 4px;
-          font-size: 0.875rem;
+          > img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+          }
+        }
+
+        > .artist-mini-data {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          > p {
+            padding-bottom: 4px;
+            font-size: 0.875rem;
+          }
         }
       }
     }

@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
+import { NavLink } from 'react-router-dom'
 
 import { spotifyService } from '../services/spotify.service'
-import { SvgIcon } from './SvgIcon'
-import { LongText } from './LongText'
-import { TrackList } from './TrackList'
+import { youtubeService } from '../services/youtube.service'
+import { SvgIcon } from '../cmps/SvgIcon'
+import { LongText } from '../cmps/LongText'
+import { TrackList } from '../cmps/TrackList'
 import {
   setCurrentTrack,
   setIsPlaying,
   setTracks,
 } from '../store/actions/track.actions'
-import { youtubeService } from '../services/youtube.service'
 
 export function TrackDetails() {
   const params = useParams()
@@ -34,8 +35,7 @@ export function TrackDetails() {
   async function loadTrack(trackId) {
     const track = await spotifyService.getFullTrackData(trackId)
     setTrack(track)
-    console.log(track.artists[0].imgUrls[0]);
-    
+    console.log(track.artists[0].imgUrls[0])
   }
 
   async function onPlay(track) {
@@ -86,9 +86,14 @@ export function TrackDetails() {
           <h1>{track?.name}</h1>
           <div className="more-info">
             <span className="artist-img">
-              <img src={track?.artists[0]?.imgUrls[0]} alt={track?.artists[0]?.name} />
+              <img
+                src={track?.artists[0]?.imgUrls[0]}
+                alt={track?.artists[0]?.name}
+              />
             </span>
-            <span className="artist-name">{track?.artists[0]?.name}</span>
+            <NavLink to={`/artist/${track?.artists?.[0]?.id?.[0]}`}>
+              <span className="artist-name nav-link">{track?.artists[0]?.name}</span>
+            </NavLink>
             <span className="album-name">{track?.album?.name}</span>
             <span className="release-date">{track?.releaseDate}</span>
             <span className="duration">{track?.duration}</span>
@@ -106,15 +111,9 @@ export function TrackDetails() {
         ) : (
           <button
             onClick={() => {
-              // If there's a current track from this station that's paused, just resume
-              // if (currentTrack && isStationCurrentlyPlaying() && !isPlaying) {
-              //   onResume()
-              // } else {
               onPlay(track)
-              // }
             }}
             className="play-btn"
-            //   disabled={!station.tracks || station.tracks.length === 0}
           >
             <SvgIcon iconName="play" className="play" />
           </button>
@@ -127,19 +126,26 @@ export function TrackDetails() {
           <h2>Lyrics</h2>
           <LongText txt={track?.lyrics} />
         </div>
-        <div className="artist-data">
-          <span className="artist-img">
-            <img
-              width={'60px'}
-              src={track?.artists[0]?.imgUrls[0]}
-              alt={track?.artists[0]?.name}
-            />
-          </span>
-          <div className="artist-mini-data">
-            <p>Artist</p>
-            <span className="artist-name">{track?.artists[0]?.name}</span>
+        <NavLink
+          className={'artist-link'}
+          to={`/artist/${track?.artists?.[0]?.id?.[0]}`}
+        >
+          <div className="artist-data">
+            <span className="artist-img">
+              <img
+                width={'60px'}
+                src={track?.artists[0]?.imgUrls[0]}
+                alt={track?.artists[0]?.name}
+              />
+            </span>
+            <div className="artist-mini-data">
+              <p>Artist</p>
+              <span className="artist-name nav-link">
+                {track?.artists[0]?.name}
+              </span>
+            </div>
           </div>
-        </div>
+        </NavLink>
       </div>
 
       {/* <div className="album-tracks">

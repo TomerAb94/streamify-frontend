@@ -73,10 +73,12 @@ export function TrackList({ tracks, onPlay, onPause }) {
               <NavLink to={`/track/${track.spotifyId}`} className="track-name nav-link">{track.name}</NavLink>
               <div className="track-artists">
                 {track.artists.map((artist, i) => (
-                  <span key={artist.id}>
-                    {artist.name}
-                    {i < track.artists.length - 1 ? ', ' : ''}
-                  </span>
+                  <NavLink key={artist.id} to={`/artist/${artist.id?.[i]}`}>
+                    <span className="nav-link">
+                      {artist.name}
+                      {i < track.artists.length - 1 ? ', ' : ''}
+                    </span>
+                  </NavLink>
                 ))}
               </div>
             </div>
