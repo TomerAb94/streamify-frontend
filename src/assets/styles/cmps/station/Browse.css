@@ -1,0 +1,35 @@
+.browse-container {
+    grid-area: station-index;
+    height: calc(100vh - 180px);
+    position: relative;
+    overflow: hidden; 
+}
+
+.browse-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.browse-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.browse-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+.browse-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+.genres-list {
+    
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
