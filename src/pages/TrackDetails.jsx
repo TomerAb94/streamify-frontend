@@ -35,7 +35,7 @@ export function TrackDetails() {
   async function loadTrack(trackId) {
     const track = await spotifyService.getFullTrackData(trackId)
     setTrack(track)
-    console.log(track.artists[0].imgUrls[0])
+    console.log(track)
   }
 
   async function onPlay(track) {
@@ -74,7 +74,7 @@ export function TrackDetails() {
       return null
     }
   }
-
+if (!track) return <div>Loading...</div>
   return (
     <section className="track-details">
       <header className="track-details-header">
@@ -91,7 +91,7 @@ export function TrackDetails() {
                 alt={track?.artists[0]?.name}
               />
             </span>
-            <NavLink to={`/artist/${track?.artists?.[0]?.id?.[0]}`}>
+            <NavLink to={`/artist/${track?.artists?.[0]?.id}`}>
               <span className="artist-name nav-link">{track?.artists[0]?.name}</span>
             </NavLink>
             <span className="album-name">{track?.album?.name}</span>

@@ -165,7 +165,6 @@ function getCmdAddTrackMsg(msg) {
 
 // Player command creators
 function getCmdSetCurrentTrack(track) {
-  console.log('current track:', track) 
   return {
     type: SET_CURRENT_TRACK,
     track,

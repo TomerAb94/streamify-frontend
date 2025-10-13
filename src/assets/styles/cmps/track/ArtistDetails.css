@@ -2,8 +2,8 @@
   grid-area: station-index;
   width: 100%;
   border-radius: 8px;
-  overflow-y: overlay;
-  
+  overflow: auto;
+
   scrollbar-width: thin;
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
   
@@ -30,7 +30,34 @@
         left: 24px;
         display: flex;
         flex-direction: column;
-        /* gap: 8px; */
+
+        > .verified-artist {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 0.875rem;
+          color: hsla(0, 0%, 100%, 0.7);
+
+          > .background {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #fff;
+          }
+
+          & svg {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            fill: #4cb3ff;
+          }
+        }
 
         > h1 {
           font-size: 5rem;
@@ -45,9 +72,40 @@
     }
   }
 
-  & svg {
-    width: 24px;
-    height: 24px;
-    fill: red;
+  > .action-btns {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
+    z-index: 1;
+
+    > .play-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--green-pin);
+      padding: 22px;
+
+      &:hover {
+        background-color: var(--green-play);
+      }
+
+      > .play,
+      .pause {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        > svg {
+          width: 24px;
+          height: 24px;
+          fill: black;
+        }
+      }
+    }
+  }
+
+  > .top-tracks{
+    padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
   }
 }

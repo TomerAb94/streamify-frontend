@@ -2,8 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
 
 export function TrackPreview({ track, isPlaying }) {
-  console.log(track);
-  
+
   return (
     <section className="track-preview">
       <div className="track-img">
