@@ -1,3 +1,5 @@
+
+
 const CLIENT_ID = 'bc0de1d56cf04139b055dab040514fc2'
 const CLIENT_SECRET = 'a95e1562557f434489e50790a67ab105'
 const TOKEN_URL = 'https://accounts.spotify.com/api/token'
@@ -19,9 +21,15 @@ export const spotifyService = {
   pauseTrack,
   getCurrentPlayback,
   getSearchedTracks,
+  getGenres,
+  getGenrePlaylists,
+  getTracksPlaylist,
   getFullTrackData,
   getArtistData,
 }
+
+
+
 
 async function getAccessToken() {
   if (accessToken && tokenExpiryTime && Date.now() < tokenExpiryTime) {
@@ -207,6 +215,93 @@ async function getAlbum(albumId) {
   return makeSpotifyRequest(endpoint)
 }
 
+
+async function getGenres(limit = 50, offset = 0) {
+  try {
+    const endpoint = `/browse/categories?limit=${limit}&offset=${offset}&locale=en_IL`
+    const response = await makeSpotifyRequest(endpoint)
+    return response.categories.items.map(category => ({
+      id: category.id,
+      name: category.name,
+      icons: category.icons
+    }))
+  } catch (error) {
+    console.error('Error fetching genres/categories:', error)
+    throw error
+  }
+}
+
+
+
+async function getGenrePlaylists(genre) {
+  try{
+  const endpoint =  `/search?q=${encodeURIComponent(genre)}&type=playlist&market=US&limit=50`
+  const response = await makeSpotifyRequest(endpoint)
+  return response.playlists.items.filter(playlist => playlist!==null)
+  }
+ catch (error) {
+    console.error('Error fetching genres/categories:', error)
+    throw error
+  }
+}
+
+async function getTracksPlaylist(playlistId) {
+  try {
+    const endpoint = `/playlists/${playlistId}`
+    const response = await makeSpotifyRequest(endpoint)
+    
+    // Extract playlist metadata
+    const playlistInfo = {
+      id: response.id,
+      name: response.name,
+      description: response.description,
+      imgUrl: response.images[0]?.url,
+      owner: response.owner.display_name,
+      followers: response.followers.total,
+      tracksTotal: response.tracks.total
+    }
+
+    // Map tracks to clean format
+    const tracks = response.tracks.items
+      .filter(item => item && item.track) // Filter out null tracks
+      .map((item) => {
+        const track = item.track
+        return {
+          spotifyId: track.id,
+          name: track.name,
+          album: { 
+            name: track.album.name, 
+            imgUrl: track.album.images?.[0]?.url 
+          },
+          artists: [{
+            name: track.artists.map((artist) => artist.name).join(', '),
+            id: track.artists.map((artist) => artist.id),
+          }],
+          duration: formatDuration(track.duration_ms),
+          addedAt: item.added_at,
+          youtubeId: null,
+        }
+      })
+
+    return {
+      playlist: playlistInfo,
+      tracks: tracks
+    }
+  } catch (error) {
+    console.error('Error fetching playlist tracks:', error)
+    throw error
+  }
+}
+
+
+
+
+
+// const result = await spotifyService.getTracksPlaylist('3z0MRRZHSNPI4tPEjcCZRV');
+// console.log(result.playlist); // מידע על הפלייליסט
+// console.log(result.tracks);   // מערך של השירים
+
+
 // Note: These functions require user authentication and Spotify Premium
 let player = null
 let deviceId = null
@@ -302,3 +397,6 @@ async function getCurrentPlayback(userAccessToken) {
   }
   return null
 }
+
+
+
