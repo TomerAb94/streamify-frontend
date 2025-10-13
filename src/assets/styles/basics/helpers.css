@@ -28,3 +28,8 @@
 .no-background{ 
     background: none;
 }
+
+.nav-link:hover {
+    text-decoration: underline;
+    color: inherit;
+}

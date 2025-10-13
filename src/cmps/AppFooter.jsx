@@ -6,9 +6,10 @@ import {
   setIsPlaying,
   setCurrentTrack,
   setVolume,
+  setSeekToSec,
 } from '../store/actions/track.actions'
 
-export function AppFooter({ onToggleQueue }) {
+export function AppFooter({ onToggleQueue, isQueueOpen }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -18,16 +19,22 @@ export function AppFooter({ onToggleQueue }) {
   )
   const volume = useSelector((storeState) => storeState.trackModule.volume)
 
-  const [isQueueOpen, setIsQueueOpen] = useState(false)
+  const progressSec = useSelector((storeState) => storeState.trackModule.progressSec)
+  
   const [isMuted, setIsMuted] = useState(false)
   const [previousVolume, setPreviousVolume] = useState(1)
   const [isVolumeHover, setIsVolumeHover] = useState(false)
+  const [isTimelineHover, setIsTimelineHover] = useState(false)
+  const [seeking, setSeeking] = useState(false)
+  const [draftSec, setDraftSec] = useState(0)
 
   const handleMouseEnterVolume = () => setIsVolumeHover(true)
   const handleMouseLeaveVolume = () => setIsVolumeHover(false)
 
+  const handleMouseEnterTimeline = () => setIsTimelineHover(true)
+  const handleMouseLeaveTimeline = () => setIsTimelineHover(false)
+
   function handleToggleQueue() {
-    setIsQueueOpen(!isQueueOpen)
     onToggleQueue()
   }
 
@@ -93,6 +100,42 @@ export function AppFooter({ onToggleQueue }) {
       setIsMuted(false)
     }
   }
+
+  function onSeekStart() {
+    setSeeking(true)
+    setDraftSec(progressSec)
+  }
+
+  function onSeekChange(ev) {
+    setDraftSec(Number(ev.target.value))
+  }
+
+  function onSeekCommit(ev) {
+    setSeekToSec(Number(ev.target.value))
+    setSeeking(false)
+  }
+
+  // One-time inline function for parse duration from "m:ss" label to numeric duration, it helps the track-player seek correctly
+  const durationSecNumeric = (() => {
+    const dur = currentTrack?.duration
+    if (!dur) return 0
+    const [m, s] = String(dur).split(':')
+    return (Number(m) * 60 + Number(s))
+  })()
+
+  const baseProgress = Math.min(durationSecNumeric, seeking ? draftSec : progressSec)
+
+  // Formatter for the left timestamp - current time of track (or seek time)
+  const currentTrackTime = (() => {
+    const timeInSec = Math.max(0, Math.floor(baseProgress))
+    const mm = Math.floor(timeInSec / 60)
+    const ss = String (timeInSec % 60).padStart(2, '0')
+    return `${mm}:${ss}`
+  })()
+
+  const progressPct = durationSecNumeric > 0
+    ? Math.min(100, Math.max(0, (baseProgress / durationSecNumeric) * 100))
+    : 0
 
   return (
     <footer className="app-footer">
@@ -160,12 +203,26 @@ export function AppFooter({ onToggleQueue }) {
           </div>
         </div>
         <div className="track-timeline">
-          <span className="time">0:00</span>
+          <span className="time">{currentTrackTime}</span>
           <input
             className="time-range"
             type="range"
             min="0"
-            max={currentTrack?.duration}
+            max={durationSecNumeric}
+            step="0.1"
+            value={baseProgress}
+            onMouseDown={onSeekStart}
+            onChange={onSeekChange}
+            onMouseUp={onSeekCommit}
+            onMouseEnter={handleMouseEnterTimeline}
+            onMouseLeave={handleMouseLeaveTimeline}
+            style={{
+              background: `linear-gradient(to right,
+                ${isTimelineHover ? 'var(--green-clicked)' : 'var(--color-white-fff)'} 0%,
+                ${isTimelineHover ? 'var(--green-clicked)' : 'var(--color-white-fff)'} ${progressPct}%,
+                var(--color-secondary-3) ${progressPct}%,
+                var(--color-secondary-3) 100%)`,
+            }}
           />
           <span className="time">{currentTrack?.duration}</span>
         </div>

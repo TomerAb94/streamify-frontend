@@ -1,47 +1,45 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet } from 'react-router-dom'
-import ReactPlayer from 'react-player'
-
-import { spotifyService } from '../services/spotify.service'
 
 import {
   loadStations,
   addStation,
   updateStation,
   removeStation,
-  addStationMsg,
 } from '../store/actions/station.actions'
 
 import { updateUser } from '../store/actions/user.actions'
 
 import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service'
 import { stationService } from '../services/station/'
-import { userService } from '../services/user'
 
 import { StationList } from '../cmps/StationList'
-import { StationFilter } from '../cmps/StationFilter'
 import { AppHeader } from '../cmps/AppHeader'
 import { AppFooter } from '../cmps/AppFooter'
 import { ModalRemove } from '../cmps/ModalRemove'
-import { trackService } from '../services/track/index'
-import { TrackPreview } from '../cmps/TrackPreview'
-import { SvgIcon } from '../cmps/SvgIcon'
+import { PlaylistQueue } from '../cmps/PlaylistQueue'
+import { setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
+  const [isQueueOpen, setIsQueueOpen] = useState(false)
 
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
   )
+  const station = useSelector((storeState) => storeState.stationModule.station)
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
 
-  const queueRef = useRef(null)
   const mainContainerRef = useRef(null)
 
   useEffect(() => {
@@ -112,22 +110,27 @@ export function StationIndex() {
   }
 
   function onToggleQueue() {
-    queueRef.current.classList.toggle('open')
-    mainContainerRef.current.classList.toggle('sidebar-open')
+    setIsQueueOpen(!isQueueOpen)
   }
 
-  // async function onAddTrack() {
-  //   const track = trackService.getEmptyTrack()
-  //   console.log(track)
+  async function onPlay(track) {
+    try {
+      await setCurrentTrack(track)
+      await setIsPlaying(true)
+    } catch (err) {
+      console.error('Error playing track:', err)
+    }
+  }
 
-  //   try {
-  //   } catch (err) {
-  //     showErrorMsg('Cannot update station')
-  //   }
-  // }
+  async function onPause() {
+    await setIsPlaying(false)
+  }
 
   return (
-    <section ref={mainContainerRef} className="main-container">
+    <section
+      ref={mainContainerRef}
+      className={`main-container ${isQueueOpen ? 'sidebar-open' : ''}`}
+    >
       <AppHeader />
 
       <StationList
@@ -140,49 +143,18 @@ export function StationIndex() {
 
       <Outlet context={{ stations }} />
 
-      <div ref={queueRef} className="queue">
-        <header>
-          <h1>Queue</h1>
-          <button onClick={onToggleQueue}>
-            <SvgIcon iconName="close" />
-          </button>
-        </header>
-        <div className="queue-track-list">
-          {currentTrack && (
-            <div className='track-area'>
-              <h2>Now playing</h2>
-              <TrackPreview
-                key={`current-${currentTrack.spotifyId}`}
-                track={currentTrack}
-                idx={0}
-                isPlaying={isPlaying}
-              />
-            </div>
-          )}
-          
-          {playlist.length > 0 && (
-            <div className='track-area'>
-              <h2>Next ({playlist.length})</h2>
-              {playlist.map((track, idx) => (
-                <TrackPreview
-                  key={`queue-${track.spotifyId}-${idx}`}
-                  track={track}
-                  idx={idx + 1}
-                  isPlaying={false}
-                />
-              ))}
-            </div>
-          )}
-          
-          {!currentTrack && playlist.length === 0 && (
-            <div className="empty-queue">
-              <p>No tracks in queue</p>
-            </div>
-          )}
-        </div>
-      </div>
+      <PlaylistQueue
+        playlist={playlist}
+        station={station}
+        currentTrack={currentTrack}
+        isPlaying={isPlaying}
+        onPlay={onPlay}
+        onPause={onPause}
+        onToggleQueue={onToggleQueue}
+        isQueueOpen={isQueueOpen}
+      />
 
-      <AppFooter onToggleQueue={onToggleQueue} />
+      <AppFooter onToggleQueue={onToggleQueue} isQueueOpen={isQueueOpen} />
       {isModalRemoveOpen && (
         <ModalRemove
           station={stationToRemove}

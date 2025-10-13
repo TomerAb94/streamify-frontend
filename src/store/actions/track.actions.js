@@ -10,9 +10,8 @@ import {
   SET_CURRENT_TRACK,
   SET_IS_PLAYING,
   SET_VOLUME,
-  // SET_PROGRESS_SEC,
-  // SET_DURATION_SEC,
-  // SET_SEEK_TO_SEC,
+  SET_PROGRESS_SEC,
+  SET_SEEK_TO_SEC,
 } from '../reducers/track.reducer'
 
 export async function loadTracks(filterBy) {
@@ -102,18 +101,13 @@ export function setVolume(volume) {
   store.dispatch(getCmdSetVolume(volume))
 }
 
-// export function setProgressSec(progressSec) {
-//   store.dispatch(getCmdSetProgressSec(progressSec))
-// }
+export function setProgressSec(progressSec) {
+  store.dispatch(getCmdSetProgressSec(progressSec))
+}
 
-// export function setDurationSec(durationSec) {
-//   store.dispatch(getCmdSetDurationSec(durationSec))
-// }
-
-
-// export function setSeekToSec(seekToSec) {
-//   store.dispatch(getCmdSetSeekToSec(seekToSec))
-// }
+export function setSeekToSec(seekToSec) {
+  store.dispatch(getCmdSetSeekToSec(seekToSec))
+}
 
 // // Convenience action to play a track (sets both current track and playing state)
 // export function playTrack(track) {
@@ -171,6 +165,7 @@ function getCmdAddTrackMsg(msg) {
 
 // Player command creators
 function getCmdSetCurrentTrack(track) {
+  console.log('current track:', track) 
   return {
     type: SET_CURRENT_TRACK,
     track,
@@ -191,26 +186,19 @@ function getCmdSetVolume(volume) {
   }
 }
 
-// function getCmdSetProgressSec(progressSec) {
-//   return {
-//     type: SET_PROGRESS_SEC,
-//     progressSec,
-//   }
-// }
+function getCmdSetProgressSec(progressSec) {
+  return {
+    type: SET_PROGRESS_SEC,
+    progressSec,
+  }
+}
 
-// function getCmdSetDurationSec(durationSec) {
-//   return {
-//     type: SET_DURATION_SEC,
-//     durationSec,
-//   }
-// }
-
-// function getCmdSetSeekToSec(seekToSec) {
-//   return {
-//     type: SET_SEEK_TO_SEC,
-//     seekToSec,
-//   }
-// }
+function getCmdSetSeekToSec(seekToSec) {
+  return {
+    type: SET_SEEK_TO_SEC,
+    seekToSec,
+  }
+}
 
 // unitTestActions()
 async function unitTestActions() {

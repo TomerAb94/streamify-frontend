@@ -23,7 +23,8 @@ export const spotifyService = {
   getSearchedTracks,
   getGenres,
   getGenrePlaylists,
-  getTracksPlaylist
+  getTracksPlaylist,
+  getFullTrackData,
 }
 
 
@@ -81,31 +82,32 @@ async function makeSpotifyRequest(endpoint) {
 async function getSearchedTracks(query, limit = 5, offset = 0) {
   const tracksFromSpotify = await searchTracks(query, limit, offset)
   let tracks = tracksFromSpotify.tracks.items
-  
+
   tracks = tracks.map((track) => {
     return {
       spotifyId: track.id,
       name: track.name,
       album: { name: track.album.name, imgUrl: track.album.images[0].url },
-      artists: [{
-        name: track.artists.map((artist) => artist.name).join(', '),
-        id: track.artists.map((artist) => artist.id),
-      }],
+      artists: [
+        {
+          name: track.artists.map((artist) => artist.name).join(', '),
+          id: track.artists.map((artist) => artist.id),
+        },
+      ],
       duration: formatDuration(track.duration_ms),
       youtubeId: null,
     }
   })
-  
+
   return tracks
 }
 
-  function formatDuration(durationMs) {
-    const totalSeconds = Math.floor(durationMs / 1000)
-    const minutes = Math.floor(totalSeconds / 60)
-    const seconds = totalSeconds % 60
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
-
+function formatDuration(durationMs) {
+  const totalSeconds = Math.floor(durationMs / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
 
 async function searchTracks(query, limit = 5, offset = 0) {
   const endpoint = `/search?q=${encodeURIComponent(
@@ -131,6 +133,57 @@ async function searchAlbums(query, limit = 20, offset = 0) {
 async function getTrack(trackId) {
   const endpoint = `/tracks/${trackId}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getLyrics(artist, track) {
+  try {
+    // Using lyrics.ovh (free, no API key)
+    const response = await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(track)}`)
+    
+    if (response.ok) {
+      const data = await response.json()
+      return data.lyrics
+    }
+    return null
+  } catch (error) {
+    console.error('Error fetching lyrics:', error)
+    return null
+  }
+}
+
+async function getFullTrackData(trackId) {
+  const trackFromSpotify = await getTrack(trackId)
+  const artistFromSpotify = await getArtist(trackFromSpotify.artists[0].id)
+  const albumFromSpotify = await getAlbum(trackFromSpotify.album.id)
+  const lyrics = await getLyrics(artistFromSpotify.name, trackFromSpotify.name)
+
+  const track = trackFromSpotify
+  const artist = artistFromSpotify
+  const album = albumFromSpotify
+
+  let fullData = {
+    spotifyId: track.id,
+    name: track.name,
+    releaseDate: track.album.release_date,
+    duration: formatDuration(track.duration_ms),
+    album: {
+      id: album.id,
+      name: album.name,
+      imgUrls: album.images.map((img) => img.url),
+      tracks: album.tracks.items.map((t) => ({ id: t.id, name: t.name })),
+    },
+    artist: {
+      id: artist.id,
+      name: artist.name,
+      imgUrls: artist.images.map((img) => img.url),
+      followers: artist.followers.total,
+      genres: artist.genres,
+    },
+    lyrics: lyrics || 'Lyrics not found',
+    youtubeId: null,
+  }
+
+  return fullData
 }
 
 async function getArtist(artistId) {

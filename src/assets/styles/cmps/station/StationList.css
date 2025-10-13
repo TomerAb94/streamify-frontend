@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
+  height: 100%;
+  overflow: hidden;
 
   background-color: var(--color-secondary);
 
@@ -24,12 +26,15 @@
     flex-direction: column;
     gap: 8px;
     padding: 0 8px;
+    height: 100%;
+    overflow-y: scroll;
 
     > .search-bar {
       position: relative;
       display: flex;
       justify-content: space-between;
       padding: 2px 8px 0;
+      height: fit-content;
 
       & .input-container {
         z-index: -1000;
@@ -101,7 +106,6 @@
             fill: var(--color-text-secondary);
           }
         }
-        
       }
 
       .sort-btn {
@@ -115,7 +119,7 @@
         &:hover {
           color: var(--color-hover-white);
           scale: 1.02;
-    
+
           & .list-svg {
             fill: var(--color-white-hover);
           }
@@ -142,6 +146,25 @@
       display: flex;
       flex-direction: column;
       width: 100%;
+      height: 100%;
+    }
+
+    &::-webkit-scrollbar {
+      --wbkit-appearance: none;
+      appearance: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      width: 16px;
+      background-color: hsla(0, 0%, 100%, 0.3);
+      transition: background-color 1s;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: hsla(0, 0%, 100%, 0.4);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background-color: hsla(0, 0%, 100%, 0.6);
     }
   }
 

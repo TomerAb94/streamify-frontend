@@ -1,28 +1,18 @@
-import { useState } from 'react'
+import { SvgIcon } from './SvgIcon'
 
-export function TrackPreview({ track, idx, isPlaying }) {
-  const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
-
-  function handleMouseEnter(idx) {
-    setHoveredTrackIdx(idx)
-  }
-
-  function handleMouseLeave() {
-    setHoveredTrackIdx(null)
-  }
+export function TrackPreview({ track, isPlaying }) {
   return (
-    <section
-      className="track-preview"
-      onMouseEnter={() => handleMouseEnter(idx)}
-      onMouseLeave={handleMouseLeave}
-    >
+    <section className="track-preview">
       <div className="track-img">
         <img src={track.album?.imgUrl} alt={`${track.name} cover`} />
+        <SvgIcon iconName={isPlaying ? 'pause' : 'play'} />
       </div>
 
       <div className="track-info">
         <span className="track-name">{track.name}</span>
-        <span className="artist-name">{track.artists.map(artist => artist.name).join(', ')}</span>
+        <span className="artist-name">
+          {track.artists.map((artist) => artist.name).join(', ')}
+        </span>
       </div>
     </section>
   )

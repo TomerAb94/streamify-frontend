@@ -36,6 +36,7 @@
 @import "cmps/station/StationDetails";
 @import "cmps/station/Browse";
 
+@import "cmps/track/TrackDetails";
 @import "cmps/track/TrackPreview";
 
 @import "cmps/review/ReviewEdit";

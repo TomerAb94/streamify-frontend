@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
+import { NavLink } from 'react-router-dom'
 
 export function TrackList({ tracks, onPlay, onPause }) {
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
@@ -38,7 +39,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="track-num">
+          <div className={`track-num ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
             {isTrackCurrentlyPlaying(track) ? (
               hoveredTrackIdx === idx ? (
                 <SvgIcon
@@ -60,7 +61,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
             )}
           </div>
 
-          <div className="track-title">
+          <div className={`track-title ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
             {track.album?.imgUrl && (
               <img
                 src={track.album.imgUrl}
@@ -69,7 +70,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
               />
             )}
             <div className="track-text">
-              <span className="track-name">{track.name}</span>
+              <NavLink to={`/track/${track.spotifyId}`} className="track-name nav-link">{track.name}</NavLink>
               <div className="track-artists">
                 {track.artists.map((artist, i) => (
                   <span key={artist.id}>

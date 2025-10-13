@@ -8,15 +8,8 @@
   border-radius: 6px;
   padding: 8px;
 
-  &:hover {
-    background-color: var(--color-hover-darker);
-
-    /* > * {
-      color: var(--color-white-hover);
-    } */
-  }
-
   & .track-img {
+    position: relative;
     width: 48px;
     height: 48px;
     margin: 0;
@@ -26,6 +19,32 @@
       height: 100%;
       object-fit: cover;
       border-radius: 4px;
+    }
+
+    > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+
+      > svg {
+        fill: var(--color-white-fff);
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  &:hover {
+    background-color: var(--color-hover-darker);
+    & span {
+      opacity: 1;
     }
   }
 
@@ -43,7 +62,12 @@
     > .artist-name {
       font-family: Circular-thin;
       font-size: 0.875rem;
-      color: var( --songs-table-color);
+      color: var(--songs-table-color);
     }
   }
+}
+
+/* Style track name when parent div has playing class */
+.playing .track-preview .track-info .track-name {
+  color: var(--green-checked);
 }
