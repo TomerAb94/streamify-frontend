@@ -27,9 +27,33 @@
 }
 
 .genres-list {
-    
+    grid-area: station-index;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
     padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.genres-list::-webkit-scrollbar {
+    width: 12px;
+}
+
+.genres-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.genres-list::-webkit-scrollbar-thumb {
+    background: #535353;
+    border-radius: 6px;
+}
+
+.genres-list::-webkit-scrollbar-thumb:hover {
+    background: #757575;
+}
+
+.playlist-container{
+    height: 100%;
+    overflow-y: auto;
 }

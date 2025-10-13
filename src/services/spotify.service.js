@@ -201,10 +201,10 @@ async function getTracksPlaylist(playlistId) {
             name: track.album.name, 
             imgUrl: track.album.images?.[0]?.url 
           },
-          artists: {
+          artists: [{
             name: track.artists.map((artist) => artist.name).join(', '),
             id: track.artists.map((artist) => artist.id),
-          },
+          }],
           duration: formatDuration(track.duration_ms),
           addedAt: item.added_at,
           youtubeId: null,

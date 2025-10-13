@@ -90,7 +90,7 @@ export async function addTrackMsg(trackId, txt) {
 }
 
 // Player actions
-export function setCurrentTrack(track) {
+export async function setCurrentTrack(track) {
   store.dispatch(getCmdSetCurrentTrack(track))
 }
 
