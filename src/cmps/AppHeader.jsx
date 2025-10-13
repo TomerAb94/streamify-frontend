@@ -39,7 +39,7 @@ export function AppHeader() {
   }
 
   function backToBrowse() {
-    navigate('/genre')
+    navigate('/browse')
   }
 
   async function onLogout() {

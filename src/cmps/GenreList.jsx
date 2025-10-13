@@ -25,7 +25,7 @@ export function GenreList( ) {
     return (
         <div className="genres-list">
             {playlists.map((station) => (
-                <Link to={`/genre/${params.genreName}/${station.id}`} key={station.id}>
+                <Link to={`/browse/genre/${params.genreName}/${station.id}`} key={station.id}>
                     <div className="playlist-item">
                         {station.images?.[0]?.url && (
                             <img src={station.images[0].url} alt={station.name} />

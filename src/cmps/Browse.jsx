@@ -33,10 +33,10 @@ export function Browse() {
 
   return (
     <div className="browse-container">
-        
+
       <div className="genres-list">
         {genres.map((genre) => (
-            <NavLink to={`/genre/${genre.name}`} key={genre.id}>
+            <NavLink to={`/browse/genre/${genre.name}`} key={genre.id}>
             <div className="genre-item" onClick={() => onSelectGenre(genre.name)}>
               {genre.icons?.[0]?.url && (
                 <img src={genre.icons[0].url} alt={genre.name} />

@@ -38,9 +38,9 @@ export function RootCmp() {
           <Route path="/search/:searchStr" element={<StationFilter />} />
           <Route path="/station/:stationId" element={<StationDetails />} />
           <Route path="/track/:Id" element={<TrackPreview />} />
-          <Route path="/genre" element={<Browse />} />
-          <Route path="/genre/:genreName"  element={<GenreList />} />
-          <Route path="/genre/:genreName/:playlistId"  element={<PlayList />} />
+          <Route path="/browse" element={<Browse />} />
+          <Route path="/browse/genre/:genreName"  element={<GenreList />} />
+          <Route path="/browse/genre/:genreName/:playlistId"  element={<PlayList />} />
         </Route>
 
         <Route path="auth" element={<LoginSignup />}>

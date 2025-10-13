@@ -163,7 +163,7 @@ async function getGenres(limit = 50, offset = 0) {
 
 async function getGenrePlaylists(genre) {
   try{
-  const endpoint =  `/search?q=${genre}&type=playlist&market=US&limit=50`
+  const endpoint =  `/search?q=${encodeURIComponent(genre)}&type=playlist&market=US&limit=50`
   const response = await makeSpotifyRequest(endpoint)
   return response.playlists.items.filter(playlist => playlist!==null)
   }
