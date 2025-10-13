@@ -164,13 +164,15 @@ async function getFullTrackData(trackId) {
       imgUrls: album.images.map((img) => img.url),
       tracks: album.tracks.items.map((t) => ({ id: t.id, name: t.name })),
     },
-    artist: {
-      id: artist.id,
-      name: artist.name,
-      imgUrls: artist.images.map((img) => img.url),
-      followers: artist.followers.total,
-      genres: artist.genres,
-    },
+    artists: [
+      {
+        id: artist.id,
+        name: artist.name,
+        imgUrls: artist.images.map((img) => img.url),
+        followers: artist.followers.total,
+        genres: artist.genres,
+      },
+    ],
     lyrics: lyrics || 'Lyrics not found',
     youtubeId: null,
   }

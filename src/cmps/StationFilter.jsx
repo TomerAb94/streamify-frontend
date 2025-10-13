@@ -11,6 +11,7 @@ import {
 
 import { SvgIcon } from './SvgIcon'
 import { updateStation } from '../store/actions/station.actions'
+import { NavLink } from 'react-router-dom'
 
 export function StationFilter() {
   const params = useParams()
@@ -175,7 +176,9 @@ export function StationFilter() {
                 />
               )}
               <div className="track-text">
-                <span className={`track-name ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>{track.name}</span>
+                <NavLink to={`/track/${track.spotifyId}`}>
+                  <span className={`track-name nav-link ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>{track.name}</span>
+                </NavLink>
                 <div className="track-artists">
                   {track.artists.map((artist, i) => (
                     <span key={artist.id}>

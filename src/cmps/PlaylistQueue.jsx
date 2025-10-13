@@ -13,6 +13,7 @@ export function PlaylistQueue({
   onPlay,
   onPause,
 }) {
+    console.log(currentTrack);
     
   // Sort playlist by following nextId chain starting from currentTrack
   function getSortedNextTracks() {

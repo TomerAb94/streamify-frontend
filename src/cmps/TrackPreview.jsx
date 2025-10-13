@@ -1,10 +1,12 @@
 import { SvgIcon } from './SvgIcon'
 
 export function TrackPreview({ track, isPlaying }) {
+  console.log(track);
+  
   return (
     <section className="track-preview">
       <div className="track-img">
-        <img src={track.album?.imgUrl} alt={`${track.name} cover`} />
+        <img src={track.album?.imgUrl||track.album?.imgUrls[0]} alt={`${track.name} cover`} />
         <SvgIcon iconName={isPlaying ? 'pause' : 'play'} />
       </div>
 

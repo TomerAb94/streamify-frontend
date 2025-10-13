@@ -1,0 +1,13 @@
+.long-text {
+    color: hsla(0,0%,100%,.7);
+    white-space: pre-wrap;
+    line-height: normal;
+    max-width: 40ch;
+    font-family: Circular-thin;
+}
+
+.show-more-less{
+    color: var(--color-white-fff);
+    cursor: pointer;
+    font-family: Circular;
+}

@@ -1,3 +1,187 @@
-.track-details{
-    grid-area: station-index;
+.track-details {
+  grid-area: station-index;
+  border-radius: 8px;
+  width: 100%;
+
+  overflow-y: scroll;
+
+  scrollbar-width: thin;
+  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
+
+  > .track-details-header {
+    display: flex;
+    max-height: 336px;
+    width: 100%;
+    padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+    > .img-container {
+      border-radius: 4px;
+      height: clamp(128px, 128px + 100cqw - 600px / 424 * 104, 232px);
+      width: clamp(128px, 128px + 100cqw - 600px / 424 * 104, 232px);
+      margin-right: 24px;
+
+      > img {
+        border-radius: 4px;
+        height: 100%;
+        width: 100%;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+        /* object-fit: cover; */
+      }
+    }
+
+    > .track-details-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+
+      > p {
+        font-size: 0.875rem;
+      }
+
+      > h1 {
+        font-size: 3.5rem;
+        margin: 0;
+      }
+
+      > .more-info {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        font-size: 0.875rem;
+        gap: 4px;
+
+        > .artist-img {
+          border-radius: 50%;
+          width: 24px;
+          height: 24px;
+
+          > img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+          }
+        }
+
+        > span:not(:first-child, :last-child) {
+          position: relative;
+
+          &::after {
+            content: '•';
+            margin-left: 4px;
+            color: var(--color-text-secondary);
+            font-family: Circular-thin;
+            font-size: 1rem;
+          }
+        }
+
+        > .album-name {
+          font-family: Circular-thin;
+        }
+
+        > .release-date,
+        > .duration,
+        > .followers {
+          color: var(--color-text-secondary-2);
+          font-family: Circular-thin;
+        }
+      }
+    }
+  }
+
+  > .action-btns {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
+    z-index: 1;
+
+    > .play-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--green-pin);
+      padding: 22px;
+
+      &:hover {
+        background-color: var(--green-play);
+      }
+
+      > .play,
+      .pause {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        > svg {
+          width: 24px;
+          height: 24px;
+          fill: black;
+        }
+      }
+    }
+  }
+
+  > .lyrics-artist-container {
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    padding: 0 clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
+    margin-bottom: 40px;
+
+    > .lyrics {
+      grid-column: span 3;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    > .artist-data {
+      grid-column: 4/6;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-gap: 16px;
+      grid-row: 1;
+      padding: 8px;
+      border-radius: 4px;
+      height: fit-content;
+
+      &:hover {
+        background-color: hsla(0, 0%, 100%, 0.1);
+      }
+
+      > .artist-img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+
+        > img {
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center center;
+        }
+      }
+
+      > .artist-mini-data {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        > p {
+          padding-bottom: 4px;
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
 }
