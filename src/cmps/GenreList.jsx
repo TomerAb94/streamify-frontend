@@ -15,7 +15,7 @@ export function GenreList( ) {
     async function loadPlaylists() {
         try {
             const playlists = await spotifyService.getGenrePlaylists(params.genreName)
-            console.log('playlists:', playlists)
+            // console.log('playlists:', playlists)
             setPlaylists(playlists)
         } catch (error) {
             console.error('Failed loading playlists:', error)

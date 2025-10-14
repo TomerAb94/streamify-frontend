@@ -31,7 +31,7 @@ export function PlayList() {
   async function loadPlaylist() {
     try {
       const playlist = await spotifyService.getTracksPlaylist(params.playlistId)
-      console.log('playlist:', playlist)
+      // console.log('playlist:', playlist)
       setPlaylist(playlist)
     } catch (error) {
       console.error('Failed loading playlists:', error)
@@ -52,10 +52,6 @@ export function PlayList() {
       return null
     }
   }
-
-
-
-
   async function onPlay(track) {
     try {
       // Clear existing playlist
@@ -69,11 +65,8 @@ export function PlayList() {
         ...track,
         youtubeId,
       }
-
-      console.log('trackWithYoutube:', trackWithYoutube)
+      // console.log('trackWithYoutube:', trackWithYoutube)
       // Set single track as playlist and play it
-      
-     
       await setTracks(playlist.tracks)
       await setCurrentTrack(trackWithYoutube)
       await setIsPlaying(true)
