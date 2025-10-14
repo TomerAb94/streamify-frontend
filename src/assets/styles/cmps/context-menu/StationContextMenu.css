@@ -1,7 +1,6 @@
 .stations-context-menu {
   visibility: visible;
-  top: -400px;
-  right: 180px;
+  inset: auto 60px 40px auto;
   z-index: 100;
   background-color: var(--color-secondary-1);
 
@@ -27,7 +26,7 @@
       align-items: center;
       justify-content: flex-start;
       gap: 8px;
-      background-color: var(--color-secondary-2);
+      background-color: var(--color-secondary-1);
       color: var(--color-text-secondary);
       border-radius: 8px;
       padding: 0 12px;

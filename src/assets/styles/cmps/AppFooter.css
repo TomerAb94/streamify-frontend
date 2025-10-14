@@ -53,6 +53,9 @@
         & svg {
           fill: var(--color-white-fff);
         }
+        & .in-station {
+          fill: var(--green-checked);
+        }
       }
 
       & svg {
@@ -60,6 +63,14 @@
         height: 16px;
         fill: var(--color-text-secondary);
       }
+
+      & .in-station {
+        fill: var(--green-checked);
+      }
+    }
+
+    > .stations-context-menu {
+      inset: auto auto 90px 250px;
     }
   }
   /* Center area */
@@ -187,7 +198,7 @@
         cursor: pointer;
         /* background: var(--color-secondary-3); */
 
-         &::-webkit-slider-thumb {
+        &::-webkit-slider-thumb {
           appearance: none;
         }
 

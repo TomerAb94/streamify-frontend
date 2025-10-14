@@ -77,28 +77,17 @@ export function TrackList({ tracks, onPlay, onPause }) {
     }
   }
 
-  async function onRemoveFromLikedSongs(track) {
-    try {
-      const likedSongs = stations.find(
-        (station) => station.title === 'Liked Songs'
-      )
-      if (!likedSongs) return
-      const updatedTracks = likedSongs.tracks.filter(
-        (t) => t.spotifyId !== track.spotifyId
-      )
-      const updatedLikedSongs = {
-        ...likedSongs,
-        tracks: updatedTracks,
-      }
-      await updateStation(updatedLikedSongs)
-    } catch (err) {
-      console.error('Error removing track from Liked Songs:', err)
-    }
-  }
-
   function isTrackInStation(track, station) {
     if (!station || !station.tracks) return false
-    return station.tracks.some((t) => t.spotifyId === track.spotifyId)
+    
+    // Check if track is in the current station
+    const isInCurrentStation = station.tracks.some((t) => t.spotifyId === track.spotifyId)
+    
+    // Also check if track is in 'Liked Songs'
+    const likedSongs = stations.find(s => s.title === 'Liked Songs')
+    const isInLikedSongs = likedSongs?.tracks.some((t) => t.spotifyId === track.spotifyId) || false
+    
+    return isInCurrentStation || isInLikedSongs
   }
 
   function onOpenStationsContextMenu(ev, trackId) {
@@ -248,10 +237,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
                   : () => onAddToLikedSongs(track)
               }
             />
-            <span className="track-duration">{track.duration}</span>
-          </div>
-
-          {contextMenuTrackId === track.spotifyId && (
+            {contextMenuTrackId === track.spotifyId && (
             <StationsContextMenu
               stations={stations}
               track={track}
@@ -260,6 +246,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
               onUpdateStations={onUpdateStations}
             />
           )}
+            <span className="track-duration">{track.duration}</span>
+          </div>
         </div>
       ))}
     </section>

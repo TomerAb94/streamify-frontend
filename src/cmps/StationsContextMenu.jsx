@@ -67,7 +67,6 @@ export function StationsContextMenu({
     ev.stopPropagation()
 
     const stationToUpdate = { ...station }
-    console.log(stationToUpdate)
 
     if (isTrackInStation(track, station)) {
       // Remove track
@@ -81,7 +80,6 @@ export function StationsContextMenu({
 
     setModifiedStations((prev) => {
       const otherStations = prev.filter((s) => s._id !== stationToUpdate._id)
-      console.log([...otherStations, stationToUpdate])
       return [...otherStations, stationToUpdate]
     })
   }
