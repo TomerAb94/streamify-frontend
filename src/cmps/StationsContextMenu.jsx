@@ -1,14 +1,26 @@
 import { useState, useEffect } from 'react'
 import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
+import { use } from 'react'
 
-export function StationsContextMenu({ stations, track, onAddStation }) {
-  const [stationsToShow, setStationsToShow] = useState(stations)
+export function StationsContextMenu({
+  stations,
+  track,
+  onAddStation,
+  onClose,
+  onUpdateStations,
+}) {
   const [filterBy, setFilterBy] = useState({ txt: '' })
+  const [stationsToShow, setStationsToShow] = useState(stations)
+  const [modifiedStations, setModifiedStations] = useState([])
 
   useEffect(() => {
     filterStations()
   }, [stations, filterBy])
+
+  useEffect(() => {
+    filterStations()
+  }, [modifiedStations])
 
   function isTrackInStation(track, station) {
     return station.tracks.some((t) => t.spotifyId === track.spotifyId)
@@ -50,6 +62,37 @@ export function StationsContextMenu({ stations, track, onAddStation }) {
     debounce(() => setFilterBy((prev) => ({ ...prev, txt })), 300)()
   }
 
+  function onAddToggleTrackInStation(ev, station) {
+    ev.preventDefault()
+    ev.stopPropagation()
+
+    const stationToUpdate = { ...station }
+    console.log(stationToUpdate)
+
+    if (isTrackInStation(track, station)) {
+      // Remove track
+      stationToUpdate.tracks = stationToUpdate.tracks.filter(
+        (t) => t.spotifyId !== track.spotifyId
+      )
+    } else {
+      // Add track
+      stationToUpdate.tracks = [...stationToUpdate.tracks, track]
+    }
+
+    setModifiedStations((prev) => {
+      const otherStations = prev.filter((s) => s._id !== stationToUpdate._id)
+      console.log([...otherStations, stationToUpdate])
+      return [...otherStations, stationToUpdate]
+    })
+  }
+
+  function onDone(ev) {
+    ev.preventDefault()
+    ev.stopPropagation()
+    onUpdateStations(modifiedStations)
+    onClose(ev)
+  }
+
   return (
     <div
       className="stations-context-menu context-menu"
@@ -70,13 +113,19 @@ export function StationsContextMenu({ stations, track, onAddStation }) {
           </span>
         </div>
         <ul className="stations-list-menu">
-          <button className="create-station-btn" onClick={(ev) => onAddStation(ev,track)}>
+          <button
+            className="create-station-btn"
+            onClick={(ev) => onAddStation(ev, track)}
+          >
             <SvgIcon iconName="create" className="add-icon" />
             <span>New playlist</span>
           </button>
           {stationsToShow.map((station) => (
             <li className="add-to-station-container" key={station._id}>
-              <button className="add-to-station-btn">
+              <button
+                className="add-to-station-btn"
+                onClick={(ev) => onAddToggleTrackInStation(ev, station)}
+              >
                 <div className="mini-station">
                   <div className="station-img-wrapper">
                     {station.stationImgUrl ? (
@@ -98,7 +147,7 @@ export function StationsContextMenu({ stations, track, onAddStation }) {
                   {station.isPinned && (
                     <SvgIcon iconName="pin" className="pin-icon" />
                   )}
-                  {isTrackInStation(track, station) ? (
+                  {isTrackInStation(track, modifiedStations.find(s => s._id === station._id) || station) ? (
                     <SvgIcon iconName="inStation" className="in-station-icon" />
                   ) : (
                     <span className="empty-circle"></span>
@@ -110,8 +159,12 @@ export function StationsContextMenu({ stations, track, onAddStation }) {
         </ul>
 
         <footer className="stations-form-footer">
-          <button className="cancel-btn">Cancel</button>
-          <button className="done-btn">Done</button>
+          <button className="cancel-btn" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="done-btn" onClick={(ev) => onDone(ev)}>
+            Done
+          </button>
         </footer>
       </form>
     </div>

@@ -2,10 +2,14 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink } from 'react-router-dom'
-import { addStation, updateStation } from '../store/actions/station.actions'
+import {
+  addStation,
+  updateStation,
+} from '../store/actions/station.actions'
 import { StationsContextMenu } from './StationsContextMenu'
 import { updateUser } from '../store/actions/user.actions'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
+import { stationService } from '../services/station/'
 
 export function TrackList({ tracks, onPlay, onPause }) {
   const currentTrack = useSelector(
@@ -132,6 +136,18 @@ export function TrackList({ tracks, onPlay, onPause }) {
     }
   }
 
+  async function onUpdateStations(stations) {
+    const stationsToSave = stations.map((station) => ({ ...station }))
+    try {
+      for (const station of stationsToSave) {
+        await updateStation(station)
+      }
+      showSuccessMsg(`Stations updated, new pin: ${stationsToSave.map((s) => s.isPinned)}`)
+    } catch (err) {
+      showErrorMsg('Cannot update station')
+    }
+  }
+
   return (
     <section className="track-list">
       <div className="track-header">
@@ -241,6 +257,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
               track={track}
               onAddStation={onAddStation}
               onClose={onCloseStationsContextMenu}
+              onUpdateStations={onUpdateStations}
             />
           )}
         </div>

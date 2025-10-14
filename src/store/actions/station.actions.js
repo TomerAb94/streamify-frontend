@@ -14,6 +14,16 @@ export async function loadStations(filterBy) {
     
 }
 
+export async function setStations(stations) {
+    try {
+        store.dispatch(getCmdSetStations(stations))
+        return stations
+    } catch (err) {
+        console.log('Cannot set stations', err)
+        throw err
+    }
+}
+
 export async function loadStation(stationId) {
     try {
         const station = await stationService.getById(stationId)
