@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink } from 'react-router-dom'
 import { updateStation } from '../store/actions/station.actions'
+import { StationsContextMenu } from './StationsContextMenu'
 
 export function TrackList({ tracks, onPlay, onPause }) {
   const currentTrack = useSelector(
@@ -17,6 +18,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
   const station = useSelector((storeState) => storeState.stationModule.station)
 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
+  const [contextMenuTrackId, setContextMenuTrackId] = useState(null)
+  const [clickedTrackId, setClickedTrackId] = useState(null)
 
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
@@ -24,6 +27,10 @@ export function TrackList({ tracks, onPlay, onPause }) {
 
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
+  }
+
+  function handleRowClick(track) {
+    setClickedTrackId(track.spotifyId)
   }
 
   function isTrackCurrentlyPlaying(track) {
@@ -87,6 +94,18 @@ export function TrackList({ tracks, onPlay, onPause }) {
     return station.tracks.some((t) => t.spotifyId === track.spotifyId)
   }
 
+function onOpenStationsContextMenu(ev, trackId) {
+    ev.stopPropagation()
+    setContextMenuTrackId(trackId)
+    setClickedTrackId(trackId)
+  }
+
+  function onCloseStationsContextMenu(ev) {
+    ev.stopPropagation()
+    setContextMenuTrackId(null)
+  }
+
+
   return (
     <section className="track-list">
       <div className="track-header">
@@ -100,10 +119,14 @@ export function TrackList({ tracks, onPlay, onPause }) {
 
       {tracks.map((track, idx) => (
         <div
-          className="track-row"
+          className={`track-row ${clickedTrackId === track.spotifyId ? 'clicked' : ''}`}
           key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
+          onClick={(ev) => {
+            onCloseStationsContextMenu(ev)
+            handleRowClick(track)
+          }}
         >
           <div
             className={`track-num ${
@@ -174,18 +197,28 @@ export function TrackList({ tracks, onPlay, onPause }) {
                 isTrackInStation(track, station) ? 'inStation' : 'addLikedSong'
               }
               className="add-to-playlist"
-              title="Add to Liked Songs"
+              title="Add to Playlist"
               onClick={
                 isTrackInStation(track, station)
-                  ? () => onRemoveFromLikedSongs(track)
+                  ? (ev) => onOpenStationsContextMenu(ev, track.spotifyId)
                   : () => onAddToLikedSongs(track)
               }
-              // onClick={() => onAddToLikedSongs(track)}
             />
             <span className="track-duration">{track.duration}</span>
           </div>
+
+          {contextMenuTrackId === track.spotifyId && (
+            <StationsContextMenu 
+              stations={stations} 
+              track={track} 
+              // isStationsContextMenuOpen={true}
+              onClose={onCloseStationsContextMenu}
+            />
+          )}
         </div>
       ))}
     </section>
   )
 }
+
+// onRemoveFromLikedSongs(track)/

@@ -1,0 +1,6 @@
+.stations-context-menu {
+  visibility: visible;
+    z-index: 100;
+    top: -300px;
+    right: 100px;
+}

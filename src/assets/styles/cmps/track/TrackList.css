@@ -69,9 +69,14 @@
   }
 
   & .track-row {
+    position: relative;
     color: #fff;
     border-radius: 4px;
     transition: background-color 0.2s;
+
+    &.clicked {
+      background-color: #ffffff36;
+    }
 
     & .track-album,
     & .track-duration-container {
@@ -103,6 +108,7 @@
         width: 14px;
       }
     }
+
   }
 
   & .track-img {
@@ -189,6 +195,17 @@
   & .track-row:hover {
     background-color: hsla(0, 0%, 100%, 0.1);
 
+    &.clicked {
+      background-color: #ffffff36;
+    }
+    
+
+    & .add-to-playlist {
+      opacity: 1;
+    }
+  }
+
+  & .track-row.clicked {
     & .add-to-playlist {
       opacity: 1;
     }
