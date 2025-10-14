@@ -54,6 +54,59 @@
 }
 
 .playlist-container{
+    border-radius: 12px;
     height: 100%;
     overflow-y: auto;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.playlist-header{
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    padding: 20px 24px;
+    background-color: red;
+}
+
+.playlist-info{
+    display: grid;
+    gap: 8px;
+     padding: 20px 24px;
+    align-content: center;
+   
+    
+  
+}
+
+.playlist-description{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.playlist-name{
+    font-size: 5rem;
+    font-weight: bold;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.owner-profile-img{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    
+}
+
+.playlist-meta{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+   
+    
 }

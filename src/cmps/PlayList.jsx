@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux'
 export function PlayList() {
   const params = useParams()
   const [playlist, setPlaylist] = useState(null)
+  
+  const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const stations = useSelector(
@@ -43,22 +45,13 @@ export function PlayList() {
   async function onPlay(track) {
     try {
       // Clear existing playlist
-      if (playlist && playlist.length) {
+      if (playListToPlay && playListToPlay.length) {
         await setTracks([])
       }
 
-      // Get YouTube ID for the track
-      const youtubeId = await getYoutubeId(track.name)
-      const trackWithYoutube = {
-        ...track,
-        youtubeId,
-      }
-
-      console.log(trackWithYoutube)
-
       // Set single track as playlist and play it
-      await setTracks([trackWithYoutube])
-      await setCurrentTrack(trackWithYoutube)
+      await setTracks(playlist.tracks)
+      await setCurrentTrack(track)
       await setIsPlaying(true)
     } catch (err) {
       console.error('Error playing track:', err)
@@ -69,15 +62,6 @@ export function PlayList() {
     await setIsPlaying(false)
   }
 
-  async function getYoutubeId(str) {
-    try {
-      const res = await youtubeService.getVideos(str)
-      return res?.[0]?.id || null
-    } catch (err) {
-      console.error('Error fetching YouTube URL:', err)
-      return null
-    }
-  }
 
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
@@ -123,14 +107,16 @@ export function PlayList() {
           <img src={playlist.playlist.imgUrl} alt={playlist.playlist.name} className="playlist-cover" />
         )}
         <div className="playlist-info">
-          <h1>{playlist.playlist.name}</h1>
-          <p>{playlist.playlist.description}</p>
+          <p>{playlist.playlist.isPublic}</p>
+          <h1 className='playlist-name'>{playlist.playlist.name}</h1>
+          <p className='playlist-description'>{playlist.playlist.description}</p>
           <div className="playlist-meta">
-            <span>By {playlist.playlist.owner}</span>
-            <span>•</span>
-            <span>{playlist.playlist.tracksTotal} songs</span>
-            <span>•</span>
-            <span>{playlist.playlist.followers} followers</span>
+            <img className="owner-profile-img" src={playlist.playlist.ownerProfileImg} alt={playlist.playlist.owner} />
+            <span>{playlist.playlist.owner}</span>
+            <span> • </span>
+            <span>{playlist.playlist.followers} saves </span>
+            <span> • </span>
+            <span>{playlist.playlist.tracksTotal} songs </span>
           </div>
         </div>
       </div>
@@ -170,7 +156,7 @@ export function PlayList() {
                 <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
               )}
               <div className="track-text">
-                <span className={`track-name ${currentTrack.name===track.name & isPlaying ? 'playing':''} `} >{track.name}</span>
+                <span className={`track-name ${currentTrack?.name===track.name && isPlaying? 'playing':''} `} >{track.name}</span>
                 <div className="track-artists">
                   <span>{track.artists[0].name}</span>
                 </div>
