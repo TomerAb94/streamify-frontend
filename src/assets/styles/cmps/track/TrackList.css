@@ -2,7 +2,7 @@
   display: grid;
   grid-template-rows: 35px;
   grid-auto-rows: 55px;
-  gap: 8px;
+  gap: 0;
 
   & .track-header,
   & .track-row {
@@ -108,7 +108,6 @@
         width: 14px;
       }
     }
-
   }
 
   & .track-img {
@@ -175,7 +174,7 @@
         fill: var(--songs-table-color);
       }
 
-      > .in-station{
+      > .in-station {
         fill: var(--green-checked);
       }
 
@@ -198,7 +197,6 @@
     &.clicked {
       background-color: #ffffff36;
     }
-    
 
     & .add-to-playlist {
       opacity: 1;
@@ -211,7 +209,6 @@
     }
   }
 }
-
 
 #bar1 {
   animation: bar1 1.2s infinite linear;

@@ -13,8 +13,6 @@ import { spotifyService } from '../services/spotify.service'
 import { updateStation } from '../store/actions/station.actions'
 import { TrackList } from './TrackList'
 import {
-  addTrack,
-  updateTrack,
   setTracks,
   setCurrentTrack,
   setIsPlaying,
@@ -24,6 +22,7 @@ import { youtubeService } from '../services/youtube.service'
 export function StationDetails() {
   const { stationId } = useParams()
   const station = useSelector((storeState) => storeState.stationModule.station)
+  const stations = useSelector((storeState) => storeState.stationModule.stations)
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
@@ -33,7 +32,17 @@ export function StationDetails() {
 
   useEffect(() => {
     loadStation(stationId)
-  }, [stationId, station])
+  }, [stationId])
+
+  // Reload current station when stations array changes (e.g., when tracks are added/removed via context menu)
+  useEffect(() => {
+    if (station && stations.length > 0) {
+      const updatedStation = stations.find(s => s._id === station._id)
+      if (updatedStation && JSON.stringify(updatedStation.tracks) !== JSON.stringify(station.tracks)) {
+        loadStation(stationId)
+      }
+    }
+  }, [stations, station, stationId])
 
   useEffect(() => {
     if (station && station.stationImgUrl) {

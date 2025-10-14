@@ -66,9 +66,12 @@ export function StationsContextMenu({
     ev.preventDefault()
     ev.stopPropagation()
 
-    const stationToUpdate = { ...station }
+    // Use modified station if it exists, otherwise use original station
+    const currentStation = modifiedStations.find((s) => s._id === station._id) || station
+    const stationToUpdate = { ...currentStation }
 
-    if (isTrackInStation(track, station)) {
+    if (isTrackInStation(track, stationToUpdate)) {
+
       // Remove track
       stationToUpdate.tracks = stationToUpdate.tracks.filter(
         (t) => t.spotifyId !== track.spotifyId
@@ -145,7 +148,11 @@ export function StationsContextMenu({
                   {station.isPinned && (
                     <SvgIcon iconName="pin" className="pin-icon" />
                   )}
-                  {isTrackInStation(track, modifiedStations.find(s => s._id === station._id) || station) ? (
+                  {isTrackInStation(
+                    track,
+                    modifiedStations.find((s) => s._id === station._id) ||
+                      station
+                  ) ? (
                     <SvgIcon iconName="inStation" className="in-station-icon" />
                   ) : (
                     <span className="empty-circle"></span>

@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink } from 'react-router-dom'
 import {
   addStation,
+  loadStation,
   updateStation,
 } from '../store/actions/station.actions'
 import { StationsContextMenu } from './StationsContextMenu'
@@ -77,17 +78,10 @@ export function TrackList({ tracks, onPlay, onPause }) {
     }
   }
 
-  function isTrackInStation(track, station) {
-    if (!station || !station.tracks) return false
-    
-    // Check if track is in the current station
-    const isInCurrentStation = station.tracks.some((t) => t.spotifyId === track.spotifyId)
-    
-    // Also check if track is in 'Liked Songs'
-    const likedSongs = stations.find(s => s.title === 'Liked Songs')
-    const isInLikedSongs = likedSongs?.tracks.some((t) => t.spotifyId === track.spotifyId) || false
-    
-    return isInCurrentStation || isInLikedSongs
+  function isTrackInStation(track) {
+    return stations.some(s => 
+      s.tracks && s.tracks.some(t => t.spotifyId === track.spotifyId)
+    )
   }
 
   function onOpenStationsContextMenu(ev, trackId) {
@@ -131,7 +125,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
       for (const station of stationsToSave) {
         await updateStation(station)
       }
-      showSuccessMsg(`Stations updated, new pin: ${stationsToSave.map((s) => s.isPinned)}`)
+      showSuccessMsg(`Stations updated successfully`)
     } catch (err) {
       showErrorMsg('Cannot update station')
     }
@@ -227,12 +221,12 @@ export function TrackList({ tracks, onPlay, onPause }) {
           <div className="track-duration-container">
             <SvgIcon
               iconName={
-                isTrackInStation(track, station) ? 'inStation' : 'addLikedSong'
+                isTrackInStation(track) ? 'inStation' : 'addLikedSong'
               }
               className="add-to-playlist"
               title="Add to Playlist"
               onClick={
-                isTrackInStation(track, station)
+                isTrackInStation(track)
                   ? (ev) => onOpenStationsContextMenu(ev, track.spotifyId)
                   : () => onAddToLikedSongs(track)
               }
