@@ -8,6 +8,12 @@ import {
   setVolume,
   setSeekToSec,
 } from '../store/actions/track.actions'
+import { addStation, updateStation } from '../store/actions/station.actions'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
+import { updateUser } from '../store/actions/user.actions'
+import { stationService } from '../services/station'
+import { StationsContextMenu } from './StationsContextMenu'
+import { youtubeService } from '../services/youtube.service'
 
 export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
@@ -17,10 +23,17 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   const isPlaying = useSelector(
     (storeState) => storeState.trackModule.isPlaying
   )
+  const stations = useSelector(
+    (storeState) => storeState.stationModule.stations
+  )
   const volume = useSelector((storeState) => storeState.trackModule.volume)
 
-  const progressSec = useSelector((storeState) => storeState.trackModule.progressSec)
-  
+  const progressSec = useSelector(
+    (storeState) => storeState.trackModule.progressSec
+  )
+
+  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
+
   const [isMuted, setIsMuted] = useState(false)
   const [previousVolume, setPreviousVolume] = useState(1)
   const [isVolumeHover, setIsVolumeHover] = useState(false)
@@ -50,6 +63,95 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     }
   }
 
+  function isTrackInStation(track) {
+    if (!track) return false
+    // check if track is in 'Liked Songs'
+    const likedSongs = stations.find((s) => s.title === 'Liked Songs')
+    const isInLikedSongs =
+      likedSongs?.tracks.some((t) => t.spotifyId === track.spotifyId) || false
+
+    return isInLikedSongs
+  }
+
+  async function onAddStation(ev) {
+    ev.stopPropagation()
+    ev.preventDefault()
+    if (!loggedInUser) {
+      showErrorMsg('You must be logged in to add a station')
+      return
+    }
+    const playlistStations = stations.filter(
+      (station) => station.stationType === 'playlist'
+    )
+    const count = playlistStations.length + 1
+    const station = stationService.getEmptyStation()
+    station.title += count
+    try {
+      const savedStation = await addStation(station)
+      loggedInUser.ownedStationIds.push(savedStation._id)
+      const savedUser = await updateUser(loggedInUser)
+
+      showSuccessMsg(`Station added (id: ${savedStation._id})`)
+    } catch (err) {
+      showErrorMsg('Cannot add station')
+    }
+  }
+
+  async function onUpdateStations(stations) {
+    const stationsToSave = stations.map((station) => ({ ...station }))
+    try {
+      for (const station of stationsToSave) {
+        await updateStation(station)
+      }
+      showSuccessMsg(
+        `Stations updated, new pin: ${stationsToSave.map((s) => s.isPinned)}`
+      )
+    } catch (err) {
+      showErrorMsg('Cannot update station')
+    }
+  }
+
+  async function onAddToLikedSongs(track) {
+    try {
+      const likedSongs = stations.find(
+        (station) => station.title === 'Liked Songs'
+      )
+      if (!likedSongs) return
+
+      const isTrackInLikedSongs = likedSongs.tracks.some(
+        (t) => t.spotifyId === track.spotifyId
+      )
+      if (isTrackInLikedSongs) {
+        console.log('Track already in Liked Songs')
+        return
+      }
+
+      // Create clean track without player state properties
+      const cleanTrack = { ...track }
+      delete cleanTrack.isPlaying
+      delete cleanTrack.youtubeId
+
+      const updatedLikedSongs = {
+        ...likedSongs,
+        tracks: [...likedSongs.tracks, cleanTrack],
+      }
+
+      await updateStation(updatedLikedSongs)
+    } catch (err) {
+      console.error('Error adding track to Liked Songs:', err)
+    }
+  }
+
+  function onOpenStationsContextMenu(ev) {
+    ev.stopPropagation()
+    setIsContextMenuOpen(true)
+  }
+
+  function onCloseStationsContextMenu(ev) {
+    ev.stopPropagation()
+    setIsContextMenuOpen(false)
+  }
+
   async function onNext() {
     if (!currentTrack || !currentTrack.nextId) return
 
@@ -58,8 +160,16 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
       const nextTrack = playlist.find(
         (track) => track.spotifyId === currentTrack.nextId
       )
-      if (nextTrack) {
+      if (nextTrack && nextTrack.youtubeId !== null) {
         await setCurrentTrack(nextTrack)
+        await setIsPlaying(true)
+      }
+
+        if (nextTrack && nextTrack.youtubeId === null) {
+        // If youtubeId is null, fetch it
+        const youtubeId = await getYoutubeId(nextTrack.name)
+        const updatedNextTrack = { ...nextTrack, youtubeId }
+        await setCurrentTrack(updatedNextTrack)
         await setIsPlaying(true)
       }
     } catch (err) {
@@ -75,8 +185,15 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
       const prevTrack = playlist.find(
         (track) => track.spotifyId === currentTrack.prevId
       )
-      if (prevTrack) {
+      if (prevTrack && prevTrack.youtubeId !== null) {
         await setCurrentTrack(prevTrack)
+        await setIsPlaying(true)
+      }
+       if (prevTrack && prevTrack.youtubeId === null) {
+        // If youtubeId is null, fetch it
+        const youtubeId = await getYoutubeId(prevTrack.name)
+        const updatedPrevTrack = { ...prevTrack, youtubeId }
+        await setCurrentTrack(updatedPrevTrack)
         await setIsPlaying(true)
       }
     } catch (err) {
@@ -124,25 +241,43 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     const dur = currentTrack?.duration
     if (!dur) return 0
     const [m, s] = String(dur).split(':')
-    return (Number(m) * 60 + Number(s))
+    return Number(m) * 60 + Number(s)
   })()
 
-  const baseProgress = Math.min(durationSecNumeric, seeking ? draftSec : progressSec)
+  const baseProgress = Math.min(
+    durationSecNumeric,
+    seeking ? draftSec : progressSec
+  )
 
   // Formatter for the left timestamp - current time of track (or seek time)
   const currentTrackTime = (() => {
     const timeInSec = Math.max(0, Math.floor(baseProgress))
     const mm = Math.floor(timeInSec / 60)
-    const ss = String (timeInSec % 60).padStart(2, '0')
+    const ss = String(timeInSec % 60).padStart(2, '0')
     return `${mm}:${ss}`
   })()
 
-  const progressPct = durationSecNumeric > 0
-    ? Math.min(100, Math.max(0, (baseProgress / durationSecNumeric) * 100))
-    : 0
+  const progressPct =
+    durationSecNumeric > 0
+      ? Math.min(100, Math.max(0, (baseProgress / durationSecNumeric) * 100))
+      : 0
+
+  async function getYoutubeId(str) {
+    try {
+      const res = await youtubeService.getVideos(str)
+      return res?.[0]?.id || null
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
+  }
+
 
   return (
-    <footer className="app-footer">
+    <footer
+      className="app-footer"
+      onClick={(ev) => onCloseStationsContextMenu(ev)}
+    >
       <div className="track-info">
         <div className="track-cover">
           {currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0] ? (
@@ -166,10 +301,30 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
         </div>
         <div className="btn-like">
           <button className="btn-mini-liked">
-            <SvgIcon iconName="addLikedSong" className="liked-icon" />
+            <SvgIcon
+              iconName={
+                isTrackInStation(currentTrack) ? 'inStation' : 'addLikedSong'
+              }
+              className="add-to-playlist"
+              title="Add to Playlist"
+              onClick={
+                isTrackInStation(currentTrack)
+                  ? (ev) => onOpenStationsContextMenu(ev)
+                  : () => onAddToLikedSongs(currentTrack)
+              }
+            />
             {/* <SvgIcon iconName="doneLikedSong" className="liked-icon is-on" /> */}
           </button>
         </div>
+        {isContextMenuOpen && (
+          <StationsContextMenu
+            stations={stations}
+            track={currentTrack}
+            onAddStation={onAddStation}
+            onClose={onCloseStationsContextMenu}
+            onUpdateStations={onUpdateStations}
+          />
+        )}
       </div>
 
       <div className="player-container">
@@ -224,8 +379,16 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
             onMouseLeave={handleMouseLeaveTimeline}
             style={{
               background: `linear-gradient(to right,
-                ${isTimelineHover ? 'var(--green-clicked)' : 'var(--color-white-fff)'} 0%,
-                ${isTimelineHover ? 'var(--green-clicked)' : 'var(--color-white-fff)'} ${progressPct}%,
+                ${
+                  isTimelineHover
+                    ? 'var(--green-clicked)'
+                    : 'var(--color-white-fff)'
+                } 0%,
+                ${
+                  isTimelineHover
+                    ? 'var(--green-clicked)'
+                    : 'var(--color-white-fff)'
+                } ${progressPct}%,
                 var(--color-secondary-3) ${progressPct}%,
                 var(--color-secondary-3) 100%)`,
             }}

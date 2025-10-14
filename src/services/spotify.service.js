@@ -1,3 +1,4 @@
+import { youtubeService } from "./youtube.service"
 
 
 const CLIENT_ID = 'bc0de1d56cf04139b055dab040514fc2'
@@ -257,31 +258,37 @@ async function getTracksPlaylist(playlistId) {
       description: response.description,
       imgUrl: response.images[0]?.url,
       owner: response.owner.display_name,
+      ownerProfileImg:await getSpotifyUserProfileImg(response.owner.id),
       followers: response.followers.total,
-      tracksTotal: response.tracks.total
+      tracksTotal: response.tracks.total,
+      isPublic:response.public ? 'Public Playlist':'Private Playlist'
     }
 
-    // Map tracks to clean format
-    const tracks = response.tracks.items
-      .filter(item => item && item.track) // Filter out null tracks
-      .map((item) => {
-        const track = item.track
-        return {
-          spotifyId: track.id,
-          name: track.name,
-          album: { 
-            name: track.album.name, 
-            imgUrl: track.album.images?.[0]?.url 
-          },
-          artists: [{
-            name: track.artists.map((artist) => artist.name).join(', '),
-            id: track.artists.map((artist) => artist.id),
-          }],
-          duration: formatDuration(track.duration_ms),
-          addedAt: item.added_at,
-          youtubeId: null,
-        }
-      })
+    // Map tracks to clean format and add navigation IDs
+    const tracks = await Promise.all(
+      response.tracks.items
+        .filter(item => item && item.track)
+        .map(async (item, index, arr) => {
+          const track = item.track
+          return {
+            spotifyId: track.id,
+            name: track.name,
+            album: { 
+              name: track.album.name, 
+              imgUrl: track.album.images?.[0]?.url 
+            },
+            artists: [{
+              name: track.artists.map((artist) => artist.name).join(', '),
+              id: track.artists.map((artist) => artist.id),
+            }],
+            duration: formatDuration(track.duration_ms),
+            addedAt: item.added_at,
+            youtubeId: null,
+            prevId: index === 0 ? arr[arr.length - 1].track.id : arr[index - 1].track.id,
+            nextId: index === arr.length - 1 ? arr[0].track.id : arr[index + 1].track.id
+          }
+        })
+    )
 
     return {
       playlist: playlistInfo,
@@ -398,5 +405,20 @@ async function getCurrentPlayback(userAccessToken) {
   return null
 }
 
+
+
+
+  async function getSpotifyUserProfileImg(userId) {
+  try{
+  const endpoint =  `/users/${userId}`
+  const response = await makeSpotifyRequest(endpoint)
+
+  return response.images[0].url
+  }
+ catch (error) {
+    console.error('Error fetching genres/categories:', error)
+    throw error
+  }
+}
 
 

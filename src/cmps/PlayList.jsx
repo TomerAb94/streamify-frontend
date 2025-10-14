@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux'
 export function PlayList() {
   const params = useParams()
   const [playlist, setPlaylist] = useState(null)
+  
+  const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const stations = useSelector(
@@ -29,7 +31,7 @@ export function PlayList() {
   async function loadPlaylist() {
     try {
       const playlist = await spotifyService.getTracksPlaylist(params.playlistId)
-      console.log('playlist:', playlist)
+      // console.log('playlist:', playlist)
       setPlaylist(playlist)
     } catch (error) {
       console.error('Failed loading playlists:', error)
@@ -40,10 +42,21 @@ export function PlayList() {
 //     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
 //   }
 
+  async function getYoutubeId(str) {
+  
+    try {
+      const res = await youtubeService.getVideos(encodeURIComponent(str))
+      return res?.[0]?.id || null
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
+  }
   async function onPlay(track) {
+    
     try {
       // Clear existing playlist
-      if (playlist && playlist.length) {
+      if (playListToPlay && playListToPlay.length) {
         await setTracks([])
       }
 
@@ -53,11 +66,9 @@ export function PlayList() {
         ...track,
         youtubeId,
       }
-
-      console.log(trackWithYoutube)
-
+      // console.log('trackWithYoutube:', trackWithYoutube)
       // Set single track as playlist and play it
-      await setTracks([trackWithYoutube])
+      await setTracks(playlist.tracks)
       await setCurrentTrack(trackWithYoutube)
       await setIsPlaying(true)
     } catch (err) {
@@ -69,16 +80,10 @@ export function PlayList() {
     await setIsPlaying(false)
   }
 
-  async function getYoutubeId(str) {
-    try {
-      const res = await youtubeService.getVideos(str)
-      return res?.[0]?.id || null
-    } catch (err) {
-      console.error('Error fetching YouTube URL:', err)
-      return null
-    }
-  }
 
+  async function onResume() {
+    await setIsPlaying(true)
+  }
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
   }
@@ -115,6 +120,8 @@ export function PlayList() {
 
   }
 
+
+
   if (!playlist) return <div>Loading playlist...</div>
   return (
     <section className="playlist-container station-filter">
@@ -123,17 +130,52 @@ export function PlayList() {
           <img src={playlist.playlist.imgUrl} alt={playlist.playlist.name} className="playlist-cover" />
         )}
         <div className="playlist-info">
-          <h1>{playlist.playlist.name}</h1>
-          <p>{playlist.playlist.description}</p>
+          <p>{playlist.playlist.isPublic}</p>
+          <h1 className='playlist-name'>{playlist.playlist.name}</h1>
+          <p className='playlist-description'>{playlist.playlist.description}</p>
           <div className="playlist-meta">
-            <span>By {playlist.playlist.owner}</span>
-            <span>•</span>
-            <span>{playlist.playlist.tracksTotal} songs</span>
-            <span>•</span>
-            <span>{playlist.playlist.followers} followers</span>
+            <img className="owner-profile-img" src={playlist.playlist.ownerProfileImg} alt={playlist.playlist.owner} />
+            <span>{playlist.playlist.owner}</span>
+            <span> • </span>
+            <span>{playlist.playlist.followers} saves </span>
+            <span> • </span>
+            <span>{playlist.playlist.tracksTotal} songs </span>
           </div>
         </div>
+        
       </div>
+
+           <div className="station-btns-container">
+        <div className="action-btns">
+          {(isPlaying && currentTrack.name===playlist.tracks[0].name) ? (
+            <button
+              onClick={onPause}
+              className="play-btn"
+            >
+              <SvgIcon iconName="pause" className="pause" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(playlist.tracks[0])
+                }
+              }}
+              className="play-btn"
+              // disabled={!station.tracks || station.tracks.length === 0}
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
+          {/* <SvgIcon iconName="shuffle" /> */}
+        </div>
+      </div>
+
+
       <section className="track-list">
         <div className="track-header">
           <div className="first-col-header">#</div>
@@ -151,7 +193,7 @@ export function PlayList() {
             onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="track-num">
+            <div className="track-num ">
               {isTrackCurrentlyPlaying(track) ? (
                 hoveredTrackIdx === idx ? (
                   <SvgIcon iconName="pause" className="pause" onClick={() => onPause()} />
@@ -170,7 +212,7 @@ export function PlayList() {
                 <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
               )}
               <div className="track-text">
-                <span className="track-name">{track.name}</span>
+                <span className={`track-name ${currentTrack?.name===track.name ? 'playing':''} `} >{track.name}</span>
                 <div className="track-artists">
                   <span>{track.artists[0].name}</span>
                 </div>

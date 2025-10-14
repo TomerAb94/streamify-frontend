@@ -1,0 +1,281 @@
+.track-list {
+  display: grid;
+  grid-template-rows: 35px;
+  grid-auto-rows: 55px;
+  gap: 8px;
+
+  & .track-header,
+  & .track-row {
+    display: grid;
+    grid-template-columns: 40px minmax(430px, 1.5fr) minmax(285px, 1fr) 220px;
+    grid-template-rows: 100%;
+    align-items: center;
+    padding: 8px 16px;
+  }
+
+  & .track-header:hover {
+    > *:not(:last-child, :first-child) {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 5%;
+        border-right: 1px solid var(--songs-table-color);
+        height: 90%;
+      }
+    }
+  }
+
+  & .first-col-header {
+    justify-self: center;
+  }
+
+  & .track-num {
+    justify-self: center;
+    color: var(--songs-table-color);
+
+    & .pause {
+      height: 16px;
+      width: 16px;
+      display: flex;
+    }
+
+    &.playing {
+      color: var(--green-checked);
+    }
+  }
+
+  & .track-text {
+    & .playing {
+      color: var(--green-checked);
+    }
+
+    & .track-artists {
+      color: var(--songs-table-color);
+      font-family: Circular-thin;
+    }
+  }
+
+  & .duration-header-icon,
+  & .track-duration-container {
+    justify-self: center;
+  }
+
+  & .track-header {
+    font-family: 'Circular-thin';
+    color: var(--songs-table-color);
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+  }
+
+  & .track-row {
+    position: relative;
+    color: #fff;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+
+    &.clicked {
+      background-color: #ffffff36;
+    }
+
+    & .track-album,
+    & .track-duration-container {
+      color: var(--songs-table-color);
+      font-family: Circular-thin;
+    }
+
+    & .play {
+      display: flex;
+      fill: #fff;
+      height: 14px;
+      width: 14px;
+    }
+
+    &:hover {
+      background-color: #1f1f1f;
+
+      & .track-artists {
+        color: #fff;
+      }
+
+      & .track-album {
+        color: #fff;
+      }
+
+      & .pause {
+        fill: #fff;
+        height: 14px;
+        width: 14px;
+      }
+    }
+
+  }
+
+  & .track-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    border-radius: 4px;
+  }
+
+  & .track-title {
+    display: flex;
+  }
+
+  & .duration-svg {
+    fill: var(--songs-table-color);
+    width: 16px;
+    height: 16px;
+  }
+
+  & .playing-track {
+    display: flex;
+    width: 100%;
+
+    & .equalizer-svg,
+    & .pause {
+      transition: opacity 0.2s ease;
+      height: 16px;
+      width: 16px;
+    }
+
+    & .pause {
+      display: none;
+      opacity: 0;
+      position: absolute;
+      inset: 0;
+    }
+
+    &:hover {
+      & .equalizer {
+        display: none;
+      }
+
+      & .pause {
+        display: flex;
+        opacity: 1;
+      }
+    }
+  }
+
+  & .track-duration-container {
+    display: grid;
+    align-items: center;
+    position: relative;
+
+    & .add-to-playlist {
+      opacity: 0;
+      position: absolute;
+      left: -50px;
+      height: 16px;
+      width: 16px;
+      cursor: pointer;
+
+      > .add-liked-song {
+        fill: var(--songs-table-color);
+      }
+
+      > .in-station{
+        fill: var(--green-checked);
+      }
+
+      &:hover {
+        > .addLikedSong {
+          fill: var(--color-white-fff);
+        }
+      }
+    }
+  }
+}
+
+.station-details .track-list {
+  padding: 0 24px;
+  font-family: Circular-thin;
+
+  & .track-row:hover {
+    background-color: hsla(0, 0%, 100%, 0.1);
+
+    &.clicked {
+      background-color: #ffffff36;
+    }
+    
+
+    & .add-to-playlist {
+      opacity: 1;
+    }
+  }
+
+  & .track-row.clicked {
+    & .add-to-playlist {
+      opacity: 1;
+    }
+  }
+}
+
+
+#bar1 {
+  animation: bar1 1.2s infinite linear;
+}
+
+#bar2 {
+  animation: bar2 0.8s infinite linear;
+}
+
+#bar3 {
+  animation: bar3 1s infinite linear;
+}
+
+#bar4 {
+  animation: bar4 0.7s infinite linear;
+}
+
+@keyframes bar1 {
+  0% {
+    height: 2px;
+  }
+  50% {
+    height: 7px;
+  }
+  100% {
+    height: 2px;
+  }
+}
+
+@keyframes bar2 {
+  0% {
+    height: 5px;
+  }
+  40% {
+    height: 1px;
+  }
+  80% {
+    height: 7px;
+  }
+  100% {
+    height: 5px;
+  }
+}
+
+@keyframes bar3 {
+  0% {
+    height: 7px;
+  }
+  50% {
+    height: 0;
+  }
+  100% {
+    height: 7px;
+  }
+}
+
+@keyframes bar4 {
+  0% {
+    height: 2px;
+  }
+  50% {
+    height: 7px;
+  }
+  100% {
+    height: 2px;
+  }
+}

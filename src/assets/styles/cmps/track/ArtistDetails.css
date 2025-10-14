@@ -6,7 +6,7 @@
 
   scrollbar-width: thin;
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
-  
+
   > .artist-details-header {
     width: 100%;
 
@@ -99,13 +99,26 @@
         > svg {
           width: 24px;
           height: 24px;
-          fill: black;
         }
       }
     }
   }
 
-  > .top-tracks{
+  > .top-tracks {
     padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
+  }
+
+  > .top-tracks {
+    > .track-list {
+      
+      > .track-row:hover {
+        > .track-duration-container {
+          
+          > .add-to-playlist {
+            opacity: 1;
+          }
+        }
+      }
+    }
   }
 }
