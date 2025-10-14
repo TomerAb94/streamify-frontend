@@ -151,7 +151,7 @@ export function PlayList() {
             onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="track-num">
+            <div className="track-num ">
               {isTrackCurrentlyPlaying(track) ? (
                 hoveredTrackIdx === idx ? (
                   <SvgIcon iconName="pause" className="pause" onClick={() => onPause()} />
@@ -170,7 +170,7 @@ export function PlayList() {
                 <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
               )}
               <div className="track-text">
-                <span className="track-name">{track.name}</span>
+                <span className={`track-name ${currentTrack.name===track.name & isPlaying ? 'playing':''} `} >{track.name}</span>
                 <div className="track-artists">
                   <span>{track.artists[0].name}</span>
                 </div>
