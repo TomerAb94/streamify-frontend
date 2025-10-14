@@ -15,7 +15,7 @@ import { stationService } from '../services/station'
 import { StationsContextMenu } from './StationsContextMenu'
 import { youtubeService } from '../services/youtube.service'
 
-export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen }) {
+export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onAddStation }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -73,29 +73,6 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     return isInLikedSongs
   }
 
-  async function onAddStation(ev) {
-    ev.stopPropagation()
-    ev.preventDefault()
-    if (!loggedInUser) {
-      showErrorMsg('You must be logged in to add a station')
-      return
-    }
-    const playlistStations = stations.filter(
-      (station) => station.stationType === 'playlist'
-    )
-    const count = playlistStations.length + 1
-    const station = stationService.getEmptyStation()
-    station.title += count
-    try {
-      const savedStation = await addStation(station)
-      loggedInUser.ownedStationIds.push(savedStation._id)
-      const savedUser = await updateUser(loggedInUser)
-
-      showSuccessMsg(`Station added (id: ${savedStation._id})`)
-    } catch (err) {
-      showErrorMsg('Cannot add station')
-    }
-  }
 
   async function onUpdateStations(stations) {
     const stationsToSave = stations.map((station) => ({ ...station }))

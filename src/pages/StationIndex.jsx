@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 import {
   loadStations,
@@ -27,6 +27,8 @@ export function StationIndex() {
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
   const [openPanel, setOpenPanel] = useState(null)
+  
+  const navigate = useNavigate()
 
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
@@ -77,7 +79,9 @@ export function StationIndex() {
     setStationToRemove(null)
   }
 
-  async function onAddStation() {
+  async function onAddStation(ev) {
+    ev.stopPropagation()
+    ev.preventDefault()
     if (!loggedInUser) {
       showErrorMsg('You must be logged in to add a station')
       return
@@ -94,6 +98,7 @@ export function StationIndex() {
       const savedUser = await updateUser(loggedInUser)
 
       showSuccessMsg(`Station added (id: ${savedStation._id})`)
+      navigate(`station/${savedStation._id}`)
     } catch (err) {
       showErrorMsg('Cannot add station')
     }
@@ -177,6 +182,7 @@ export function StationIndex() {
         onToggleNowPlaying={onToggleNowPlaying} 
         isQueueOpen={openPanel === 'queue'} 
         isNowOpen={openPanel === 'now'}
+        onAddStation={onAddStation}
       />
 
       {isModalRemoveOpen && (

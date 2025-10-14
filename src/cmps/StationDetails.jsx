@@ -18,6 +18,7 @@ import {
   setIsPlaying,
 } from '../store/actions/track.actions'
 import { youtubeService } from '../services/youtube.service'
+import { ModalEdit } from './ModalEdit'
 
 export function StationDetails() {
   const { stationId } = useParams()
@@ -29,6 +30,7 @@ export function StationDetails() {
 
   const [searchBy, setSearchBy] = useState('')
   const [searchedTracks, setSearchedTracks] = useState([])
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false)
 
   useEffect(() => {
     loadStation(stationId)
@@ -157,21 +159,44 @@ export function StationDetails() {
     await setIsPlaying(true)
   }
 
+    function openModalEdit() {
+    setIsModalEditOpen(true)
+  }
+
+  function closeModal() {
+    setIsModalEditOpen(false)
+  }
+
+  async function onUpdateStation(station) {
+      const stationToSave = { ...station }
+  
+      try {
+        const savedStation = await updateStation(stationToSave)
+        showSuccessMsg(`Station updated, new pin: ${savedStation.isPinned}`)
+      } catch (err) {
+        showErrorMsg('Cannot update station')
+      }
+    }
+
+
   if (!station) return <div>Loading...</div>
 
   return (
     <section className="station-details">
       <header className="details-header">
         <div className="station-img">
-          <img
+          {station.stationImgUrl ? ( <img
             className="avg-img"
             src={station.stationImgUrl}
             alt="Station Image"
-          />
+          /> ) : (
+            <SvgIcon iconName="musicNote" className="default-music-icon" />
+          )}
+         
         </div>
         <div className="station-info">
           <span>{station.stationType}</span>
-          <h1>{station.title}</h1>
+          <h1 {...(station.tags[0] !== "Liked Songs" && { onClick: () => openModalEdit() })}>{station.title}</h1>
           <div className="creator-info">
             <img src={station.createdBy.imgUrl} alt="Profile Image" />
             <span className="creator-name">{station.createdBy.fullname}</span>
@@ -273,6 +298,15 @@ export function StationDetails() {
           )}
         </div>
       </div>
+
+       {isModalEditOpen && (
+              <ModalEdit
+                station={station}
+                isModalEditOpen={isModalEditOpen}
+                closeModal={closeModal}
+                updateStation={onUpdateStation}
+              ></ModalEdit>
+            )}
     </section>
   )
 }

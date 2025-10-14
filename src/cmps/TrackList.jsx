@@ -1,12 +1,8 @@
-import { useEffect,useState } from 'react'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
-import { NavLink } from 'react-router-dom'
-import {
-  addStation,
-  loadStation,
-  updateStation,
-} from '../store/actions/station.actions'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { addStation, updateStation } from '../store/actions/station.actions'
 import { StationsContextMenu } from './StationsContextMenu'
 import { updateUser } from '../store/actions/user.actions'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
@@ -28,6 +24,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   const [contextMenuTrackId, setContextMenuTrackId] = useState(null)
   const [clickedTrackId, setClickedTrackId] = useState(null)
+
+  const navigate = useNavigate()
 
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
@@ -79,8 +77,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
   }
 
   function isTrackInStation(track) {
-    return stations.some(s => 
-      s.tracks && s.tracks.some(t => t.spotifyId === track.spotifyId)
+    return stations.some(
+      (s) => s.tracks && s.tracks.some((t) => t.spotifyId === track.spotifyId)
     )
   }
 
@@ -114,6 +112,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
       const savedUser = await updateUser(loggedInUser)
 
       showSuccessMsg(`Station added (id: ${savedStation._id})`)
+      navigate(`/station/${savedStation._id}`)
     } catch (err) {
       showErrorMsg('Cannot add station')
     }
@@ -220,9 +219,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
           <div className="track-album">{track.album?.name}</div>
           <div className="track-duration-container">
             <SvgIcon
-              iconName={
-                isTrackInStation(track) ? 'inStation' : 'addLikedSong'
-              }
+              iconName={isTrackInStation(track) ? 'inStation' : 'addLikedSong'}
               className="add-to-playlist"
               title="Add to Playlist"
               onClick={
@@ -232,14 +229,14 @@ export function TrackList({ tracks, onPlay, onPause }) {
               }
             />
             {contextMenuTrackId === track.spotifyId && (
-            <StationsContextMenu
-              stations={stations}
-              track={track}
-              onAddStation={onAddStation}
-              onClose={onCloseStationsContextMenu}
-              onUpdateStations={onUpdateStations}
-            />
-          )}
+              <StationsContextMenu
+                stations={stations}
+                track={track}
+                onAddStation={onAddStation}
+                onClose={onCloseStationsContextMenu}
+                onUpdateStations={onUpdateStations}
+              />
+            )}
             <span className="track-duration">{track.duration}</span>
           </div>
         </div>
