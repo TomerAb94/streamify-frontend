@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
 
-export function StationsContextMenu({ stations, track }) {
+export function StationsContextMenu({ stations, track, onAddStation }) {
   const [stationsToShow, setStationsToShow] = useState(stations)
   const [filterBy, setFilterBy] = useState({ txt: '' })
 
@@ -29,15 +29,15 @@ export function StationsContextMenu({ stations, track }) {
     filteredStations.sort((a, b) => {
       const aHasTrack = isTrackInStation(track, a)
       const bHasTrack = isTrackInStation(track, b)
-      
+
       // First priority: stations that contain the track
       if (aHasTrack && !bHasTrack) return -1
       if (!aHasTrack && bHasTrack) return 1
-      
+
       // Second priority: pinned stations
       if (a.isPinned && !b.isPinned) return -1
       if (!a.isPinned && b.isPinned) return 1
-      
+
       // Third priority: created date (newest first)
       return new Date(b.createdAt) - new Date(a.createdAt)
     })
@@ -62,20 +62,20 @@ export function StationsContextMenu({ stations, track }) {
         <div className="find-station">
           <span className="search-input-wrapper">
             <SvgIcon iconName="search" className="search-icon" />
-            <input 
-              type="text" 
-              placeholder="Find a playlist" 
+            <input
+              type="text"
+              placeholder="Find a playlist"
               onInput={handleInput}
             />
           </span>
         </div>
         <ul className="stations-list-menu">
-          <button className="create-station-btn">
+          <button className="create-station-btn" onClick={(ev) => onAddStation(ev,track)}>
             <SvgIcon iconName="create" className="add-icon" />
             <span>New playlist</span>
           </button>
           {stationsToShow.map((station) => (
-            <li className="add-to-station-container" key={station.id}>
+            <li className="add-to-station-container" key={station._id}>
               <button className="add-to-station-btn">
                 <div className="mini-station">
                   <div className="station-img-wrapper">

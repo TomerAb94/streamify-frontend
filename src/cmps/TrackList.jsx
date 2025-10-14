@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink } from 'react-router-dom'
-import { updateStation } from '../store/actions/station.actions'
+import { addStation, updateStation } from '../store/actions/station.actions'
 import { StationsContextMenu } from './StationsContextMenu'
+import { updateUser } from '../store/actions/user.actions'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 
 export function TrackList({ tracks, onPlay, onPause }) {
   const currentTrack = useSelector(
@@ -16,6 +18,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
     (storeState) => storeState.stationModule.stations
   )
   const station = useSelector((storeState) => storeState.stationModule.station)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   const [contextMenuTrackId, setContextMenuTrackId] = useState(null)
@@ -94,7 +97,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
     return station.tracks.some((t) => t.spotifyId === track.spotifyId)
   }
 
-function onOpenStationsContextMenu(ev, trackId) {
+  function onOpenStationsContextMenu(ev, trackId) {
     ev.stopPropagation()
     setContextMenuTrackId(trackId)
     setClickedTrackId(trackId)
@@ -105,6 +108,29 @@ function onOpenStationsContextMenu(ev, trackId) {
     setContextMenuTrackId(null)
   }
 
+  async function onAddStation(ev) {
+    ev.stopPropagation()
+    ev.preventDefault()
+    if (!loggedInUser) {
+      showErrorMsg('You must be logged in to add a station')
+      return
+    }
+    const playlistStations = stations.filter(
+      (station) => station.stationType === 'playlist'
+    )
+    const count = playlistStations.length + 1
+    const station = stationService.getEmptyStation()
+    station.title += count
+    try {
+      const savedStation = await addStation(station)
+      loggedInUser.ownedStationIds.push(savedStation._id)
+      const savedUser = await updateUser(loggedInUser)
+
+      showSuccessMsg(`Station added (id: ${savedStation._id})`)
+    } catch (err) {
+      showErrorMsg('Cannot add station')
+    }
+  }
 
   return (
     <section className="track-list">
@@ -119,7 +145,9 @@ function onOpenStationsContextMenu(ev, trackId) {
 
       {tracks.map((track, idx) => (
         <div
-          className={`track-row ${clickedTrackId === track.spotifyId ? 'clicked' : ''}`}
+          className={`track-row ${
+            clickedTrackId === track.spotifyId ? 'clicked' : ''
+          }`}
           key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
@@ -208,10 +236,10 @@ function onOpenStationsContextMenu(ev, trackId) {
           </div>
 
           {contextMenuTrackId === track.spotifyId && (
-            <StationsContextMenu 
-              stations={stations} 
-              track={track} 
-              // isStationsContextMenuOpen={true}
+            <StationsContextMenu
+              stations={stations}
+              track={track}
+              onAddStation={onAddStation}
               onClose={onCloseStationsContextMenu}
             />
           )}
