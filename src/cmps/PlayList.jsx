@@ -53,6 +53,7 @@ export function PlayList() {
     }
   }
   async function onPlay(track) {
+    
     try {
       // Clear existing playlist
       if (playListToPlay && playListToPlay.length) {
@@ -80,6 +81,9 @@ export function PlayList() {
   }
 
 
+  async function onResume() {
+    await setIsPlaying(true)
+  }
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
   }
@@ -116,6 +120,8 @@ export function PlayList() {
 
   }
 
+
+
   if (!playlist) return <div>Loading playlist...</div>
   return (
     <section className="playlist-container station-filter">
@@ -136,7 +142,40 @@ export function PlayList() {
             <span>{playlist.playlist.tracksTotal} songs </span>
           </div>
         </div>
+        
       </div>
+
+           <div className="station-btns-container">
+        <div className="action-btns">
+          {(isPlaying && currentTrack.name===playlist.tracks[0].name) ? (
+            <button
+              onClick={onPause}
+              className="play-btn"
+            >
+              <SvgIcon iconName="pause" className="pause" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(playlist.tracks[0])
+                }
+              }}
+              className="play-btn"
+              // disabled={!station.tracks || station.tracks.length === 0}
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
+          {/* <SvgIcon iconName="shuffle" /> */}
+        </div>
+      </div>
+
+
       <section className="track-list">
         <div className="track-header">
           <div className="first-col-header">#</div>
@@ -173,7 +212,7 @@ export function PlayList() {
                 <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
               )}
               <div className="track-text">
-                <span className={`track-name ${currentTrack?.name===track.name && isPlaying? 'playing':''} `} >{track.name}</span>
+                <span className={`track-name ${currentTrack?.name===track.name ? 'playing':''} `} >{track.name}</span>
                 <div className="track-artists">
                   <span>{track.artists[0].name}</span>
                 </div>
