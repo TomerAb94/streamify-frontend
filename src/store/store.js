@@ -23,7 +23,7 @@ export const store = createStore(rootReducer, middleware)
 
 // For debug:
 store.subscribe(() => {
-    console.log('**** Store state changed: ****')
-    console.log('storeState:\n', store.getState())
-    console.log('*******************************')
+    // console.log('**** Store state changed: ****')
+    // console.log('storeState:\n', store.getState())
+    // console.log('*******************************')
 })
