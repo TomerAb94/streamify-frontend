@@ -1,0 +1,242 @@
+.stations-context-menu {
+  visibility: visible;
+  inset: auto 60px 40px auto;
+  z-index: 100;
+  background-color: var(--color-secondary-1);
+
+  > .stations-form {
+    display: flex;
+    flex-direction: column;
+    max-height: 490px;
+    width: 292px;
+
+    > .stations-form-header {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 20px;
+      > span {
+        font-family: Circular;
+        font-size: 0.7rem;
+      }
+    }
+
+    & .find-station {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      background-color: var(--color-secondary-1);
+      color: var(--color-text-secondary);
+      border-radius: 8px;
+      padding: 0 12px;
+      font-family: Circular;
+      font-size: 0.8rem;
+      width: 100%;
+      margin-bottom: 4px;
+
+      > .search-input-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        padding: 8px;
+        width: 100%;
+        border-radius: 4px;
+        background-color: var(--color-secondary-3);
+
+        & svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    > .stations-list-menu {
+      padding: 0 12px;
+      margin: 0;
+      width: 100%;
+      max-height: 400px;
+
+      > .create-station-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        background: none;
+        cursor: auto;
+        gap: 8px;
+        padding: 0 8px;
+        margin: 0;
+        width: 100%;
+        height: 48px;
+        border-radius: 4px;
+        font-size: 1rem;
+        color: var(--color-white-hover);
+
+        &:hover {
+          background-color: var(--color-secondary-3);
+          scale: 0.96;
+        }
+
+        ::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-bottom: 1px solid var(--color-secondary-3);
+        }
+
+        > .add-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          > svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--color-text-primary);
+          }
+        }
+      }
+
+      > .add-to-station-container {
+        border-radius: 4px;
+        padding: 8px;
+        &:hover {
+          background-color: var(--color-secondary-3);
+        }
+
+        > .add-to-station-btn {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: none;
+          width: 100%;
+          border-radius: 4px;
+          margin: 0;
+          padding: 0;
+          cursor: auto;
+
+          &:hover {
+            scale: 0.96;
+          }
+
+          > .mini-station {
+            display: flex;
+            align-self: center;
+            gap: 8px;
+
+            > .station-img-wrapper {
+              width: 32px;
+              height: 32px;
+              border-radius: 4px;
+
+              > img {
+                width: 100%;
+                height: 100%;
+                border-radius: 4px;
+                object-fit: cover;
+              }
+
+              > .station-placeholder-img {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+                background-color: var(--color-secondary-2);
+                border-radius: 4px;
+
+                > span {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  > svg{
+                    width: 12px;
+                    height: 12px;
+                  }
+                }
+              }
+            }
+
+            > .station-title {
+              font-size: 1rem;
+            }
+          }
+
+          > .symbols-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            & svg {
+              width: 16px;
+              height: 16px;
+              fill: var(--green-pin);
+            }
+
+            .empty-circle {
+              width: 16px;
+              height: 16px;
+              border: 1px solid var(--color-text-secondary);
+              border-radius: 50%;
+              background: none;
+            }
+          }
+        }
+      }
+    }
+
+    & .stations-form-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative;
+      height: 56px;
+      padding: 12px 24px;
+      border-radius: 0 0 8px 8px;
+      gap: 16px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: -16px;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), transparent);
+        bottom: unset;
+        height: 16px;
+        pointer-events: none;
+      }
+      > button {
+        font-weight: bold;
+        margin: 0;
+        padding: 4px 0;
+      }
+      > .cancel-btn {
+        background: none;
+        color: var(--color-text-secondary);
+        width: fit-content;
+
+        &:hover {
+          color: var(--color-white-hover);
+        }
+      }
+
+      > .done-btn {
+        background-color: var(--color-white-fff);
+        color: var(--color-primary);
+        border-radius: 9999px;
+        padding: 4px 16px;
+
+        &:hover {
+          background-color: var(--color-white-hover);
+        }
+      }
+    }
+  }
+}

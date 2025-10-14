@@ -124,6 +124,7 @@ export function StationFilter() {
   }
 
   if (!searchedTracks?.length) return <div>Loading...</div>
+console.log(searchedTracks);
 
   return (
     <section className="station-filter">

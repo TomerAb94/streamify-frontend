@@ -2,23 +2,139 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink } from 'react-router-dom'
+import {
+  addStation,
+  updateStation,
+} from '../store/actions/station.actions'
+import { StationsContextMenu } from './StationsContextMenu'
+import { updateUser } from '../store/actions/user.actions'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
+import { stationService } from '../services/station/'
 
 export function TrackList({ tracks, onPlay, onPause }) {
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
+  const stations = useSelector(
+    (storeState) => storeState.stationModule.stations
+  )
+  const station = useSelector((storeState) => storeState.stationModule.station)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
-  
+  const [contextMenuTrackId, setContextMenuTrackId] = useState(null)
+  const [clickedTrackId, setClickedTrackId] = useState(null)
+
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
   }
-  
+
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
   }
 
-  
+  function handleRowClick(track) {
+    setClickedTrackId(track.spotifyId)
+  }
+
   function isTrackCurrentlyPlaying(track) {
-    return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+    return (
+      currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+    )
+  }
+
+  async function onAddToLikedSongs(track) {
+    try {
+      const likedSongs = stations.find(
+        (station) => station.title === 'Liked Songs'
+      )
+      if (!likedSongs) return
+
+      const isTrackInLikedSongs = likedSongs.tracks.some(
+        (t) => t.spotifyId === track.spotifyId
+      )
+      if (isTrackInLikedSongs) {
+        console.log('Track already in Liked Songs')
+        return
+      }
+
+      // Create clean track without player state properties
+      const cleanTrack = { ...track }
+      delete cleanTrack.isPlaying
+      delete cleanTrack.youtubeId
+
+      const updatedLikedSongs = {
+        ...likedSongs,
+        tracks: [...likedSongs.tracks, cleanTrack],
+      }
+
+      await updateStation(updatedLikedSongs)
+    } catch (err) {
+      console.error('Error adding track to Liked Songs:', err)
+    }
+  }
+
+  function isTrackInStation(track, station) {
+    if (!station || !station.tracks) return false
+    
+    // Check if track is in the current station
+    const isInCurrentStation = station.tracks.some((t) => t.spotifyId === track.spotifyId)
+    
+    // Also check if track is in 'Liked Songs'
+    const likedSongs = stations.find(s => s.title === 'Liked Songs')
+    const isInLikedSongs = likedSongs?.tracks.some((t) => t.spotifyId === track.spotifyId) || false
+    
+    return isInCurrentStation || isInLikedSongs
+  }
+
+  function onOpenStationsContextMenu(ev, trackId) {
+    ev.stopPropagation()
+    setContextMenuTrackId(trackId)
+    setClickedTrackId(trackId)
+  }
+
+  function onCloseStationsContextMenu(ev) {
+    ev.stopPropagation()
+    setContextMenuTrackId(null)
+  }
+
+  async function onAddStation(ev) {
+    ev.stopPropagation()
+    ev.preventDefault()
+    if (!loggedInUser) {
+      showErrorMsg('You must be logged in to add a station')
+      return
+    }
+    const playlistStations = stations.filter(
+      (station) => station.stationType === 'playlist'
+    )
+    const count = playlistStations.length + 1
+    const station = stationService.getEmptyStation()
+    station.title += count
+    try {
+      const savedStation = await addStation(station)
+      loggedInUser.ownedStationIds.push(savedStation._id)
+      const savedUser = await updateUser(loggedInUser)
+
+      showSuccessMsg(`Station added (id: ${savedStation._id})`)
+    } catch (err) {
+      showErrorMsg('Cannot add station')
+    }
+  }
+
+  async function onUpdateStations(stations) {
+    const stationsToSave = stations.map((station) => ({ ...station }))
+    try {
+      for (const station of stationsToSave) {
+        await updateStation(station)
+      }
+      showSuccessMsg(`Stations updated, new pin: ${stationsToSave.map((s) => s.isPinned)}`)
+    } catch (err) {
+      showErrorMsg('Cannot update station')
+    }
   }
 
   return (
@@ -34,12 +150,24 @@ export function TrackList({ tracks, onPlay, onPause }) {
 
       {tracks.map((track, idx) => (
         <div
-          className="track-row"
+          className={`track-row ${
+            clickedTrackId === track.spotifyId ? 'clicked' : ''
+          }`}
           key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
+          onClick={(ev) => {
+            onCloseStationsContextMenu(ev)
+            handleRowClick(track)
+          }}
         >
-          <div className={`track-num ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+          <div
+            className={`track-num ${
+              currentTrack && currentTrack.spotifyId === track.spotifyId
+                ? 'playing'
+                : ''
+            }`}
+          >
             {isTrackCurrentlyPlaying(track) ? (
               hoveredTrackIdx === idx ? (
                 <SvgIcon
@@ -61,7 +189,13 @@ export function TrackList({ tracks, onPlay, onPause }) {
             )}
           </div>
 
-          <div className={`track-title ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+          <div
+            className={`track-title ${
+              currentTrack && currentTrack.spotifyId === track.spotifyId
+                ? 'playing'
+                : ''
+            }`}
+          >
             {track.album?.imgUrl && (
               <img
                 src={track.album.imgUrl}
@@ -70,7 +204,12 @@ export function TrackList({ tracks, onPlay, onPause }) {
               />
             )}
             <div className="track-text">
-              <NavLink to={`/track/${track.spotifyId}`} className="track-name nav-link">{track.name}</NavLink>
+              <NavLink
+                to={`/track/${track.spotifyId}`}
+                className="track-name nav-link"
+              >
+                {track.name}
+              </NavLink>
               <div className="track-artists">
                 {track.artists.map((artist, i) => (
                   <NavLink key={artist.id} to={`/artist/${artist.id?.[i]}`}>
@@ -86,12 +225,33 @@ export function TrackList({ tracks, onPlay, onPause }) {
 
           <div className="track-album">{track.album?.name}</div>
           <div className="track-duration-container">
-            <span className="track-duration">
-              {track.duration}
-            </span>
+            <SvgIcon
+              iconName={
+                isTrackInStation(track, station) ? 'inStation' : 'addLikedSong'
+              }
+              className="add-to-playlist"
+              title="Add to Playlist"
+              onClick={
+                isTrackInStation(track, station)
+                  ? (ev) => onOpenStationsContextMenu(ev, track.spotifyId)
+                  : () => onAddToLikedSongs(track)
+              }
+            />
+            {contextMenuTrackId === track.spotifyId && (
+            <StationsContextMenu
+              stations={stations}
+              track={track}
+              onAddStation={onAddStation}
+              onClose={onCloseStationsContextMenu}
+              onUpdateStations={onUpdateStations}
+            />
+          )}
+            <span className="track-duration">{track.duration}</span>
           </div>
         </div>
       ))}
     </section>
   )
 }
+
+// onRemoveFromLikedSongs(track)/

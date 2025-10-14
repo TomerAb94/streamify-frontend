@@ -106,10 +106,7 @@
     }
   }
 
-  & .track-list {
-    padding: 0 24px;
-    font-family: Circular-thin;
-  }
+
 
   & .search-tracks {
     padding: 0 24px;
@@ -216,7 +213,6 @@
   }
 
 
-  & .track-row:hover,
   .search-track-row:hover {
     background-color: hsla(0, 0%, 100%, 0.1);
     & svg {
