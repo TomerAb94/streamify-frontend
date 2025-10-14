@@ -33,7 +33,7 @@ export function StationDetails() {
 
   useEffect(() => {
     loadStation(stationId)
-  }, [stationId])
+  }, [stationId, station])
 
   useEffect(() => {
     if (station && station.stationImgUrl) {

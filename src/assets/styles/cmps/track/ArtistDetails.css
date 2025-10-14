@@ -110,11 +110,11 @@
 
   > .top-tracks {
     > .track-list {
+      
       > .track-row:hover {
-
-
         > .track-duration-container {
-          > .addtoPlaylist {
+          
+          > .add-to-playlist {
             opacity: 1;
           }
         }

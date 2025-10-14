@@ -14,6 +14,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
   )
+  const station = useSelector((storeState) => storeState.stationModule.station)
+
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
   function handleMouseEnter(idx) {
@@ -30,36 +32,60 @@ export function TrackList({ tracks, onPlay, onPause }) {
     )
   }
 
-   async function onAddToLikedSongs(track) {
-      try {
-        const likedSongs = stations.find(
-          (station) => station.title === 'Liked Songs'
-        )
-        if (!likedSongs) return
-  
-        const isTrackInLikedSongs = likedSongs.tracks.some(
-          (t) => t.spotifyId === track.spotifyId
-        )
-        if (isTrackInLikedSongs) {
-          console.log('Track already in Liked Songs')
-          return
-        }
-  
-        // Create clean track without player state properties
-        const cleanTrack = { ...track }
-        delete cleanTrack.isPlaying
-        delete cleanTrack.youtubeId
-  
-        const updatedLikedSongs = {
-          ...likedSongs,
-          tracks: [...likedSongs.tracks, cleanTrack]
-        }
-        
-        await updateStation(updatedLikedSongs)
-      } catch (err) {
-        console.error('Error adding track to Liked Songs:', err)
+  async function onAddToLikedSongs(track) {
+    try {
+      const likedSongs = stations.find(
+        (station) => station.title === 'Liked Songs'
+      )
+      if (!likedSongs) return
+
+      const isTrackInLikedSongs = likedSongs.tracks.some(
+        (t) => t.spotifyId === track.spotifyId
+      )
+      if (isTrackInLikedSongs) {
+        console.log('Track already in Liked Songs')
+        return
       }
+
+      // Create clean track without player state properties
+      const cleanTrack = { ...track }
+      delete cleanTrack.isPlaying
+      delete cleanTrack.youtubeId
+
+      const updatedLikedSongs = {
+        ...likedSongs,
+        tracks: [...likedSongs.tracks, cleanTrack],
+      }
+
+      await updateStation(updatedLikedSongs)
+    } catch (err) {
+      console.error('Error adding track to Liked Songs:', err)
     }
+  }
+
+  async function onRemoveFromLikedSongs(track) {
+    try {
+      const likedSongs = stations.find(
+        (station) => station.title === 'Liked Songs'
+      )
+      if (!likedSongs) return
+      const updatedTracks = likedSongs.tracks.filter(
+        (t) => t.spotifyId !== track.spotifyId
+      )
+      const updatedLikedSongs = {
+        ...likedSongs,
+        tracks: updatedTracks,
+      }
+      await updateStation(updatedLikedSongs)
+    } catch (err) {
+      console.error('Error removing track from Liked Songs:', err)
+    }
+  }
+
+  function isTrackInStation(track, station) {
+    if (!station || !station.tracks) return false
+    return station.tracks.some((t) => t.spotifyId === track.spotifyId)
+  }
 
   return (
     <section className="track-list">
@@ -142,12 +168,19 @@ export function TrackList({ tracks, onPlay, onPause }) {
           </div>
 
           <div className="track-album">{track.album?.name}</div>
-            <div className="track-duration-container">
+          <div className="track-duration-container">
             <SvgIcon
-              iconName="addLikedSong"
-              className="addtoPlaylist"
+              iconName={
+                isTrackInStation(track, station) ? 'inStation' : 'addLikedSong'
+              }
+              className="add-to-playlist"
               title="Add to Liked Songs"
-              onClick={() => onAddToLikedSongs(track)}
+              onClick={
+                isTrackInStation(track, station)
+                  ? () => onRemoveFromLikedSongs(track)
+                  : () => onAddToLikedSongs(track)
+              }
+              // onClick={() => onAddToLikedSongs(track)}
             />
             <span className="track-duration">{track.duration}</span>
           </div>

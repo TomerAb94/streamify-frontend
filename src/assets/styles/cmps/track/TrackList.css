@@ -157,7 +157,7 @@
     align-items: center;
     position: relative;
 
-    & .addtoPlaylist {
+    & .add-to-playlist {
       opacity: 0;
       position: absolute;
       left: -50px;
@@ -165,12 +165,16 @@
       width: 16px;
       cursor: pointer;
 
-      > svg {
+      > .add-liked-song {
         fill: var(--songs-table-color);
       }
 
+      > .in-station{
+        fill: var(--green-checked);
+      }
+
       &:hover {
-        > svg {
+        > .addLikedSong {
           fill: var(--color-white-fff);
         }
       }
@@ -185,11 +189,12 @@
   & .track-row:hover {
     background-color: hsla(0, 0%, 100%, 0.1);
 
-    & .addtoPlaylist {
+    & .add-to-playlist {
       opacity: 1;
     }
   }
 }
+
 
 #bar1 {
   animation: bar1 1.2s infinite linear;
