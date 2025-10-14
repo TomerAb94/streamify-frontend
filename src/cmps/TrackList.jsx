@@ -2,24 +2,64 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink } from 'react-router-dom'
+import { updateStation } from '../store/actions/station.actions'
 
 export function TrackList({ tracks, onPlay, onPause }) {
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
+  const stations = useSelector(
+    (storeState) => storeState.stationModule.stations
+  )
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
-  
+
   function handleMouseEnter(idx) {
     setHoveredTrackIdx(idx)
   }
-  
+
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
   }
 
-  
   function isTrackCurrentlyPlaying(track) {
-    return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+    return (
+      currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+    )
   }
+
+   async function onAddToLikedSongs(track) {
+      try {
+        const likedSongs = stations.find(
+          (station) => station.title === 'Liked Songs'
+        )
+        if (!likedSongs) return
+  
+        const isTrackInLikedSongs = likedSongs.tracks.some(
+          (t) => t.spotifyId === track.spotifyId
+        )
+        if (isTrackInLikedSongs) {
+          console.log('Track already in Liked Songs')
+          return
+        }
+  
+        // Create clean track without player state properties
+        const cleanTrack = { ...track }
+        delete cleanTrack.isPlaying
+        delete cleanTrack.youtubeId
+  
+        const updatedLikedSongs = {
+          ...likedSongs,
+          tracks: [...likedSongs.tracks, cleanTrack]
+        }
+        
+        await updateStation(updatedLikedSongs)
+      } catch (err) {
+        console.error('Error adding track to Liked Songs:', err)
+      }
+    }
 
   return (
     <section className="track-list">
@@ -39,7 +79,13 @@ export function TrackList({ tracks, onPlay, onPause }) {
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
         >
-          <div className={`track-num ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+          <div
+            className={`track-num ${
+              currentTrack && currentTrack.spotifyId === track.spotifyId
+                ? 'playing'
+                : ''
+            }`}
+          >
             {isTrackCurrentlyPlaying(track) ? (
               hoveredTrackIdx === idx ? (
                 <SvgIcon
@@ -61,7 +107,13 @@ export function TrackList({ tracks, onPlay, onPause }) {
             )}
           </div>
 
-          <div className={`track-title ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+          <div
+            className={`track-title ${
+              currentTrack && currentTrack.spotifyId === track.spotifyId
+                ? 'playing'
+                : ''
+            }`}
+          >
             {track.album?.imgUrl && (
               <img
                 src={track.album.imgUrl}
@@ -70,7 +122,12 @@ export function TrackList({ tracks, onPlay, onPause }) {
               />
             )}
             <div className="track-text">
-              <NavLink to={`/track/${track.spotifyId}`} className="track-name nav-link">{track.name}</NavLink>
+              <NavLink
+                to={`/track/${track.spotifyId}`}
+                className="track-name nav-link"
+              >
+                {track.name}
+              </NavLink>
               <div className="track-artists">
                 {track.artists.map((artist, i) => (
                   <NavLink key={artist.id} to={`/artist/${artist.id?.[i]}`}>
@@ -85,10 +142,14 @@ export function TrackList({ tracks, onPlay, onPause }) {
           </div>
 
           <div className="track-album">{track.album?.name}</div>
-          <div className="track-duration-container">
-            <span className="track-duration">
-              {track.duration}
-            </span>
+            <div className="track-duration-container">
+            <SvgIcon
+              iconName="addLikedSong"
+              className="addtoPlaylist"
+              title="Add to Liked Songs"
+              onClick={() => onAddToLikedSongs(track)}
+            />
+            <span className="track-duration">{track.duration}</span>
           </div>
         </div>
       ))}

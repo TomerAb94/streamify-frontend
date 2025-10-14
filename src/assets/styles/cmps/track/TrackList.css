@@ -15,15 +15,15 @@
 
   & .track-header:hover {
     > *:not(:last-child, :first-child) {
-     position: relative;
+      position: relative;
 
-     &::after {
-       content: '';
-       position: absolute;
-       right: 5%;
-       border-right: 1px solid var(--songs-table-color);
-         height: 90%;
-     }
+      &::after {
+        content: '';
+        position: absolute;
+        right: 5%;
+        border-right: 1px solid var(--songs-table-color);
+        height: 90%;
+      }
     }
   }
 
@@ -102,15 +102,6 @@
         height: 14px;
         width: 14px;
       }
-
-      & .addLikedSong {
-        fill: var(--songs-table-color);
-
-        &:hover {
-          fill: #fff;
-          cursor: pointer;
-        }
-      }
     }
   }
 
@@ -162,16 +153,27 @@
   }
 
   & .track-duration-container {
-    display: flex;
+    display: grid;
     align-items: center;
     position: relative;
 
-    & .addLikedSong {
+    & .addtoPlaylist {
+      opacity: 0;
       position: absolute;
       left: -50px;
       height: 16px;
       width: 16px;
-      fill: var(--color-secondary);
+      cursor: pointer;
+
+      > svg {
+        fill: var(--songs-table-color);
+      }
+
+      &:hover {
+        > svg {
+          fill: var(--color-white-fff);
+        }
+      }
     }
   }
 }
@@ -183,8 +185,8 @@
   & .track-row:hover {
     background-color: hsla(0, 0%, 100%, 0.1);
 
-    & svg {
-      fill: var(--color-white-fff);
+    & .addtoPlaylist {
+      opacity: 1;
     }
   }
 }
