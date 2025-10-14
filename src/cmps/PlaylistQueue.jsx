@@ -8,10 +8,10 @@ export function PlaylistQueue({
   station,
   currentTrack,
   isPlaying,
-  onToggleQueue,
-  isQueueOpen,
   onPlay,
   onPause,
+  isOpen,
+  onClose,
 }) {
     
   // Sort playlist by following nextId chain starting from currentTrack
@@ -50,10 +50,10 @@ export function PlaylistQueue({
   }
 
   return (
-    <div className={`queue ${isQueueOpen ? 'open' : ''}`}>
+    <div className={`queue ${isOpen ? 'open' : ''}`}>
       <header className="queue-header">
         <h1>Queue</h1>
-        <button onClick={onToggleQueue}>
+        <button onClick={onClose}>
           <SvgIcon iconName="close" />
         </button>
       </header>

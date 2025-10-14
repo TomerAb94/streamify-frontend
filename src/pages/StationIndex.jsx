@@ -19,13 +19,14 @@ import { AppHeader } from '../cmps/AppHeader'
 import { AppFooter } from '../cmps/AppFooter'
 import { ModalRemove } from '../cmps/ModalRemove'
 import { PlaylistQueue } from '../cmps/PlaylistQueue'
+import { NowPlayingView } from '../cmps/NowPlayingView'
 import { setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 
 export function StationIndex() {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
-  const [isQueueOpen, setIsQueueOpen] = useState(false)
+  const [openPanel, setOpenPanel] = useState(null)
 
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
@@ -110,8 +111,16 @@ export function StationIndex() {
   }
 
   function onToggleQueue() {
-    setIsQueueOpen(!isQueueOpen)
+    setOpenPanel(prev => (prev === 'queue' ? null : 'queue'))
   }
+
+  function onToggleNowPlaying() {
+    setOpenPanel(prev => (prev === 'now' ? null : 'now'))
+  }
+
+  function closePanel() {
+  setOpenPanel(null)
+}
 
   async function onPlay(track) {
     try {
@@ -129,7 +138,7 @@ export function StationIndex() {
   return (
     <section
       ref={mainContainerRef}
-      className={`main-container ${isQueueOpen ? 'sidebar-open' : ''}`}
+      className={`main-container ${openPanel ? 'sidebar-open' : ''}`}
     >
       <AppHeader />
 
@@ -150,11 +159,26 @@ export function StationIndex() {
         isPlaying={isPlaying}
         onPlay={onPlay}
         onPause={onPause}
-        onToggleQueue={onToggleQueue}
-        isQueueOpen={isQueueOpen}
+        onClose={closePanel}
+        isOpen={openPanel === 'queue'}
       />
 
-      <AppFooter onToggleQueue={onToggleQueue} isQueueOpen={isQueueOpen} />
+      <NowPlayingView
+        currentTrack={currentTrack}
+        isPlaying={isPlaying}
+        onPlay={onPlay}
+        onPause={onPause}
+        onClose={closePanel}
+        isOpen={openPanel === 'now'}
+      />
+
+      <AppFooter 
+        onToggleQueue={onToggleQueue} 
+        onToggleNowPlaying={onToggleNowPlaying} 
+        isQueueOpen={openPanel === 'queue'} 
+        isNowOpen={openPanel === 'now'}
+      />
+
       {isModalRemoveOpen && (
         <ModalRemove
           station={stationToRemove}

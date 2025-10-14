@@ -9,7 +9,7 @@ import {
   setSeekToSec,
 } from '../store/actions/track.actions'
 
-export function AppFooter({ onToggleQueue, isQueueOpen }) {
+export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -36,6 +36,10 @@ export function AppFooter({ onToggleQueue, isQueueOpen }) {
 
   function handleToggleQueue() {
     onToggleQueue()
+  }
+
+  function handleToggleNowPlaying() {
+    onToggleNowPlaying()
   }
 
   async function onPlayPause() {
@@ -231,6 +235,13 @@ export function AppFooter({ onToggleQueue, isQueueOpen }) {
       </div>
 
       <div className="extra-btns">
+        <button
+          onClick={handleToggleNowPlaying}
+          className={`now-btn ${isNowOpen ? 'active' : ''}`}
+          title="Now Playing"
+        >
+          <SvgIcon iconName="nowPlaying" />
+        </button>
         <button
           onClick={handleToggleQueue}
           className={`queue-btn ${isQueueOpen ? 'active' : ''}`}

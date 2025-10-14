@@ -50,17 +50,18 @@ function _getIcon(iconName) {
         mute:<svg data-encore-id="icon" role="presentation" aria-label="Volume off" aria-hidden="false" className="e-91000-icon e-91000-baseline" id="volume-icon" viewBox="0 0 16 16"><path d="M13.86 5.47a.75.75 0 0 0-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 0 0 8.8 6.53L10.269 8l-1.47 1.47a.75.75 0 1 0 1.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 0 0 1.06-1.06L12.39 8l1.47-1.47a.75.75 0 0 0 0-1.06"></path><path d="M10.116 1.5A.75.75 0 0 0 8.991.85l-6.925 4a3.64 3.64 0 0 0-1.33 4.967 3.64 3.64 0 0 0 1.33 1.332l6.925 4a.75.75 0 0 0 1.125-.649v-1.906a4.7 4.7 0 0 1-1.5-.694v1.3L2.817 9.852a2.14 2.14 0 0 1-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694z"></path></svg>,
         verified:<svg data-encore-id="verifiedBadge" role="img" aria-hidden="false" className="e-91000-icon e-91000-baseline encore-announcement-set GFd0FwlxZVwZ9UTissE2" viewBox="0 0 24 24"><title>Verified account</title><path d="M10.814.5a1.66 1.66 0 0 1 2.372 0l2.512 2.572 3.595-.043a1.66 1.66 0 0 1 1.678 1.678l-.043 3.595 2.572 2.512c.667.65.667 1.722 0 2.372l-2.572 2.512.043 3.595a1.66 1.66 0 0 1-1.678 1.678l-3.595-.043-2.512 2.572a1.66 1.66 0 0 1-2.372 0l-2.512-2.572-3.595.043a1.66 1.66 0 0 1-1.678-1.678l.043-3.595L.5 13.186a1.66 1.66 0 0 1 0-2.372l2.572-2.512-.043-3.595a1.66 1.66 0 0 1 1.678-1.678l3.595.043zm6.584 9.12a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308z"></path></svg>,
         duration:<svg data-encore-id="icon" role="img" aria-hidden="true" className="duration-svg" viewBox="0 0 16 16"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8"></path><path d="M8 3.25a.75.75 0 0 1 .75.75v3.25H11a.75.75 0 0 1 0 1.5H7.25V4A.75.75 0 0 1 8 3.25"></path></svg>,
-            equalizer:<svg id="equalizer" width="20px" className="equalizer-svg" height="28px" viewBox="0 0 10 7" version="1.1" >
-  <g fill=" #1ed760" transform="translate(2, 1)" >
-    <rect id="bar1" transform="translate(0.500000, 6.000000) rotate(180.000000) translate(-0.500000, -6.000000) " x="0" y="5" width="1" height="2px"></rect>
-    <rect id="bar2" transform="translate(3.500000, 4.500000) rotate(180.000000) translate(-3.500000, -4.500000) " x="4" y="2" width="1" height="5"></rect>
-    <rect id="bar3" transform="translate(6.500000, 3.500000) rotate(180.000000) translate(-6.500000, -3.500000) " x="8" y="0" width="1" height="7"></rect>
-    <rect id="bar4" transform="translate(9.500000, 5.000000) rotate(180.000000) translate(-9.500000, -5.000000) " x="12" y="3" width="1" height="4"></rect>
-  </g>
-</svg>,
+        equalizer:
+        <svg id="equalizer" width="20px" className="equalizer-svg" height="28px" viewBox="0 0 10 7" version="1.1" >
+            <g fill=" #1ed760" transform="translate(2, 1)" >
+                <rect id="bar1" transform="translate(0.500000, 6.000000) rotate(180.000000) translate(-0.500000, -6.000000) " x="0" y="5" width="1" height="2px"></rect>
+                <rect id="bar2" transform="translate(3.500000, 4.500000) rotate(180.000000) translate(-3.500000, -4.500000) " x="4" y="2" width="1" height="5"></rect>
+                <rect id="bar3" transform="translate(6.500000, 3.500000) rotate(180.000000) translate(-6.500000, -3.500000) " x="8" y="0" width="1" height="7"></rect>
+                <rect id="bar4" transform="translate(9.500000, 5.000000) rotate(180.000000) translate(-9.500000, -5.000000) " x="12" y="3" width="1" height="4"></rect>
+            </g>
+        </svg>,
         queue:<svg data-encore-id="icon" role="img" aria-hidden="true" className="e-91000-icon e-91000-baseline" viewBox="0 0 16 16"><path d="M15 15H1v-1.5h14zm0-4.5H1V9h14zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5m2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2z"></path></svg>,
         volumeFull:<svg data-encore-id="icon" role="img" aria-hidden="true" className="e-91000-icon e-91000-baseline CicqRGKm_zeaoHcbASTP" viewBox="0 0 16 16" ><path d="M10.016 1.125A.75.75 0 0 0 8.99.85l-6.925 4a3.64 3.64 0 0 0 0 6.299l6.925 4a.75.75 0 0 0 1.125-.65v-13a.75.75 0 0 0-.1-.375zM11.5 5.56a2.75 2.75 0 0 1 0 4.88z"></path><path d="M16 8a5.75 5.75 0 0 1-4.5 5.614v-1.55a4.252 4.252 0 0 0 0-8.127v-1.55A5.75 5.75 0 0 1 16 8"></path></svg>,
-    
+        nowPlaying: <svg data-encore-id="icon" role="img" aria-hidden="true" className="now-playing-svg" viewBox="0 0 16 16"><path d="M11.196 8 6 5v6z"></path><path d="M15.002 1.75A1.75 1.75 0 0 0 13.252 0h-10.5a1.75 1.75 0 0 0-1.75 1.75v12.5c0 .966.783 1.75 1.75 1.75h10.5a1.75 1.75 0 0 0 1.75-1.75zm-1.75-.25a.25.25 0 0 1 .25.25v12.5a.25.25 0 0 1-.25.25h-10.5a.25.25 0 0 1-.25-.25V1.75a.25.25 0 0 1 .25-.25z"></path></svg>
     }
     return icons[iconName]
  }
