@@ -38,6 +38,7 @@
 @import "cmps/station/Browse";
 
 @import "cmps/track/TrackDetails";           
+@import "cmps/track/TrackList";           
 @import "cmps/track/TrackPreview";
 @import "cmps/track/ArtistDetails";           
 
