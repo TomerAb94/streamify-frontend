@@ -8,6 +8,7 @@ import {
   setVolume,
   setSeekToSec,
 } from '../store/actions/track.actions'
+import { youtubeService } from '../services/youtube.service'
 
 export function AppFooter({ onToggleQueue, isQueueOpen }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
@@ -54,8 +55,16 @@ export function AppFooter({ onToggleQueue, isQueueOpen }) {
       const nextTrack = playlist.find(
         (track) => track.spotifyId === currentTrack.nextId
       )
-      if (nextTrack) {
+      if (nextTrack && nextTrack.youtubeId !== null) {
         await setCurrentTrack(nextTrack)
+        await setIsPlaying(true)
+      }
+
+        if (nextTrack && nextTrack.youtubeId === null) {
+        // If youtubeId is null, fetch it
+        const youtubeId = await getYoutubeId(nextTrack.name)
+        const updatedNextTrack = { ...nextTrack, youtubeId }
+        await setCurrentTrack(updatedNextTrack)
         await setIsPlaying(true)
       }
     } catch (err) {
@@ -71,8 +80,15 @@ export function AppFooter({ onToggleQueue, isQueueOpen }) {
       const prevTrack = playlist.find(
         (track) => track.spotifyId === currentTrack.prevId
       )
-      if (prevTrack) {
+      if (prevTrack && prevTrack.youtubeId !== null) {
         await setCurrentTrack(prevTrack)
+        await setIsPlaying(true)
+      }
+       if (prevTrack && prevTrack.youtubeId === null) {
+        // If youtubeId is null, fetch it
+        const youtubeId = await getYoutubeId(prevTrack.name)
+        const updatedPrevTrack = { ...prevTrack, youtubeId }
+        await setCurrentTrack(updatedPrevTrack)
         await setIsPlaying(true)
       }
     } catch (err) {
@@ -136,6 +152,17 @@ export function AppFooter({ onToggleQueue, isQueueOpen }) {
   const progressPct = durationSecNumeric > 0
     ? Math.min(100, Math.max(0, (baseProgress / durationSecNumeric) * 100))
     : 0
+
+  async function getYoutubeId(str) {
+    try {
+      const res = await youtubeService.getVideos(str)
+      return res?.[0]?.id || null
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
+  }
+
 
   return (
     <footer className="app-footer">

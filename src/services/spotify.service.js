@@ -283,7 +283,7 @@ async function getTracksPlaylist(playlistId) {
             }],
             duration: formatDuration(track.duration_ms),
             addedAt: item.added_at,
-            youtubeId: await getYoutubeId(track.name),
+            youtubeId: null,
             prevId: index === 0 ? arr[arr.length - 1].track.id : arr[index - 1].track.id,
             nextId: index === arr.length - 1 ? arr[0].track.id : arr[index + 1].track.id
           }
@@ -406,16 +406,6 @@ async function getCurrentPlayback(userAccessToken) {
 }
 
 
-
-  async function getYoutubeId(str) {
-    try {
-      const res = await youtubeService.getVideos(str)
-      return res?.[0]?.id || null
-    } catch (err) {
-      console.error('Error fetching YouTube URL:', err)
-      return null
-    }
-  }
 
 
   async function getSpotifyUserProfileImg(userId) {

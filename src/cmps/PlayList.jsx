@@ -42,6 +42,19 @@ export function PlayList() {
 //     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
 //   }
 
+  async function getYoutubeId(str) {
+    try {
+      const res = await youtubeService.getVideos(str)
+      return res?.[0]?.id || null
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
+  }
+
+
+
+
   async function onPlay(track) {
     try {
       // Clear existing playlist
@@ -49,9 +62,19 @@ export function PlayList() {
         await setTracks([])
       }
 
+      // Get YouTube ID for the track
+      const youtubeId = await getYoutubeId(track.name)
+      const trackWithYoutube = {
+        ...track,
+        youtubeId,
+      }
+
+      console.log('trackWithYoutube:', trackWithYoutube)
       // Set single track as playlist and play it
+      
+     
       await setTracks(playlist.tracks)
-      await setCurrentTrack(track)
+      await setCurrentTrack(trackWithYoutube)
       await setIsPlaying(true)
     } catch (err) {
       console.error('Error playing track:', err)
