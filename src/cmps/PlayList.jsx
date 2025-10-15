@@ -23,6 +23,7 @@ export function PlayList() {
 
   useEffect(() => {
     loadPlaylist()
+   
   }, [params.playlistId])
 
 
@@ -171,7 +172,7 @@ useEffect(() => {
 
            <div className="station-btns-container">
         <div className="action-btns">
-          {(isPlaying && currentTrack.name===playlist.tracks[0].name) ? (
+          {(isPlaying && playlist.tracks.map(track => track.name === currentTrack.name).includes(true)) ? (
             <button
               onClick={onPause}
               className="play-btn"
