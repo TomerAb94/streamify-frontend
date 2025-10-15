@@ -223,7 +223,6 @@ async function getGenres(limit = 50, offset = 0) {
   try {
     const endpoint = `/browse/categories?limit=${limit}&offset=${offset}&locale=en_US`
     const response = await makeSpotifyRequest(endpoint)
-    console.log(response)
     return response.categories.items.map(category => ({
       id: category.id,
       name: category.name.includes('/') ? category.name.replace('/','&'):category.name,

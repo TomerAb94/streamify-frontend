@@ -33,10 +33,10 @@ export function Browse() {
 
   return (
     <div className="browse-container">
-      <h1>Browse all</h1>
+      <h1 className='browse-header'>Browse all</h1>
       <div className="genres-list">
         {genres.map((genre,idx) => (
-           <NavLink to={`/browse/genre/${genre.name}`} key={genre.id}>
+           <NavLink to={`/browse/genre/${genre.name}`} key={genre.id} state={{ backgroundColor: genreColors[idx % genreColors.length],name:genre.name }}>
           <div className="genre-item" onClick={() => onSelectGenre(genre.name)} style={{ backgroundColor: genreColors[idx % genreColors.length] }}>
            
            
