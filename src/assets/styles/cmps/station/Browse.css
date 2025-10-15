@@ -1,150 +1,214 @@
 .browse-container {
-    grid-area: station-index;
-    height: calc(100vh - 180px);
-    position: relative;
-    overflow: hidden; 
+  grid-area: station-index;
+  height: calc(100vh - 180px);
+  position: relative;
+  overflow-y: auto;
+  padding: 20px;
 }
 
 .browse-container::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 .browse-container::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .browse-container::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
-    border: 3px solid transparent;
-    background-clip: padding-box;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
 }
 
 .browse-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-    border: 3px solid transparent;
-    background-clip: padding-box;
+  background: rgba(255, 255, 255, 0.5);
+  border: 3px solid transparent;
+  background-clip: padding-box;
 }
 
 .genres-list {
-    grid-area: station-index;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-    padding: 20px;
-    height: 100%;
-    overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  justify-items: center;
+  align-items: center;
+  padding: 24px 0;
+}
+
+.genres-list a {
+  text-decoration: none;
+  width: 100%;
+  transition: transform 0.2s ease;
+}
+
+
+.genre-item {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+
+.genre-item img {
+border-radius: 4px;
+  position: absolute;
+  width: 45%;
+  bottom: 0;
+  right: 0;
+  transform: rotate(25deg) translate(18%, -2%);
+  object-fit: cover;
+  max-width: 100%;
+  max-height: 100%;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+
+
+.genre-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 10px;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .genres-list::-webkit-scrollbar {
-    width: 12px;
+  width: 12px;
 }
 
 .genres-list::-webkit-scrollbar-track {
-    background: transparent;
+  background: transparent;
 }
 
 .genres-list::-webkit-scrollbar-thumb {
-    background: #535353;
-    border-radius: 6px;
+  background: #535353;
+  border-radius: 6px;
 }
 
 .genres-list::-webkit-scrollbar-thumb:hover {
-    background: #757575;
+  background: #757575;
 }
 
-.playlist-container{
-    border-radius: 12px;
-    height: 100%;
-    overflow-y: auto;
-    display: grid;
-    grid-template-rows: auto 1fr;
-
-     & .station-btns-container {
-    position: relative;
-
-    & .action-btns {
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 20px;
-      z-index: 1;
-
-      & .play-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--green-pin);
-        padding: 22px;
-
-        &:hover {
-          background-color: var(--green-play);
-        }
-
-        > .play, .pause {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          > svg {
-            width: 24px;
-            height: 24px;
-            fill: black;
-          }
-        }
-      }
-    }
+@media (max-width: 768px) {
+  .genres-list {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 
+  .genre-item {
+    height: 130px;
+  }
 
+  .genre-title {
+    font-size: 1.1rem;
+  }
 }
 
-.playlist-header{
-    display: grid;
-    grid-auto-flow: column;
-    align-items: center;
-    padding: 20px 24px;
-    
+@media (max-width: 480px) {
+  .genres-list {
+    grid-template-columns: 1fr;
+  }
+
+  .genre-item {
+    height: 100px;
+    padding: 8px;
+  }
+
+  .genre-item img {
+    width: 50%;
+    transform: rotate(20deg) translate(15%, -5%);
+  }
+
+  .genre-title {
+    font-size: 1rem;
+  }
 }
 
-.playlist-info{
-    display: grid;
-    gap: 8px;
-     padding: 20px 24px;
-    align-content: center;
-   
-    
-  
+.playlist-container {
+  border-radius: 12px;
+  height: 100%;
+  overflow-y: auto;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
-.playlist-description{
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+.station-btns-container .action-btns {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  z-index: 1;
 }
 
-.playlist-name{
-    font-size: 5rem;
-    font-weight: bold;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.action-btns .play-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--green-pin);
+  padding: 22px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
 }
 
-.owner-profile-img{
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-    
+.action-btns .play-btn:hover {
+  background-color: var(--green-play);
 }
 
-.playlist-meta{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-   
-    
+.action-btns .play-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: black;
+}
+
+.playlist-header {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  padding: 20px 24px;
+}
+
+.playlist-info {
+  display: grid;
+  gap: 8px;
+  padding: 20px 24px;
+  align-content: center;
+}
+
+.playlist-description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.playlist-name {
+  font-size: 5rem;
+  font-weight: bold;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.owner-profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.playlist-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

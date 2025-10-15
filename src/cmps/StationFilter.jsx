@@ -55,7 +55,7 @@ export function StationFilter() {
       }
 
       // Get YouTube ID for the track
-      const youtubeId = await getYoutubeId(track.name)
+      const youtubeId = await getYoutubeId(track.name + ' ' + track.artists[0]?.name)
       const trackWithYoutube = {
         ...track,
         youtubeId,

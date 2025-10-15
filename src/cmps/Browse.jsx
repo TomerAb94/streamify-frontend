@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-
+import {genreColors} from '../assets/genreColors/genreColors'
 export function Browse() {
   const [genres, setGenres] = useState([])
 
@@ -33,17 +33,21 @@ export function Browse() {
 
   return (
     <div className="browse-container">
-
+      <h1>Browse all</h1>
       <div className="genres-list">
-        {genres.map((genre) => (
-            <NavLink to={`/browse/genre/${genre.name}`} key={genre.id}>
-            <div className="genre-item" onClick={() => onSelectGenre(genre.name)}>
+        {genres.map((genre,idx) => (
+           <NavLink to={`/browse/genre/${genre.name}`} key={genre.id}>
+          <div className="genre-item" onClick={() => onSelectGenre(genre.name)} style={{ backgroundColor: genreColors[idx % genreColors.length] }}>
+           
+           
               {genre.icons?.[0]?.url && (
-                <img src={genre.icons[0].url} alt={genre.name} />
+              <img src={genre.icons[0].url} alt={genre.name} />
               )}
-              <h3>{genre.name}</h3>
-            </div>
-          </NavLink>
+              <h3 className='genre-title'>{genre.name}</h3>
+           
+         
+          </div>
+           </NavLink>
         ))}
       </div>
     </div>

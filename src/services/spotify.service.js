@@ -84,6 +84,7 @@ async function makeSpotifyRequest(endpoint) {
 
 async function getSearchedTracks(query, limit = 5, offset = 0) {
   const tracksFromSpotify = await searchTracks(query, limit, offset)
+  console.log(tracksFromSpotify)
   let tracks = tracksFromSpotify.tracks.items
 
   tracks = tracks.map((track) => {
@@ -217,23 +218,23 @@ async function getAlbum(albumId) {
   return makeSpotifyRequest(endpoint)
 }
 
-
 async function getGenres(limit = 50, offset = 0) {
+
   try {
-    const endpoint = `/browse/categories?limit=${limit}&offset=${offset}&locale=en_IL`
+    const endpoint = `/browse/categories?limit=${limit}&offset=${offset}&locale=en_US`
     const response = await makeSpotifyRequest(endpoint)
+    console.log(response)
     return response.categories.items.map(category => ({
       id: category.id,
       name: category.name.includes('/') ? category.name.replace('/','&'):category.name,
       icons: category.icons
+       
     }))
   } catch (error) {
     console.error('Error fetching genres/categories:', error)
     throw error
   }
 }
-
-
 
 async function getGenrePlaylists(genre) {
   try{
@@ -300,15 +301,6 @@ async function getTracksPlaylist(playlistId) {
     throw error
   }
 }
-
-
-
-
-
-// const result = await spotifyService.getTracksPlaylist('3z0MRRZHSNPI4tPEjcCZRV');
-// console.log(result.playlist); // מידע על הפלייליסט
-// console.log(result.tracks);   // מערך של השירים
-
 
 // Note: These functions require user authentication and Spotify Premium
 let player = null
@@ -406,14 +398,14 @@ async function getCurrentPlayback(userAccessToken) {
   return null
 }
 
-
-
-
   async function getSpotifyUserProfileImg(userId) {
   try{
   const endpoint =  `/users/${userId}`
   const response = await makeSpotifyRequest(endpoint)
-
+  
+  if (!response.images[0]) {
+    return 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+  }
   return response.images[0].url
   }
  catch (error) {
