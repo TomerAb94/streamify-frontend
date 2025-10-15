@@ -1,3 +1,4 @@
+import { replace } from "react-router"
 import { youtubeService } from "./youtube.service"
 
 
@@ -223,7 +224,7 @@ async function getGenres(limit = 50, offset = 0) {
     const response = await makeSpotifyRequest(endpoint)
     return response.categories.items.map(category => ({
       id: category.id,
-      name: category.name,
+      name: category.name.includes('/') ? category.name.replace('/','&'):category.name,
       icons: category.icons
     }))
   } catch (error) {
