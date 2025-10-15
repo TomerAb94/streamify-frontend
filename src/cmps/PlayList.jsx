@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
+import { FastAverageColor } from 'fast-average-color'
 import { youtubeService } from '../services/youtube.service'
 import { setTracks,setCurrentTrack, setIsPlaying} from '../store/actions/track.actions'
 
@@ -23,6 +24,29 @@ export function PlayList() {
   useEffect(() => {
     loadPlaylist()
   }, [params.playlistId])
+
+
+  
+useEffect(() => {
+  if (playlist?.playlist?.imgUrl) {
+    const fac = new FastAverageColor()
+    const imgElement = document.querySelector('.playlist-cover')
+    const background = document.querySelector('.playlist-header')
+
+    if (imgElement) {
+      imgElement.crossOrigin = 'Anonymous'
+      fac
+        .getColorAsync(imgElement)
+        .then((color) => {
+          background.style.backgroundColor = color.rgba
+          background.style.background = `linear-gradient(to bottom,${color.rgba}, rgba(0, 0, 0, 0.5) 100%)`
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }
+}, [playlist])
 
   function isTrackCurrentlyPlaying(track) {
     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
