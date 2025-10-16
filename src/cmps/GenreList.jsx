@@ -36,15 +36,15 @@ export function GenreList( ) {
       </div>
             <div className="genres-list">
             {playlists.map((station) => (
-                <NavLink to={`/browse/genre/${params.genreName}/${station.id}`} key={station.id}>
-                    <div className="playlist-item">
+                <NavLink className="playlist-item" to={`/browse/genre/${params.genreName}/${station.id}`} key={station.id}>
+                   
                         {console.log('station:', station)}
                         {station.images?.[0]?.url && (
                             <img src={station.images[0].url} alt={station.name} />
                         )}
                         <h3 className='playlist-name'>{station.name}</h3>
                          <h3 className='playlist-description'>{station.description?station.description:''}</h3>
-                    </div>
+                
                 </NavLink>
             ))}
         </div></div>
