@@ -232,11 +232,14 @@
 }
 
 
-.playlist-item{
+a.playlist-item{
+  border-radius: 8px;
     display: flex;
     flex-direction: column;
+     padding: 12px;
+      background-color: transparent;
 
-
+  
     img{ 
         height: 100%;   
         border-radius: 6px;
@@ -262,4 +265,9 @@
         white-space: nowrap;
         font-family: Circular-thini;
      }
+   &:hover{
+      background-color: var(--color-hover-darker);
+    }
+     
 }
+
