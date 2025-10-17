@@ -34,7 +34,7 @@ export function GenreList( ) {
              <h1 className='header'>{genreName}</h1>
                  
       </div>
-            <div className="genres-list">
+            <div className="playlists-container">
             {playlists.map((station) => (
                 <NavLink className="playlist-item" to={`/browse/genre/${params.genreName}/${station.id}`} key={station.id}>
                    
