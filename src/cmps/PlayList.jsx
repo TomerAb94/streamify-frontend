@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
 import { FastAverageColor } from 'fast-average-color'
 import { youtubeService } from '../services/youtube.service'
-import { setTracks,setCurrentTrack, setIsPlaying} from '../store/actions/track.actions'
+import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 
 import { updateStation } from '../store/actions/station.actions'
 import { useSelector } from 'react-redux'
@@ -12,42 +12,37 @@ import { useSelector } from 'react-redux'
 export function PlayList() {
   const params = useParams()
   const [playlist, setPlaylist] = useState(null)
-  
+
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
- const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
-  const stations = useSelector(
-    (storeState) => storeState.stationModule.stations
-  )
-   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
+  const stations = useSelector((storeState) => storeState.stationModule.stations)
+  const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
   useEffect(() => {
     loadPlaylist()
-   
   }, [params.playlistId])
 
+  useEffect(() => {
+    if (playlist?.playlist?.imgUrl) {
+      const fac = new FastAverageColor()
+      const imgElement = document.querySelector('.playlist-cover')
+      const background = document.querySelector('.playlist-header')
 
-  
-useEffect(() => {
-  if (playlist?.playlist?.imgUrl) {
-    const fac = new FastAverageColor()
-    const imgElement = document.querySelector('.playlist-cover')
-    const background = document.querySelector('.playlist-header')
-
-    if (imgElement) {
-      imgElement.crossOrigin = 'Anonymous'
-      fac
-        .getColorAsync(imgElement)
-        .then((color) => {
-          background.style.backgroundColor = color.rgba
-          background.style.background = `linear-gradient(to bottom,${color.rgba}, rgba(0, 0, 0, 0.5) 100%)`
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+      if (imgElement) {
+        imgElement.crossOrigin = 'Anonymous'
+        fac
+          .getColorAsync(imgElement)
+          .then((color) => {
+            background.style.backgroundColor = color.rgba
+            background.style.background = `linear-gradient(to bottom,${color.rgba}, rgba(0, 0, 0, 0.5) 100%)`
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
     }
-  }
-}, [playlist])
+  }, [playlist])
 
   function isTrackCurrentlyPlaying(track) {
     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
@@ -63,12 +58,11 @@ useEffect(() => {
     }
   }
 
-//   function isTrackCurrentlyPlaying(track) {
-//     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
-//   }
+  //   function isTrackCurrentlyPlaying(track) {
+  //     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+  //   }
 
   async function getYoutubeId(str) {
-  
     try {
       const res = await youtubeService.getVideos(encodeURIComponent(str))
       return res?.[0]?.id || null
@@ -78,7 +72,6 @@ useEffect(() => {
     }
   }
   async function onPlay(track) {
-    
     try {
       // Clear existing playlist
       if (playListToPlay && playListToPlay.length) {
@@ -104,7 +97,6 @@ useEffect(() => {
   async function onPause() {
     await setIsPlaying(false)
   }
-
 
   async function onResume() {
     await setIsPlaying(true)
@@ -142,10 +134,7 @@ useEffect(() => {
     } catch (err) {
       console.error('Error adding track to Liked Songs:', err)
     }
-
   }
-
-
 
   if (!playlist) return <div>Loading playlist...</div>
   return (
@@ -156,8 +145,8 @@ useEffect(() => {
         )}
         <div className="playlist-info">
           <p>{playlist.playlist.isPublic}</p>
-          <h1 className='playlist-name'>{playlist.playlist.name}</h1>
-          <p className='playlist-description'>{playlist.playlist.description}</p>
+          <h1 className="playlist-name">{playlist.playlist.name}</h1>
+          <p className="playlist-description">{playlist.playlist.description}</p>
           <div className="playlist-meta">
             <img className="owner-profile-img" src={playlist.playlist.ownerProfileImg} alt={playlist.playlist.owner} />
             <span>{playlist.playlist.owner}</span>
@@ -167,16 +156,12 @@ useEffect(() => {
             <span>{playlist.playlist.tracksTotal} songs </span>
           </div>
         </div>
-        
       </div>
 
-           <div className="station-btns-container">
+      <div className="station-btns-container">
         <div className="action-btns">
-          {(isPlaying && playlist.tracks.map(track => track.name === currentTrack.name).includes(true)) ? (
-            <button
-              onClick={onPause}
-              className="play-btn"
-            >
+          {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
+            <button onClick={onPause} className="play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
           ) : (
@@ -200,7 +185,6 @@ useEffect(() => {
         </div>
       </div>
 
-
       <section className="track-list">
         <div className="track-header">
           <div className="first-col-header">#</div>
@@ -211,7 +195,7 @@ useEffect(() => {
           </div>
         </div>
 
-          {playlist.tracks.map((track, idx) => (
+        {playlist.tracks.map((track, idx) => (
           <div
             className="track-row"
             key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
@@ -237,7 +221,9 @@ useEffect(() => {
                 <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
               )}
               <div className="track-text">
-                <span className={`track-name ${currentTrack?.name===track.name ? 'playing':''} `} >{track.name}</span>
+                <span className={`track-name ${currentTrack?.name === track.name ? 'playing' : ''} `}>
+                  {track.name}
+                </span>
                 <div className="track-artists">
                   <span>{track.artists[0].name}</span>
                 </div>
