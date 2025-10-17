@@ -24,7 +24,7 @@
   --green-checked:#1ED760;
   --green-clicked:#1db954;
   --songs-table-color:#b3b3b3;
-  
+  --background-highlight: #3be477;
   --input-color-txt:#1F1F1F;
 
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);

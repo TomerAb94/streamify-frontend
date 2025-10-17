@@ -158,7 +158,6 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   border-radius: 12px;
   overflow-y: auto;
-  
 }
 
 .station-btns-container .action-btns {
@@ -210,6 +209,7 @@
 }
 
 .playlist-name {
+  position: relative;
   font-size: 5rem;
   font-weight: bold;
   margin: 0;
@@ -231,50 +231,96 @@
   gap: 8px;
 }
 
-
-a.playlist-item{
+a.playlist-item {
+  position: relative;
+  display: grid;
+  grid-template-rows: 200px 1fr 1fr;
+  padding: 12px;
   border-radius: 8px;
-    display: grid
-;
-    grid-template-rows: 200px 1fr 1fr;
-     padding: 12px;
-      background-color: transparent;
+  background-color: transparent;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  overflow: hidden;
+
+
+}
+
+/* תמונה */
+.playlist-img-container  {
+  position: relative;
+  img {
+     position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  }
+  .play-container{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--green-play);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
 
   
-    img{ 
-      height: 100%;
-       
-        border-radius: 6px;
-        width: 100%;
-        object-fit: cover;
-    }
-     .playlist-name{
-        margin-top: 10px;
-        font-size: 18px;
-        color: white;
-        text-align: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-family: Circular-thini;
-     }
-
-     .playlist-description{
-        margin-top: 4px;
-        font-size: 16px;
-        color: var(--color-text-secondary);
-        text-align: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-family: Circular-thini;
-     }
-   &:hover{
-      background-color: var(--color-hover-darker);
-    }
-     
+  }
+ 
 }
 
-.playlist-container{
-  overflow-y: auto;
+
+.playlist-item {
+
+.playlist-name {
+  margin-top: 10px;
+  font-size: 18px;
+  color: white;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Circular-thini;
 }
+
+.playlist-description {
+  margin-top: 4px;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Circular-thini;
+}
+
+}
+
+.playlist-item .play-container:hover {
+ background-color: var(--background-highlight);
+}
+
+
+.playlist-item .play-container svg {
+  width: 20px;
+  height: 20px;
+  fill: black;
+}
+
+
+.playlist-item:hover {
+  background-color: var(--color-hover-darker);
+}
+
+.playlist-item:hover .play-container {
+  opacity: 1;
+ 
+}
+
