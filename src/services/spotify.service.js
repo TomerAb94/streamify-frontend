@@ -272,6 +272,7 @@ async function getTracksPlaylist(playlistId) {
         .map(async (item, index, arr) => {
           const track = item.track
           return {
+
             spotifyId: track.id,
             name: track.name,
             album: { 
@@ -286,10 +287,13 @@ async function getTracksPlaylist(playlistId) {
             addedAt: item.added_at,
             youtubeId: null,
             prevId: index === 0 ? arr[arr.length - 1].track.id : arr[index - 1].track.id,
-            nextId: index === arr.length - 1 ? arr[0].track.id : arr[index + 1].track.id
+            nextId: index === arr.length - 1 ? arr[0].track.id : arr[index + 1].track.id,
+            spotifyPlaylistId:playlistInfo.id
           }
         })
     )
+
+    
 
     return {
       playlist: playlistInfo,

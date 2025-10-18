@@ -241,22 +241,20 @@ a.playlist-item {
   text-decoration: none;
   transition: background-color 0.3s ease, transform 0.2s ease;
   overflow: hidden;
-
-
 }
 
-/* תמונה */
-.playlist-img-container  {
+.playlist-img-container {
   position: relative;
   img {
-     position: relative;
-  height: 100%;
-  width: 100%;
-  border-radius: 6px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
   }
-  .play-container{
+  .play-container,
+  .pause-container {
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -269,61 +267,65 @@ a.playlist-item {
     justify-content: center;
     z-index: 10;
     opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
-
-  
+    /* transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease; */
   }
- 
+}
+
+.playlist-item {
+  .playlist-name {
+    margin-top: 10px;
+    font-size: 18px;
+    color: white;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: Circular-thini;
+  }
+
+  .playlist-description {
+    margin-top: 4px;
+    font-size: 16px;
+    color: var(--color-text-secondary);
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: Circular-thini;
+  }
+}
+
+.playlist-item {
+  .play-container:hover,
+  .pause-container:hover {
+    background-color: var(--background-highlight);
+  }
 }
 
 
 .playlist-item {
-
-.playlist-name {
-  margin-top: 10px;
-  font-size: 18px;
-  color: white;
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: Circular-thini;
-}
-
-.playlist-description {
-  margin-top: 4px;
-  font-size: 16px;
-  color: var(--color-text-secondary);
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: Circular-thini;
-}
+.play-container svg,
+.pause-container svg {
+    width: 20px;
+    height: 20px;
+    fill: black;
+  }
 
 }
 
-.playlist-item .play-container:hover {
- background-color: var(--background-highlight);
-}
-
-
-.playlist-item .play-container svg {
-  width: 20px;
-  height: 20px;
-  fill: black;
-}
 
 
 .playlist-item:hover {
   background-color: var(--color-hover-darker);
 }
 
-.playlist-item:hover .play-container {
-  opacity: 1;
- 
+.playlist-item:hover {
+  .play-container,
+  .pause-container {
+    opacity: 1;
+  }
 }
 
-.playlist-container{
+.playlist-container {
   overflow-y: scroll;
 }

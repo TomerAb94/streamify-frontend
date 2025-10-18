@@ -5,7 +5,7 @@ import { SvgIcon } from './SvgIcon'
 import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 import { useSelector } from 'react-redux'
 import { youtubeService } from '../services/youtube.service'
-
+import { CompareSharp } from '@mui/icons-material'
 
 export function GenreList() {
   const location = useLocation()
@@ -13,14 +13,15 @@ export function GenreList() {
   const genreName = location.state?.name || 'Unknown Genre'
   const params = useParams()
   const [playlists, setPlaylists] = useState([])
-  
-const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
-const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
+
+  const [isTrackOnHoveredPlaylist, setIsTrackOnHoveredPlaylist] = useState(false)
+
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
 
   useEffect(() => {
     loadPlaylists()
-  
   }, [params.genreId])
 
   async function loadPlaylists() {
@@ -37,46 +38,62 @@ const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks
     try {
       const playlist = await spotifyService.getTracksPlaylist(stationId)
       // console.log('playlist:', playlist)
-      return playlist.tracks
+      return playlist
     } catch (error) {
       console.error('Failed loading playlists:', error)
     }
   }
 
   async function onPlayFromOutside(event, stationId) {
-
     event.preventDefault()
     try {
-     const playlist = await loadPlaylist(stationId)
-    console.log('Playing playlist:', playlist)
+      const playlistSpotifyDetails = await loadPlaylist(stationId)
+      const { tracks, playlist } = playlistSpotifyDetails
 
-     if (playListToPlay && playListToPlay.length) {
+     
+
+      if (playListToPlay && playListToPlay.length) {
         await setTracks([])
       }
-      const youtubeId = await getYoutubeId(playlist[0].name + ' ' + playlist[0].artists[0]?.name)
+      const youtubeId = await getYoutubeId(tracks[0].name + ' ' + tracks[0].artists[0]?.name)
       const trackWithYoutube = {
-        ...playlist[0],
+        ...tracks[0],
         youtubeId,
       }
-    
-    // Implement play logic here
-    await setTracks(playlist)
-    await setCurrentTrack(trackWithYoutube)
-    await setIsPlaying(true)
-    
+
+      // Implement play logic here
+      await setTracks(tracks)
+      await setCurrentTrack(trackWithYoutube)
+      await setIsPlaying(true)
     } catch (err) {
       console.error('Error playing :', err)
     }
-  
   }
 
-   async function getYoutubeId(str) {
+  async function getYoutubeId(str) {
     try {
       const res = await youtubeService.getVideos(encodeURIComponent(str))
       return res?.[0]?.id || null
     } catch (err) {
       console.error('Error fetching YouTube URL:', err)
       return null
+    }
+  }
+
+  async function onPause(event) {
+    event.preventDefault()
+    await setIsPlaying(false)
+  }
+
+  async function onCheckCurrnetTrackOnList(currentTrack, spotifyPlaylistId) {
+    if (!currentTrack) return
+    console.log('currentTrack:', currentTrack.spotifyPlaylistId)
+    console.log('spotifyPlaylistId:', spotifyPlaylistId)
+    if (currentTrack.spotifyPlaylistId === spotifyPlaylistId) {
+      setIsTrackOnHoveredPlaylist(true)
+    }
+    else {
+      setIsTrackOnHoveredPlaylist(false)
     }
   }
 
@@ -92,10 +109,24 @@ const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks
         </div>
         <div className="playlists-container">
           {playlists.map((station) => (
-            <NavLink className="playlist-item" to={`/browse/genre/${params.genreName}/${station.id}`} key={station.id}>
-              <div className="playlist-img-container">
+            <NavLink
+              className="playlist-item"
+              to={`/browse/genre/${params.genreName}/${station.id}`}
+              key={station.id}
+              
+            >
+              <div className="playlist-img-container" onMouseEnter={() => onCheckCurrnetTrackOnList(currentTrack, station.id)}>
                 {station.images?.[0]?.url && <img src={station.images[0].url} alt={station.name} />}
-                <SvgIcon iconName="play" className="play-container" onClick={(event) => onPlayFromOutside(event, station.id)} />
+
+                {isPlaying  && isTrackOnHoveredPlaylist ? (
+                  <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+                ) : (
+                  <SvgIcon
+                    iconName="play"
+                    className="play-container"
+                    onClick={(event) => onPlayFromOutside(event, station.id)}
+                  />
+                )}
               </div>
 
               <h3 className="playlist-name">{station.name}</h3>
