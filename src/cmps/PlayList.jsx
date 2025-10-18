@@ -14,6 +14,8 @@ export function PlayList() {
   const params = useParams()
   const [playlist, setPlaylist] = useState(null)
 
+  // console.log(params)
+
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
@@ -53,9 +55,17 @@ export function PlayList() {
 
   async function loadPlaylist() {
     try {
-      const playlist = await spotifyService.getTracksPlaylist(params.playlistId)
+      if (params.albumId) {
+         const playlist = await spotifyService.getAlbumNewRelease(params.albumId) 
+         setPlaylist(playlist)
+      }
+      else if (params.playlistId) {
+         const playlist = await spotifyService.getTracksPlaylist(params.playlistId) 
+         setPlaylist(playlist)
+      }
+     
       // console.log('playlist:', playlist)
-      setPlaylist(playlist)
+      
     } catch (error) {
       console.error('Failed loading playlists:', error)
     }

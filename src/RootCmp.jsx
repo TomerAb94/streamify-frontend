@@ -77,6 +77,7 @@ export function RootCmp() {
       <Routes>
         <Route element={<StationIndex />}>
           <Route path="" element={<HomePage />} />
+          <Route path="/album/:albumId"  element={<PlayList/>} />
           <Route path="/search" element={<Browse />} />
           <Route path="/search/:searchStr" element={<StationFilter />} />
           <Route path="/station/:stationId" element={<StationDetails />} />
@@ -85,6 +86,7 @@ export function RootCmp() {
           <Route path="/browse" element={<Browse />} />
           <Route path="/browse/genre/:genreName"  element={<GenreList />} />
           <Route path="/browse/genre/:genreName/:playlistId"  element={<PlayList />} />
+      
         </Route>
 
         <Route path="auth" element={<LoginSignup />}>

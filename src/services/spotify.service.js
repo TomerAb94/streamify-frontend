@@ -18,6 +18,7 @@ export const spotifyService = {
   getTrack,
   getArtist,
   getAlbum,
+  getAlbumNewRelease,
   initializePlayer,
   playTrack,
   pauseTrack,
@@ -28,6 +29,7 @@ export const spotifyService = {
   getTracksPlaylist,
   getFullTrackData,
   getArtistData,
+  getNewAlbumsReleases,
 }
 
 
@@ -216,6 +218,58 @@ async function getArtistData(artistId) {
 async function getAlbum(albumId) {
   const endpoint = `/albums/${albumId}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getAlbumNewRelease(albumId) {
+  try {
+    const endpoint = `/albums/${albumId}`
+    const response = await makeSpotifyRequest(endpoint)
+    
+    // Extract album metadata
+    const playlistInfo = {
+      id: response.id,
+      name: response.name,
+      description: response.description || '',
+      imgUrl: response.images[0]?.url,
+      artists: response.artists.map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+      })),
+      releaseDate: response.release_date,
+      // albumType: response.album_type,
+      totalTracks: response.total_tracks,
+      isPublic: response.is_playable ? 'Public Album' : 'Private Album',
+      uri: response.uri,
+      externalUrls: response.external_urls,
+    }
+
+    // Map tracks to clean format and add navigation IDs
+    const tracks = response.tracks.items.map((track, index, arr) => ({
+      spotifyId: track.id,
+      name: track.name,
+      album: { 
+        name: response.name, 
+        imgUrl: response.images[0]?.url 
+      },
+      artists: [{
+        name: track.artists.map((artist) => artist.name).join(', '),
+        id: track.artists.map((artist) => artist.id),
+      }],
+      duration: formatDuration(track.duration_ms),
+      youtubeId: null,
+      prevId: index === 0 ? arr[arr.length - 1].id : arr[index - 1].id,
+      nextId: index === arr.length - 1 ? arr[0].id : arr[index + 1].id,
+      spotifyAlbumId: playlistInfo.id,
+    }))
+
+    return {
+      playlist: playlistInfo,
+      tracks: tracks,
+    }
+  } catch (error) {
+    console.error('Error fetching album new release:', error)
+    throw error
+  }
 }
 
 async function getGenres(limit = 50, offset = 0) {
@@ -418,3 +472,36 @@ async function getCurrentPlayback(userAccessToken) {
 }
 
 
+async function getNewAlbumsReleases(limit = 20, offset = 0) {
+  try {
+    const endpoint = `/browse/new-releases?limit=${limit}&offset=${offset}&country=US`
+    const response = await makeSpotifyRequest(endpoint)
+    
+    // Map albums to clean object format
+    const albums = response.albums.items.map((album) => ({
+      id: album.id,
+      name: album.name,
+      artists: album.artists.map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+      })),
+      releaseDate: album.release_date,
+      totalTracks: album.total_tracks,
+      images: album.images.map((img) => ({
+        url: img.url,
+        height: img.height,
+        width: img.width,
+      })),
+      externalUrls: album.external_urls,
+      uri: album.uri,
+      albumType: album.album_type,
+    }))
+    
+    return {
+      albums
+    }
+  } catch (error) {
+    console.error('Error fetching new album releases:', error)
+    throw error
+  }
+}

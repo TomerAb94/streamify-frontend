@@ -146,3 +146,12 @@
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
 }
+
+
+.new-albums-releases {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  height: 50vh;
+}
