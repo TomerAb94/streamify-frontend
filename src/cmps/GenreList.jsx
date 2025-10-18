@@ -87,8 +87,8 @@ export function GenreList() {
 
   async function onCheckCurrnetTrackOnList(currentTrack, spotifyPlaylistId) {
     if (!currentTrack) return
-    console.log('currentTrack:', currentTrack.spotifyPlaylistId)
-    console.log('spotifyPlaylistId:', spotifyPlaylistId)
+    // console.log('currentTrack:', currentTrack.spotifyPlaylistId)
+    // console.log('spotifyPlaylistId:', spotifyPlaylistId)
     if (currentTrack.spotifyPlaylistId === spotifyPlaylistId) {
       setIsTrackOnHoveredPlaylist(true)
     }
