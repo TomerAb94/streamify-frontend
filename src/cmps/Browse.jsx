@@ -36,7 +36,7 @@ export function Browse() {
       <h1 className='browse-header'>Browse all</h1>
       <div className="genres-list">
         {genres.map((genre,idx) => (
-           <NavLink to={`/browse/genre/${genre.name}`} key={genre.id} state={{ backgroundColor: genreColors[idx % genreColors.length],name:genre.name }}>
+           <NavLink to={`/browse/genre/${genre.name.toLowerCase()}`} key={genre.id} state={{ backgroundColor: genreColors[idx % genreColors.length],name:genre.name }}>
           <div className="genre-item" onClick={() => onSelectGenre(genre.name)} style={{ backgroundColor: genreColors[idx % genreColors.length] }}>
            
            
