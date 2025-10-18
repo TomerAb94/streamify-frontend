@@ -141,7 +141,7 @@ export function SearchTracks() {
   }
 
     function handleNavToSongs() {
-    Navigate(`/search/tracks/${params.searchStr}`)
+      navigate(`/search/tracks/${params.searchStr}`)
   }
 
   function handleNavToAll() {

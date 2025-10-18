@@ -37,6 +37,7 @@
 @import "cmps/station/StationDetails";
 @import "cmps/station/Browse";
 @import "cmps/SearchTracks";
+@import "cmps/StationSearch";
 
 @import "cmps/context-menu/StationContextMenu";
 

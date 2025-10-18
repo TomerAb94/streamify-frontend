@@ -28,6 +28,8 @@ export const spotifyService = {
   getTracksPlaylist,
   getFullTrackData,
   getArtistData,
+  getSearchArtists,
+  getSearchedAlbums,
 }
 
 
@@ -120,11 +122,20 @@ async function searchTracks(query, limit = 5, offset = 0) {
   return makeSpotifyRequest(endpoint)
 }
 
-async function searchArtists(query, limit = 20, offset = 0) {
+async function searchArtists(query, limit = 5, offset = 0) {
   const endpoint = `/search?q=${encodeURIComponent(
     query
   )}&type=artist&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getSearchArtists(query, limit = 5, offset = 0) {
+  const artistsFromSpotify = await searchArtists(query, limit, offset)
+  return artistsFromSpotify.artists.items.map((artist) => ({
+    spotifyId: artist.id,
+    name: artist.name,
+    imgUrl: artist.images[0]?.url,
+  }))
 }
 
 async function searchAlbums(query, limit = 20, offset = 0) {
@@ -132,6 +143,19 @@ async function searchAlbums(query, limit = 20, offset = 0) {
     query
   )}&type=album&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getSearchedAlbums(query, limit = 5, offset = 0) {
+  const albumsFromSpotify = await searchAlbums(query, limit, offset)
+  console.log(albumsFromSpotify.albums.items[0]);
+  
+  return albumsFromSpotify.albums.items.map((album) => ({
+    spotifyId: album.id,
+    name: album.name,
+    imgUrl: album.images[0]?.url,
+    artist: album.artists.map((artist) => artist.name).join(', '),
+    releaseYear: album.release_date.split('-')[0],
+  }))
 }
 
 async function getTrack(trackId) {
