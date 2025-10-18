@@ -102,6 +102,52 @@
         }
       }
     }
+
+    & .shuffle-btn {
+      position: relative;
+      background: none;
+      border-radius: 0;
+      padding: 0;
+
+      &:hover {
+        & svg {
+          fill: var(--color-white-fff);
+        }
+      }
+
+      > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 22px;
+        width: fit-content;
+        height: fit-content;
+
+        & svg {
+          width: 32px;
+          height: 32px;
+          fill: var(--color-text-secondary);
+        }
+      }
+
+      &.active {
+        & svg {
+          fill: var(--green-play);
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 75%;
+          right: 50%;
+          translate: 50%;
+          width: 4px;
+          height: 4px;
+          background-color: var(--green-clicked);
+          border-radius: 50%;
+        }
+      }
+    }
   }
 
   > .top-tracks {
@@ -110,10 +156,8 @@
 
   > .top-tracks {
     > .track-list {
-      
       > .track-row:hover {
         > .track-duration-container {
-          
           > .add-to-playlist {
             opacity: 1;
           }
