@@ -5,7 +5,7 @@ import { useParams } from 'react-router'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
 import { SvgIcon } from '../cmps/SvgIcon'
-
+import { FastAverageColor } from 'fast-average-color'
 import {
   setCurrentTrack,
   setIsPlaying,
@@ -33,7 +33,37 @@ export function ArtistDetails() {
     if (params.Id && params.Id !== '') {
       loadArtist(params.Id)
     }
+
   }, [params.Id])
+
+ useEffect(() => {
+    if (artist && artist.imgUrls?.[0]) {
+      const fac = new FastAverageColor()
+      const imgElement = document.querySelector('.avg-img')
+
+      const backgroundTrackList = document.querySelector('.background-track-list')
+      if (imgElement) {
+        imgElement.crossOrigin = 'Anonymous'
+        fac
+          .getColorAsync(imgElement, { algorithm: 'dominant' })
+          .then((color) => {
+          
+ backgroundTrackList.style.backgroundImage = `
+            linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
+            var(--background-noise)
+          `
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
+    }
+    
+  }, [artist])
+
+
+
+
 
   async function loadArtist(artistId) {
     const artist = await spotifyService.getArtistData(artistId)
@@ -167,8 +197,8 @@ if (!artist) return <div>Loading...</div>
     <section className="artist-details">
       <header className="artist-details-header">
         <div className="img-header-container">
-          <img src={artist?.imgUrls?.[0]} alt={artist?.name} />
-
+          <img src={artist?.imgUrls?.[0]} alt={artist?.name} className='avg-img' />
+ <div className="background-track-list"></div>
           <div className="artist-details-info">
             <span className="verified-artist">
               <SvgIcon iconName="verified" className="background" />
@@ -181,6 +211,7 @@ if (!artist) return <div>Loading...</div>
             </span>
           </div>
         </div>
+        
       </header>
       <div className="action-btns">
         {isStationCurrentlyPlaying() && isPlaying ? (

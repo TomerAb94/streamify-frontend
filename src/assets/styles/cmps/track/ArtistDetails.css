@@ -152,6 +152,7 @@
   }
 
   > .top-tracks {
+            z-index: 1;
     padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
   }
 
