@@ -90,7 +90,7 @@
   }
 
   & .station-btns-container {
-    position: relative;
+    /* position: relative; */
 
     & .action-btns {
       position: relative;
@@ -120,6 +120,51 @@
             width: 24px;
             height: 24px;
             fill: black;
+          }
+        }
+      }
+
+      & .shuffle-btn {
+        position: relative;
+        background: none;
+        border-radius: 0;
+        padding: 0;
+
+        &:hover {
+          & svg {
+            fill: var(--color-white-fff);
+          }
+        }
+
+        > span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 22px;
+          width: fit-content;
+          height: fit-content;
+
+          & svg {
+            width: 32px;
+            height: 32px;
+          }
+        }
+
+        &.active {
+          & svg {
+            fill: var(--green-play);
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 80%;
+            right: 50%;
+            translate: 50%;
+            width: 4px;
+            height: 4px;
+            background-color: var(--green-clicked);
+            border-radius: 50%;
           }
         }
       }
