@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
@@ -13,47 +13,35 @@ import { SvgIcon } from './SvgIcon'
 import { updateStation } from '../store/actions/station.actions'
 import { NavLink, useOutletContext } from 'react-router-dom'
 
-export function StationFilter() {
-  const { onOpenStationsContextMenu, onCloseStationsContextMenu } =
-    useOutletContext()
+export function SearchTracks() {
+  const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()
   const params = useParams()
+   const navigate = useNavigate()
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
-  const currentTrack = useSelector(
-    (storeState) => storeState.trackModule.currentTrack
-  )
-  const isPlaying = useSelector(
-    (storeState) => storeState.trackModule.isPlaying
-  )
-  const stations = useSelector(
-    (storeState) => storeState.stationModule.stations
-  )
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const stations = useSelector((storeState) => storeState.stationModule.stations)
   const [searchedTracks, setSearchedTracks] = useState([])
-
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   const [clickedTrackId, setClickedTrackId] = useState(null)
 
   useEffect(() => {
-    if (params.searchStr || params.searchStr !== '') {
+    if (params.searchStr) {
       loadSearchedTracks()
     }
   }, [params.searchStr])
 
   async function loadSearchedTracks() {
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(
-        params.searchStr
-      )
+      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr)
       setSearchedTracks(spotifyTracks)
-      // console.log('spotifyTracks:', spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)
     }
   }
 
   function isTrackCurrentlyPlaying(track) {
-    return (
-      currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
-    )
+    return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
   }
 
   async function onPlay(track) {
@@ -64,9 +52,9 @@ export function StationFilter() {
       }
 
       // Get YouTube ID for the track
-      const youtubeId = await getYoutubeId(
-        track.name + ' ' + track.artists[0]?.name
-      )
+      const youtubeId = await getYoutubeId(track.name)
+      console.log(youtubeId);
+      
       const trackWithYoutube = {
         ...track,
         youtubeId,
@@ -126,16 +114,13 @@ export function StationFilter() {
 
   async function onAddToLikedSongs(track) {
     try {
-      const likedSongs = stations.find(
-        (station) => station.title === 'Liked Songs'
-      )
+      const likedSongs = stations.find((station) => station.title === 'Liked Songs')
       if (!likedSongs) return
 
       const isTrackInLikedSongs = likedSongs.tracks.some(
         (t) => t.spotifyId === track.spotifyId
       )
       if (isTrackInLikedSongs) {
-        // console.log('Track already in Liked Songs')
         return
       }
 
@@ -155,12 +140,27 @@ export function StationFilter() {
     }
   }
 
+    function handleNavToSongs() {
+    Navigate(`/search/tracks/${params.searchStr}`)
+  }
+
+  function handleNavToAll() {
+    navigate(`/search/${params.searchStr}`)
+  }
+
+
   if (!searchedTracks?.length) return <div>Loading...</div>
-  // console.log(searchedTracks);
 
   return (
-    <section className="station-filter">
-      <h2>Songs</h2>
+    <section className="search-tracks">
+           <nav className="search-nav">
+        <button className="nav-button" onClick={handleNavToAll}>
+          All
+        </button>
+        <button className="nav-button active" onClick={handleNavToSongs}>
+          Songs
+        </button>
+      </nav>
       <section className="track-list">
         <div className="track-header">
           <div className="first-col-header">#</div>

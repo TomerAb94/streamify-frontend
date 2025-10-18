@@ -237,7 +237,7 @@ export function PlayList() {
 
   if (!playlist) return <div>Loading playlist...</div>
   return (
-    <section className="playlist-container station-filter">
+    <section className="playlist-container station-search">
       <div className="playlist-header">
         {playlist.playlist.imgUrl && (
           <img src={playlist.playlist.imgUrl} alt={playlist.playlist.name} className="playlist-cover" />
