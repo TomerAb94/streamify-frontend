@@ -63,15 +63,18 @@ export function StationDetails() {
     if (station && station.stationImgUrl) {
       const fac = new FastAverageColor()
       const imgElement = document.querySelector('.avg-img')
-      const background = document.querySelector('.station-details')
-
+      const background = document.querySelector('.details-header')
+      const backgroundTrackList = document.querySelector('.background-track-list')
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
         fac
-          .getColorAsync(imgElement)
+          .getColorAsync(imgElement, { algorithm: 'dominant' })
           .then((color) => {
             background.style.backgroundColor = color.rgba
-            background.style.background = `linear-gradient(to bottom,${color.rgba}, rgba(0, 0, 0, 0.5) 100%)`
+ backgroundTrackList.style.backgroundImage = `
+            linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
+            var(--background-noise)
+          `
           })
           .catch((e) => {
             console.log(e)
@@ -264,6 +267,7 @@ export function StationDetails() {
   return (
     <section className="station-details">
       <header className="details-header">
+        
         <div className="station-img">
           {station.stationImgUrl ? (
             <img
@@ -290,7 +294,10 @@ export function StationDetails() {
             <span className="tracks-count">{station.tracks.length} tracks</span>
           </div>
         </div>
+           <div className="background-track-list"></div>
       </header>
+
+   
 
       <div className="station-btns-container">
         <div className="action-btns">
