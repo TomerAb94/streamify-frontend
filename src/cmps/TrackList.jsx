@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useOutletContext } from 'react-router-dom'
 import { addStation, updateStation } from '../store/actions/station.actions'
-import { StationsContextMenu } from './StationsContextMenu'
 import { updateUser } from '../store/actions/user.actions'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { stationService } from '../services/station/'
 
 export function TrackList({ tracks, onPlay, onPause }) {
+  const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
   )
@@ -22,7 +22,6 @@ export function TrackList({ tracks, onPlay, onPause }) {
   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
-  const [contextMenuTrackId, setContextMenuTrackId] = useState(null)
   const [clickedTrackId, setClickedTrackId] = useState(null)
 
   const navigate = useNavigate()
@@ -82,15 +81,15 @@ export function TrackList({ tracks, onPlay, onPause }) {
     )
   }
 
-  function onOpenStationsContextMenu(ev, trackId) {
+  function handleOpenStationsContextMenu(ev, track) {
     ev.stopPropagation()
-    setContextMenuTrackId(trackId)
-    setClickedTrackId(trackId)
+    setClickedTrackId(track.spotifyId)
+    onOpenStationsContextMenu(track, ev.clientX, ev.clientY)
   }
 
-  function onCloseStationsContextMenu(ev) {
+  function handleCloseStationsContextMenu(ev) {
     ev.stopPropagation()
-    setContextMenuTrackId(null)
+    onCloseStationsContextMenu()
   }
 
   async function onAddStation(ev) {
@@ -118,17 +117,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
     }
   }
 
-  async function onUpdateStations(stations) {
-    const stationsToSave = stations.map((station) => ({ ...station }))
-    try {
-      for (const station of stationsToSave) {
-        await updateStation(station)
-      }
-      showSuccessMsg(`Stations updated successfully`)
-    } catch (err) {
-      showErrorMsg('Cannot update station')
-    }
-  }
+
 
   return (
     <section className="track-list">
@@ -150,7 +139,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
           onMouseEnter={() => handleMouseEnter(idx)}
           onMouseLeave={handleMouseLeave}
           onClick={(ev) => {
-            onCloseStationsContextMenu(ev)
+            handleCloseStationsContextMenu(ev)
             handleRowClick(track)
           }}
         >
@@ -224,19 +213,10 @@ export function TrackList({ tracks, onPlay, onPause }) {
               title="Add to Playlist"
               onClick={
                 isTrackInStation(track)
-                  ? (ev) => onOpenStationsContextMenu(ev, track.spotifyId)
+                  ? (ev) => handleOpenStationsContextMenu(ev, track)
                   : () => onAddToLikedSongs(track)
               }
             />
-            {contextMenuTrackId === track.spotifyId && (
-              <StationsContextMenu
-                stations={stations}
-                track={track}
-                onAddStation={onAddStation}
-                onClose={onCloseStationsContextMenu}
-                onUpdateStations={onUpdateStations}
-              />
-            )}
             <span className="track-duration">{track.duration}</span>
           </div>
         </div>

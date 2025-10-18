@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
-import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
+import { Link, NavLink, useLocation, useParams, useOutletContext } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
 import { FastAverageColor } from 'fast-average-color'
 import { youtubeService } from '../services/youtube.service'
@@ -10,6 +10,7 @@ import { updateStation } from '../store/actions/station.actions'
 import { useSelector } from 'react-redux'
 
 export function PlayList() {
+  const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()
   const params = useParams()
   const [playlist, setPlaylist] = useState(null)
 
@@ -109,6 +110,17 @@ export function PlayList() {
 
   function handleMouseLeave() {
     setHoveredTrackIdx(null)
+  }
+
+  function isTrackInStation(track) {
+    return stations.some(
+      (s) => s.tracks && s.tracks.some((t) => t.spotifyId === track.spotifyId)
+    )
+  }
+
+  function handleOpenStationsContextMenu(ev, track) {
+    ev.stopPropagation()
+    onOpenStationsContextMenu(track, ev.clientX, ev.clientY)
   }
 
   async function onAddToLikedSongs(track) {
@@ -322,10 +334,14 @@ export function PlayList() {
             <div className="track-album">{track.album?.name}</div>
             <div className="track-duration-container">
               <SvgIcon
-                iconName="addLikedSong"
-                className="addLikedSong"
-                title="Add to Liked Songs"
-                onClick={() => onAddToLikedSongs(track)}
+                iconName={isTrackInStation(track) ? 'inStation' : 'addLikedSong'}
+                className="add-to-playlist"
+                title="Add to Playlist"
+                onClick={
+                  isTrackInStation(track)
+                    ? (ev) => handleOpenStationsContextMenu(ev, track)
+                    : () => onAddToLikedSongs(track)
+                }
               />
               <span className="track-duration">{track.duration}</span>
             </div>

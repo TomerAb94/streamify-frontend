@@ -1,6 +1,5 @@
 .stations-context-menu {
   visibility: visible;
-  inset: auto 60px 40px auto;
   z-index: 100;
   background-color: var(--color-secondary-1);
 

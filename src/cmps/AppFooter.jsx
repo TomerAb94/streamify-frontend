@@ -15,10 +15,10 @@ import { addStation, updateStation } from '../store/actions/station.actions'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { updateUser } from '../store/actions/user.actions'
 import { stationService } from '../services/station'
-import { StationsContextMenu } from './StationsContextMenu'
+
 import { youtubeService } from '../services/youtube.service'
 
-export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onAddStation }) {
+export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onAddStation, onOpenStationsContextMenu }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -41,7 +41,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     (storeState) => storeState.trackModule.isRepeat
   )
 
-  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
+
 
   const [isMuted, setIsMuted] = useState(false)
   const [previousVolume, setPreviousVolume] = useState(1)
@@ -83,19 +83,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   }
 
 
-  async function onUpdateStations(stations) {
-    const stationsToSave = stations.map((station) => ({ ...station }))
-    try {
-      for (const station of stationsToSave) {
-        await updateStation(station)
-      }
-      showSuccessMsg(
-        `Stations updated, new pin: ${stationsToSave.map((s) => s.isPinned)}`
-      )
-    } catch (err) {
-      showErrorMsg('Cannot update station')
-    }
-  }
+
 
   async function onAddToLikedSongs(track) {
     try {
@@ -128,14 +116,11 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     }
   }
 
-  function onOpenStationsContextMenu(ev) {
+  function handleOpenStationsContextMenu(ev) {
     ev.stopPropagation()
-    setIsContextMenuOpen(true)
-  }
-
-  function onCloseStationsContextMenu(ev) {
-    ev.stopPropagation()
-    setIsContextMenuOpen(false)
+    if (currentTrack) {
+      onOpenStationsContextMenu(currentTrack, ev.clientX, ev.clientY)
+    }
   }
 
   async function onNext() {
@@ -345,10 +330,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
 
 
   return (
-    <footer
-      className="app-footer"
-      onClick={(ev) => onCloseStationsContextMenu(ev)}
-    >
+    <footer className="app-footer">
       <div className="track-info">
         <div className="track-cover">
           {currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0] ? (
@@ -380,22 +362,13 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
               title="Add to Playlist"
               onClick={
                 isTrackInStation(currentTrack)
-                  ? (ev) => onOpenStationsContextMenu(ev)
+                  ? (ev) => handleOpenStationsContextMenu(ev)
                   : () => onAddToLikedSongs(currentTrack)
               }
             />
             {/* <SvgIcon iconName="doneLikedSong" className="liked-icon is-on" /> */}
           </button>
         </div>
-        {isContextMenuOpen && (
-          <StationsContextMenu
-            stations={stations}
-            track={currentTrack}
-            onAddStation={onAddStation}
-            onClose={onCloseStationsContextMenu}
-            onUpdateStations={onUpdateStations}
-          />
-        )}
       </div>
 
       <div className="player-container">
