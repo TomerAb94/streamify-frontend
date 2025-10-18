@@ -1,12 +1,29 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router'
+import { NavLink } from 'react-router-dom'
 import { spotifyService } from '../services/spotify.service'
 import { TrackList } from './TrackList'
+import {
+  setCurrentTrack,
+  setIsPlaying,
+  setTracks,
+} from '../store/actions/track.actions'
+import { youtubeService } from '../services/youtube.service'
+import { useSelector } from 'react-redux'
+import { SvgIcon } from './SvgIcon'
 
 export function StationSearch() {
   const params = useParams()
   const navigate = useNavigate()
   const location = useLocation()
+
+  const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
 
   const [searchedAll, setSearchedAll] = useState({
     tracks: [],
@@ -56,6 +73,94 @@ export function StationSearch() {
     navigate(`/search/${params.searchStr}`)
   }
 
+  async function onPlay(track) {
+    try {
+      // Clear existing playlist
+      if (playlist && playlist.length) {
+        await setTracks([])
+      }
+
+      // Get YouTube ID for the track
+      const youtubeId = await getYoutubeId(track.name)
+      console.log(youtubeId)
+
+      const trackWithYoutube = {
+        ...track,
+        youtubeId,
+      }
+
+      // Set single track as playlist and play it
+      await setTracks([trackWithYoutube])
+      await setCurrentTrack(trackWithYoutube)
+      await setIsPlaying(true)
+    } catch (err) {
+      console.error('Error playing track:', err)
+    }
+  }
+
+  async function onPause() {
+    await setIsPlaying(false)
+  }
+
+  async function getYoutubeId(str) {
+    try {
+      const res = await youtubeService.getVideos(str)
+      return res?.[0]?.id || null
+    } catch (err) {
+      console.error('Error fetching YouTube URL:', err)
+      return null
+    }
+  }
+
+  function isArtistCurrentlyPlaying(artist) {
+    if (!currentTrack || !artist) return false
+    // Check if current track belongs to this artist
+    return currentTrack.artists?.some(trackArtist => 
+      trackArtist.name.toLowerCase() === artist.name.toLowerCase()
+    )
+  }
+
+  async function onPlayArtist(artist) {
+    try {
+      // Get full artist data including top tracks
+      const fullArtistData = await spotifyService.getArtistData(artist.spotifyId)
+      
+      // Clear existing playlist
+      if (playlist && playlist.length) {
+        await setTracks([])
+      }
+
+      const playlistQueue = await Promise.all(
+        fullArtistData.topTracks.map(async (track, index) => {
+          return {
+            ...track,
+            nextId:
+              index < fullArtistData.topTracks.length - 1
+                ? fullArtistData.topTracks[index + 1].spotifyId
+                : fullArtistData.topTracks[0].spotifyId,
+            prevId:
+              index > 0
+                ? fullArtistData.topTracks[index - 1].spotifyId
+                : fullArtistData.topTracks[fullArtistData.topTracks.length - 1].spotifyId,
+            youtubeId: await getYoutubeId(track.name),
+          }
+        })
+      )
+
+      // Set the entire playlist at once
+      await setTracks(playlistQueue)
+
+      // Set the first track and start playing
+      const firstTrack = playlistQueue[0]
+      if (firstTrack) {
+        await setCurrentTrack(firstTrack)
+        await setIsPlaying(true)
+      }
+    } catch (err) {
+      console.error('Error playing artist tracks:', err)
+    }
+  }
+
   if (
     !searchedAll.tracks.length &&
     !searchedAll.artists.length &&
@@ -80,7 +185,10 @@ export function StationSearch() {
           <div className="top-result">
             <h2>Top result</h2>
 
-            <div className="top-result-item">
+            <NavLink
+              to={`/artist/${searchedAll.artists[0]?.spotifyId}`}
+              className="top-result-item"
+            >
               <img
                 src={searchedAll.artists[0]?.imgUrl}
                 alt={searchedAll.artists[0]?.name}
@@ -89,13 +197,42 @@ export function StationSearch() {
                 <h2>{searchedAll.artists[0]?.name}</h2>
                 <span>Artist</span>
               </div>
-            </div>
+              <span className="btn-container">
+                {isArtistCurrentlyPlaying(searchedAll.artists[0]) && isPlaying ? (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      onPause()
+                    }}
+                    className="play-btn"
+                  >
+                    <SvgIcon iconName="pause" className="pause" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      onPlayArtist(searchedAll.artists[0])
+                    }}
+                    className="play-btn"
+                  >
+                    <SvgIcon iconName="play" className="play" />
+                  </button>
+                )}
+              </span>
+            </NavLink>
           </div>
 
           <div className="songs-result">
             <h2>Songs</h2>
             <div className="songs-list">
-              <TrackList tracks={searchedAll.tracks} />
+              <TrackList
+                tracks={searchedAll.tracks}
+                onPlay={onPlay}
+                onPause={onPause}
+              />
             </div>
           </div>
 
@@ -104,13 +241,42 @@ export function StationSearch() {
 
             <div className="artists-container">
               {searchedAll.artists.map((artist) => (
-                <div key={artist.id} className="artist-item">
+                <NavLink
+                  key={artist.id}
+                  to={`/artist/${artist.spotifyId}`}
+                  className="artist-item"
+                >
                   <img src={artist.imgUrl} alt={artist.name} />
                   <div className="mini-info">
                     <h3>{artist.name}</h3>
                     <span>Artist</span>
                   </div>
-                </div>
+                  <span className="btn-container">
+                    {isArtistCurrentlyPlaying(artist) && isPlaying ? (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          onPause()
+                        }}
+                        className="play-btn"
+                      >
+                        <SvgIcon iconName="pause" className="pause" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          onPlayArtist(artist)
+                        }}
+                        className="play-btn"
+                      >
+                        <SvgIcon iconName="play" className="play" />
+                      </button>
+                    )}
+                  </span>
+                </NavLink>
               ))}
             </div>
           </div>
