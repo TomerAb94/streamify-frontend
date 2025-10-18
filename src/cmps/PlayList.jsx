@@ -4,7 +4,7 @@ import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
 import { FastAverageColor } from 'fast-average-color'
 import { youtubeService } from '../services/youtube.service'
-import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
+import { setTracks, setCurrentTrack, setIsPlaying, setIsShuffle } from '../store/actions/track.actions'
 
 import { updateStation } from '../store/actions/station.actions'
 import { useSelector } from 'react-redux'
@@ -16,6 +16,7 @@ export function PlayList() {
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
+  const isShuffle = useSelector((storeState) => storeState.trackModule.isShuffle)
   const stations = useSelector((storeState) => storeState.stationModule.stations)
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
 
@@ -136,6 +137,81 @@ export function PlayList() {
     }
   }
 
+  async function onShuffle() {
+    // Toggle shuffle state
+    const newShuffleState = !isShuffle
+    setIsShuffle(newShuffleState)
+
+    // Need playlist tracks to shuffle
+    if (!playlist || !playlist.tracks || playlist.tracks.length === 0) return
+
+    // Clear existing playlist
+    if (playListToPlay && playListToPlay.length) {
+      await setTracks([])
+    }
+
+    let tracksToPlay = []
+
+    if (newShuffleState) {
+      // If turning shuffle ON, create shuffled playlist
+      tracksToPlay = [...playlist.tracks].sort(() => Math.random() - 0.5)
+    } else {
+      // If turning shuffle OFF, restore original chronological order
+      tracksToPlay = [...playlist.tracks]
+    }
+
+    // Create playlist with proper nextId and prevId based on current order
+    // Don't fetch YouTube IDs here - only fetch when track is actually played
+    const playlistQueue = tracksToPlay.map((track, index) => {
+      return {
+        ...track,
+        nextId:
+          index < tracksToPlay.length - 1
+            ? tracksToPlay[index + 1].spotifyId
+            : tracksToPlay[0].spotifyId,
+        prevId:
+          index > 0
+            ? tracksToPlay[index - 1].spotifyId
+            : tracksToPlay[tracksToPlay.length - 1].spotifyId,
+        // Don't add youtubeId here - will be added when track is played
+      }
+    })
+
+    // Set the new playlist (shuffled or chronological)
+    await setTracks(playlistQueue)
+
+    // If turning shuffle ON, start playing the first track
+    // If turning shuffle OFF, keep current track but update its connections
+    if (newShuffleState) {
+      const firstTrack = playlistQueue[0]
+      if (firstTrack) {
+        // Only fetch YouTube ID for the track that will actually be played
+        const youtubeId = await getYoutubeId(firstTrack.name + ' ' + firstTrack.artists[0]?.name)
+        const trackWithYoutube = {
+          ...firstTrack,
+          youtubeId,
+        }
+        await setCurrentTrack(trackWithYoutube)
+        await setIsPlaying(true)
+      }
+    } else {
+      // When turning shuffle OFF, update current track with new next/prev connections
+      if (currentTrack) {
+        const updatedCurrentTrack = playlistQueue.find(
+          (track) => track.spotifyId === currentTrack.spotifyId
+        )
+        if (updatedCurrentTrack) {
+          // Keep existing YouTube ID if it exists
+          const trackWithYoutube = {
+            ...updatedCurrentTrack,
+            youtubeId: currentTrack.youtubeId || null,
+          }
+          await setCurrentTrack(trackWithYoutube)
+        }
+      }
+    }
+  }
+
   if (!playlist) return <div>Loading playlist...</div>
   return (
     <section className="playlist-container station-filter">
@@ -181,7 +257,12 @@ export function PlayList() {
               <SvgIcon iconName="play" className="play" />
             </button>
           )}
-          {/* <SvgIcon iconName="shuffle" /> */}
+          <button 
+            className={`shuffle-btn ${isShuffle ? 'active' : ''}`} 
+            onClick={() => onShuffle()}
+          >
+            <SvgIcon iconName="shuffle" />
+          </button>
         </div>
       </div>
 
