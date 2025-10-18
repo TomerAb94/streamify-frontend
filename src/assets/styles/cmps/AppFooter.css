@@ -150,6 +150,27 @@
           fill: var(--color-text-secondary);
         }
       }
+
+      & .shuffle-btn {
+        position: relative;
+        &.active {
+          & svg {
+            fill: var(--green-clicked);
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 80%;
+            right: 50%;
+            translate: 50%;
+            width: 4px;
+            height: 4px;
+            background-color: var(--green-clicked);
+            border-radius: 50%;
+          }
+        }
+      }
     }
     & .track-timeline {
       display: flex;

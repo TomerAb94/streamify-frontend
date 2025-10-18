@@ -9,14 +9,19 @@ export function StationPreview({ station, onPlayStation, onPause }) {
   const isPlaying = useSelector(
     (storeState) => storeState.trackModule.isPlaying
   )
+  const currStation = useSelector(
+    (storeState) => storeState.stationModule.station
+  )
 
-  // Check if any track from this station is currently playing
+  // Check if this specific station is currently playing
   function isStationPlaying() {
-    if (!currentTrack) return false
+    if (!currentTrack || !currStation) return false
     return (
+      currStation._id === station._id && 
       station.tracks.some(
         (track) => track.spotifyId === currentTrack.spotifyId
-      ) && isPlaying
+      ) && 
+      isPlaying
     )
   }
 

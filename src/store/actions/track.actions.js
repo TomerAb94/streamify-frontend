@@ -12,6 +12,7 @@ import {
   SET_VOLUME,
   SET_PROGRESS_SEC,
   SET_SEEK_TO_SEC,
+  SET_IS_SHUFFLE,
 } from '../reducers/track.reducer'
 
 export async function loadTracks(filterBy) {
@@ -97,6 +98,10 @@ export function setIsPlaying(isPlaying) {
   store.dispatch(getCmdSetIsPlaying(isPlaying))
 }
 
+export function setIsShuffle(isShuffle) {
+  store.dispatch(getCmdSetIsShuffle(isShuffle))
+}
+
 export function setVolume(volume) {
   store.dispatch(getCmdSetVolume(volume))
 }
@@ -175,6 +180,13 @@ function getCmdSetIsPlaying(isPlaying) {
   return {
     type: SET_IS_PLAYING,
     isPlaying,
+  }
+}
+
+function getCmdSetIsShuffle(isShuffle) {
+  return {
+    type: SET_IS_SHUFFLE,
+    isShuffle,
   }
 }
 

@@ -80,7 +80,7 @@ export function StationIndex() {
   }
 
   async function onAddStation(ev) {
-    ev.stopPropagation()
+    // ev.stopPropagation()
     ev.preventDefault()
     if (!loggedInUser) {
       showErrorMsg('You must be logged in to add a station')

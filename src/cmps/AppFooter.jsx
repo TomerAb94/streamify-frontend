@@ -7,6 +7,8 @@ import {
   setCurrentTrack,
   setVolume,
   setSeekToSec,
+  setIsShuffle,
+  setTracks,
 } from '../store/actions/track.actions'
 import { addStation, updateStation } from '../store/actions/station.actions'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
@@ -30,6 +32,12 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
 
   const progressSec = useSelector(
     (storeState) => storeState.trackModule.progressSec
+  )
+  const isShuffle = useSelector(
+    (storeState) => storeState.trackModule.isShuffle
+  )
+  const currStation = useSelector(
+    (storeState) => storeState.stationModule.station
   )
 
   const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
@@ -249,6 +257,71 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     }
   }
 
+  async function onShuffle() {
+    // Toggle shuffle state
+    const newShuffleState = !isShuffle
+    setIsShuffle(newShuffleState)
+
+    // Need current station tracks to shuffle
+    if (!currStation || !currStation.tracks || currStation.tracks.length === 0) return
+
+    // Clear existing playlist
+    if (playlist && playlist.length) {
+      await setTracks([])
+    }
+
+    let tracksToPlay = []
+
+    if (newShuffleState) {
+      // If turning shuffle ON, create shuffled playlist
+      tracksToPlay = [...currStation.tracks].sort(() => Math.random() - 0.5)
+    } else {
+      // If turning shuffle OFF, restore original chronological order
+      tracksToPlay = [...currStation.tracks]
+    }
+
+    // Create playlist with proper nextId and prevId based on current order
+    const playlistQueue = await Promise.all(
+      tracksToPlay.map(async (track, index) => {
+        return {
+          ...track,
+          nextId:
+            index < tracksToPlay.length - 1
+              ? tracksToPlay[index + 1].spotifyId
+              : tracksToPlay[0].spotifyId,
+          prevId:
+            index > 0
+              ? tracksToPlay[index - 1].spotifyId
+              : tracksToPlay[tracksToPlay.length - 1].spotifyId,
+          youtubeId: await getYoutubeId(track.name),
+        }
+      })
+    )
+
+    // Set the new playlist (shuffled or chronological)
+    await setTracks(playlistQueue)
+
+    // If turning shuffle ON, start playing the first track
+    // If turning shuffle OFF, keep current track but update its connections
+    if (newShuffleState) {
+      const firstTrack = playlistQueue[0]
+      if (firstTrack) {
+        await setCurrentTrack(firstTrack)
+        await setIsPlaying(true)
+      }
+    } else {
+      // When turning shuffle OFF, update current track with new next/prev connections
+      if (currentTrack) {
+        const updatedCurrentTrack = playlistQueue.find(
+          (track) => track.spotifyId === currentTrack.spotifyId
+        )
+        if (updatedCurrentTrack) {
+          await setCurrentTrack(updatedCurrentTrack)
+        }
+      }
+    }
+  }
+
 
   return (
     <footer
@@ -307,7 +380,11 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
       <div className="player-container">
         <div className="player-btns">
           <div className="left-btns">
-            <button aria-label="Shuffle">
+            <button 
+              onClick={onShuffle}
+              className={`shuffle-btn ${isShuffle ? 'active' : ''}`}
+              aria-label="Shuffle"
+            >
               <SvgIcon iconName="shuffle" className="shuffle" />
             </button>
             <button
