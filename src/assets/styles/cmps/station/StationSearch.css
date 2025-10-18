@@ -2,7 +2,7 @@
   display: none;
 }
 
-.station-filter {
+.station-search {
   grid-area: station-index;
   background-color: var(--color-secondary);
 }
@@ -282,6 +282,34 @@
     
     > .track-duration-container > .add-to-playlist {
       opacity: 1;
+    }
+  }
+}
+
+.search-nav{
+  position: sticky;
+  display: flex;
+  /* gap: 16px; */
+  padding: 12px 22px;
+  gap: 8px;
+
+  > .nav-button{
+    border-radius: 9999px;
+    margin: 0;
+    padding: 4px 12px;
+    background-color: var(--color-secondary-2);
+
+    &:hover {
+      background-color: var(--color-secondary-3);
+    }
+
+    &.active {
+      background-color: var(--color-white-fff);
+      color: var(--color-primary);
+
+      &:hover {
+        background-color: var(--color-white-hover);
+      }
     }
   }
 }

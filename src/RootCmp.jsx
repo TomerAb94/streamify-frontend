@@ -8,7 +8,8 @@ import { UserMsg } from './cmps/UserMsg.jsx'
 import { StationIndex } from './pages/StationIndex.jsx'
 import { HomePage } from './cmps/HomePage.jsx'
 import { StationDetails } from './cmps/StationDetails.jsx'
-import { StationFilter } from './cmps/StationFilter.jsx'
+import { StationSearch } from './cmps/StationSearch.jsx'
+import { SearchTracks } from './cmps/SearchTracks.jsx'
 import { TrackDetails } from './pages/TrackDetails.jsx'
 import { ArtistDetails } from './pages/ArtistDetails.jsx'
 
@@ -79,7 +80,8 @@ export function RootCmp() {
           <Route path="" element={<HomePage />} />
           <Route path="/album/:albumId"  element={<PlayList/>} />
           <Route path="/search" element={<Browse />} />
-          <Route path="/search/:searchStr" element={<StationFilter />} />
+          <Route path="/search/:searchStr" element={<StationSearch />} />
+          <Route path="/search/tracks/:searchStr" element={<SearchTracks />} />
           <Route path="/station/:stationId" element={<StationDetails />} />
           <Route path="/track/:Id" element={<TrackDetails />} />
           <Route path="/artist/:Id" element={<ArtistDetails />} />
