@@ -181,12 +181,11 @@ console.log(searchedTracks);
                   <span className={`track-name nav-link ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>{track.name}</span>
                 </NavLink>
                 <div className="track-artists">
-                  {track.artists.map((artist, i) => (
-                    <span key={artist.id}>
-                      {artist.name}
-                      {i < track.artists.length - 1 ? ', ' : ''}
+                 <NavLink key={track.artists[0].id[0]} to={`/artist/${track.artists[0].id[0]}`}>
+                    <span className="nav-link">
+                      {track.artists[0].name}
                     </span>
-                  ))}
+                  </NavLink>
                 </div>
               </div>
             </div>

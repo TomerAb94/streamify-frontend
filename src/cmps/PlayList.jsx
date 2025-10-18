@@ -58,6 +58,7 @@ export function PlayList() {
       console.error('Failed loading playlists:', error)
     }
   }
+  console.log('playlist:', playlist)
 
   //   function isTrackCurrentlyPlaying(track) {
   //     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
@@ -302,11 +303,18 @@ export function PlayList() {
                 <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
               )}
               <div className="track-text">
-                <span className={`track-name ${currentTrack?.name === track.name ? 'playing' : ''} `}>
-                  {track.name}
-                </span>
+                 <NavLink
+                to={`/track/${track.spotifyId}`}
+                className="track-name nav-link"
+              >
+                {track.name}
+              </NavLink>
                 <div className="track-artists">
-                  <span>{track.artists[0].name}</span>
+                   <NavLink key={track.artists[0].id[0]} to={`/artist/${track.artists[0].id[0]}`}>
+                    <span className="nav-link">
+                      {track.artists[0].name}
+                    </span>
+                  </NavLink>
                 </div>
               </div>
             </div>

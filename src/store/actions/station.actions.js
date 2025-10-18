@@ -23,6 +23,15 @@ export async function setStations(stations) {
         throw err
     }
 }
+export async function setStation(station) {
+    try {
+        store.dispatch(getCmdSetStation(station))
+        return station
+    } catch (err) {
+        console.log('Cannot set stations', err)
+        throw err
+    }
+}
 
 export async function loadStation(stationId) {
     try {
