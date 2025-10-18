@@ -3,6 +3,7 @@
   background-color: var(--color-secondary);
   border-radius: 8px;
   padding: 0 40px;
+  overflow-y: auto;
 }
 
 .stations-type {
@@ -148,10 +149,3 @@
 }
 
 
-.new-albums-releases {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
-  height: 50vh;
-}

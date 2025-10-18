@@ -30,9 +30,8 @@ export function HomePage() {
         <button>Music</button>
         <button>Podcasts</button>
       </div>
-     <h2>Your Shows</h2>
+   
       <div className="user-stations">
-        
         {stations.map((station) => (
           <NavLink key={station._id} to={`/station/${station._id}`} className="user-station">
             <div className="img-title-station">
@@ -52,13 +51,15 @@ export function HomePage() {
         ))}
       </div>
 
-
-      <div className='new-albums-releases'>
+      <h2 className="new-albums-header">New Album Releases</h2>   
+      <div className="albums-container playlists-container">
         {albums.map((album) => (
-          <NavLink key={album.id} to={`/album/${album.id}`} className="album-item">
-            <div className="album-img-container">
+          <NavLink key={album.id} to={`/album/${album.id}`} className="album-item playlist-item">
+            <div className="album-img-container playlist-img-container">
               {album.images?.[0]?.url && <img src={album.images[0].url} alt={album.name} />}
             </div>
+            <h3 className="album-name playlist-name">{album.name}</h3>
+            <h4 className="album-artists playlist-description">{album.artists.map(artist => artist.name).join(', ')}</h4>
           </NavLink>
         ))}
       </div>
