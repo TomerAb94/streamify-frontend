@@ -1,4 +1,5 @@
 .artist-details {
+  display: grid;
   grid-area: station-index;
   width: 100%;
   border-radius: 8px;
