@@ -286,7 +286,11 @@ export function StationSearch() {
 
             <div className="albums-container">
               {searchedAll.albums.map((album) => (
-                <div key={album.id} className="album-item">
+                <NavLink
+                  key={album.spotifyId}
+                  to={`/album/${album.spotifyId}`}
+                  className="album-item"
+                >
                   <img src={album.imgUrl} alt={album.name} />
                   <div className="mini-info">
                     <h3>{album.name}</h3>
@@ -294,7 +298,7 @@ export function StationSearch() {
                       {album.releaseYear} &#8226; {album.artist}
                     </span>
                   </div>
-                </div>
+                </NavLink>
               ))}
             </div>
           </div>

@@ -248,6 +248,7 @@ async function getAlbumNewRelease(albumId) {
   try {
     const endpoint = `/albums/${albumId}`
     const response = await makeSpotifyRequest(endpoint)
+    const artistFromSpotify = await getArtist(response.artists[0].id)
     
     // Extract album metadata
     const playlistInfo = {
@@ -258,6 +259,7 @@ async function getAlbumNewRelease(albumId) {
       artists: response.artists.map((artist) => ({
         id: artist.id,
         name: artist.name,
+        imgUrl: artistFromSpotify.images?.[0]?.url
       })),
       releaseDate: response.release_date,
       // albumType: response.album_type,
