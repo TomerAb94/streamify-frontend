@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
-import { use } from 'react'
 
 export function StationsContextMenu({
   stations,
@@ -9,6 +8,8 @@ export function StationsContextMenu({
   onAddStation,
   onClose,
   onUpdateStations,
+  x,
+  y,
 }) {
   const [filterBy, setFilterBy] = useState({ txt: '' })
   const [stationsToShow, setStationsToShow] = useState(stations)
@@ -94,10 +95,51 @@ export function StationsContextMenu({
     onClose(ev)
   }
 
+  // Calculate position: bottom of menu 10px above click point, left aligned to click X
+  const getMenuPosition = () => {
+    if (!x || !y) return {}
+    
+    const menuWidth = 292 // Actual menu width
+    const menuHeight = 490 // Max menu height
+    const padding = 10 // Padding from screen edges
+    
+    // Left edge aligns with click X
+    let left = x
+    
+    // Bottom of menu should be 10px above click point
+    let top = y - menuHeight - 10
+    
+    // Adjust horizontal position if menu would go off right edge
+    if (left + menuWidth > window.innerWidth - padding) {
+      left = window.innerWidth - menuWidth - padding
+    }
+    
+    // Adjust vertical position if menu would go off top edge
+    if (top < padding) {
+      // If menu can't fit above click point, position it below instead
+      top = y + 10
+      
+      // If it would go off bottom when positioned below, adjust upward
+      if (top + menuHeight > window.innerHeight - padding) {
+        top = window.innerHeight - menuHeight - padding
+      }
+    }
+    
+    // Ensure menu doesn't go off left edge
+    left = Math.max(padding, left)
+    
+    return {
+      position: 'fixed',
+      left: `${left}px`,
+      top: `${top}px`,
+    }
+  }
+
   return (
     <div
-      className="stations-context-menu context-menu"
+      className="stations-context-menu"
       onClick={(e) => e.stopPropagation()}
+      style={getMenuPosition()}
     >
       <form className="stations-form" action="">
         <header className="stations-form-header">

@@ -121,7 +121,7 @@ export function StationDetails() {
     if (playlist && playlist.length) {
       await setTracks([])
     }
-
+    setIsShuffle(false)
     const playlistQueue = await Promise.all(
       station.tracks.map(async (track, index) => {
         // create a new array with nextId and prevId
@@ -322,7 +322,10 @@ export function StationDetails() {
               <SvgIcon iconName="play" className="play" />
             </button>
           )}
-          <button className={`shuffle-btn ${isShuffle ? 'active' : ''}`} onClick={() => onShuffle()}>
+          <button
+            className={`shuffle-btn ${isShuffle ? 'active' : ''}`}
+            onClick={() => onShuffle()}
+          >
             <SvgIcon iconName="shuffle" />
           </button>
         </div>

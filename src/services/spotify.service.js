@@ -84,7 +84,7 @@ async function makeSpotifyRequest(endpoint) {
 
 async function getSearchedTracks(query, limit = 5, offset = 0) {
   const tracksFromSpotify = await searchTracks(query, limit, offset)
-  console.log(tracksFromSpotify)
+  // console.log(tracksFromSpotify)
   let tracks = tracksFromSpotify.tracks.items
 
   tracks = tracks.map((track) => {

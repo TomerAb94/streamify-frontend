@@ -68,20 +68,6 @@
         fill: var(--green-checked);
       }
     }
-
-    > .stations-context-menu {
-      inset: auto auto 90px 250px;
-
-      & .search-icon {
-        display: flex;
-        align-items: center;
-        > .search-svg {
-          fill: var(--color-text-secondary);
-          width: 16px;
-          height: 16px;
-        }
-      }
-    }
   }
   /* Center area */
   & .player-container {

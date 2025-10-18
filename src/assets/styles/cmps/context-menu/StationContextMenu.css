@@ -1,6 +1,5 @@
 .stations-context-menu {
   visibility: visible;
-  inset: auto 60px 40px auto;
   z-index: 100;
   background-color: var(--color-secondary-1);
 
@@ -45,9 +44,15 @@
         border-radius: 4px;
         background-color: var(--color-secondary-3);
 
+        > span{
+          display: flex;
+          align-items: center;
+        }
+
         & svg {
           width: 16px;
           height: 16px;
+          fill: var(--color-text-secondary);
         }
       }
     }
@@ -156,14 +161,16 @@
                   justify-content: center;
 
                   > svg{
-                    width: 12px;
-                    height: 12px;
+                    width: 14px;
+                    height: 14px;
+                    fill: var(--color-text-secondary);
                   }
                 }
               }
             }
 
             > .station-title {
+              align-self: center;
               font-size: 1rem;
             }
           }
