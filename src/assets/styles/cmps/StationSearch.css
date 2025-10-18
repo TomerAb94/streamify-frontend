@@ -227,6 +227,7 @@
           padding-bottom: 8px;
 
           > .album-item {
+            position: relative;
             display: flex;
             flex-direction: column;
             transition: background-color 0.3s ease;
@@ -236,6 +237,10 @@
 
             &:hover {
               background-color: var(--color-secondary-1);
+              > .btn-container > button {
+                opacity: 1;
+                transform: translateY(0);
+              }
             }
 
             > img {
@@ -258,6 +263,41 @@
                 font-size: 0.875rem;
                 font-family: Circular-thin;
                 color: var(--gray2);
+              }
+            }
+
+            > .btn-container {
+              position: absolute;
+              bottom: 12px;
+              right: 12px;
+
+              > button {
+                opacity: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--green-pin);
+                padding: 14px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+                transform: translateY(8px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+
+                &:hover {
+                  background-color: var(--green-play);
+                }
+
+                > .play,
+                .pause {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  > svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: black;
+                  }
+                }
               }
             }
           }

@@ -120,6 +120,12 @@ export function StationSearch() {
     )
   }
 
+  function isAlbumCurrentlyPlaying(album) {
+    if (!currentTrack || !album) return false
+    // Check if current track belongs to this album
+    return currentTrack.album?.spotifyId === album.spotifyId
+  }
+
   async function onPlayArtist(artist) {
     try {
       // Get full artist data including top tracks
@@ -298,6 +304,31 @@ export function StationSearch() {
                       {album.releaseYear} &#8226; {album.artist}
                     </span>
                   </div>
+                  <span className="btn-container">
+                    {isAlbumCurrentlyPlaying(album) && isPlaying ? (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          onPause()
+                        }}
+                        className="play-btn"
+                      >
+                        <SvgIcon iconName="pause" className="pause" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          console.log('Play album:', album.name)
+                        }}
+                        className="play-btn"
+                      >
+                        <SvgIcon iconName="play" className="play" />
+                      </button>
+                    )}
+                  </span>
                 </NavLink>
               ))}
             </div>
