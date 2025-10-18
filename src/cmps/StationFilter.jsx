@@ -30,6 +30,7 @@ export function StationFilter() {
   const [searchedTracks, setSearchedTracks] = useState([])
 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
+  const [clickedTrackId, setClickedTrackId] = useState(null)
 
   useEffect(() => {
     if (params.searchStr || params.searchStr !== '') {
@@ -102,6 +103,10 @@ export function StationFilter() {
     setHoveredTrackIdx(null)
   }
 
+  function handleRowClick(track) {
+    setClickedTrackId(track.spotifyId)
+  }
+
   function isTrackInStation(track) {
     return stations.some(
       (s) => s.tracks && s.tracks.some((t) => t.spotifyId === track.spotifyId)
@@ -110,7 +115,13 @@ export function StationFilter() {
 
   function handleOpenStationsContextMenu(ev, track) {
     ev.stopPropagation()
+    setClickedTrackId(track.spotifyId)
     onOpenStationsContextMenu(track, ev.clientX, ev.clientY)
+  }
+
+  function handleCloseStationsContextMenu(ev) {
+    ev.stopPropagation()
+    onCloseStationsContextMenu()
   }
 
   async function onAddToLikedSongs(track) {
@@ -162,10 +173,16 @@ export function StationFilter() {
 
         {searchedTracks.map((track, idx) => (
           <div
-            className="track-row"
+            className={`track-row ${
+              clickedTrackId === track.spotifyId ? 'clicked' : ''
+            }`}
             key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
             onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
+            onClick={(ev) => {
+              handleCloseStationsContextMenu(ev)
+              handleRowClick(track)
+            }}
           >
             <div
               className={`track-num ${

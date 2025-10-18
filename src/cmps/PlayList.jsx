@@ -20,6 +20,7 @@ export function PlayList() {
   const isShuffle = useSelector((storeState) => storeState.trackModule.isShuffle)
   const stations = useSelector((storeState) => storeState.stationModule.stations)
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
+  const [clickedTrackId, setClickedTrackId] = useState(null)
 
   useEffect(() => {
     loadPlaylist()
@@ -59,7 +60,6 @@ export function PlayList() {
       console.error('Failed loading playlists:', error)
     }
   }
-  console.log('playlist:', playlist)
 
   //   function isTrackCurrentlyPlaying(track) {
   //     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
@@ -112,6 +112,10 @@ export function PlayList() {
     setHoveredTrackIdx(null)
   }
 
+  function handleRowClick(track) {
+    setClickedTrackId(track.spotifyId)
+  }
+
   function isTrackInStation(track) {
     return stations.some(
       (s) => s.tracks && s.tracks.some((t) => t.spotifyId === track.spotifyId)
@@ -120,7 +124,13 @@ export function PlayList() {
 
   function handleOpenStationsContextMenu(ev, track) {
     ev.stopPropagation()
+    setClickedTrackId(track.spotifyId)
     onOpenStationsContextMenu(track, ev.clientX, ev.clientY)
+  }
+
+  function handleCloseStationsContextMenu(ev) {
+    ev.stopPropagation()
+    onCloseStationsContextMenu()
   }
 
   async function onAddToLikedSongs(track) {
@@ -291,10 +301,16 @@ export function PlayList() {
 
         {playlist.tracks.map((track, idx) => (
           <div
-            className="track-row"
+            className={`track-row ${
+              clickedTrackId === track.spotifyId ? 'clicked' : ''
+            }`}
             key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
             onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
+            onClick={(ev) => {
+              handleCloseStationsContextMenu(ev)
+              handleRowClick(track)
+            }}
           >
             <div className="track-num ">
               {isTrackCurrentlyPlaying(track) ? (
