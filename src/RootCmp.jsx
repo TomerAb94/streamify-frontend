@@ -17,7 +17,7 @@ import { Browse } from './cmps/Browse.jsx'
 import { GenreList } from './cmps/GenreList.jsx'
 import { PlayList } from './cmps/PlayList.jsx'
 
-import { setProgressSec, setSeekToSec } from './store/actions/track.actions.js'
+import { setProgressSec, setSeekToSec, setCurrentTrack, setIsPlaying } from './store/actions/track.actions.js'
 
 export function RootCmp() {
   const currentTrack = useSelector(
@@ -32,6 +32,10 @@ export function RootCmp() {
   )
 
   const seekToSec = useSelector((storeState) => storeState.trackModule.seekToSec)
+  const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+  const isRepeat = useSelector(
+    (storeState) => storeState.trackModule.isRepeat
+  )
 
   // A ref to the ReactPlayer instance, required for seekTo() on player
   const playerRef = useRef(null)
@@ -48,6 +52,24 @@ export function RootCmp() {
     if (playerRef.current) playerRef.current.currentTime = seekToSec
     setSeekToSec(null)
   }, [seekToSec])
+
+  // Handler for when track ends - repeat current track if repeat is on, otherwise play next track
+  const handleEnded = useCallback(() => {
+    if (!currentTrack) return
+
+    if (isRepeat) {
+      // If repeat is enabled, restart the current track from the beginning
+      setSeekToSec(0) // Use Redux action to seek to beginning
+      setIsPlaying(true) // Restart playback
+    } else if (currentTrack.nextId && playlist.length) {
+      // Otherwise, play the next track
+      const nextTrack = playlist.find(track => track.spotifyId === currentTrack.nextId)
+      if (nextTrack) {
+        setCurrentTrack(nextTrack)
+        setIsPlaying(true)
+      }
+    }
+  }, [currentTrack, playlist, isRepeat])
 
   return (
     <>
@@ -81,6 +103,7 @@ export function RootCmp() {
           volume={volume}
           controls={false} // Hide native controls
           onTimeUpdate={handleTimeUpdate}
+          onEnded={handleEnded}
         />
       </div>
     </>

@@ -9,6 +9,7 @@ import {
   ADD_TRACK_MSG,
   SET_CURRENT_TRACK,
   SET_IS_PLAYING,
+  SET_IS_REPEAT,
   SET_VOLUME,
   SET_PROGRESS_SEC,
   SET_SEEK_TO_SEC,
@@ -102,6 +103,10 @@ export function setIsShuffle(isShuffle) {
   store.dispatch(getCmdSetIsShuffle(isShuffle))
 }
 
+export function setIsRepeat(isRepeat) {
+  store.dispatch(getCmdSetIsRepeat(isRepeat))
+}
+
 export function setVolume(volume) {
   store.dispatch(getCmdSetVolume(volume))
 }
@@ -187,6 +192,13 @@ function getCmdSetIsShuffle(isShuffle) {
   return {
     type: SET_IS_SHUFFLE,
     isShuffle,
+  }
+}
+
+function getCmdSetIsRepeat(isRepeat) {
+  return {
+    type: SET_IS_REPEAT,
+    isRepeat,
   }
 }
 

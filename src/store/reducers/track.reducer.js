@@ -10,6 +10,7 @@ export const ADD_TRACK_MSG = 'ADD_TRACK_MSG'
 export const SET_CURRENT_TRACK = 'SET_CURRENT_TRACK'
 export const SET_IS_PLAYING = 'SET_IS_PLAYING'
 export const SET_IS_SHUFFLE = 'SET_IS_SHUFFLE'
+export const SET_IS_REPEAT = 'SET_IS_REPEAT'
 export const SET_VOLUME = 'SET_VOLUME'
 export const SET_PROGRESS_SEC = 'SET_PROGRESS_SEC'
 export const SET_SEEK_TO_SEC = 'SET_SEEK_TO_SEC'
@@ -22,6 +23,7 @@ const initialState = {
   currentTrack: null,
   isPlaying: false,
   isShuffle: false,
+  isRepeat: false,
   volume: 0.8,
   progressSec: 0,
   seekToSec: null,
@@ -75,13 +77,16 @@ export function trackReducer(state = initialState, action) {
     case SET_IS_SHUFFLE:
       newState = { ...state, isShuffle: action.isShuffle }
       break
+    case SET_IS_REPEAT:
+      newState = { ...state, isRepeat: action.isRepeat }
+      break
     case SET_VOLUME:
       newState = { ...state, volume: action.volume }
       break
     case SET_PROGRESS_SEC:
       newState = { ...state, progressSec: action.progressSec }
       break
-      case SET_SEEK_TO_SEC:
+    case SET_SEEK_TO_SEC:
       newState = { ...state, seekToSec: action.seekToSec }
       break
     default:

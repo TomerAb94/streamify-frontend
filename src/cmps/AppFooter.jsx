@@ -8,6 +8,7 @@ import {
   setVolume,
   setSeekToSec,
   setIsShuffle,
+  setIsRepeat,
   setTracks,
 } from '../store/actions/track.actions'
 import { addStation, updateStation } from '../store/actions/station.actions'
@@ -35,6 +36,9 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   )
   const isShuffle = useSelector(
     (storeState) => storeState.trackModule.isShuffle
+  )
+  const isRepeat = useSelector(
+    (storeState) => storeState.trackModule.isRepeat
   )
   const currStation = useSelector(
     (storeState) => storeState.stationModule.station
@@ -322,6 +326,11 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     }
   }
 
+  async function onRepeat() {
+    const newRepeatState = !isRepeat
+    await setIsRepeat(newRepeatState)
+  }
+
 
   return (
     <footer
@@ -412,7 +421,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
             >
               <SvgIcon iconName="next" className="next" />
             </button>
-            <button aria-label="Repeat">
+            <button onClick={onRepeat} className={`repeat-btn ${isRepeat ? 'active' : ''}`}>
               <SvgIcon iconName="repeat" className="repeat" />
             </button>
           </div>

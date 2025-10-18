@@ -151,7 +151,7 @@
         }
       }
 
-      & .shuffle-btn {
+      & .shuffle-btn, & .repeat-btn {
         position: relative;
         &.active {
           & svg {
