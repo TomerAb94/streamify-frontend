@@ -75,6 +75,10 @@ export function StationSearch() {
     navigate(`/search/${params.searchStr}`)
   }
 
+  function handleNavToArtists() {
+    navigate(`/search/artists/${params.searchStr}`)
+  }
+
   async function onPlay(track) {
     try {
       // Clear currently playing album and artist since we're playing a single track
@@ -238,6 +242,9 @@ export function StationSearch() {
         </button>
         <button className="nav-button" onClick={handleNavToSongs}>
           Songs
+        </button>
+        <button className="nav-button" onClick={handleNavToArtists}>
+          Artists
         </button>
       </nav>
 
