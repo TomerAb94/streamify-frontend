@@ -103,7 +103,7 @@ export function StationFilter() {
         (t) => t.spotifyId === track.spotifyId
       )
       if (isTrackInLikedSongs) {
-        console.log('Track already in Liked Songs')
+        // console.log('Track already in Liked Songs')
         return
       }
 
@@ -124,7 +124,7 @@ export function StationFilter() {
   }
 
   if (!searchedTracks?.length) return <div>Loading...</div>
-console.log(searchedTracks);
+// console.log(searchedTracks);
 
   return (
     <section className="station-filter">
