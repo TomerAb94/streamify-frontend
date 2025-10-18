@@ -30,6 +30,8 @@ export function StationSearch() {
     artists: [],
     albums: [],
   })
+  const [currentlyPlayingAlbum, setCurrentlyPlayingAlbum] = useState(null)
+  const [currentlyPlayingArtist, setCurrentlyPlayingArtist] = useState(null)
 
   useEffect(() => {
     async function fetchSearchResults() {
@@ -75,6 +77,10 @@ export function StationSearch() {
 
   async function onPlay(track) {
     try {
+      // Clear currently playing album and artist since we're playing a single track
+      setCurrentlyPlayingAlbum(null)
+      setCurrentlyPlayingArtist(null)
+      
       // Clear existing playlist
       if (playlist && playlist.length) {
         await setTracks([])
@@ -114,20 +120,24 @@ export function StationSearch() {
 
   function isArtistCurrentlyPlaying(artist) {
     if (!currentTrack || !artist) return false
-    // Check if current track belongs to this artist
-    return currentTrack.artists?.some(trackArtist => 
-      trackArtist.name.toLowerCase() === artist.name.toLowerCase()
-    )
+    
+    // Check if this specific artist is the one we set as currently playing
+    return currentlyPlayingArtist?.spotifyId === artist.spotifyId && isPlaying
   }
 
   function isAlbumCurrentlyPlaying(album) {
     if (!currentTrack || !album) return false
-    // Check if current track belongs to this album
-    return currentTrack.album?.spotifyId === album.spotifyId
+    
+    // Check if this specific album is the one we set as currently playing
+    return currentlyPlayingAlbum?.spotifyId === album.spotifyId && isPlaying
   }
 
   async function onPlayArtist(artist) {
     try {
+      // Set this artist as currently playing and clear album
+      setCurrentlyPlayingArtist(artist)
+      setCurrentlyPlayingAlbum(null)
+      
       // Get full artist data including top tracks
       const fullArtistData = await spotifyService.getArtistData(artist.spotifyId)
       
@@ -164,6 +174,51 @@ export function StationSearch() {
       }
     } catch (err) {
       console.error('Error playing artist tracks:', err)
+    }
+  }
+
+  async function onPlayAlbum(album) {
+    try {
+      // Set this album as currently playing and clear artist
+      setCurrentlyPlayingAlbum(album)
+      setCurrentlyPlayingArtist(null)
+      
+      // Get full album data including tracks
+      const fullAlbumData = await spotifyService.getAlbumNewRelease(album.spotifyId)
+      
+      // Clear existing playlist
+      if (playlist && playlist.length) {
+        await setTracks([])
+      }
+
+      const playlistQueue = await Promise.all(
+        fullAlbumData.tracks.map(async (track, index) => {
+          return {
+            ...track,
+            nextId:
+              index < fullAlbumData.tracks.length - 1
+                ? fullAlbumData.tracks[index + 1].spotifyId
+                : fullAlbumData.tracks[0].spotifyId,
+            prevId:
+              index > 0
+                ? fullAlbumData.tracks[index - 1].spotifyId
+                : fullAlbumData.tracks[fullAlbumData.tracks.length - 1].spotifyId,
+            youtubeId: await getYoutubeId(track.name + ' ' + track.artists[0]?.name),
+          }
+        })
+      )
+
+      // Set the entire playlist at once
+      await setTracks(playlistQueue)
+
+      // Set the first track and start playing
+      const firstTrack = playlistQueue[0]
+      if (firstTrack) {
+        await setCurrentTrack(firstTrack)
+        await setIsPlaying(true)
+      }
+    } catch (err) {
+      console.error('Error playing album tracks:', err)
     }
   }
 
@@ -321,7 +376,7 @@ export function StationSearch() {
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
-                          console.log('Play album:', album.name)
+                          onPlayAlbum(album)
                         }}
                         className="play-btn"
                       >
