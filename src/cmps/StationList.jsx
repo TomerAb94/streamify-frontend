@@ -208,7 +208,7 @@ export function StationList({
     >
       <header>
         <h3>Your Library</h3>
-        <button className="create-btn" onClick={() => onAddStation()}>
+        <button className="create-btn" onClick={(ev) => onAddStation(ev)}>
           <span className="create-icon">
             <SvgIcon iconName="create" />
           </span>
