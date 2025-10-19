@@ -7,6 +7,7 @@ import {
   setCurrentTrack,
   setIsPlaying,
   setTracks,
+  setCurrentStationId,
 } from '../store/actions/track.actions'
 import { youtubeService } from '../services/youtube.service'
 import { useSelector } from 'react-redux'
@@ -83,7 +84,8 @@ export function StationSearch() {
       // Clear currently playing album and artist since we're playing a single track
       setCurrentlyPlayingAlbum(null)
       setCurrentlyPlayingArtist(null)
-      
+      setCurrentStationId(null)
+
       // Clear existing playlist
       if (playlist && playlist.length) {
         await setTracks([])
@@ -137,10 +139,10 @@ export function StationSearch() {
 
   async function onPlayArtist(artist) {
     try {
-      // Set this artist as currently playing and clear album
       setCurrentlyPlayingArtist(artist)
       setCurrentlyPlayingAlbum(null)
-      
+      setCurrentStationId(artist.spotifyId)
+
       // Get full artist data including top tracks
       const fullArtistData = await spotifyService.getArtistData(artist.spotifyId)
       
@@ -185,7 +187,8 @@ export function StationSearch() {
       // Set this album as currently playing and clear artist
       setCurrentlyPlayingAlbum(album)
       setCurrentlyPlayingArtist(null)
-      
+      setCurrentStationId(album.spotifyId)
+
       // Get full album data including tracks
       const fullAlbumData = await spotifyService.getAlbumNewRelease(album.spotifyId)
       

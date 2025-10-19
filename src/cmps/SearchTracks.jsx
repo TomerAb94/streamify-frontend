@@ -6,6 +6,7 @@ import { youtubeService } from '../services/youtube.service'
 import {
   setTracks,
   setCurrentTrack,
+  setCurrentStationId,
   setIsPlaying,
 } from '../store/actions/track.actions'
 
@@ -46,6 +47,9 @@ export function SearchTracks() {
 
   async function onPlay(track) {
     try {
+      // Clear current station ID since playing from search results
+      setCurrentStationId(null)
+      
       // Clear existing playlist
       if (playlist && playlist.length) {
         await setTracks([])

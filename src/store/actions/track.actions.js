@@ -8,6 +8,7 @@ import {
   UPDATE_TRACK,
   ADD_TRACK_MSG,
   SET_CURRENT_TRACK,
+  SET_CURRENT_STATION_ID,
   SET_IS_PLAYING,
   SET_IS_REPEAT,
   SET_VOLUME,
@@ -95,6 +96,10 @@ export async function setCurrentTrack(track) {
   store.dispatch(getCmdSetCurrentTrack(track))
 }
 
+export function setCurrentStationId(stationId) {
+  store.dispatch(getCmdSetCurrentStationId(stationId))
+}
+
 export function setIsPlaying(isPlaying) {
   store.dispatch(getCmdSetIsPlaying(isPlaying))
 }
@@ -178,6 +183,13 @@ function getCmdSetCurrentTrack(track) {
   return {
     type: SET_CURRENT_TRACK,
     track,
+  }
+}
+
+function getCmdSetCurrentStationId(stationId) {
+  return {
+    type: SET_CURRENT_STATION_ID,
+    stationId,
   }
 }
 
