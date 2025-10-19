@@ -14,8 +14,6 @@ export function GenreList() {
   const params = useParams()
   const [playlists, setPlaylists] = useState([])
 
-  const [isTrackOnHoveredPlaylist, setIsTrackOnHoveredPlaylist] = useState(false)
-
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
@@ -85,16 +83,9 @@ export function GenreList() {
     await setIsPlaying(false)
   }
 
-  async function onCheckCurrnetTrackOnList(currentTrack, spotifyPlaylistId) {
-    if (!currentTrack) return
-    // console.log('currentTrack:', currentTrack.spotifyPlaylistId)
-    // console.log('spotifyPlaylistId:', spotifyPlaylistId)
-    if (currentTrack.spotifyPlaylistId === spotifyPlaylistId) {
-      setIsTrackOnHoveredPlaylist(true)
-    }
-    else {
-      setIsTrackOnHoveredPlaylist(false)
-    }
+  function isPlaylistPlaying(playlistId) {
+    if (!currentTrack || !isPlaying) return false
+    return currentTrack?.spotifyPlaylistId === playlistId
   }
 
   if (!playlists.length) return <div>Loading...</div>
@@ -108,32 +99,34 @@ export function GenreList() {
           <h1 className="header">{genreName}</h1>
         </div>
         <div className="playlists-container">
-          {playlists.map((station) => (
-            <NavLink
-              className="playlist-item"
-              to={`/browse/genre/${params.genreName}/${station.id}`}
-              key={station.id}
-              
-            >
-              <div className="playlist-img-container" onMouseEnter={() => onCheckCurrnetTrackOnList(currentTrack, station.id)}>
-                {station.images?.[0]?.url && <img src={station.images[0].url} alt={station.name} />}
+          {playlists.map((station) => {
+            const isStationPlaying = isPlaylistPlaying(station.id)
+            return (
+              <NavLink
+                className={`playlist-item ${isStationPlaying ? 'playing' : ''}`}
+                to={`/browse/genre/${params.genreName}/${station.id}`}
+                key={station.id}
+              >
+                <div className="playlist-img-container">
+                  {station.images?.[0]?.url && <img src={station.images[0].url} alt={station.name} />}
 
-                {isPlaying  && isTrackOnHoveredPlaylist ? (
-                  <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
-                ) : (
-                  <SvgIcon
-                    iconName="play"
-                    className="play-container"
-                    onClick={(event) => onPlayFromOutside(event, station.id)}
-                  />
-                )}
-              </div>
+                  {isStationPlaying ? (
+                    <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+                  ) : (
+                    <SvgIcon
+                      iconName="play"
+                      className="play-container"
+                      onClick={(event) => onPlayFromOutside(event, station.id)}
+                    />
+                  )}
+                </div>
 
-              <h3 className="playlist-name">{station.name}</h3>
+                <h3 className="playlist-name">{station.name}</h3>
 
-              <h3 className="playlist-description">{station.description ? station.description : ''}</h3>
-            </NavLink>
-          ))}
+                <h3 className="playlist-description">{station.description ? station.description : ''}</h3>
+              </NavLink>
+            )
+          })}
         </div>
       </div>
     </>
