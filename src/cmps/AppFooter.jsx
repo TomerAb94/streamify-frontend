@@ -329,7 +329,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   return (
     <footer className="app-footer">
       <div className="track-info">
-        <div className="track-cover">
+        <div className="track-cover" onClick={handleToggleNowPlaying} role="button" tabIndex={0}>
           {currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0] ? (
             <img
               src={
