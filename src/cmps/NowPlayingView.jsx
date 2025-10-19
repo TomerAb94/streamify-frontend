@@ -1,57 +1,80 @@
+import { useEffect, useState } from 'react'
+
 import { SvgIcon } from './SvgIcon'
+import { spotifyService } from '../services/spotify.service'
+import { useSelector } from 'react-redux'
+import { updateStation } from '../store/actions/station.actions'
 
 export function NowPlayingView({
-    currentTrack,
-    isPlaying,
-    onPlay,
-    onPause,
-    isOpen,
-    onClose,
+   currentTrack,
+   isOpen,
 }) {
-    
+
+    const stations = useSelector((station) => station.stationModule.stations)
     if (!currentTrack) return null
 
-    const handleMain = () => (isPlaying ? onPause() : onPlay(currentTrack))
+    const likedStation = stations.find((station) => station.title === 'Liked Songs')
+    const isLiked = likedStation
+        ? likedStation.tracks?.some(track => track.spotifyId === currentTrack.spotifyId)
+        : false
+
+    async function toggleLike() {
+        if (!likedStation) return
+
+        const exists = likedStation.tracks?.some(track => track.spotifyId === currentTrack.spotifyId)
+
+        const { youtubeId, isPlaying, ...cleanTrack } = currentTrack
+
+        const nextTracks = exists
+            ? likedStation.tracks.filter(track => track.spotifyId !== currentTrack.spotifyId)
+            : [...likedStation.tracks, cleanTrack]
+
+        await updateStation({ ...likedStation, tracks: nextTracks })
+    }
 
     return (
-        <div className={`side-panel now-playing ${isOpen ? 'open' : ''}`}>
-            <header className="panel-header">
-                <h1>Now Playing</h1>
-                <button onClick={onClose}>
-                    <SvgIcon iconName="close" />
-                </button>
+        <aside className={`now-playing ${isOpen ? 'open' : ''}`}>
+            <header className="np-header">
+                <h1 className="np-heading" title={currentTrack.name}>
+                    {currentTrack.name}
+                </h1>
+
             </header>
 
-            <div className="panel-body np-body">
-                <div className="np-art">
-                    {currentTrack.album?.imgUrl ||
-                    currentTrack.album?.imgUrls?.[0] ? (
-                        <img
-                            src={
-                                currentTrack.album.imgUrl ||
-                                currentTrack.album.imgUrls[0]
-                            }
-                            alt={`${currentTrack.name} cover`}
-                        />
-                    ) : (
-                        <div className="art-placeholder" />
-                    )}
-                </div>
+            <div className="np-scroll">
+                <div>
+                    <div className="np-art">
+                        {currentTrack.album?.imgUrl || currentTrack.album?.imgUrls?.[0] ? (
+                            <img
+                                src={currentTrack.album.imgUrl || currentTrack.album.imgUrls[0]}
+                                alt={`${currentTrack.name} cover`}
+                            />
+                        ) : (
+                            <div className="art-placeholder" />
+                        )}
+                    </div>
+                    <div className="np-meta">
+                        <div className="np-meta-left">
+                            <h2 className="np-title">{currentTrack.name}</h2>
+                            <p className="np-artists">
+                                {currentTrack.artists?.map((artist) => artist.name).join(', ')}
+                            </p>
+                        </div>
 
-                <div className="np-meta">
-                    <h2>{currentTrack.name}</h2>
-                    <p>{currentTrack.artists?.map((a) => a.name).join(', ')}</p>
-
-                    <div className="np-controls">
                         <button
-                            onClick={handleMain}
-                            aria-label={isPlaying ? 'Pause' : 'Play'}
+                            className="np-like"
+                            onClick={toggleLike}
+                            aria-pressed={isLiked}
+                            title={isLiked ? 'Remove from Liked Songs' : 'Add to Liked Songs'}
                         >
-                            <SvgIcon iconName={isPlaying ? 'pause' : 'play'} />
-                        </button>
+                            <SvgIcon iconName={isLiked ? 'inStation' : 'addLikedSong'} />
+                        </button> 
                     </div>
                 </div>
+                <div>About artist</div>
+                <div>Credits</div>
+                <div>Next in queue</div>
             </div>
-        </div>
+        </aside>
     )
 }
