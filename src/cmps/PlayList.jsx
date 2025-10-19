@@ -53,7 +53,7 @@ export function PlayList() {
     return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
   }
 
-  async function loadPlaylist() {
+  async function loadPlaylist() {    
     try {
       if (params.albumId) {
          const playlist = await spotifyService.getAlbumNewRelease(params.albumId) 
@@ -63,8 +63,6 @@ export function PlayList() {
          const playlist = await spotifyService.getTracksPlaylist(params.playlistId) 
          setPlaylist(playlist)
       }
-     
-      // console.log('playlist:', playlist)
       
     } catch (error) {
       console.error('Failed loading playlists:', error)
@@ -245,6 +243,8 @@ export function PlayList() {
     }
   }
 
+  console.log('playlist:', playlist)
+
   if (!playlist) return <div>Loading playlist...</div>
   return (
     <section className="playlist-container station-search">
@@ -257,12 +257,12 @@ export function PlayList() {
           <h1 className="playlist-name">{playlist.playlist.name}</h1>
           <p className="playlist-description">{playlist.playlist.description}</p>
           <div className="playlist-meta">
-            <img className="owner-profile-img" src={playlist.playlist.ownerProfileImg} alt={playlist.playlist.owner} />
-            <span>{playlist.playlist.owner}</span>
+            <img className="owner-profile-img" src={playlist.playlist.ownerProfileImg || playlist.playlist.artists[0]?.imgUrl} alt={playlist.playlist.owner} />
+            <span>{playlist.playlist.owner || playlist.playlist.artists[0]?.name}</span>
             <span> • </span>
-            <span>{playlist.playlist.followers} saves </span>
-            <span> • </span>
-            <span>{playlist.playlist.tracksTotal} songs </span>
+           {playlist.playlist.followers < 1000 ? <span>{playlist.playlist.followers} saves </span> : <span>{(playlist.tracks.length)} songs </span>}
+           {playlist.playlist.followers && <span> • </span>}
+           {playlist.playlist.followers && <span>{playlist.playlist.tracksTotal} songs </span>}
           </div>
         </div>
       </div>
