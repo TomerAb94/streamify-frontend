@@ -140,10 +140,6 @@ export function SearchTracks() {
     }
   }
 
-    function handleNavToSongs() {
-      navigate(`/search/tracks/${params.searchStr}`)
-  }
-
   function handleNavToAll() {
     navigate(`/search/${params.searchStr}`)
   }
@@ -161,7 +157,7 @@ export function SearchTracks() {
         <button className="nav-button" onClick={handleNavToAll}>
           All
         </button>
-        <button className="nav-button active" onClick={handleNavToSongs}>
+        <button className="nav-button active">
           Songs
         </button>
         <button className="nav-button" onClick={handleNavToArtists}>

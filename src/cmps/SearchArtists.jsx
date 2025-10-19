@@ -110,10 +110,6 @@ export function SearchArtists() {
     navigate(`/search/tracks/${params.searchStr}`)
   }
 
-  function handleNavToArtists() {
-    navigate(`/search/artists/${params.searchStr}`)
-  }
-
   if (!searchedArtists?.length) return <div>Loading...</div>
 
   return (
@@ -125,7 +121,7 @@ export function SearchArtists() {
         <button className="nav-button" onClick={handleNavToSongs}>
           Songs
         </button>
-        <button className="nav-button active" onClick={handleNavToArtists}>
+        <button className="nav-button active">
           Artists
         </button>
       </nav>

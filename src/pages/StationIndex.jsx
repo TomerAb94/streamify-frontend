@@ -82,7 +82,6 @@ export function StationIndex() {
   }
 
   async function onAddStation(ev) {
-    // ev.stopPropagation()
     ev.preventDefault()
     if (!loggedInUser) {
       showErrorMsg('You must be logged in to add a station')
@@ -218,7 +217,6 @@ export function StationIndex() {
         onOpenStationsContextMenu={onOpenStationsContextMenu}
       />
 
-      {/* Global StationsContextMenu - only one instance */}
       {contextMenuData?.isOpen && (
         <StationsContextMenu
           stations={stations}

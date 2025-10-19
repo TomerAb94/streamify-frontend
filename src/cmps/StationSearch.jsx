@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate, useLocation } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import { NavLink } from 'react-router-dom'
 import { spotifyService } from '../services/spotify.service'
 import { TrackList } from './TrackList'
@@ -15,7 +15,6 @@ import { SvgIcon } from './SvgIcon'
 export function StationSearch() {
   const params = useParams()
   const navigate = useNavigate()
-  const location = useLocation()
 
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(

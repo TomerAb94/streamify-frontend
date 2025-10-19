@@ -25,11 +25,6 @@
 @import "cmps/SortMenu";
 @import "cmps/SideBar";
 
-@import "cmps/car/CarIndex";
-@import "cmps/car/CarList";
-@import "cmps/car/CarPreview";
-@import "cmps/car/CarFilter";
-
 @import "cmps/station/StationIndex";
 @import "cmps/station/StationList";
 @import "cmps/station/StationPreview";
