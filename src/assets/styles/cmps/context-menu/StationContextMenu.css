@@ -86,7 +86,7 @@
 
         &:hover {
           background-color: var(--color-secondary-3);
-          scale: 0.96;
+          transform: scale(1)
         }
 
         ::after {
@@ -131,7 +131,7 @@
           cursor: auto;
 
           &:hover {
-            scale: 0.96;
+            transform: scale(1)
           }
 
           > .mini-station {

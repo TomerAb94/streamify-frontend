@@ -74,6 +74,18 @@
     border-radius: 4px;
     transition: background-color 0.2s;
 
+    &:last-child {
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -20px;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+      }
+    }
     &.clicked {
       background-color: #ffffff36;
     }

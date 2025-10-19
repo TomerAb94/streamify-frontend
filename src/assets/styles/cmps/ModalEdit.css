@@ -120,7 +120,7 @@
 
       &:hover {
         .modal-svg {
-         > svg {
+          > svg {
             fill: var(--color-white-fff);
           }
         }
@@ -193,6 +193,50 @@
       > button {
         font-family: Circular-thin;
         font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+.station-details {
+  > .modal-content {
+    > .edit-station-form {
+      & .dots-btn {
+        top: 2px;
+        right: 2px;
+      }
+
+      > .action-menu {
+        background-color: var(--color-secondary-2);
+        box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3), 0 6px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+        padding: 4px;
+        cursor: auto;
+        position: absolute;
+        top: 120px;
+
+        > .action-btn {
+          display: flex;
+          gap: 12px;
+          border-radius: 4px;
+          cursor: auto;
+          margin: 0;
+          padding: 8px 16px;
+
+          &:hover {
+            transform: scale(1);
+            background-color: var(--color-hover-lighter);
+          }
+          > span {
+            display: flex;
+            align-items: center;
+            > svg {
+              width: 16px;
+              height: 16px;
+              fill: var(--color-text-secondary);
+            }
+          }
+        }
       }
     }
   }

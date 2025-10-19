@@ -118,7 +118,7 @@
 
         &:hover {
           color: var(--color-hover-white);
-          scale: 1.02;
+          transform: scale(1.02);
 
           & .list-svg {
             fill: var(--color-white-hover);
