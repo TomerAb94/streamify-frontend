@@ -7,15 +7,15 @@ import {
   setCurrentTrack,
   setVolume,
   setSeekToSec,
+  setIsShuffle,
+  setIsRepeat,
+  setTracks,
 } from '../store/actions/track.actions'
-import { addStation, updateStation } from '../store/actions/station.actions'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
-import { updateUser } from '../store/actions/user.actions'
-import { stationService } from '../services/station'
-import { StationsContextMenu } from './StationsContextMenu'
+import { updateStation } from '../store/actions/station.actions'
+
 import { youtubeService } from '../services/youtube.service'
 
-export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onAddStation }) {
+export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onOpenStationsContextMenu }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -31,8 +31,14 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   const progressSec = useSelector(
     (storeState) => storeState.trackModule.progressSec
   )
+  const isShuffle = useSelector(
+    (storeState) => storeState.trackModule.isShuffle
+  )
+  const isRepeat = useSelector(
+    (storeState) => storeState.trackModule.isRepeat
+  )
 
-  const [isContextMenuOpen, setIsContextMenuOpen] = useState(false)
+
 
   const [isMuted, setIsMuted] = useState(false)
   const [previousVolume, setPreviousVolume] = useState(1)
@@ -74,19 +80,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   }
 
 
-  async function onUpdateStations(stations) {
-    const stationsToSave = stations.map((station) => ({ ...station }))
-    try {
-      for (const station of stationsToSave) {
-        await updateStation(station)
-      }
-      showSuccessMsg(
-        `Stations updated, new pin: ${stationsToSave.map((s) => s.isPinned)}`
-      )
-    } catch (err) {
-      showErrorMsg('Cannot update station')
-    }
-  }
+
 
   async function onAddToLikedSongs(track) {
     try {
@@ -119,14 +113,11 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     }
   }
 
-  function onOpenStationsContextMenu(ev) {
+  function handleOpenStationsContextMenu(ev) {
     ev.stopPropagation()
-    setIsContextMenuOpen(true)
-  }
-
-  function onCloseStationsContextMenu(ev) {
-    ev.stopPropagation()
-    setIsContextMenuOpen(false)
+    if (currentTrack) {
+      onOpenStationsContextMenu(currentTrack, ev.clientX, ev.clientY)
+    }
   }
 
   async function onNext() {
@@ -249,12 +240,94 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
     }
   }
 
+  async function onShuffle() {
+    // Toggle shuffle state
+    const newShuffleState = !isShuffle
+    setIsShuffle(newShuffleState)
+
+    // Need playlist tracks to shuffle
+    if (!playlist || playlist.length === 0) return
+
+    // Clear existing playlist
+    await setTracks([])
+
+    let tracksToPlay = []
+
+    if (newShuffleState) {
+      // If turning shuffle ON, create shuffled playlist
+      tracksToPlay = [...playlist].sort(() => Math.random() - 0.5)
+    } else {
+      // If turning shuffle OFF, restore original playlist order
+      tracksToPlay = [...playlist].sort((a, b) => {
+        return a.index - b.index
+      })
+    }
+
+    // Create playlist with proper nextId and prevId based on current order
+    // Don't fetch YouTube IDs here - only fetch when track is actually played
+    const playlistQueue = tracksToPlay.map((track, index) => {
+      return {
+        ...track,
+        nextId:
+          index < tracksToPlay.length - 1
+            ? tracksToPlay[index + 1].spotifyId
+            : tracksToPlay[0].spotifyId,
+        prevId:
+          index > 0
+            ? tracksToPlay[index - 1].spotifyId
+            : tracksToPlay[tracksToPlay.length - 1].spotifyId,
+        // Keep existing youtubeId if it exists, don't fetch new ones
+        youtubeId: track.youtubeId || null,
+      }
+    })
+
+    // Set the new playlist (shuffled or chronological)
+    await setTracks(playlistQueue)
+
+    // If turning shuffle ON, start playing the first track
+    // If turning shuffle OFF, keep current track but update its connections
+    if (newShuffleState) {
+      const firstTrack = playlistQueue[0]
+      if (firstTrack) {
+        // Only fetch YouTube ID for the track that will actually be played
+        if (!firstTrack.youtubeId) {
+          const youtubeId = await getYoutubeId(firstTrack.name)
+          const trackWithYoutube = {
+            ...firstTrack,
+            youtubeId,
+          }
+          await setCurrentTrack(trackWithYoutube)
+        } else {
+          await setCurrentTrack(firstTrack)
+        }
+        await setIsPlaying(true)
+      }
+    } else {
+      // When turning shuffle OFF, update current track with new next/prev connections
+      if (currentTrack) {
+        const updatedCurrentTrack = playlistQueue.find(
+          (track) => track.spotifyId === currentTrack.spotifyId
+        )
+        if (updatedCurrentTrack) {
+          // Keep existing YouTube ID
+          const trackWithYoutube = {
+            ...updatedCurrentTrack,
+            youtubeId: currentTrack.youtubeId || null,
+          }
+          await setCurrentTrack(trackWithYoutube)
+        }
+      }
+    }
+  }
+
+  async function onRepeat() {
+    const newRepeatState = !isRepeat
+    await setIsRepeat(newRepeatState)
+  }
+
 
   return (
-    <footer
-      className="app-footer"
-      onClick={(ev) => onCloseStationsContextMenu(ev)}
-    >
+    <footer className="app-footer">
       <div className="track-info">
         <div className="track-cover" onClick={handleToggleNowPlaying} role="button" tabIndex={0}>
           {currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0] ? (
@@ -286,28 +359,23 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
               title="Add to Playlist"
               onClick={
                 isTrackInStation(currentTrack)
-                  ? (ev) => onOpenStationsContextMenu(ev)
+                  ? (ev) => handleOpenStationsContextMenu(ev)
                   : () => onAddToLikedSongs(currentTrack)
               }
             />
             {/* <SvgIcon iconName="doneLikedSong" className="liked-icon is-on" /> */}
           </button>
         </div>
-        {isContextMenuOpen && (
-          <StationsContextMenu
-            stations={stations}
-            track={currentTrack}
-            onAddStation={onAddStation}
-            onClose={onCloseStationsContextMenu}
-            onUpdateStations={onUpdateStations}
-          />
-        )}
       </div>
 
       <div className="player-container">
         <div className="player-btns">
           <div className="left-btns">
-            <button aria-label="Shuffle">
+            <button 
+              onClick={onShuffle}
+              className={`shuffle-btn ${isShuffle ? 'active' : ''}`}
+              aria-label="Shuffle"
+            >
               <SvgIcon iconName="shuffle" className="shuffle" />
             </button>
             <button
@@ -335,7 +403,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
             >
               <SvgIcon iconName="next" className="next" />
             </button>
-            <button aria-label="Repeat">
+            <button onClick={onRepeat} className={`repeat-btn ${isRepeat ? 'active' : ''}`}>
               <SvgIcon iconName="repeat" className="repeat" />
             </button>
           </div>

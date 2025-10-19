@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
@@ -7,23 +7,27 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
 import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
-import { useParams } from 'react-router-dom'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
   const [searchBy, setSearchBy] = useState('')
   const [homeBtn, setHomeBtn] = useState(true)
   const [browseBtn, setBrowseBtn] = useState(false)
+  const prevSearchRef = useRef('')
   const navigate = useNavigate()
   const location = useLocation()
+
 
   useEffect(() => {
     if (searchBy.length > 0) {
       navigate(`/search/${searchBy}`)
-    }
-    else if (searchBy.length === 0) {
-      setBrowseBtn(true)
+      prevSearchRef.current = searchBy
+    } else if (searchBy.length === 0 && prevSearchRef.current.length > 0) {
+      // User cleared the search - navigate to /search
       navigate(`/search`)
+      setBrowseBtn(true)
+      setHomeBtn(false)
+      prevSearchRef.current = ''
     }
   }, [searchBy])
 
@@ -39,7 +43,7 @@ export function AppHeader() {
   }
 
   function backToBrowse() {
-    navigate('/browse')
+    navigate('/search')
   }
 
   async function onLogout() {

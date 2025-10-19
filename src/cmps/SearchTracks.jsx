@@ -1,43 +1,41 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { spotifyService } from '../services/spotify.service'
 import { youtubeService } from '../services/youtube.service'
 import {
   setTracks,
   setCurrentTrack,
+  setCurrentStationId,
   setIsPlaying,
 } from '../store/actions/track.actions'
 
 import { SvgIcon } from './SvgIcon'
 import { updateStation } from '../store/actions/station.actions'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useOutletContext } from 'react-router-dom'
 
-export function StationFilter() {
+export function SearchTracks() {
+  const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()
   const params = useParams()
+   const navigate = useNavigate()
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
-  const stations = useSelector(
-    (storeState) => storeState.stationModule.stations
-  )
+  const stations = useSelector((storeState) => storeState.stationModule.stations)
   const [searchedTracks, setSearchedTracks] = useState([])
-
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
+  const [clickedTrackId, setClickedTrackId] = useState(null)
 
   useEffect(() => {
-    if (params.searchStr || params.searchStr !== '') {
+    if (params.searchStr) {
       loadSearchedTracks()
     }
   }, [params.searchStr])
 
   async function loadSearchedTracks() {
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(
-        params.searchStr
-      )
+      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr)
       setSearchedTracks(spotifyTracks)
-      // console.log('spotifyTracks:', spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)
     }
@@ -49,6 +47,9 @@ export function StationFilter() {
 
   async function onPlay(track) {
     try {
+      // Clear current station ID since playing from search results
+      setCurrentStationId(null)
+      
       // Clear existing playlist
       if (playlist && playlist.length) {
         await setTracks([])
@@ -56,6 +57,8 @@ export function StationFilter() {
 
       // Get YouTube ID for the track
       const youtubeId = await getYoutubeId(track.name)
+      console.log(youtubeId);
+      
       const trackWithYoutube = {
         ...track,
         youtubeId,
@@ -92,18 +95,36 @@ export function StationFilter() {
     setHoveredTrackIdx(null)
   }
 
+  function handleRowClick(track) {
+    setClickedTrackId(track.spotifyId)
+  }
+
+  function isTrackInStation(track) {
+    return stations.some(
+      (s) => s.tracks && s.tracks.some((t) => t.spotifyId === track.spotifyId)
+    )
+  }
+
+  function handleOpenStationsContextMenu(ev, track) {
+    ev.stopPropagation()
+    setClickedTrackId(track.spotifyId)
+    onOpenStationsContextMenu(track, ev.clientX, ev.clientY)
+  }
+
+  function handleCloseStationsContextMenu(ev) {
+    ev.stopPropagation()
+    onCloseStationsContextMenu()
+  }
+
   async function onAddToLikedSongs(track) {
     try {
-      const likedSongs = stations.find(
-        (station) => station.title === 'Liked Songs'
-      )
+      const likedSongs = stations.find((station) => station.title === 'Liked Songs')
       if (!likedSongs) return
 
       const isTrackInLikedSongs = likedSongs.tracks.some(
         (t) => t.spotifyId === track.spotifyId
       )
       if (isTrackInLikedSongs) {
-        console.log('Track already in Liked Songs')
         return
       }
 
@@ -114,21 +135,39 @@ export function StationFilter() {
 
       const updatedLikedSongs = {
         ...likedSongs,
-        tracks: [...likedSongs.tracks, cleanTrack]
+        tracks: [...likedSongs.tracks, cleanTrack],
       }
-      
+
       await updateStation(updatedLikedSongs)
     } catch (err) {
       console.error('Error adding track to Liked Songs:', err)
     }
   }
 
+  function handleNavToAll() {
+    navigate(`/search/${params.searchStr}`)
+  }
+
+  function handleNavToArtists() {
+    navigate(`/search/artists/${params.searchStr}`)
+  }
+
+
   if (!searchedTracks?.length) return <div>Loading...</div>
-console.log(searchedTracks);
 
   return (
-    <section className="station-filter">
-      <h2>Songs</h2>
+    <section className="search-tracks">
+           <nav className="search-nav">
+        <button className="nav-button" onClick={handleNavToAll}>
+          All
+        </button>
+        <button className="nav-button active">
+          Songs
+        </button>
+        <button className="nav-button" onClick={handleNavToArtists}>
+          Artists
+        </button>
+      </nav>
       <section className="track-list">
         <div className="track-header">
           <div className="first-col-header">#</div>
@@ -141,12 +180,24 @@ console.log(searchedTracks);
 
         {searchedTracks.map((track, idx) => (
           <div
-            className="track-row"
+            className={`track-row ${
+              clickedTrackId === track.spotifyId ? 'clicked' : ''
+            }`}
             key={track.spotifyId ? `${track.spotifyId}-${idx}` : `track-${idx}`}
             onMouseEnter={() => handleMouseEnter(idx)}
             onMouseLeave={handleMouseLeave}
+            onClick={(ev) => {
+              handleCloseStationsContextMenu(ev)
+              handleRowClick(track)
+            }}
           >
-            <div className={`track-num ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+            <div
+              className={`track-num ${
+                currentTrack && currentTrack.spotifyId === track.spotifyId
+                  ? 'playing'
+                  : ''
+              }`}
+            >
               {isTrackCurrentlyPlaying(track) ? (
                 hoveredTrackIdx === idx ? (
                   <SvgIcon
@@ -178,15 +229,23 @@ console.log(searchedTracks);
               )}
               <div className="track-text">
                 <NavLink to={`/track/${track.spotifyId}`}>
-                  <span className={`track-name nav-link ${currentTrack && currentTrack.spotifyId === track.spotifyId ? 'playing' : ''}`}>{track.name}</span>
+                  <span
+                    className={`track-name nav-link ${
+                      currentTrack && currentTrack.spotifyId === track.spotifyId
+                        ? 'playing'
+                        : ''
+                    }`}
+                  >
+                    {track.name}
+                  </span>
                 </NavLink>
                 <div className="track-artists">
-                  {track.artists.map((artist, i) => (
-                    <span key={artist.id}>
-                      {artist.name}
-                      {i < track.artists.length - 1 ? ', ' : ''}
-                    </span>
-                  ))}
+                  <NavLink
+                    key={track.artists[0].id[0]}
+                    to={`/artist/${track.artists[0].id[0]}`}
+                  >
+                    <span className="nav-link">{track.artists[0].name}</span>
+                  </NavLink>
                 </div>
               </div>
             </div>
@@ -194,14 +253,18 @@ console.log(searchedTracks);
             <div className="track-album">{track.album?.name}</div>
             <div className="track-duration-container">
               <SvgIcon
-                iconName="addLikedSong"
-                className="addLikedSong"
-                title="Add to Liked Songs"
-                onClick={() => onAddToLikedSongs(track)}
+                iconName={
+                  isTrackInStation(track) ? 'inStation' : 'addLikedSong'
+                }
+                className="add-to-playlist"
+                title="Add to Playlist"
+                onClick={
+                  isTrackInStation(track)
+                    ? (ev) => handleOpenStationsContextMenu(ev, track)
+                    : () => onAddToLikedSongs(track)
+                }
               />
-              <span className="track-duration">
-                {track.duration}
-              </span>
+              <span className="track-duration">{track.duration}</span>
             </div>
           </div>
         ))}

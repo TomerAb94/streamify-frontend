@@ -8,7 +8,9 @@ import { UserMsg } from './cmps/UserMsg.jsx'
 import { StationIndex } from './pages/StationIndex.jsx'
 import { HomePage } from './cmps/HomePage.jsx'
 import { StationDetails } from './cmps/StationDetails.jsx'
-import { StationFilter } from './cmps/StationFilter.jsx'
+import { StationSearch } from './cmps/StationSearch.jsx'
+import { SearchTracks } from './cmps/SearchTracks.jsx'
+import { SearchArtists } from './cmps/SearchArtists.jsx'
 import { TrackDetails } from './pages/TrackDetails.jsx'
 import { ArtistDetails } from './pages/ArtistDetails.jsx'
 
@@ -17,7 +19,7 @@ import { Browse } from './cmps/Browse.jsx'
 import { GenreList } from './cmps/GenreList.jsx'
 import { PlayList } from './cmps/PlayList.jsx'
 
-import { setProgressSec, setSeekToSec } from './store/actions/track.actions.js'
+import { setProgressSec, setSeekToSec, setCurrentTrack, setIsPlaying } from './store/actions/track.actions.js'
 
 export function RootCmp() {
   const currentTrack = useSelector(
@@ -32,6 +34,10 @@ export function RootCmp() {
   )
 
   const seekToSec = useSelector((storeState) => storeState.trackModule.seekToSec)
+  const playlist = useSelector((storeState) => storeState.trackModule.tracks)
+  const isRepeat = useSelector(
+    (storeState) => storeState.trackModule.isRepeat
+  )
 
   // A ref to the ReactPlayer instance, required for seekTo() on player
   const playerRef = useRef(null)
@@ -49,20 +55,42 @@ export function RootCmp() {
     setSeekToSec(null)
   }, [seekToSec])
 
+  // Handler for when track ends - repeat current track if repeat is on, otherwise play next track
+  const handleEnded = useCallback(() => {
+    if (!currentTrack) return
+
+    if (isRepeat) {
+      // If repeat is enabled, restart the current track from the beginning
+      setSeekToSec(0) // Use Redux action to seek to beginning
+      setIsPlaying(true) // Restart playback
+    } else if (currentTrack.nextId && playlist.length) {
+      // Otherwise, play the next track
+      const nextTrack = playlist.find(track => track.spotifyId === currentTrack.nextId)
+      if (nextTrack) {
+        setCurrentTrack(nextTrack)
+        setIsPlaying(true)
+      }
+    }
+  }, [currentTrack, playlist, isRepeat])
+
   return (
     <>
       <UserMsg />
       <Routes>
         <Route element={<StationIndex />}>
           <Route path="" element={<HomePage />} />
+          <Route path="/album/:albumId"  element={<PlayList/>} />
           <Route path="/search" element={<Browse />} />
-          <Route path="/search/:searchStr" element={<StationFilter />} />
+          <Route path="/search/:searchStr" element={<StationSearch />} />
+          <Route path="/search/tracks/:searchStr" element={<SearchTracks />} />
+          <Route path="/search/artists/:searchStr" element={<SearchArtists />} />
           <Route path="/station/:stationId" element={<StationDetails />} />
           <Route path="/track/:Id" element={<TrackDetails />} />
           <Route path="/artist/:Id" element={<ArtistDetails />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/browse/genre/:genreName"  element={<GenreList />} />
           <Route path="/browse/genre/:genreName/:playlistId"  element={<PlayList />} />
+      
         </Route>
 
         <Route path="auth" element={<LoginSignup />}>
@@ -81,6 +109,7 @@ export function RootCmp() {
           volume={volume}
           controls={false} // Hide native controls
           onTimeUpdate={handleTimeUpdate}
+          onEnded={handleEnded}
         />
       </div>
     </>

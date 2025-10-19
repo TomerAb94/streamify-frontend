@@ -65,7 +65,7 @@ export function StationListActions({
             <li>
               <button
                 className="action-btn no-background"
-                onClick={() => onAddStation()}
+                onClick={(ev) => onAddStation(ev)}
               >
                 <SvgIcon iconName="musicNotePlus" /> <span>Create playlist</span>
               </button>

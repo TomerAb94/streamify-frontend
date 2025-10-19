@@ -8,10 +8,13 @@ import {
   UPDATE_TRACK,
   ADD_TRACK_MSG,
   SET_CURRENT_TRACK,
+  SET_CURRENT_STATION_ID,
   SET_IS_PLAYING,
+  SET_IS_REPEAT,
   SET_VOLUME,
   SET_PROGRESS_SEC,
   SET_SEEK_TO_SEC,
+  SET_IS_SHUFFLE,
 } from '../reducers/track.reducer'
 
 export async function loadTracks(filterBy) {
@@ -93,8 +96,20 @@ export async function setCurrentTrack(track) {
   store.dispatch(getCmdSetCurrentTrack(track))
 }
 
+export function setCurrentStationId(stationId) {
+  store.dispatch(getCmdSetCurrentStationId(stationId))
+}
+
 export function setIsPlaying(isPlaying) {
   store.dispatch(getCmdSetIsPlaying(isPlaying))
+}
+
+export function setIsShuffle(isShuffle) {
+  store.dispatch(getCmdSetIsShuffle(isShuffle))
+}
+
+export function setIsRepeat(isRepeat) {
+  store.dispatch(getCmdSetIsRepeat(isRepeat))
 }
 
 export function setVolume(volume) {
@@ -171,10 +186,31 @@ function getCmdSetCurrentTrack(track) {
   }
 }
 
+function getCmdSetCurrentStationId(stationId) {
+  return {
+    type: SET_CURRENT_STATION_ID,
+    stationId,
+  }
+}
+
 function getCmdSetIsPlaying(isPlaying) {
   return {
     type: SET_IS_PLAYING,
     isPlaying,
+  }
+}
+
+function getCmdSetIsShuffle(isShuffle) {
+  return {
+    type: SET_IS_SHUFFLE,
+    isShuffle,
+  }
+}
+
+function getCmdSetIsRepeat(isRepeat) {
+  return {
+    type: SET_IS_REPEAT,
+    isRepeat,
   }
 }
 

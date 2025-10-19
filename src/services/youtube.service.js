@@ -5,7 +5,7 @@ export const youtubeService = {
 	getVideos,
 }
 
-const YT_API_KEY = 'AIzaSyBauopBMepmq-TXpt84cPSxQcg270P_2io'
+const YT_API_KEY = 'AIzaSyCOagoZKQCd8VqRXG-CAE7ghVv5dXB2l7Q'
 
 const VIDEOS_STORAGE_KEY = 'videosDB'
 

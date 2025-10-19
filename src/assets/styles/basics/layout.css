@@ -1,6 +1,6 @@
 .main-container {
   display: grid;
-  grid-template-columns: minmax(100px, 420px) auto-fill minmax(100px, 420px);
+  grid-template-columns: minmax(100px, 420px) 1fr minmax(100px, 420px);
   grid-template-rows: var(--AppHeaderHeight) auto var(--FooterHeight);
 
   grid-template-areas:

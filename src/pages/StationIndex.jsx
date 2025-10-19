@@ -20,6 +20,7 @@ import { AppFooter } from '../cmps/AppFooter'
 import { ModalRemove } from '../cmps/ModalRemove'
 import { PlaylistQueue } from '../cmps/PlaylistQueue'
 import { NowPlayingView } from '../cmps/NowPlayingView'
+import { StationsContextMenu } from '../cmps/StationsContextMenu'
 import { setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 
 export function StationIndex() {
@@ -27,6 +28,7 @@ export function StationIndex() {
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
   const [openPanel, setOpenPanel] = useState(null)
+  const [contextMenuData, setContextMenuData] = useState(null) // { track, isOpen, x, y } 
   
   const navigate = useNavigate()
 
@@ -80,7 +82,6 @@ export function StationIndex() {
   }
 
   async function onAddStation(ev) {
-    ev.stopPropagation()
     ev.preventDefault()
     if (!loggedInUser) {
       showErrorMsg('You must be logged in to add a station')
@@ -140,10 +141,36 @@ export function StationIndex() {
     await setIsPlaying(false)
   }
 
+  function onOpenStationsContextMenu(track, x, y) {
+    setContextMenuData({ track, isOpen: true, x, y })
+  }
+
+  function onCloseStationsContextMenu() {
+    setContextMenuData(null)
+  }
+
+  async function onUpdateStations(stations) {
+    const stationsToSave = stations.map((station) => ({ ...station }))
+    try {
+      for (const station of stationsToSave) {
+        await updateStation(station)
+      }
+      showSuccessMsg(`Stations updated successfully`)
+    } catch (err) {
+      showErrorMsg('Cannot update station')
+    }
+  }
+
   return (
     <section
       ref={mainContainerRef}
       className={`main-container ${openPanel ? 'sidebar-open' : ''}`}
+      onClick={(ev) => {
+        // Close context menu when clicking anywhere outside of it
+        if (contextMenuData?.isOpen) {
+          onCloseStationsContextMenu()
+        }
+      }}
     >
       <AppHeader />
 
@@ -155,7 +182,11 @@ export function StationIndex() {
         onUpdateStation={onUpdateStation}
       />
 
-      <Outlet context={{ stations }} />
+      <Outlet context={{ 
+        stations, 
+        onOpenStationsContextMenu, 
+        onCloseStationsContextMenu 
+      }} />
 
       <PlaylistQueue
         playlist={playlist}
@@ -183,7 +214,20 @@ export function StationIndex() {
         isQueueOpen={openPanel === 'queue'} 
         isNowOpen={openPanel === 'now'}
         onAddStation={onAddStation}
+        onOpenStationsContextMenu={onOpenStationsContextMenu}
       />
+
+      {contextMenuData?.isOpen && (
+        <StationsContextMenu
+          stations={stations}
+          track={contextMenuData.track}
+          onAddStation={onAddStation}
+          onClose={onCloseStationsContextMenu}
+          onUpdateStations={onUpdateStations}
+          x={contextMenuData.x}
+          y={contextMenuData.y}
+        />
+      )}
 
       {isModalRemoveOpen && (
         <ModalRemove

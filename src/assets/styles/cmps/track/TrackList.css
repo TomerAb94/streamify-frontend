@@ -179,7 +179,7 @@
       }
 
       &:hover {
-        > .addLikedSong {
+        > .add-liked-song {
           fill: var(--color-white-fff);
         }
       }

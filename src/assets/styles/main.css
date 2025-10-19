@@ -25,17 +25,15 @@
 @import "cmps/SortMenu";
 @import "cmps/SideBar";
 
-@import "cmps/car/CarIndex";
-@import "cmps/car/CarList";
-@import "cmps/car/CarPreview";
-@import "cmps/car/CarFilter";
-
 @import "cmps/station/StationIndex";
 @import "cmps/station/StationList";
 @import "cmps/station/StationPreview";
-@import "cmps/station/StationFilter";
+@import "cmps/station/StationSearch";
 @import "cmps/station/StationDetails";
 @import "cmps/station/Browse";
+@import "cmps/SearchTracks";
+@import "cmps/SearchArtists";
+@import "cmps/StationSearch";
 
 @import "cmps/context-menu/StationContextMenu";
 

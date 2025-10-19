@@ -3,6 +3,7 @@
   background-color: var(--color-secondary);
   border-radius: 8px;
   padding: 0 40px;
+  overflow-y: auto;
 }
 
 .stations-type {
@@ -90,14 +91,8 @@
   .user-station:nth-child(2) {
     color: red;
   }
-}
 
-.playHomePage {
-  width: 16px;
-  height: 16px;
-}
-
-.play-container {
+  .play-container {
   opacity: 0;
   background-color: var(--green-play);
   border-radius: 50%;
@@ -107,6 +102,14 @@
   height: 32px;
   align-items: flex-start;
 }
+}
+
+.playHomePage {
+  width: 16px;
+  height: 16px;
+}
+
+
 
 .playHomePage path {
   fill: black;
@@ -144,3 +147,5 @@
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
 }
+
+

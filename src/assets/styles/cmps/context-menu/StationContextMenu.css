@@ -1,8 +1,11 @@
 .stations-context-menu {
   visibility: visible;
-  inset: auto 60px 40px auto;
   z-index: 100;
+
   background-color: var(--color-secondary-1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  color: var(--color-text-secondary);
 
   > .stations-form {
     display: flex;
@@ -18,6 +21,7 @@
       > span {
         font-family: Circular;
         font-size: 0.7rem;
+        color: var(--color-text-secondary);
       }
     }
 
@@ -45,9 +49,15 @@
         border-radius: 4px;
         background-color: var(--color-secondary-3);
 
+        > span {
+          display: flex;
+          align-items: center;
+        }
+
         & svg {
           width: 16px;
           height: 16px;
+          fill: var(--color-text-secondary);
         }
       }
     }
@@ -155,15 +165,17 @@
                   align-items: center;
                   justify-content: center;
 
-                  > svg{
-                    width: 12px;
-                    height: 12px;
+                  > svg {
+                    width: 14px;
+                    height: 14px;
+                    fill: var(--color-text-secondary);
                   }
                 }
               }
             }
 
             > .station-title {
+              align-self: center;
               font-size: 1rem;
             }
           }

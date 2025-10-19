@@ -1,0 +1,183 @@
+.search-artists {
+  border-radius: 8px;
+  grid-area: station-index;
+  background-color: var(--color-secondary);
+  overflow-y: auto;
+  & .search-results {
+    display: grid;
+    grid-auto-rows: min-content;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    padding: 0 clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
+
+    > .results-container {
+      grid-column: 1/-1;
+      margin-top: 24px;
+      display: grid;
+      grid-template-rows: min-content;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 32px 12px;
+
+      > .artist-result {
+        grid-column: 1/-1;
+
+        > h2 {
+          margin-bottom: 24px;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: var(--color-white-fff);
+        }
+
+        > .artists-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 24px;
+          padding-bottom: 8px;
+
+          > .artist-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            padding: 16px;
+            border-radius: 8px;
+            min-width: 180px;
+
+            &:hover {
+              background-color: var(--color-secondary-1);
+              > .btn-container > button {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+
+            > img {
+              border-radius: 50%;
+              width: 100%;
+              aspect-ratio: 1;
+              max-width: 180px;
+              height: auto;
+              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            }
+
+            > .mini-info {
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+              margin-top: 16px;
+
+              > h3 {
+                font-size: 1rem;
+                font-weight: bold;
+                margin: 0;
+                color: var(--color-white-fff);
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
+
+              > span {
+                font-size: 0.875rem;
+                font-family: Circular-thin;
+                color: var(--gray2);
+                text-transform: capitalize;
+              }
+            }
+
+            > .btn-container {
+              position: absolute;
+              bottom: 60px;
+              right: 16px;
+
+              > button {
+                opacity: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--green-pin);
+                padding: 12px;
+                border: none;
+                border-radius: 50%;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+                transform: translateY(8px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                cursor: pointer;
+
+                &:hover {
+                  background-color: var(--green-play);
+                  transform: scale(1.05) translateY(0);
+                }
+
+                > .play,
+                .pause {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  > svg {
+                    width: 20px;
+                    height: 20px;
+                    fill: black;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .search-artists {
+    & .search-results {
+      > .results-container {
+        > .artist-result {
+          > .artists-container {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px;
+
+            > .artist-item {
+              padding: 12px;
+
+              > img {
+                max-width: 140px;
+              }
+
+              > .mini-info {
+                margin-top: 12px;
+
+                > h3 {
+                  font-size: 0.9rem;
+                }
+              }
+
+              > .btn-container {
+                bottom: 50px;
+                right: 12px;
+
+                > button {
+                  padding: 10px;
+
+                  > .play,
+                  .pause {
+                    > svg {
+                      width: 16px;
+                      height: 16px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -68,20 +68,6 @@
         fill: var(--green-checked);
       }
     }
-
-    > .stations-context-menu {
-      inset: auto auto 90px 250px;
-
-      & .search-icon {
-        display: flex;
-        align-items: center;
-        > .search-svg {
-          fill: var(--color-text-secondary);
-          width: 16px;
-          height: 16px;
-        }
-      }
-    }
   }
   /* Center area */
   & .player-container {
@@ -148,6 +134,27 @@
           width: 16px;
           height: 16px;
           fill: var(--color-text-secondary);
+        }
+      }
+
+      & .shuffle-btn, & .repeat-btn {
+        position: relative;
+        &.active {
+          & svg {
+            fill: var(--green-clicked);
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 80%;
+            right: 50%;
+            translate: 50%;
+            width: 4px;
+            height: 4px;
+            background-color: var(--green-clicked);
+            border-radius: 50%;
+          }
         }
       }
     }

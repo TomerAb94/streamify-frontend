@@ -1,3 +1,4 @@
+import { replace } from "react-router"
 import { youtubeService } from "./youtube.service"
 
 
@@ -17,6 +18,7 @@ export const spotifyService = {
   getTrack,
   getArtist,
   getAlbum,
+  getAlbumNewRelease,
   initializePlayer,
   playTrack,
   pauseTrack,
@@ -27,6 +29,9 @@ export const spotifyService = {
   getTracksPlaylist,
   getFullTrackData,
   getArtistData,
+  getSearchArtists,
+  getSearchedAlbums,
+  getNewAlbumsReleases,
 }
 
 
@@ -83,6 +88,7 @@ async function makeSpotifyRequest(endpoint) {
 
 async function getSearchedTracks(query, limit = 5, offset = 0) {
   const tracksFromSpotify = await searchTracks(query, limit, offset)
+  // console.log(tracksFromSpotify)
   let tracks = tracksFromSpotify.tracks.items
 
   tracks = tracks.map((track) => {
@@ -118,11 +124,20 @@ async function searchTracks(query, limit = 5, offset = 0) {
   return makeSpotifyRequest(endpoint)
 }
 
-async function searchArtists(query, limit = 20, offset = 0) {
+async function searchArtists(query, limit = 5, offset = 0) {
   const endpoint = `/search?q=${encodeURIComponent(
     query
   )}&type=artist&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getSearchArtists(query, limit = 5, offset = 0) {
+  const artistsFromSpotify = await searchArtists(query, limit, offset)
+  return artistsFromSpotify.artists.items.map((artist) => ({
+    spotifyId: artist.id,
+    name: artist.name,
+    imgUrl: artist.images[0]?.url,
+  }))
 }
 
 async function searchAlbums(query, limit = 20, offset = 0) {
@@ -130,6 +145,19 @@ async function searchAlbums(query, limit = 20, offset = 0) {
     query
   )}&type=album&limit=${limit}&offset=${offset}`
   return makeSpotifyRequest(endpoint)
+}
+
+async function getSearchedAlbums(query, limit = 5, offset = 0) {
+  const albumsFromSpotify = await searchAlbums(query, limit, offset)
+  console.log(albumsFromSpotify.albums.items[0]);
+  
+  return albumsFromSpotify.albums.items.map((album) => ({
+    spotifyId: album.id,
+    name: album.name,
+    imgUrl: album.images[0]?.url,
+    artist: album.artists.map((artist) => artist.name).join(', '),
+    releaseYear: album.release_date.split('-')[0],
+  }))
 }
 
 async function getTrack(trackId) {
@@ -216,23 +244,76 @@ async function getAlbum(albumId) {
   return makeSpotifyRequest(endpoint)
 }
 
+async function getAlbumNewRelease(albumId) {
+  try {
+    const endpoint = `/albums/${albumId}`
+    const response = await makeSpotifyRequest(endpoint)
+    const artistFromSpotify = await getArtist(response.artists[0].id)
+    
+    // Extract album metadata
+    const playlistInfo = {
+      id: response.id,
+      name: response.name,
+      description: response.description || '',
+      imgUrl: response.images[0]?.url,
+      artists: response.artists.map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+        imgUrl: artistFromSpotify.images?.[0]?.url
+      })),
+      releaseDate: response.release_date,
+      // albumType: response.album_type,
+      totalTracks: response.total_tracks,
+      isPublic: response.is_playable ? 'Public Album' : 'Private Album',
+      uri: response.uri,
+      externalUrls: response.external_urls,
+    }
+
+    // Map tracks to clean format and add navigation IDs
+    const tracks = response.tracks.items.map((track, index, arr) => ({
+      spotifyId: track.id,
+      name: track.name,
+      album: { 
+        name: response.name, 
+        imgUrl: response.images[0]?.url 
+      },
+      artists: [{
+        name: track.artists.map((artist) => artist.name).join(', '),
+        id: track.artists.map((artist) => artist.id),
+      }],
+      duration: formatDuration(track.duration_ms),
+      youtubeId: null,
+      prevId: index === 0 ? arr[arr.length - 1].id : arr[index - 1].id,
+      nextId: index === arr.length - 1 ? arr[0].id : arr[index + 1].id,
+      spotifyAlbumId: playlistInfo.id,
+    }))
+
+    return {
+      playlist: playlistInfo,
+      tracks: tracks,
+    }
+  } catch (error) {
+    console.error('Error fetching album new release:', error)
+    throw error
+  }
+}
 
 async function getGenres(limit = 50, offset = 0) {
+
   try {
-    const endpoint = `/browse/categories?limit=${limit}&offset=${offset}&locale=en_IL`
+    const endpoint = `/browse/categories?limit=${limit}&offset=${offset}&locale=en_US`
     const response = await makeSpotifyRequest(endpoint)
     return response.categories.items.map(category => ({
       id: category.id,
-      name: category.name,
+      name: category.name.includes('/') ? category.name.replace('/','&'):category.name,
       icons: category.icons
+       
     }))
   } catch (error) {
     console.error('Error fetching genres/categories:', error)
     throw error
   }
 }
-
-
 
 async function getGenrePlaylists(genre) {
   try{
@@ -271,6 +352,7 @@ async function getTracksPlaylist(playlistId) {
         .map(async (item, index, arr) => {
           const track = item.track
           return {
+
             spotifyId: track.id,
             name: track.name,
             album: { 
@@ -285,10 +367,13 @@ async function getTracksPlaylist(playlistId) {
             addedAt: item.added_at,
             youtubeId: null,
             prevId: index === 0 ? arr[arr.length - 1].track.id : arr[index - 1].track.id,
-            nextId: index === arr.length - 1 ? arr[0].track.id : arr[index + 1].track.id
+            nextId: index === arr.length - 1 ? arr[0].track.id : arr[index + 1].track.id,
+            spotifyPlaylistId:playlistInfo.id
           }
         })
     )
+
+    
 
     return {
       playlist: playlistInfo,
@@ -299,15 +384,6 @@ async function getTracksPlaylist(playlistId) {
     throw error
   }
 }
-
-
-
-
-
-// const result = await spotifyService.getTracksPlaylist('3z0MRRZHSNPI4tPEjcCZRV');
-// console.log(result.playlist); // מידע על הפלייליסט
-// console.log(result.tracks);   // מערך של השירים
-
 
 // Note: These functions require user authentication and Spotify Premium
 let player = null
@@ -405,14 +481,14 @@ async function getCurrentPlayback(userAccessToken) {
   return null
 }
 
-
-
-
   async function getSpotifyUserProfileImg(userId) {
   try{
   const endpoint =  `/users/${userId}`
   const response = await makeSpotifyRequest(endpoint)
-
+  
+  if (!response.images[0]) {
+    return 'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'
+  }
   return response.images[0].url
   }
  catch (error) {
@@ -422,3 +498,36 @@ async function getCurrentPlayback(userAccessToken) {
 }
 
 
+async function getNewAlbumsReleases(limit = 20, offset = 0) {
+  try {
+    const endpoint = `/browse/new-releases?limit=${limit}&offset=${offset}&country=US`
+    const response = await makeSpotifyRequest(endpoint)
+    
+    // Map albums to clean object format
+    const albums = response.albums.items.map((album) => ({
+      id: album.id,
+      name: album.name,
+      artists: album.artists.map((artist) => ({
+        id: artist.id,
+        name: artist.name,
+      })),
+      releaseDate: album.release_date,
+      totalTracks: album.total_tracks,
+      images: album.images.map((img) => ({
+        url: img.url,
+        height: img.height,
+        width: img.width,
+      })),
+      externalUrls: album.external_urls,
+      uri: album.uri,
+      albumType: album.album_type,
+    }))
+    
+    return {
+      albums
+    }
+  } catch (error) {
+    console.error('Error fetching new album releases:', error)
+    throw error
+  }
+}
