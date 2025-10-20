@@ -24,3 +24,14 @@
     font-family: Circular-thin;
     src: url(../../fonts/Circular/CircularSp-Book.woff2);
 }
+
+@font-face {
+    font-family: Arimo;
+    src: url(../../fonts/Arimo/Arimo-Regular.ttf);
+}
+
+@font-face {
+    font-family: Arimo-light;
+    src: url(../../fonts/Arimo/Arimo-Regular.ttf);
+    font-weight: 100;
+}

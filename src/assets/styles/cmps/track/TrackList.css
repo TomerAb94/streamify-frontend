@@ -81,7 +81,7 @@
     & .track-album,
     & .track-duration-container {
       color: var(--songs-table-color);
-      font-family: Circular-thin;
+      font-family: 'Circular-thin','Arimo';
     }
 
     & .play {
@@ -119,6 +119,7 @@
 
   & .track-title {
     display: flex;
+    align-items: center;
   }
 
   & .duration-svg {
