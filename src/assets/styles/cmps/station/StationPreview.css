@@ -22,7 +22,7 @@
       > .station-title {
         color: var(--color-text-primary);
 
-        &.playing {
+        &.active-station {
           color: var(--green-checked);
         }
       }

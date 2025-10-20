@@ -7,7 +7,6 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
 import { SvgIcon } from './SvgIcon'
 import { debounce } from '../services/util.service'
-import { useParams } from 'react-router-dom'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)

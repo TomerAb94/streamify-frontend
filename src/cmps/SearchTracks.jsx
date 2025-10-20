@@ -6,6 +6,7 @@ import { youtubeService } from '../services/youtube.service'
 import {
   setTracks,
   setCurrentTrack,
+  setCurrentStationId,
   setIsPlaying,
 } from '../store/actions/track.actions'
 
@@ -46,6 +47,9 @@ export function SearchTracks() {
 
   async function onPlay(track) {
     try {
+      // Clear current station ID since playing from search results
+      setCurrentStationId(null)
+      
       // Clear existing playlist
       if (playlist && playlist.length) {
         await setTracks([])
@@ -140,10 +144,6 @@ export function SearchTracks() {
     }
   }
 
-    function handleNavToSongs() {
-      navigate(`/search/tracks/${params.searchStr}`)
-  }
-
   function handleNavToAll() {
     navigate(`/search/${params.searchStr}`)
   }
@@ -161,7 +161,7 @@ export function SearchTracks() {
         <button className="nav-button" onClick={handleNavToAll}>
           All
         </button>
-        <button className="nav-button active" onClick={handleNavToSongs}>
+        <button className="nav-button active">
           Songs
         </button>
         <button className="nav-button" onClick={handleNavToArtists}>

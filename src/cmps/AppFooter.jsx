@@ -11,14 +11,11 @@ import {
   setIsRepeat,
   setTracks,
 } from '../store/actions/track.actions'
-import { addStation, updateStation } from '../store/actions/station.actions'
-import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
-import { updateUser } from '../store/actions/user.actions'
-import { stationService } from '../services/station'
+import { updateStation } from '../store/actions/station.actions'
 
 import { youtubeService } from '../services/youtube.service'
 
-export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onAddStation, onOpenStationsContextMenu }) {
+export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNowOpen, onOpenStationsContextMenu }) {
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
   const currentTrack = useSelector(
     (storeState) => storeState.trackModule.currentTrack
@@ -332,7 +329,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   return (
     <footer className="app-footer">
       <div className="track-info">
-        <div className="track-cover">
+        <div className="track-cover" onClick={handleToggleNowPlaying} role="button" tabIndex={0}>
           {currentTrack?.album?.imgUrl || currentTrack?.album?.imgUrls?.[0] ? (
             <img
               src={

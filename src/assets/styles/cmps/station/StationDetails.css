@@ -8,7 +8,8 @@
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
 
   & .details-header {
-    background: linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%), var(--background-noise);
+    background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%),
+      var(--background-noise);
     position: relative;
     border-radius: 8px 8px 0 0;
     display: flex;
@@ -176,6 +177,9 @@
     padding: 0 24px;
     margin: 24px;
     padding-bottom: 80px;
+    padding-top: 30px;
+    background-color: transparent;
+    position: relative;
 
     & .search-wrapper {
       width: 100%;
@@ -198,7 +202,6 @@
       }
 
       & .search-track-list {
-   
         display: grid;
         align-items: center;
         grid-template-rows: 35px;
@@ -262,12 +265,12 @@
               border-radius: 9999px;
               width: fit-content;
               padding: 4px 16px;
-              font-size: 1.1rem;
               color: var(--color-white-fff);
               margin: 0;
+              transition: transform 0.2s, border-color 0.2s;
 
               &:hover {
-                scale: 1.1;
+                transform: scale(1.03);
                 border-color: var(--color-white-fff);
               }
             }
@@ -324,7 +327,8 @@
 }
 
 .track-list,
-.search-tracks,.search-wrapper {
-       position: relative;
-    z-index: 1;
+.search-tracks,
+.search-wrapper {
+  position: relative;
+  z-index: 1;
 }

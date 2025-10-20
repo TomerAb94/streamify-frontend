@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { Link, NavLink } from 'react-router-dom'
 
 import { FastAverageColor } from 'fast-average-color'
 
@@ -15,6 +14,7 @@ import { TrackList } from './TrackList'
 import {
   setTracks,
   setCurrentTrack,
+  setCurrentStationId,
   setIsPlaying,
   setIsShuffle,
 } from '../store/actions/track.actions'
@@ -36,6 +36,9 @@ export function StationDetails() {
   )
   const isShuffle = useSelector(
     (storeState) => storeState.trackModule.isShuffle
+  )
+  const currentStationId = useSelector(
+    (storeState) => storeState.trackModule.currentStationId
   )
 
   const [searchBy, setSearchBy] = useState('')
@@ -117,6 +120,9 @@ export function StationDetails() {
   }
 
   async function onPlay(track) {
+    // Set the current station ID
+    setCurrentStationId(station._id)
+    
     // Clear existing playlist
     if (playlist && playlist.length) {
       await setTracks([])
@@ -154,6 +160,9 @@ export function StationDetails() {
   }
 
   async function onShuffle() {
+    // Set the current station ID
+    setCurrentStationId(station._id)
+    
     // Toggle shuffle state
     const newShuffleState = !isShuffle
     setIsShuffle(newShuffleState)
@@ -219,8 +228,11 @@ export function StationDetails() {
 
   function isStationCurrentlyPlaying() {
     if (!currentTrack || !station || !station.tracks) return false
-    return station.tracks.some(
-      (track) => track.spotifyId === currentTrack.spotifyId
+    return (
+      currentStationId === station._id &&
+      station.tracks.some(
+        (track) => track.spotifyId === currentTrack.spotifyId
+      )
     )
   }
 

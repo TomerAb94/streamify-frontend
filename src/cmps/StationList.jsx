@@ -11,6 +11,7 @@ import { debounce } from '../services/util.service'
 import {
   setTracks,
   setCurrentTrack,
+  setCurrentStationId,
   setIsPlaying,
 } from '../store/actions/track.actions.js'
 import { youtubeService } from '../services/youtube.service.js'
@@ -124,6 +125,9 @@ export function StationList({
 
   async function onPlay(track, station) {
     try {
+      // Set the current station ID
+      setCurrentStationId(station._id)
+      
       // Clear existing playlist
       if (playlist && playlist.length) {
         await setTracks([])
