@@ -136,7 +136,7 @@ async function getSearchArtists(query, limit = 5, offset = 0) {
   return artistsFromSpotify.artists.items.map((artist) => ({
     spotifyId: artist.id,
     name: artist.name,
-    imgUrl: artist.images[0]?.url,
+    imgUrl: artist.images[2]?.url,
   }))
 }
 

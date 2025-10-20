@@ -4,7 +4,74 @@
   border-radius: 8px;
   padding: 0 40px;
   overflow-y: auto;
-}
+
+  .artists-container {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+
+    > .artist-item {
+      flex-shrink: 0;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 6px;
+
+      .artist-img-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+       &:hover {
+        background-color: var(--color-secondary-1);
+        .play-container
+         {
+          opacity: 1;
+        }
+      }
+           > .mini-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 8px;
+
+        > h3 {
+          font-size: 1rem;
+          margin: 0;
+        }
+        > span {
+          font-size: 0.875rem;
+          font-family: Circular-thin;
+          color: var(--gray2);
+        }
+      }
+      }
+
+      .play-container svg,
+      .pause-container svg {
+        width: 20px;
+        height: 20px;
+        fill: black;
+      }
+
+     
+
+      .artist-img-container img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+      }
+
+ 
+      
+    }
+  }
+
 
 .stations-type {
   display: flex;
@@ -68,6 +135,7 @@
   img {
     height: 100%;
     object-fit: cover;
+    width: 48px;
   }
 
   span {
@@ -93,23 +161,21 @@
   }
 
   .play-container {
-  opacity: 0;
-  background-color: var(--green-play);
-  border-radius: 50%;
-  z-index: 10;
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  align-items: flex-start;
-}
+    opacity: 0;
+    background-color: var(--green-play);
+    border-radius: 50%;
+    z-index: 10;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    /* align-items: flex-start; */
+  }
 }
 
 .playHomePage {
   width: 16px;
   height: 16px;
 }
-
-
 
 .playHomePage path {
   fill: black;
@@ -131,9 +197,11 @@
   }
 }
 
-.user-station:hover .play-container {
-  opacity: 1;
-  margin-right: 8px;
+.user-station:hover {
+  .play-container {
+    opacity: 1;
+    margin-right: 8px;
+  }
 }
 
 .play-container:hover {
@@ -148,4 +216,8 @@
   }
 }
 
-
+.new-albums-header,.new-artists-header{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: 0;
+}

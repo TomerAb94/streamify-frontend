@@ -305,8 +305,7 @@ a.playlist-item {
     object-fit: cover;
     transition: transform 0.3s ease;
   }
-  .play-container,
-  .pause-container {
+  .play-container {
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -321,7 +320,28 @@ a.playlist-item {
     opacity: 0;
     /* transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease; */
   }
+  .pause-container  {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--background-highlight);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 1;
+    /* transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease; */
+  }
 }
+
+
+
+
+
+
 
 .playlist-item {
   .playlist-name {
@@ -332,7 +352,8 @@ a.playlist-item {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: Circular-thini;
+    font-family: 'Circular-thini','Arimo';
+   
   }
 
   .playlist-description {
@@ -343,7 +364,8 @@ a.playlist-item {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: Circular-thini;
+    font-family: 'Circular-thini','Arimo';
+     font-weight: 100;
   }
 }
 
@@ -371,6 +393,17 @@ a.playlist-item {
   .play-container,
   .pause-container {
     opacity: 1;
+  }
+}
+
+/* When track is playing from this album/playlist, always show pause button */
+.playlist-item.playing {
+  .pause-container {
+    opacity: 1;
+  }
+
+  .play-container {
+    opacity: 0;
   }
 }
 

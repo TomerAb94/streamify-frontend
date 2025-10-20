@@ -34,7 +34,7 @@
       display: flex;
       flex-direction: column;
       margin: 0 8px;
-      font-family: Circular-thin;
+       font-family: 'Circular-thini','Arimo';
 
       > .title {
         font-size: 0.875rem;
