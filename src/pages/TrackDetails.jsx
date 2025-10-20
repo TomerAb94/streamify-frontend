@@ -136,7 +136,7 @@ export function TrackDetails() {
         </div>
         <NavLink
           className={'artist-link'}
-          to={`/artist/${track?.artists?.[0]?.id?.[0]}`}
+          to={`/artist/${track?.artists?.[0]?.id}`}
         >
           <div className="artist-data">
             <span className="artist-img">

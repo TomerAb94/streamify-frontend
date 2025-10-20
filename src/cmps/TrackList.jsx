@@ -195,8 +195,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
               <div className="track-artists">
                 {track.artists.map((artist, i) => (
                   <NavLink key={artist.id} to={`/artist/${artist.id?.[i]}`}>
-                    <span className="nav-link">
-                      {/* {artist.name} */}
+                    <span className="nav-link artist-name">
+                      {artist.name}
                       {i < track.artists.length - 1 ? ', ' : ''}
                     </span>
                   </NavLink>

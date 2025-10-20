@@ -167,4 +167,8 @@
       }
     }
   }
+
+  & .artist-name{
+    display: none;
+  }
 }
