@@ -200,6 +200,7 @@ export function HomePage() {
         })}
       </div>
 
+        <h2 className="new-artists-header">Artists For you</h2>
       <div className="artists-container">
         {artists.map((artist) => {
           const isArtistPlaying = isTrackPlayingFromArtistOrAlbum(artist.spotifyId)

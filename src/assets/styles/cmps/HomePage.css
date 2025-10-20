@@ -34,6 +34,22 @@
           opacity: 1;
         }
       }
+           > .mini-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 8px;
+
+        > h3 {
+          font-size: 1rem;
+          margin: 0;
+        }
+        > span {
+          font-size: 0.875rem;
+          font-family: Circular-thin;
+          color: var(--gray2);
+        }
+      }
       }
 
       .play-container svg,
@@ -51,22 +67,7 @@
         height: 150px;
       }
 
-      > .mini-info {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-top: 8px;
-
-        > h3 {
-          font-size: 1rem;
-          margin: 0;
-        }
-        > span {
-          font-size: 0.875rem;
-          font-family: Circular-thin;
-          color: var(--gray2);
-        }
-      }
+ 
       
     }
   }
@@ -213,4 +214,10 @@
     /* background-color: red; */
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
+}
+
+.new-albums-header,.new-artists-header{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: 0;
 }
