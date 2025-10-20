@@ -74,7 +74,14 @@ export function TrackDetails() {
       return null
     }
   }
-if (!track) return <div>Loading...</div>
+  if (!track) return (
+    <section className="track-details">
+      <div className="loader-center">
+        <Loader />
+      </div>
+    </section>
+  )
+
   return (
     <section className="track-details">
       <header className="track-details-header">

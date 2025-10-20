@@ -110,7 +110,15 @@ export function SearchArtists() {
     navigate(`/search/tracks/${params.searchStr}`)
   }
 
-  if (!searchedArtists?.length) return <div>Loading...</div>
+  if (!searchedArtists?.length) {
+    return (
+      <div className="browse-container">
+        <div className="loader-center">
+          <Loader />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <section className="search-artists">

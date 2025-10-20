@@ -192,7 +192,14 @@ export function ArtistDetails() {
     }
   }
 
-if (!artist) return <div>Loading...</div>
+if (!artist) return
+     (
+      <div className="artist-details">
+        <div className="loader-center">
+          <Loader />
+        </div>
+      </div>
+    )
   return (
     <section className="artist-details">
       <header className="artist-details-header">

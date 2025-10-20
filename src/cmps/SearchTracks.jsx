@@ -153,7 +153,15 @@ export function SearchTracks() {
   }
 
 
-  if (!searchedTracks?.length) return <div>Loading...</div>
+  if (!searchedTracks?.length) {
+    return (
+        <section className="search-tracks">
+          <div className="loader-center">
+            <Loader />
+          </div>
+        </section>
+    )
+  }
 
   return (
     <section className="search-tracks">

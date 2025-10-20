@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import {genreColors} from '../assets/genreColors/genreColors'
+import { Loader } from './Loader'
 export function Browse() {
   const [genres, setGenres] = useState([])
 
@@ -29,7 +30,13 @@ export function Browse() {
    
   }
 
-  if (!genres.length) return <div>Loading...</div>
+  if (!genres.length) return (
+    <div className="browse-container">
+      <div className="loader-center">
+        <Loader />
+      </div>
+    </div>
+  )
 
   return (
     <div className="browse-container">

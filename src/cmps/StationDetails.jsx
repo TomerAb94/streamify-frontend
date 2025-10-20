@@ -274,7 +274,15 @@ export function StationDetails() {
     }
   }
 
-  if (!station) return <div>Loading...</div>
+  if (!station) {
+    return (
+      <div className="station-details">
+        <div className="loader-center">
+          <Loader />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <section className="station-details">

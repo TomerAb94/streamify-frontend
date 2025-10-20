@@ -6,6 +6,7 @@ import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track
 import { useSelector } from 'react-redux'
 import { youtubeService } from '../services/youtube.service'
 import { CompareSharp } from '@mui/icons-material'
+import { Loader } from './Loader'
 
 export function GenreList() {
   const location = useLocation()
@@ -97,7 +98,14 @@ export function GenreList() {
     }
   }
 
-  if (!playlists.length) return <div>Loading...</div>
+  if (!playlists.length) return (
+    <div className="browse-container">
+      <div className="loader-center">
+        <Loader />
+      </div>
+    </div>
+  )
+
   return (
     <>
       <div className="browse-container">

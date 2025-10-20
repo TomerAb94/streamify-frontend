@@ -95,7 +95,16 @@ export function HomePage() {
   
 
 
-  if (!stations || !albums) return <>loading...</>
+  if (!stations || !albums) {
+    return (
+        <section className="home">
+          <div className="loader-center">
+            <Loader />
+          </div>
+        </section>
+    )
+  }
+
   return (
     <section className="home">
       <div className="stations-type">

@@ -234,7 +234,13 @@ export function StationSearch() {
     !searchedAll.albums.length &&
     params.searchStr
   ) {
-    return <div>Loading...</div>
+    return (
+      <div className="station-search">
+        <div className="loader-center">
+          <Loader />
+        </div>
+      </div>
+    )
   }
   return (
     <section className="station-search">
