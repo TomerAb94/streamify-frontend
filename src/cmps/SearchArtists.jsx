@@ -10,6 +10,7 @@ import {
   setIsPlaying,
 } from '../store/actions/track.actions'
 import { SvgIcon } from './SvgIcon'
+import { Loader } from './Loader'
 
 export function SearchArtists() {
   const params = useParams()

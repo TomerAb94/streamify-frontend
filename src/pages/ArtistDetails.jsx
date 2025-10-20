@@ -13,6 +13,7 @@ import {
   setIsShuffle,
 } from '../store/actions/track.actions'
 import { TrackList } from '../cmps/TrackList'
+import { Loader } from '../cmps/Loader'
 
 export function ArtistDetails() {
   const params = useParams()

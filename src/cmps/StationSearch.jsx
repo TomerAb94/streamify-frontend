@@ -12,6 +12,7 @@ import {
 import { youtubeService } from '../services/youtube.service'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
+import { Loader } from './Loader'
 
 export function StationSearch() {
   const params = useParams()

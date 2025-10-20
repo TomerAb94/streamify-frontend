@@ -13,6 +13,7 @@ import {
 import { SvgIcon } from './SvgIcon'
 import { updateStation } from '../store/actions/station.actions'
 import { NavLink, useOutletContext } from 'react-router-dom'
+import { Loader } from './Loader'
 
 export function SearchTracks() {
   const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()

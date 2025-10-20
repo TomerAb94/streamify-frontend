@@ -13,6 +13,7 @@ import {
   setIsPlaying,
   setTracks,
 } from '../store/actions/track.actions'
+import { Loader } from '../cmps/Loader'
 
 export function TrackDetails() {
   const params = useParams()

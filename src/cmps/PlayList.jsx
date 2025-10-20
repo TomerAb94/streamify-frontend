@@ -8,6 +8,7 @@ import { setTracks, setCurrentTrack, setIsPlaying, setIsShuffle } from '../store
 
 import { updateStation } from '../store/actions/station.actions'
 import { useSelector } from 'react-redux'
+import { Loader } from './Loader'
 
 export function PlayList() {
   const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()
@@ -245,7 +246,14 @@ export function PlayList() {
 
   console.log('playlist:', playlist)
 
-  if (!playlist) return <div>Loading playlist...</div>
+  if (!playlist) return (
+    <section className="playlist-container station-search">
+      <div className="loader-center">
+        <Loader />
+      </div>
+    </section>
+  )
+
   return (
     <section className="playlist-container station-search">
       <div className="playlist-header">

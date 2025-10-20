@@ -6,6 +6,7 @@ import { spotifyService } from '../services/spotify.service'
 import { useSelector } from 'react-redux'
 import { youtubeService } from '../services/youtube.service'
 import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
+import { Loader } from './Loader'
 
 export function HomePage() {
   const { stations } = useOutletContext()
