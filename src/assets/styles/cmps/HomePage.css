@@ -1,9 +1,12 @@
 .home {
+  display: grid;
   grid-area: station-index;
   background-color: var(--color-secondary);
   border-radius: 8px;
-  padding: 0 40px;
+  padding: 0 30px;
+  height: calc(100vh - 150px);
   overflow-y: auto;
+  grid-auto-rows: min-content;
 
   .artists-container {
     display: flex;
@@ -27,14 +30,13 @@
         align-items: center;
         justify-content: center;
       }
-       &:hover {
+      &:hover {
         background-color: var(--color-secondary-1);
-        .play-container
-         {
+        .play-container {
           opacity: 1;
         }
       }
-           > .mini-info {
+      > .mini-info {
         display: flex;
         flex-direction: column;
         gap: 4px;
@@ -50,34 +52,33 @@
           color: var(--gray2);
         }
       }
-      }
+    }
 
-      .play-container svg,
-      .pause-container svg {
-        width: 20px;
-        height: 20px;
-        fill: black;
-      }
+    .play-container svg,
+    .pause-container svg {
+      width: 20px;
+      height: 20px;
+      fill: black;
+    }
 
-     
-
-      .artist-img-container img {
-        border-radius: 50%;
-        width: 150px;
-        height: 150px;
-      }
-
- 
-      
+    .artist-img-container img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
     }
   }
-
+}
 
 .stations-type {
+  padding-left: 12px;
+  padding-right: 12px;
   display: flex;
   align-items: center;
   height: 64px;
+   gap: 8px;
   & > * {
+   
+    margin: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     border-radius: 9999px;
@@ -101,11 +102,12 @@
 .user-stations {
   display: grid;
   grid-template-columns: repeat(4, minmax(220px, 1fr));
-
+   padding-left: 12px;
+  padding-right: 12px;
   gap: 8px;
 
   list-style: none;
-  padding: 0;
+
   margin: 0;
 
   & > * {
@@ -216,8 +218,11 @@
   }
 }
 
-.new-albums-header,.new-artists-header{
+.new-albums-header,
+.new-artists-header {
   padding-top: 20px;
   padding-bottom: 20px;
   margin: 0;
+  padding-left: 12px;
+  padding-right: 12px;
 }
