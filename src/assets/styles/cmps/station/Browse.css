@@ -21,6 +21,7 @@
 
 .browse-container::-webkit-scrollbar-track {
   background: transparent;
+  
 }
 
 .browse-container::-webkit-scrollbar-thumb {

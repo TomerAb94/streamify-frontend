@@ -8,9 +8,15 @@
   overflow-y: auto;
   grid-auto-rows: min-content;
 
+
+
   .albums-container {
     padding-left: 28px;
     padding-right: 28px;
+
+    .album-item{
+      grid-template-rows: auto;
+    }
   }
 
   .artists-container {
@@ -252,6 +258,9 @@
   .user-stations {
     gap: 8px;
   }
+  .albums-container{
+        grid-template-columns: repeat(auto-fit, 190px);
+  }
 
   .user-station {
     height: 48px;
@@ -262,6 +271,7 @@
       border-radius: 4px;
     }
   }
+
 }
 
 .user-stations-background {
