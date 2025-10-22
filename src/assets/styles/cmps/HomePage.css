@@ -247,3 +247,17 @@
   }
  
 }
+
+.user-stations-background{
+  width: 100%;
+  
+  position: absolute;
+  height: 200px;
+
+  opacity: 0.5;
+ 
+}
+
+.home-content{
+  position: relative;
+}

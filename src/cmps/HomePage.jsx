@@ -153,6 +153,8 @@ export function HomePage() {
 
   return (
     <section className="home">
+      <div className="home-content">
+         <div className="user-stations-background"></div>
       <div className="stations-type">
         <button>All</button>
         <button>Music</button>
@@ -177,6 +179,7 @@ export function HomePage() {
             <SvgIcon iconName="playHomePage" className="play-container" />
           </NavLink>
         ))}
+     
       </div>
 
       <h2 className="new-albums-header">New Albums Releases</h2>
@@ -235,6 +238,7 @@ export function HomePage() {
             </NavLink>
           )
         })}
+      </div>
       </div>
     </section>
   )
