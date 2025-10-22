@@ -7,21 +7,41 @@ import { useSelector } from 'react-redux'
 import { youtubeService } from '../services/youtube.service'
 import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 import { Loader } from './Loader'
-
+import { FastAverageColor } from 'fast-average-color'
 export function HomePage() {
   const { stations } = useOutletContext()
 
   const [albums, setAlbums] = useState([])
   const [artists, setArtists] = useState([])
-
+  const [hoveredStationId, setHoveredStationId] = useState(null)
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
-
+  
   useEffect(() => {
     loadNewAlbumsReleases()
     loadArtistToHomePage()
   }, [])
+
+    useEffect(() => {
+      if (!hoveredStationId) return
+      const fac = new FastAverageColor()
+      const imgElement = document.querySelector(`.station-img[data-station-id="${hoveredStationId}"]`)
+      const background = document.querySelector('.user-stations-background')
+      
+      if (imgElement && background) {
+        imgElement.crossOrigin = 'Anonymous'
+        fac
+          .getColorAsync(imgElement, { algorithm: 'dominant' })
+          .then((color) => {
+            background.style.backgroundColor = color.rgba
+            // background-image: linear-gradient(rgba(0, 0, 0, .6) 0, #121212 100%), var(--background-noise);
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
+    }, [hoveredStationId])
 
   async function loadPlaylist(albumId) {
     try {
@@ -141,6 +161,14 @@ export function HomePage() {
     return currentTrack?.spotifyAlbumId === artistOrAlbumId || currentTrack?.spotifyArtistId === artistOrAlbumId
   }
 
+  function onHoverImg(stationId) {
+    setHoveredStationId(stationId)
+  }
+
+  function onHoverLeave() {
+    setHoveredStationId(null)
+  }
+
   if (!stations || !albums || !artists) {
     return (
         <section className="home">
@@ -163,10 +191,21 @@ export function HomePage() {
 
       <div className="user-stations">
         {stations.map((station) => (
-          <NavLink key={station._id} to={`/station/${station._id}`} className="user-station">
+          <NavLink 
+            key={station._id} 
+            to={`/station/${station._id}`} 
+            className="user-station" 
+            onMouseEnter={() => onHoverImg(station._id)}
+            onMouseLeave={() => onHoverLeave()}
+          >
             <div className="img-title-station">
               {station.stationImgUrl ? (
-                <img className="station-img" src={station.stationImgUrl} alt={`${station.title} Cover`} />
+                <img 
+                  className="station-img" 
+                  data-station-id={station._id}
+                  src={station.stationImgUrl} 
+                  alt={`${station.title} Cover`} 
+                />
               ) : (
                 <div className="station-img-placeholder">
                   <SvgIcon iconName="musicNote" />

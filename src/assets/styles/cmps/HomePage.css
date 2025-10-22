@@ -3,12 +3,19 @@
   grid-area: station-index;
   background-color: var(--color-secondary);
   border-radius: 8px;
-  padding: 0 30px;
+  /* padding: 0 30px; */
   height: calc(100vh - 150px);
   overflow-y: auto;
   grid-auto-rows: min-content;
 
+  .albums-container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
   .artists-container {
+    padding-left: 18px;
+    padding-right: 18px;
     display: flex;
     gap: 16px;
     overflow-x: auto;
@@ -70,14 +77,15 @@
 }
 
 .stations-type {
-  padding-left: 12px;
-  padding-right: 12px;
+  position: relative;
+  /* padding-left: 12px;
+  padding-right: 12px; */
+  padding: 0 30px;
   display: flex;
   align-items: center;
   height: 64px;
-   gap: 8px;
+  gap: 8px;
   & > * {
-   
     margin: 0;
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -97,13 +105,22 @@
     height: 32px;
     flex-shrink: 0;
   }
+
+  & > :first-child {
+  
+    background-color: white;
+    color: #000000;
+  }
+
+  
 }
 
 .user-stations {
   display: grid;
   grid-template-columns: repeat(4, minmax(220px, 1fr));
-   padding-left: 12px;
+  padding-left: 12px;
   padding-right: 12px;
+  padding: 0 30px;
   gap: 12px;
 
   list-style: none;
@@ -117,6 +134,7 @@
 }
 
 .user-station {
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -224,40 +242,39 @@
   padding-top: 20px;
   padding-bottom: 20px;
   margin: 0;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 30px;
+  position: relative;
 }
 
-.main-container.sidebar-open{
+    
 
-  .user-stations{
+.main-container.sidebar-open {
+  .user-stations {
     gap: 8px;
   }
 
-
-
-  .user-station{
-   height: 48px;
-     img {
-    height: 100%;
-    object-fit: cover;
-    width: 48px;
-    border-radius: 4px;
+  .user-station {
+    height: 48px;
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 48px;
+      border-radius: 4px;
+    }
   }
-  }
- 
 }
 
-.user-stations-background{
+.user-stations-background {
   width: 100%;
-  
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%), var(--background-noise);
+  transition-timing-function: ease;
   position: absolute;
-  height: 200px;
-
-  opacity: 0.5;
- 
+  height: 256px;
+  transition-property: background;
+  -webkit-transition-duration: 1s;
+  opacity: 1;
 }
 
-.home-content{
+.home-content {
   position: relative;
 }
