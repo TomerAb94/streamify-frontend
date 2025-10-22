@@ -76,7 +76,7 @@ export function StationDetails() {
           .then((color) => {
             background.style.backgroundColor = color.rgba
  backgroundTrackList.style.backgroundImage = `
-            linear-gradient(to top,rgba(0, 0, 0, 0.1) 0, ${color.rgba} 300%),
+            linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
             var(--background-noise)
           `
           })
