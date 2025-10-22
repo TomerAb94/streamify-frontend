@@ -71,6 +71,10 @@ export function StationDetails() {
       const backgroundTrackList = document.querySelector(
         '.background-track-list'
       )
+      const stickyPlayBtnWrapper = document.querySelector(
+        '.sticky-play-btn-wrapper'
+      )
+
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
         fac
@@ -81,6 +85,7 @@ export function StationDetails() {
             linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
             var(--background-noise)
           `
+            stickyPlayBtnWrapper.style.background = color.rgba
           })
           .catch((e) => {
             console.log(e)
@@ -91,25 +96,50 @@ export function StationDetails() {
 
   useEffect(() => {
     const mainPlayBtn = document.querySelector('.main-play-btn')
-    const stickyPlayBtn = document.querySelector('.sticky-play-btn-container')
+    const stickyWrapper = document.querySelector('.sticky-play-btn-wrapper')
+    const stickyContainer = document.querySelector('.sticky-play-btn-container')
+    const container = document.querySelector('.station-details')
 
-    if (!mainPlayBtn || !stickyPlayBtn) return
+    if (!mainPlayBtn || !stickyWrapper || !stickyContainer || !container) return
 
+    // IntersectionObserver for setting container opacity when mainPlayBtn is out of frame
     const observer = new IntersectionObserver((entries) => {
-      console.log('IntersectionObserver entries:', entries)
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
-          stickyPlayBtn.classList.add('flex')
+          stickyContainer.style.opacity = '1'
         } else {
-          stickyPlayBtn.classList.remove('flex')
+          stickyContainer.style.opacity = '0'
         }
       })
     }, {})
 
     observer.observe(mainPlayBtn)
-    // Cleanup function
-    return () => observer.disconnect()
-  }, [])
+
+    // Scroll listener for progressive opacity on wrapper and immediate height change
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop
+      let opacity = 0
+      if (scrollTop > 50) opacity = 0.45
+      if (scrollTop > 1500) opacity = 0.65
+      if (scrollTop > 300) opacity = 1
+      stickyWrapper.style.opacity = opacity
+
+      // Change height immediately on first scroll
+      if (scrollTop > 0) {
+        stickyWrapper.classList.add('height')
+      } else {
+        stickyWrapper.classList.remove('height')
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+
+    // Cleanup
+    return () => {
+      observer.disconnect()
+      container.removeEventListener('scroll', handleScroll)
+    }
+  }, [station])
 
   function handleInput({ target }) {
     const txt = target.value
@@ -310,7 +340,8 @@ export function StationDetails() {
   return (
     <section className="station-details">
 
-      <div className="sticky-play-btn-container">
+      <div className="sticky-play-btn-wrapper">
+        <div className="sticky-play-btn-container">
           {isStationCurrentlyPlaying() && isPlaying ? (
             <button onClick={onPause} className="sticky-play-btn">
               <SvgIcon iconName="pause" className="pause" />
@@ -332,11 +363,11 @@ export function StationDetails() {
               <SvgIcon iconName="play" className="play" />
             </button>
           )}
-          <span className='station-title'>{station.title}</span>
+          <span className="station-title">{station.title}</span>
         </div>
+      </div>
 
       <header className="details-header">
-        
         <div className="station-img">
           {station.stationImgUrl ? (
             <img
