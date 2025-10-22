@@ -183,6 +183,32 @@
     color: red;
   }
 
+  .pause-container{
+    opacity: 1;
+    background-color: var(--background-highlight);
+    border-radius: 50%;
+    z-index: 10;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    margin-right: 8px;
+       &:hover {
+      background-color: var(--background-highlight);
+      touch-action: manipulation;
+      transform: scale(1.04);
+      box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
+    }
+      .pause {
+    width: 24px;
+    height: 24px;
+  }
+
+  .pause path {
+    fill: black;
+  }
+
+  }
+
   .play-container {
     opacity: 0;
     background-color: var(--green-play);

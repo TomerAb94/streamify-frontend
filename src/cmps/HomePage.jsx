@@ -17,31 +17,31 @@ export function HomePage() {
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
-  
+  //  const stations = useSelector((storeState) => storeState.stationModule.stations)
   useEffect(() => {
     loadNewAlbumsReleases()
     loadArtistToHomePage()
   }, [])
 
-    useEffect(() => {
-      if (!hoveredStationId) return
-      const fac = new FastAverageColor()
-      const imgElement = document.querySelector(`.station-img[data-station-id="${hoveredStationId}"]`)
-      const background = document.querySelector('.user-stations-background')
-      
-      if (imgElement && background) {
-        imgElement.crossOrigin = 'Anonymous'
-        fac
-          .getColorAsync(imgElement, { algorithm: 'dominant' })
-          .then((color) => {
-            background.style.backgroundColor = color.rgba
-            // background-image: linear-gradient(rgba(0, 0, 0, .6) 0, #121212 100%), var(--background-noise);
-          })
-          .catch((e) => {
-            console.log(e)
-          })
-      }
-    }, [hoveredStationId])
+  useEffect(() => {
+    if (!hoveredStationId) return
+    const fac = new FastAverageColor()
+    const imgElement = document.querySelector(`.station-img[data-station-id="${hoveredStationId}"]`)
+    const background = document.querySelector('.user-stations-background')
+
+    if (imgElement && background) {
+      imgElement.crossOrigin = 'Anonymous'
+      fac
+        .getColorAsync(imgElement, { algorithm: 'dominant' })
+        .then((color) => {
+          background.style.backgroundColor = color.rgba
+          // background-image: linear-gradient(rgba(0, 0, 0, .6) 0, #121212 100%), var(--background-noise);
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+  }, [hoveredStationId])
 
   async function loadPlaylist(albumId) {
     try {
@@ -156,9 +156,14 @@ export function HomePage() {
     await setIsPlaying(false)
   }
 
-  function isTrackPlayingFromArtistOrAlbum(artistOrAlbumId) {
+  function isTrackPlayingFromArtistOrAlbumOrPlaylist(artistOrAlbumIdorPlaylistId) {
+    // console.log('Checking if track is playing from artist/album/playlist:', artistOrAlbumIdorPlaylistId)
     if (!currentTrack || !isPlaying) return false
-    return currentTrack?.spotifyAlbumId === artistOrAlbumId || currentTrack?.spotifyArtistId === artistOrAlbumId
+    return (
+      currentTrack?.spotifyAlbumId === artistOrAlbumIdorPlaylistId ||
+      currentTrack?.spotifyArtistId === artistOrAlbumIdorPlaylistId ||
+      currentTrack?.playlistId === artistOrAlbumIdorPlaylistId
+    )
   }
 
   function onHoverImg(stationId) {
@@ -169,115 +174,175 @@ export function HomePage() {
     setHoveredStationId(null)
   }
 
+  async function onPlayStationFromOutside(event, stationId) {
+    event.preventDefault()
+    try {
+      const { tracks } = await getPlaylistFromStore(stationId)
+
+      const playlistQueue = await Promise.all(
+        tracks.map(async (track, index) => {
+          return {
+            ...track,
+            nextId: index < tracks.length - 1 ? tracks[index + 1].spotifyId : tracks[0].spotifyId,
+            prevId: index > 0 ? tracks[index - 1].spotifyId : tracks[tracks.length - 1].spotifyId,
+            youtubeId: null,
+            playlistId: stationId,
+          }
+        })
+      )
+      if (playListToPlay && playListToPlay.length) {
+        await setTracks([])
+      }
+
+      const youtubeId = await getYoutubeId(playlistQueue[0].name + ' ' + playlistQueue[0].artists[0]?.name)
+      const trackWithYoutube = {
+        ...playlistQueue[0],
+        youtubeId,
+      }
+      // console.log('trackWithYoutube:', trackWithYoutube)
+
+      // console.log('playlistQueue:', playlistQueue)
+
+      // // Implement play logic here
+      await setTracks(playlistQueue)
+      await setCurrentTrack(trackWithYoutube)
+      await setIsPlaying(true)
+    } catch (err) {
+      console.error('Error playing :', err)
+    }
+  }
+
+  async function getPlaylistFromStore(stationId) {
+    const playlist = stations.find((station) => station._id === stationId)
+
+    if (!playlist) return null
+    return playlist
+  }
+
   if (!stations || !albums || !artists) {
     return (
-        <section className="home">
-          <div className="loader-center">
-            <Loader />
-          </div>
-        </section>
+      <section className="home">
+        <div className="loader-center">
+          <Loader />
+        </div>
+      </section>
     )
   }
 
   return (
     <section className="home">
       <div className="home-content">
-         <div className="user-stations-background"></div>
-      <div className="stations-type">
-        <button>All</button>
-        <button>Music</button>
-        <button>Podcasts</button>
-      </div>
+        <div className="user-stations-background"></div>
+        <div className="stations-type">
+          <button>All</button>
+          <button>Music</button>
+          <button>Podcasts</button>
+        </div>
 
-      <div className="user-stations">
-        {stations.map((station) => (
-          <NavLink 
-            key={station._id} 
-            to={`/station/${station._id}`} 
-            className="user-station" 
-            onMouseEnter={() => onHoverImg(station._id)}
-            onMouseLeave={() => onHoverLeave()}
-          >
-            <div className="img-title-station">
-              {station.stationImgUrl ? (
-                <img 
-                  className="station-img" 
-                  data-station-id={station._id}
-                  src={station.stationImgUrl} 
-                  alt={`${station.title} Cover`} 
-                />
-              ) : (
-                <div className="station-img-placeholder">
-                  <SvgIcon iconName="musicNote" />
+        <div className="user-stations">
+          {stations.map((station) => {
+            
+            const isStationPlaying = isTrackPlayingFromArtistOrAlbumOrPlaylist(station._id)
+            return (
+              <NavLink
+                key={station._id}
+                to={`/station/${station._id}`}
+                className="user-station"
+                onMouseEnter={() => onHoverImg(station._id)}
+                onMouseLeave={() => onHoverLeave()}
+              >
+                <div className="img-title-station">
+                  {station.stationImgUrl ? (
+                    <img
+                      className="station-img"
+                      data-station-id={station._id}
+                      src={station.stationImgUrl}
+                      alt={`${station.title} Cover`}
+                    />
+                  ) : (
+                    <div className="station-img-placeholder">
+                      <SvgIcon iconName="musicNote" />
+                    </div>
+                  )}
+
+                  {station.title}
                 </div>
-              )}
-
-              {station.title}
-            </div>
-
-            <SvgIcon iconName="playHomePage" className="play-container" />
-          </NavLink>
-        ))}
-     
-      </div>
-
-      <h2 className="new-albums-header">New Albums Releases</h2>
-      <div className="albums-container playlists-container">
-        {albums.map((album) => {
-          const isAlbumPlaying = isTrackPlayingFromArtistOrAlbum(album.id)
-          return (
-            <NavLink 
-              key={album.id} 
-              to={`/album/${album.id}`} 
-              className={`album-item playlist-item ${isAlbumPlaying ? 'playing' : ''}`}
-            >
-              <div className="album-img-container playlist-img-container">
-                {album.images?.[0]?.url && <img src={album.images[0].url} alt={album.name} />}
-                {isAlbumPlaying ? (
+                {isStationPlaying ? (
                   <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
                 ) : (
-                  <SvgIcon
-                    iconName="play"
-                    className="play-container"
-                    onClick={(event) => onPlayAlbumFromOutside(event, album.id)}
-                  />
+                 <SvgIcon
+                  iconName="playHomePage"
+                  className="play-container"
+                  onClick={(event) => onPlayStationFromOutside(event, station._id)}
+                />
                 )}
-              </div>
-              <h3 className="album-name playlist-name">{album.name}</h3>
-              <h4 className="album-artists playlist-description">
-                {album.artists.map((artist) => artist.name).join(', ')}
-              </h4>
-            </NavLink>
-          )
-        })}
-      </div>
+              
+              </NavLink>
+            )
+          })}
+        </div>
+
+        <h2 className="new-albums-header">New Albums Releases</h2>
+        <div className="albums-container playlists-container">
+          {albums.map((album) => {
+            const isAlbumPlaying = isTrackPlayingFromArtistOrAlbumOrPlaylist(album.id)
+            return (
+              <NavLink
+                key={album.id}
+                to={`/album/${album.id}`}
+                className={`album-item playlist-item ${isAlbumPlaying ? 'playing' : ''}`}
+              >
+                <div className="album-img-container playlist-img-container">
+                  {album.images?.[0]?.url && <img src={album.images[0].url} alt={album.name} />}
+                  {isAlbumPlaying ? (
+                    <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+                  ) : (
+                    <SvgIcon
+                      iconName="play"
+                      className="play-container"
+                      onClick={(event) => onPlayAlbumFromOutside(event, album.id)}
+                    />
+                  )}
+                </div>
+                <h3 className="album-name playlist-name">{album.name}</h3>
+                <h4 className="album-artists playlist-description">
+                  {album.artists.map((artist) => artist.name).join(', ')}
+                </h4>
+              </NavLink>
+            )
+          })}
+        </div>
 
         <h2 className="new-artists-header">Artists For you</h2>
-      <div className="artists-container">
-        {artists.map((artist) => {
-          const isArtistPlaying = isTrackPlayingFromArtistOrAlbum(artist.spotifyId)
-          return (
-            <NavLink 
-              key={artist.spotifyId} 
-              to={`/artist/${artist.spotifyId}`} 
-              className={`artist-item ${isArtistPlaying ? 'playing' : ''}`}
-            >
-              <div className="artist-img-container playlist-img-container">
-                {artist.imgUrl && <img src={artist.imgUrl} alt={artist.name} />}
-                {isArtistPlaying ? (
-                  <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
-                ) : (
-                  <SvgIcon iconName="play" className="play-container" onClick={(event) => onPlayArtist(event, artist)} />
-                )}
-              </div>
-              <div className="mini-info">
-                <h3 className="artist-name">{artist.name}</h3>
-                <span>Artist</span>
-              </div>
-            </NavLink>
-          )
-        })}
-      </div>
+        <div className="artists-container">
+          {artists.map((artist) => {
+            const isArtistPlaying = isTrackPlayingFromArtistOrAlbumOrPlaylist(artist.spotifyId)
+            return (
+              <NavLink
+                key={artist.spotifyId}
+                to={`/artist/${artist.spotifyId}`}
+                className={`artist-item ${isArtistPlaying ? 'playing' : ''}`}
+              >
+                <div className="artist-img-container playlist-img-container">
+                  {artist.imgUrl && <img src={artist.imgUrl} alt={artist.name} />}
+                  {isArtistPlaying ? (
+                    <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+                  ) : (
+                    <SvgIcon
+                      iconName="play"
+                      className="play-container"
+                      onClick={(event) => onPlayArtist(event, artist)}
+                    />
+                  )}
+                </div>
+                <div className="mini-info">
+                  <h3 className="artist-name">{artist.name}</h3>
+                  <span>Artist</span>
+                </div>
+              </NavLink>
+            )
+          })}
+        </div>
       </div>
     </section>
   )

@@ -121,13 +121,16 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   }
 
   async function onNext() {
+    // console.log('onNext called')
     if (!currentTrack || !currentTrack.nextId) return
 
     try {
       // Find the next track in the playlist using nextId
       const nextTrack = playlist.find(
         (track) => track.spotifyId === currentTrack.nextId
+      
       )
+      // console.log('Next track found:', nextTrack)
       if (nextTrack && nextTrack.youtubeId !== null) {
         await setCurrentTrack(nextTrack)
         await setIsPlaying(true)
