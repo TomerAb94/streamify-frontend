@@ -8,13 +8,11 @@
   overflow-y: auto;
   grid-auto-rows: min-content;
 
-
-
   .albums-container {
     padding-left: 28px;
     padding-right: 28px;
 
-    .album-item{
+    .album-item {
       grid-template-rows: auto;
     }
   }
@@ -113,12 +111,9 @@
   }
 
   & > :first-child {
-  
     background-color: white;
     color: #000000;
   }
-
-  
 }
 
 .user-stations {
@@ -134,8 +129,8 @@
   margin: 0;
 
   & > * {
-    flex: 0 0 auto; 
-    white-space: nowrap; 
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 }
 
@@ -181,6 +176,7 @@
 
   &:hover {
     cursor: pointer;
+    background: hsla(0, 0%, 100%, 0.2);
   }
 
   .user-station:nth-child(2) {
@@ -193,19 +189,24 @@
     border-radius: 50%;
     z-index: 10;
     flex-shrink: 0;
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     /* align-items: flex-start; */
+   &:hover {
+      background-color: var(--background-highlight);
+      touch-action: manipulation;
+      transform: scale(1.04);
+      box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
+    }
   }
-}
+  .playHomePage {
+    width: 24px;
+    height: 24px;
+  }
 
-.playHomePage {
-  width: 16px;
-  height: 16px;
-}
-
-.playHomePage path {
-  fill: black;
+  .playHomePage path {
+    fill: black;
+  }
 }
 
 .img-title-station {
@@ -215,7 +216,8 @@
   justify-content: start;
   align-items: center;
 
-  img,.station-img-placeholder {
+  img,
+  .station-img-placeholder {
     display: flex;
     align-content: center;
     justify-content: center;
@@ -231,10 +233,10 @@
   }
 }
 
-.play-container:hover {
+/* .play-container:hover {
   transition: scale 0.3s;
   scale: 1.05;
-}
+} */
 
 @media (max-width: 1360px) {
   .user-stations {
@@ -252,26 +254,24 @@
   position: relative;
 }
 
-    
-
 .main-container.sidebar-open {
   .user-stations {
     gap: 8px;
   }
-  .albums-container{
-        grid-template-columns: repeat(auto-fit, 190px);
+  .albums-container {
+    grid-template-columns: repeat(auto-fit, 190px);
   }
 
   .user-station {
     height: 48px;
-    img, .station-img-placeholder {
+    img,
+    .station-img-placeholder {
       height: 100%;
       object-fit: cover;
       width: 48px;
       border-radius: 4px;
     }
   }
-
 }
 
 .user-stations-background {
@@ -287,5 +287,4 @@
 
 .home-content {
   position: relative;
-
 }
