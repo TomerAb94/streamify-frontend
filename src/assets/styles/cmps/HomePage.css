@@ -9,13 +9,13 @@
   grid-auto-rows: min-content;
 
   .albums-container {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 28px;
+    padding-right: 28px;
   }
 
   .artists-container {
-    padding-left: 18px;
-    padding-right: 18px;
+    padding-left: 28px;
+    padding-right: 28px;
     display: flex;
     gap: 16px;
     overflow-x: auto;
@@ -80,7 +80,7 @@
   position: relative;
   /* padding-left: 12px;
   padding-right: 12px; */
-  padding: 0 30px;
+  padding: 0 40px;
   display: flex;
   align-items: center;
   height: 64px;
@@ -120,7 +120,7 @@
   grid-template-columns: repeat(4, minmax(220px, 1fr));
   padding-left: 12px;
   padding-right: 12px;
-  padding: 0 30px;
+  padding: 0 40px;
   gap: 12px;
 
   list-style: none;
@@ -128,8 +128,8 @@
   margin: 0;
 
   & > * {
-    flex: 0 0 auto; /* לא מתכווץ ולא גדל אוטומטית */
-    white-space: nowrap; /* מונע ירידת שורה */
+    flex: 0 0 auto; 
+    white-space: nowrap; 
   }
 }
 
@@ -209,12 +209,12 @@
   justify-content: start;
   align-items: center;
 
-  .station-img-placeholder {
+  img,.station-img-placeholder {
     display: flex;
     align-content: center;
     justify-content: center;
     height: 100%;
-    width: 48px;
+    width: 64px;
   }
 }
 
@@ -242,7 +242,7 @@
   padding-top: 20px;
   padding-bottom: 20px;
   margin: 0;
-  padding-left: 30px;
+  padding-left: 40px;
   position: relative;
 }
 
@@ -255,7 +255,7 @@
 
   .user-station {
     height: 48px;
-    img {
+    img, .station-img-placeholder {
       height: 100%;
       object-fit: cover;
       width: 48px;
