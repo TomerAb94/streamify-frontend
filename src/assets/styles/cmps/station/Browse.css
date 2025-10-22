@@ -1,6 +1,6 @@
 .browse-container {
   grid-area: station-index;
-  height: calc(100vh - 180px);
+  /* height: calc(100vh - 180px); */
   position: relative;
   overflow-y: auto;
   border-radius: 8px;

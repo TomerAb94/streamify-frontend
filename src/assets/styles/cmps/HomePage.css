@@ -4,7 +4,7 @@
   background-color: var(--color-secondary);
   border-radius: 8px;
   /* padding: 0 30px; */
-  height: calc(100vh - 150px);
+  /* height: calc(100vh - 150px); */
   overflow-y: auto;
   grid-auto-rows: min-content;
 
@@ -277,4 +277,5 @@
 
 .home-content {
   position: relative;
+
 }
