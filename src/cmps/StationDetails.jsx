@@ -68,14 +68,16 @@ export function StationDetails() {
       const fac = new FastAverageColor()
       const imgElement = document.querySelector('.avg-img')
       const background = document.querySelector('.details-header')
-      const backgroundTrackList = document.querySelector('.background-track-list')
+      const backgroundTrackList = document.querySelector(
+        '.background-track-list'
+      )
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
         fac
           .getColorAsync(imgElement, { algorithm: 'dominant' })
           .then((color) => {
             background.style.backgroundColor = color.rgba
- backgroundTrackList.style.backgroundImage = `
+            backgroundTrackList.style.backgroundImage = `
             linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
             var(--background-noise)
           `
@@ -86,6 +88,28 @@ export function StationDetails() {
       }
     }
   }, [station])
+
+  useEffect(() => {
+    const mainPlayBtn = document.querySelector('.main-play-btn')
+    const stickyPlayBtn = document.querySelector('.sticky-play-btn-container')
+
+    if (!mainPlayBtn || !stickyPlayBtn) return
+
+    const observer = new IntersectionObserver((entries) => {
+      console.log('IntersectionObserver entries:', entries)
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          stickyPlayBtn.classList.add('flex')
+        } else {
+          stickyPlayBtn.classList.remove('flex')
+        }
+      })
+    }, {})
+
+    observer.observe(mainPlayBtn)
+    // Cleanup function
+    return () => observer.disconnect()
+  }, [])
 
   function handleInput({ target }) {
     const txt = target.value
@@ -123,7 +147,7 @@ export function StationDetails() {
   async function onPlay(track) {
     // Set the current station ID
     setCurrentStationId(station._id)
-    
+
     // Clear existing playlist
     if (playlist && playlist.length) {
       await setTracks([])
@@ -163,7 +187,7 @@ export function StationDetails() {
   async function onShuffle() {
     // Set the current station ID
     setCurrentStationId(station._id)
-    
+
     // Toggle shuffle state
     const newShuffleState = !isShuffle
     setIsShuffle(newShuffleState)
@@ -231,9 +255,7 @@ export function StationDetails() {
     if (!currentTrack || !station || !station.tracks) return false
     return (
       currentStationId === station._id &&
-      station.tracks.some(
-        (track) => track.spotifyId === currentTrack.spotifyId
-      )
+      station.tracks.some((track) => track.spotifyId === currentTrack.spotifyId)
     )
   }
 
@@ -287,6 +309,32 @@ export function StationDetails() {
 
   return (
     <section className="station-details">
+
+      <div className="sticky-play-btn-container">
+          {isStationCurrentlyPlaying() && isPlaying ? (
+            <button onClick={onPause} className="sticky-play-btn">
+              <SvgIcon iconName="pause" className="pause" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && isStationCurrentlyPlaying() && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(station.tracks[0])
+                }
+              }}
+              className="sticky-play-btn"
+              disabled={!station.tracks || station.tracks.length === 0}
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
+          <span className='station-title'>{station.title}</span>
+        </div>
+
       <header className="details-header">
         
         <div className="station-img">
@@ -315,15 +363,13 @@ export function StationDetails() {
             <span className="tracks-count">{station.tracks.length} tracks</span>
           </div>
         </div>
-           <div className="background-track-list"></div>
+        <div className="background-track-list"></div>
       </header>
-
-   
 
       <div className="station-btns-container">
         <div className="action-btns">
           {isStationCurrentlyPlaying() && isPlaying ? (
-            <button onClick={onPause} className="play-btn">
+            <button onClick={onPause} className="play-btn main-play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
           ) : (
@@ -337,7 +383,7 @@ export function StationDetails() {
                   onPlay(station.tracks[0])
                 }
               }}
-              className="play-btn"
+              className="play-btn main-play-btn"
               disabled={!station.tracks || station.tracks.length === 0}
             >
               <SvgIcon iconName="play" className="play" />
