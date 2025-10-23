@@ -156,14 +156,19 @@ export function HomePage() {
     await setIsPlaying(false)
   }
 
-  function isTrackPlayingFromArtistOrAlbumOrPlaylist(artistOrAlbumIdorPlaylistId) {
-    // console.log('Checking if track is playing from artist/album/playlist:', artistOrAlbumIdorPlaylistId)
+  function isTrackPlayingFromArtistOrAlbum(artistOrAlbumId) {
     if (!currentTrack || !isPlaying) return false
+    // Only show pause if playing directly from artist/album, not from playlist
+    if (currentTrack?.playlistId) return false
     return (
-      currentTrack?.spotifyAlbumId === artistOrAlbumIdorPlaylistId ||
-      currentTrack?.spotifyArtistId === artistOrAlbumIdorPlaylistId ||
-      currentTrack?.playlistId === artistOrAlbumIdorPlaylistId
+      currentTrack?.spotifyAlbumId === artistOrAlbumId ||
+      currentTrack?.spotifyArtistId === artistOrAlbumId
     )
+  }
+
+  function isTrackPlayingFromPlaylist(playlistId) {
+    if (!currentTrack || !isPlaying) return false
+    return currentTrack?.playlistId === playlistId
   }
 
   function onHoverImg(stationId) {
@@ -242,7 +247,7 @@ export function HomePage() {
         <div className="user-stations">
           {stations.map((station) => {
             
-            const isStationPlaying = isTrackPlayingFromArtistOrAlbumOrPlaylist(station._id)
+            const isStationPlaying = isTrackPlayingFromPlaylist(station._id)
             return (
               <NavLink
                 key={station._id}
@@ -285,7 +290,7 @@ export function HomePage() {
         <h2 className="new-albums-header">New Albums Releases</h2>
         <div className="albums-container playlists-container">
           {albums.map((album) => {
-            const isAlbumPlaying = isTrackPlayingFromArtistOrAlbumOrPlaylist(album.id)
+            const isAlbumPlaying = isTrackPlayingFromArtistOrAlbum(album.id)
             return (
               <NavLink
                 key={album.id}
@@ -316,7 +321,7 @@ export function HomePage() {
         <h2 className="new-artists-header">Artists For you</h2>
         <div className="artists-container">
           {artists.map((artist) => {
-            const isArtistPlaying = isTrackPlayingFromArtistOrAlbumOrPlaylist(artist.spotifyId)
+            const isArtistPlaying = isTrackPlayingFromArtistOrAlbum(artist.spotifyId)
             return (
               <NavLink
                 key={artist.spotifyId}
