@@ -42,7 +42,7 @@ export function PlayList() {
          .getColorAsync(imgElement, { algorithm: 'sqrt' })
           .then((color) => {
             background.style.backgroundColor = color.rgba
-            console.log('color.rgba:', color.rgba)
+            // console.log('color.rgba:', color.rgba)
             background.style.backgroundImage = `linear-gradient(in oklch to bottom, ${color.rgba}, transparent), none`
             backgroundTrackList.style.backgroundImage = `linear-gradient(to top, rgba(18, 18, 18, 0.6) 0%, ${color.rgba} 300%), var(--background-noise)`
           })
@@ -247,7 +247,7 @@ export function PlayList() {
     }
   }
 
-  console.log('playlist:', playlist)
+  // console.log('playlist:', playlist)
 
   if (!playlist) return (
     <section className="playlist-container">
