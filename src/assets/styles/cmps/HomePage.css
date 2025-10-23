@@ -269,6 +269,46 @@
     /* background-color: red; */
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
+    .user-stations {
+    gap: 8px;
+  }
+  .albums-container {
+    grid-template-columns: repeat(auto-fit, 190px);
+  }
+
+  .user-station {
+    height: 48px;
+    img,
+    .station-img-placeholder {
+      height: 100%;
+      object-fit: cover;
+      width: 48px;
+      border-radius: 4px;
+    }
+     .play-container{
+    width: 32px;
+    height: 32px;
+
+    svg{
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+     .pause-container{
+    width: 32px;
+    height: 32px;
+
+    .pause {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  
+
+  }
+ 
 }
 
 .new-albums-header,
@@ -298,6 +338,16 @@
       border-radius: 4px;
     }
   }
+  .play-container,.pause-container{
+    width: 32px;
+    height: 32px;
+
+    svg{
+      width: 18px;
+      height: 18px;
+    }
+  }
+
 }
 
 .user-stations-background {
