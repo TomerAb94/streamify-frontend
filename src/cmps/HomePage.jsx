@@ -289,7 +289,11 @@ export function HomePage() {
                   {station.title}
                 </div>
                 {isStationPlaying ? (
-                  <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+                  hoveredStationId === station._id ? (
+                    <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+                  ) : (
+                    <SvgIcon iconName="equalizer" className="equalizer-svg" />
+                  )
                 ) : (
                  <SvgIcon
                   iconName="playHomePage"
