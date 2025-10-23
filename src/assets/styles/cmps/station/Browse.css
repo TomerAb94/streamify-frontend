@@ -412,12 +412,18 @@ a.playlist-item {
       height: 232px;
       width: 232px;
     }
-    
+
   }
 
+     & .track-list {
+        padding: 0 24px
+      }
+
+
   .station-btns-container {
-  
+    z-index: 1;
       & .action-btns {
+        padding-left: 32px;
           gap: 8px;
         & .play-btn  {
           display: flex;
@@ -439,5 +445,6 @@ a.playlist-item {
         }
            }
       }
+   
     }
 }
