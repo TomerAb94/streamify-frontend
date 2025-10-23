@@ -5,7 +5,8 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { spotifyService } from '../services/spotify.service'
 import { useSelector } from 'react-redux'
 import { youtubeService } from '../services/youtube.service'
-import { setTracks, setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
+import { setTracks, setCurrentTrack, setIsPlaying,setCurrentStationId} from '../store/actions/track.actions'
+
 import { Loader } from './Loader'
 import { FastAverageColor } from 'fast-average-color'
 export function HomePage() {
@@ -212,6 +213,7 @@ export function HomePage() {
       await setTracks(playlistQueue)
       await setCurrentTrack(trackWithYoutube)
       await setIsPlaying(true)
+      await setCurrentStationId(stationId)
     } catch (err) {
       console.error('Error playing :', err)
     }
