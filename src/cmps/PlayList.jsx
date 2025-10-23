@@ -34,14 +34,17 @@ export function PlayList() {
       const fac = new FastAverageColor()
       const imgElement = document.querySelector('.playlist-cover')
       const background = document.querySelector('.playlist-header')
+      const backgroundTrackList = document.querySelector('.background-track-list')
 
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
         fac
-          .getColorAsync(imgElement)
+         .getColorAsync(imgElement, { algorithm: 'sqrt' })
           .then((color) => {
             background.style.backgroundColor = color.rgba
-            background.style.background = `linear-gradient(to bottom,${color.rgba}, rgba(0, 0, 0, 0.5) 100%)`
+            console.log('color.rgba:', color.rgba)
+            background.style.backgroundImage = `linear-gradient(in oklch to bottom, ${color.rgba}, transparent), none`
+            backgroundTrackList.style.backgroundImage = `linear-gradient(to top, rgba(18, 18, 18, 0.6) 0%, ${color.rgba} 300%), var(--background-noise)`
           })
           .catch((e) => {
             console.log(e)
@@ -273,6 +276,7 @@ export function PlayList() {
            {playlist.playlist.followers && <span>{playlist.playlist.tracksTotal} songs </span>}
           </div>
         </div>
+        <div className='background-track-list'></div>
       </div>
 
       <div className="station-btns-container">

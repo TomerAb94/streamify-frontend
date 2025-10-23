@@ -401,6 +401,7 @@ a.playlist-item {
 
   grid-auto-flow: column;
   .playlist-header {
+    position: relative;
     display: flex;
     grid-auto-flow: column;
     align-items: end;
