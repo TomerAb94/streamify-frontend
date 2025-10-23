@@ -247,7 +247,7 @@ export function PlayList() {
   console.log('playlist:', playlist)
 
   if (!playlist) return (
-    <section className="playlist-container station-search">
+    <section className="playlist-container">
       <div className="loader-center">
         <Loader />
       </div>

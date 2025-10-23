@@ -21,7 +21,6 @@
 
 .browse-container::-webkit-scrollbar-track {
   background: transparent;
-  
 }
 
 .browse-container::-webkit-scrollbar-thumb {
@@ -164,7 +163,7 @@
 .station-btns-container .action-btns {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 24px;
   z-index: 1;
 }
 
@@ -238,13 +237,6 @@
       border-radius: 50%;
     }
   }
-}
-
-.playlist-header {
-  display: grid;
-  grid-auto-flow: column;
-  align-items: center;
-  padding: 20px 24px;
 }
 
 .playlist-info {
@@ -321,7 +313,7 @@ a.playlist-item {
     opacity: 0;
     /* transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease; */
   }
-  .pause-container  {
+  .pause-container {
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -338,12 +330,6 @@ a.playlist-item {
   }
 }
 
-
-
-
-
-
-
 .playlist-item {
   .playlist-name {
     margin-top: 10px;
@@ -353,8 +339,7 @@ a.playlist-item {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: 'Circular-thini','Arimo';
-   
+    font-family: 'Circular-thini', 'Arimo';
   }
 
   .playlist-description {
@@ -365,8 +350,8 @@ a.playlist-item {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: 'Circular-thini','Arimo';
-     font-weight: 100;
+    font-family: 'Circular-thini', 'Arimo';
+    font-weight: 100;
   }
 }
 
@@ -409,5 +394,49 @@ a.playlist-item {
 }
 
 .playlist-container {
+  grid-area: station-index;
+  display: grid;
   overflow-y: scroll;
+  grid-template-rows: 276px 104px auto;
+
+  grid-auto-flow: column;
+  .playlist-header {
+    display: flex;
+    grid-auto-flow: column;
+    align-items: end;
+    padding: 20px 24px;
+    height: 100%;
+
+    .playlist-cover {
+      height: 232px;
+      width: 232px;
+    }
+    
+  }
+
+  .station-btns-container {
+  
+      & .action-btns {
+          gap: 8px;
+        & .play-btn  {
+          display: flex;
+          justify-content: center;
+          height: 56px;
+          width: 56px;
+          margin: 0;
+
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
+         .shuffle-btn{
+            height: 32x;
+          width: 32px;
+        > span {
+          padding: 0;
+        }
+           }
+      }
+    }
 }
