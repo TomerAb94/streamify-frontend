@@ -15,20 +15,31 @@ export function HomePage() {
   const [albums, setAlbums] = useState([])
   const [artists, setArtists] = useState([])
   const [hoveredStationId, setHoveredStationId] = useState(null)
+  
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
+  const currentStationId = useSelector((storeState) => storeState.trackModule.currentStationId)
   //  const stations = useSelector((storeState) => storeState.stationModule.stations)
   useEffect(() => {
     loadNewAlbumsReleases()
     loadArtistToHomePage()
   }, [])
 
+     
+
   useEffect(() => {
-    if (!hoveredStationId) return
-    const fac = new FastAverageColor()
-    const imgElement = document.querySelector(`.station-img[data-station-id="${hoveredStationId}"]`)
+     const fac = new FastAverageColor()
+    const imgElement = document.querySelector(`.station-img[data-station-id="${hoveredStationId || currentStationId}"]`)
     const background = document.querySelector('.user-stations-background')
+    if (!currentStationId)
+      { 
+        background.style.backgroundColor = 'rgb(116, 95, 232)'
+        background.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%), var(--background-noise)';
+      }
+
+
+
 
     if (imgElement && background) {
       imgElement.crossOrigin = 'Anonymous'
@@ -42,7 +53,9 @@ export function HomePage() {
           console.log(e)
         })
     }
-  }, [hoveredStationId])
+  }, [hoveredStationId, currentStationId])
+
+
 
   async function loadPlaylist(albumId) {
     try {
@@ -155,6 +168,7 @@ export function HomePage() {
   async function onPause(event) {
     event.preventDefault()
     await setIsPlaying(false)
+    await setCurrentStationId(null)
   }
 
   function isTrackPlayingFromArtistOrAlbum(artistOrAlbumId) {

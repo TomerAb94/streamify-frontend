@@ -183,7 +183,7 @@
     color: red;
   }
 
-  .pause-container{
+  .pause-container {
     opacity: 1;
     background-color: var(--background-highlight);
     border-radius: 50%;
@@ -192,21 +192,20 @@
     width: 48px;
     height: 48px;
     margin-right: 8px;
-       &:hover {
+    &:hover {
       background-color: var(--background-highlight);
       touch-action: manipulation;
       transform: scale(1.04);
-      box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
     }
-      .pause {
-    width: 24px;
-    height: 24px;
-  }
+    .pause {
+      width: 24px;
+      height: 24px;
+    }
 
-  .pause path {
-    fill: black;
-  }
-
+    .pause path {
+      fill: black;
+    }
   }
 
   .play-container {
@@ -218,11 +217,11 @@
     width: 48px;
     height: 48px;
     /* align-items: flex-start; */
-   &:hover {
+    &:hover {
       background-color: var(--background-highlight);
       touch-action: manipulation;
       transform: scale(1.04);
-      box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
     }
   }
   .playHomePage {
@@ -269,7 +268,7 @@
     /* background-color: red; */
     grid-template-columns: repeat(2, minmax(220px, 1fr));
   }
-    .user-stations {
+  .user-stations {
     gap: 8px;
   }
   .albums-container {
@@ -285,30 +284,26 @@
       width: 48px;
       border-radius: 4px;
     }
-     .play-container{
-    width: 32px;
-    height: 32px;
+    .play-container {
+      width: 32px;
+      height: 32px;
 
-    svg{
-      width: 18px;
-      height: 18px;
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .pause-container {
+      width: 32px;
+      height: 32px;
+
+      .pause {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
-
-     .pause-container{
-    width: 32px;
-    height: 32px;
-
-    .pause {
-      width: 18px;
-      height: 18px;
-    }
-  }
-
-  
-
-  }
- 
 }
 
 .new-albums-header,
@@ -338,20 +333,23 @@
       border-radius: 4px;
     }
   }
-  .play-container,.pause-container{
+  .play-container,
+  .pause-container {
     width: 32px;
     height: 32px;
 
-    svg{
+    svg {
       width: 18px;
       height: 18px;
     }
   }
-
 }
 
 .user-stations-background {
   width: 100%;
+
+  background-color: rgb(116, 95, 232);
+
   background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%), var(--background-noise);
   transition-timing-function: ease;
   position: absolute;
