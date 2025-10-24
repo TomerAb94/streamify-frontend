@@ -7,10 +7,13 @@
   & .track-header,
   & .track-row {
     display: grid;
-    grid-template-columns: 40px minmax(430px, 1.5fr) minmax(285px, 1fr) 220px;
+    grid-template-columns:
+      16px minmax(180px, 6fr) minmax(120px, 4fr) minmax(120px, 3fr)
+      minmax(120px, 1fr);
     grid-template-rows: 100%;
     align-items: center;
-    padding: 8px 16px;
+    padding: 0 16px;
+    grid-gap: 16px;
   }
 
   & .track-header:hover {
@@ -57,11 +60,17 @@
     }
   }
 
+  & .date-added {
+    color: var(--songs-table-color);
+    font-family: Circular-thin;
+  }
+
   & .duration-header-icon,
   & .track-duration-container {
-    justify-self: center;
+    justify-self: flex-end;
 
     > .duration {
+      justify-self: end;
       > .duration-svg {
         fill: var(--songs-table-color);
         width: 16px;
@@ -73,7 +82,17 @@
   & .track-header {
     font-family: 'Circular-thin';
     color: var(--songs-table-color);
-    border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+    position: relative;
+    margin-bottom: 15px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+    }
   }
 
   & .track-row {
@@ -81,6 +100,7 @@
     color: #fff;
     border-radius: 4px;
     transition: background-color 0.2s;
+    height: 55px;
 
     &:last-child {
       position: relative;
@@ -94,6 +114,7 @@
         border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
       }
     }
+
     &.clicked {
       background-color: #ffffff36;
     }
@@ -114,12 +135,10 @@
     &:hover {
       background-color: #1f1f1f;
 
-      & .track-artists {
-        color: #fff;
-      }
-
-      & .track-album {
-        color: #fff;
+      & .track-artists,
+      & .track-album,
+      & .date-added {
+        color: var(--color-white-fff);
       }
 
       & .pause {
@@ -202,7 +221,7 @@
   }
 }
 
-.station-details .track-list {
+ .track-list {
   padding: 0 24px;
   font-family: Circular-thin;
 
@@ -219,6 +238,10 @@
   }
 
   & .track-row.clicked {
+    & .album-name,
+    & .date-added {
+      color: var(--color-white-fff);
+    }
     & .add-to-playlist {
       opacity: 1;
     }

@@ -58,7 +58,6 @@
 .search-tracks .track-header {
   font-family: 'Circular-thin';
   color: var(--songs-table-color);
-  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
 }
 
 .search-tracks .track-row {

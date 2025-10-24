@@ -85,7 +85,7 @@ export function StationDetails() {
             linear-gradient(to top,rgba(18, 18, 18,0.6) 0%, ${color.rgba} 300%),
             var(--background-noise)
           `
-            stickyPlayBtnWrapper.style.background= `
+            stickyPlayBtnWrapper.style.background = `
             linear-gradient(rgba(0, 0, 0) -80%, ${color.rgba} 300%)
           `
           })
@@ -105,15 +105,18 @@ export function StationDetails() {
     if (!mainPlayBtn || !stickyWrapper || !stickyContainer || !container) return
 
     // IntersectionObserver for setting container opacity when mainPlayBtn is out of frame
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          stickyContainer.style.opacity = '1'
-        } else {
-          stickyContainer.style.opacity = '0'
-        }
-      })
-    }, { root:container , rootMargin: '-100px 0px 0px 0px' })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            stickyContainer.style.opacity = '1'
+          } else {
+            stickyContainer.style.opacity = '0'
+          }
+        })
+      },
+      { root: container, rootMargin: '-100px 0px 0px 0px' }
+    )
 
     observer.observe(mainPlayBtn)
 
@@ -165,7 +168,7 @@ export function StationDetails() {
 
   async function onAddTrack(track) {
     const stationToSave = { ...station }
-    // console.log('Adding track to station:', stationToSave)
+    track.dateAdded = Date.now()
     stationToSave.tracks.push(track)
 
     try {
@@ -341,7 +344,6 @@ export function StationDetails() {
 
   return (
     <section className="station-details">
-
       <div className="sticky-play-btn-wrapper">
         <div className="sticky-play-btn-container">
           {isStationCurrentlyPlaying() && isPlaying ? (

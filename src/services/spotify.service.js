@@ -148,7 +148,7 @@ async function searchAlbums(query, limit = 20, offset = 0) {
 
 async function getSearchedAlbums(query, limit = 5, offset = 0) {
   const albumsFromSpotify = await searchAlbums(query, limit, offset)
-  console.log(albumsFromSpotify.albums.items[0]);
+  // console.log(albumsFromSpotify.albums.items[0]);
   
   return albumsFromSpotify.albums.items.map((album) => ({
     spotifyId: album.id,

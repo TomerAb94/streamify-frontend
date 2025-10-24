@@ -47,7 +47,6 @@
   }
   .track-artists {
     color: var(--songs-table-color);
-   
   }
 }
 
@@ -60,8 +59,6 @@
   font-family: 'Circular-thin';
 
   color: var(--songs-table-color);
-
-  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
 }
 
 .track-row {
@@ -81,31 +78,7 @@
     height: 14px;
     width: 14px;
   }
-  /* &:hover {
-    .track-artists {
-      color: #fff;
-    }
-    .track-album {
-      color: #fff;
-    }
-    .pause {
-      fill: #fff;
-      height: 14px;
-      width: 14px;
-    }
-    .addLikedSong {
-      fill: var(--songs-table-color);
-    }
-    .addLikedSong:hover {
-      fill: #fff;
-      cursor: pointer;
-    }
-  } */
 }
-
-/* .track-row:hover {
-  background-color: #1f1f1f;
-} */
 
 .track-img {
   width: 40px;
@@ -222,78 +195,95 @@
   }
 }
 
-.track-row {
-  > .track-duration-container {
-    display: grid;
-    align-items: center;
-    position: relative;
+.songs-result {
+  > .songs-list {
+    > .track-list {
+      > .track-row {
+        > .track-duration-container {
+          display: grid;
+          align-items: center;
+          position: relative;
 
-    > .add-to-playlist {
-      opacity: 0;
-      position: absolute;
-      left: -50px;
-      height: 16px;
-      width: 16px;
-      cursor: pointer;
+          > .add-to-playlist {
+            opacity: 0;
+            position: absolute;
+            left: -50px;
+            height: 16px;
+            width: 16px;
+            cursor: pointer;
 
-      > .add-liked-song {
-        fill: var(--songs-table-color);
-      }
+            > .add-liked-song {
+              fill: var(--songs-table-color);
+            }
 
-      > .in-station {
-        fill: var(--green-checked);
-      }
+            > .in-station {
+              fill: var(--green-checked);
+            }
 
-      &:hover {
-        > .add-liked-song {
-          fill: var(--color-white-fff);
+            &:hover {
+              > .add-liked-song {
+                fill: var(--color-white-fff);
+              }
+            }
+          }
         }
-        
+
+        &.clicked {
+          background-color: #ffffff36;
+
+          > .track-duration-container > .add-to-playlist {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          background-color: #1f1f1f;
+
+          &.clicked {
+            background-color: #ffffff36 !important;
+          }
+
+          .track-artists {
+            color: #fff;
+          }
+          .track-album {
+            color: #fff;
+          }
+          .pause {
+            fill: #fff;
+            height: 14px;
+            width: 14px;
+          }
+
+          > .track-duration-container > .add-to-playlist {
+            opacity: 1;
+          }
+        }
+
+        &:last-child {
+          position: relative;
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+           
+          }
+        }
       }
-    }
-  }
-
-  &.clicked {
-    background-color: #ffffff36;
-    
-    > .track-duration-container > .add-to-playlist {
-      opacity: 1;
-    }
-  }
-
-  &:hover {
-    background-color: #1f1f1f;
-    
-    &.clicked {
-      background-color: #ffffff36!important;
-    }
-    
-    .track-artists {
-      color: #fff;
-    }
-    .track-album {
-      color: #fff;
-    }
-    .pause {
-      fill: #fff;
-      height: 14px;
-      width: 14px;
-    }
-    
-    > .track-duration-container > .add-to-playlist {
-      opacity: 1;
     }
   }
 }
 
-.search-nav{
+.search-nav {
   position: sticky;
   display: flex;
   /* gap: 16px; */
   padding: 12px 22px;
   gap: 8px;
 
-  > .nav-button{
+  > .nav-button {
     border-radius: 9999px;
     margin: 0;
     padding: 4px 12px;

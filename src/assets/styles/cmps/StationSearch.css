@@ -121,8 +121,20 @@
           display: none;
         }
 
+        & .date-added {
+          display: none;
+        }
+
         > .songs-list {
           padding: 12px;
+        
+          > .track-list{
+          > .track-row {
+            grid-template-columns:
+              16px minmax(180px, 6fr)
+              minmax(120px, 1fr);
+          }
+        }
 
           & .track-list {
             grid-template-rows: auto;
@@ -221,7 +233,6 @@
         grid-column: 1/-1;
 
         > .albums-container {
-          
           display: flex;
           gap: 16px;
           overflow-x: auto;
@@ -235,7 +246,6 @@
             cursor: pointer;
             padding: 12px;
             border-radius: 6px;
-            
 
             &:hover {
               background-color: var(--color-secondary-1);
