@@ -81,6 +81,7 @@
 
   & .track-header {
     font-family: 'Circular-thin';
+    font-size: 0.9rem;
     color: var(--songs-table-color);
     position: relative;
     margin-bottom: 15px;

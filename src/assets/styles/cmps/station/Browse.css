@@ -499,4 +499,14 @@ a.playlist-item {
       height: 64px;
     }
   }
+
+  > .track-list {
+    > .track-row,
+    .track-header {
+      grid-template-columns: 16px minmax(180px, 4fr) minmax(120px, 2fr) minmax(
+          120px,
+          1fr
+        );
+    }
+  }
 }

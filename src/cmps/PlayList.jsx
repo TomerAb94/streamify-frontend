@@ -337,24 +337,6 @@ export function PlayList() {
     }
   }
 
-  function formatDateAdded(dateString) {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffMs = now - date
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-
-    if (diffDays < 7) {
-      if (diffDays === 0) return 'Today'
-      if (diffDays === 1) return '1 day ago'
-      return `${diffDays} days ago`
-    } else if (diffDays < 30) {
-      const diffWeeks = Math.floor(diffDays / 7)
-      if (diffWeeks === 1) return '1 week ago'
-      return `${diffWeeks} weeks ago`
-    } else {
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-    }
-  }
 
   if (!playlist)
     return (
@@ -478,7 +460,6 @@ export function PlayList() {
           <div className="first-col-header">#</div>
           <div>Title</div>
           <div>Album</div>
-           <div>Date Added</div>
           <div className="duration-header-icon">
             <SvgIcon iconName="duration" className="duration" />
           </div>
@@ -552,10 +533,6 @@ export function PlayList() {
               >
                 {track.album?.name}
               </NavLink>
-            </div>
-
-            <div className="date-added">
-              <span>{formatDateAdded(track.dateAdded)}</span>
             </div>
 
             <div className="track-duration-container">

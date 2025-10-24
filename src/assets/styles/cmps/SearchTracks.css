@@ -3,14 +3,13 @@
   background-color: var(--color-secondary);
   border-radius: 8px;
   overflow-y: auto;
-
 }
 
 .search-tracks .track-list {
   display: grid;
   grid-template-rows: 35px;
   grid-auto-rows: 55px;
-  padding: 0 clamp(16px,16px + (100cqw - 600px)/424*8,24px);
+  padding: 0 clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
 }
 
 .search-tracks .track-header,
@@ -111,15 +110,27 @@
   cursor: pointer;
 }
 
-.search-tracks .track-row > .track-duration-container > .add-to-playlist > .add-liked-song {
+.search-tracks
+  .track-row
+  > .track-duration-container
+  > .add-to-playlist
+  > .add-liked-song {
   fill: var(--songs-table-color);
 }
 
-.search-tracks .track-row > .track-duration-container > .add-to-playlist > .in-station {
+.search-tracks
+  .track-row
+  > .track-duration-container
+  > .add-to-playlist
+  > .in-station {
   fill: var(--green-checked);
 }
 
-.search-tracks .track-row > .track-duration-container > .add-to-playlist:hover > .add-liked-song {
+.search-tracks
+  .track-row
+  > .track-duration-container
+  > .add-to-playlist:hover
+  > .add-liked-song {
   fill: var(--color-white-fff);
 }
 
@@ -127,7 +138,10 @@
   background-color: #ffffff36;
 }
 
-.search-tracks .track-row.clicked > .track-duration-container > .add-to-playlist {
+.search-tracks
+  .track-row.clicked
+  > .track-duration-container
+  > .add-to-playlist {
   opacity: 1;
 }
 
@@ -155,4 +169,16 @@
 
 .search-tracks .track-row:hover > .track-duration-container > .add-to-playlist {
   opacity: 1;
+}
+
+.search-tracks {
+  > .track-list {
+    > .track-row,
+    .track-header {
+      grid-template-columns: 16px minmax(180px, 4fr) minmax(120px, 2fr) minmax(
+          120px,
+          1fr
+        );
+    }
+  }
 }
