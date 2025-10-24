@@ -3,6 +3,7 @@
   grid-area: station-index;
   background-color: var(--color-secondary);
   border-radius: 8px;
+  
   /* padding: 0 30px; */
   /* height: calc(100vh - 150px); */
   overflow-y: auto;
@@ -78,6 +79,28 @@
       height: 150px;
     }
   }
+
+   &::-webkit-scrollbar {
+      --wbkit-appearance: none;
+      appearance: none;
+    }
+
+    &:hover{
+    &::-webkit-scrollbar-thumb {
+      width: 15px;
+      background-color: hsla(0, 0%, 100%, 0.3);
+      transition: background-color 1s;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: hsla(0, 0%, 100%, 0.4);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background-color: hsla(0, 0%, 100%, 0.6);
+    }}
+
+
+
 }
 
 .stations-type {
@@ -372,7 +395,7 @@
 
 .user-stations-background {
   width: 100%;
-
+  border-radius: 8px;
   background-color: rgb(116, 95, 232);
 
   background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%),
@@ -387,4 +410,5 @@
 
 .home-content {
   position: relative;
+  border-radius: 8px
 }

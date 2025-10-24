@@ -13,28 +13,30 @@
     margin: 0;
     font-weight: bold;
   }
+
+   &::-webkit-scrollbar {
+      --wbkit-appearance: none;
+      appearance: none;
+      
+    }
+
+    &:hover{
+    &::-webkit-scrollbar-thumb {
+      width: 15px;
+      background-color: hsla(0, 0%, 100%, 0.3);
+      transition: background-color 1s;
+      overflow-x: hidden;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: hsla(0, 0%, 100%, 0.4);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background-color: hsla(0, 0%, 100%, 0.6);
+    }}
 }
 
-.browse-container::-webkit-scrollbar {
-  width: 12px;
-}
 
-.browse-container::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.browse-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
-  border: 3px solid transparent;
-  background-clip: padding-box;
-}
-
-.browse-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-  border: 3px solid transparent;
-  background-clip: padding-box;
-}
 
 .genres-list {
   grid-area: station-index;
@@ -103,7 +105,7 @@
 }
 
 .genres-list::-webkit-scrollbar {
-  width: 12px;
+  width: 15px;
 }
 
 .genres-list::-webkit-scrollbar-track {
@@ -402,12 +404,14 @@ a.playlist-item {
 
   grid-auto-flow: column;
   .playlist-header {
+    
     position: relative;
     display: flex;
     grid-auto-flow: column;
     align-items: end;
     padding: 20px 24px;
     height: 100%;
+    border-radius: 8px;
 
     .playlist-cover {
       height: 232px;
@@ -443,6 +447,27 @@ a.playlist-item {
           padding: 0;
         }
       }
+    }
+  }
+
+  
+    &::-webkit-scrollbar {
+      --wbkit-appearance: none;
+      appearance: none;
+    }
+
+    &:hover{
+    &::-webkit-scrollbar-thumb {
+      width: 15px;
+      background-color: hsla(0, 0%, 100%, 0.3);
+      transition: background-color 1s;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: hsla(0, 0%, 100%, 0.4);
+    }
+    &::-webkit-scrollbar-thumb:active {
+      background-color: hsla(0, 0%, 100%, 0.6);
     }
   }
 
@@ -499,8 +524,7 @@ a.playlist-item {
       height: 64px;
     }
   }
-
-  > .track-list {
+    > .track-list {
     > .track-row,
     .track-header {
       grid-template-columns: 16px minmax(180px, 4fr) minmax(120px, 2fr) minmax(
