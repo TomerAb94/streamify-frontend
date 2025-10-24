@@ -279,7 +279,6 @@
 .search-nav {
   position: sticky;
   display: flex;
-  /* gap: 16px; */
   padding: 12px 22px;
   gap: 8px;
 
@@ -288,9 +287,12 @@
     margin: 0;
     padding: 4px 12px;
     background-color: var(--color-secondary-2);
+    font-size: 1rem;
+    font-family: Circular-thin;
 
     &:hover {
       background-color: var(--color-secondary-3);
+      transform: scale(1);
     }
 
     &.active {

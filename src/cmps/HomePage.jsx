@@ -255,7 +255,7 @@ export function HomePage() {
       <div className="home-content">
         <div className="user-stations-background"></div>
         <div className="stations-type">
-          <button>All</button>
+          <button className="active">All</button>
           <button>Music</button>
           <button>Podcasts</button>
         </div>
