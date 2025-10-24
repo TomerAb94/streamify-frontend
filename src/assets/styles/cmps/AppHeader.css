@@ -1,22 +1,33 @@
 .app-header {
+ 
   grid-area: app-header;
   display: grid;
   /* width: 100vw; */
   grid-template-columns: auto 1fr auto;
   place-items: center;
   background-color: var(--color-primary);
-  /* padding: 8px ; */
+
   /* margin: -8px; */
-  height: 64px;
+  height: var(--AppHeaderHeight);
   /* Search bar styles */
   .search-bar {
+    align-self: center;
+     height: 48px;
     display: flex;
     place-items: center;
  
   }
 
+  .logo{
+    height: 48px;
+    width: 48px;
+
+  }
+
   /* User info styles */
   .user-info {
+    height: 48px;
+    width: 48px;
     display: flex;
     align-items: center;
     margin-inline-start: auto;
@@ -26,7 +37,7 @@
       width: 32px;
       height: 32px;
       aspect-ratio: 1;
-      border-radius: 50%;
+      border-radius: 9999px;
     }
   }
 
@@ -80,6 +91,12 @@
       transition-duration: 50ms;
       vertical-align: middle;
     }
+
+    & button{
+      margin: 0;
+      padding: 8px;
+      
+    }
   }
 
   /* Browse icon styles */
@@ -118,11 +135,16 @@
 }
 
 .search-bar {
+  gap: 8px;
   height: 100%;
   & svg {
     height: 24px;
     width: 24x;
     fill: var(--color-text-secondary);
+  }
+
+  & button {
+   margin: 0;
   }
 
   & svg:hover {
@@ -146,6 +168,9 @@
 
 .home-bold-svg svg,
 .browse-btn-bold svg{
+
+  display: flex;
+  
      fill: white;    
 }
 .search-wrapper {
@@ -162,15 +187,21 @@
   border: none;
   outline: none;
   padding: 12px 48px 12px 48px; 
-  color: #fff;
+  color: var(--color-text-secondary);
   font-size: 16px;
+  font-family: 'Circular-thin';
+
+  &::placeholder{
+    color: var(--color-text-secondary);
+  }
 
   &:focus {
     background-color: var(--color-hover);
     -webkit-box-shadow: inset 0 0 0 2px #fff;
-    cursor: unset;
+    cursor: unset
+    
   }
-  font-family: Circular-medium;
+      
   
 
 }

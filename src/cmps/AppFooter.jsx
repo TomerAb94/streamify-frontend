@@ -121,13 +121,16 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
   }
 
   async function onNext() {
+    // console.log('onNext called')
     if (!currentTrack || !currentTrack.nextId) return
 
     try {
       // Find the next track in the playlist using nextId
       const nextTrack = playlist.find(
         (track) => track.spotifyId === currentTrack.nextId
+      
       )
+      // console.log('Next track found:', nextTrack)
       if (nextTrack && nextTrack.youtubeId !== null) {
         await setCurrentTrack(nextTrack)
         await setIsPlaying(true)
@@ -409,7 +412,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
           </div>
         </div>
         <div className="track-timeline">
-          <span className="time">{currentTrackTime}</span>
+          <span className="time right">{currentTrackTime}</span>
           <input
             className="time-range"
             type="range"
@@ -438,7 +441,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
                 var(--color-secondary-3) 100%)`,
             }}
           />
-          <span className="time">{currentTrack?.duration}</span>
+          <span className="time left">{currentTrack?.duration}</span>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 .artist-details {
   display: grid;
   grid-area: station-index;
-  width: 100%;
+  grid-template-rows: 235px 104px auto;
   border-radius: 8px;
   overflow: auto;
 
@@ -13,7 +13,7 @@
 
     > .img-header-container {
       position: relative;
-      height: 40vh;
+      height: 100%;
       width: 100%;
 
       > img {
@@ -74,6 +74,7 @@
   }
 
   > .action-btns {
+    padding-left: 32px;
     position: relative;
     display: flex;
     align-items: center;
@@ -149,6 +150,8 @@
         }
       }
     }
+
+    
   }
 
   > .top-tracks {
@@ -171,4 +174,27 @@
   & .artist-name{
     display: none;
   }
+    & .action-btns {
+        padding-left: 32px;
+          gap: 8px;
+        & .play-btn  {
+          display: flex;
+          justify-content: center;
+          height: 56px;
+          width: 56px;
+          margin: 0;
+
+          svg.play,svg.pause {
+            width: 20px;
+            height: 20px;
+          }
+        }
+         .shuffle-btn{
+            height: 32x;
+          width: 32px;
+        > span {
+          padding: 0;
+        }
+           }
+      }
 }
