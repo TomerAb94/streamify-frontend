@@ -60,6 +60,7 @@ input[type='text'],
 input[type='file'],
 input[type='email'],
 input[type='password'],
+input[type='range'],
 textarea {
   /* Remove specific default styles instead of aggressive 'all: unset' */
   background: transparent;
