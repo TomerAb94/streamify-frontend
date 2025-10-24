@@ -85,7 +85,9 @@ export function StationDetails() {
             linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
             var(--background-noise)
           `
-            stickyPlayBtnWrapper.style.background = color.rgba
+            stickyPlayBtnWrapper.style.background= `
+            linear-gradient(rgba(0, 0, 0) -80%, ${color.rgba} 300%)
+          `
           })
           .catch((e) => {
             console.log(e)
