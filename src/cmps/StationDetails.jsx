@@ -113,7 +113,7 @@ export function StationDetails() {
           stickyContainer.style.opacity = '0'
         }
       })
-    }, {})
+    }, { root:container , rootMargin: '-100px 0px 0px 0px' })
 
     observer.observe(mainPlayBtn)
 
