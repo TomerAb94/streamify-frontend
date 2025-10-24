@@ -1,27 +1,49 @@
 import { useEffect, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
-import { Link, NavLink, useLocation, useParams, useOutletContext } from 'react-router-dom'
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useParams,
+  useOutletContext,
+} from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
 import { FastAverageColor } from 'fast-average-color'
 import { youtubeService } from '../services/youtube.service'
-import { setTracks, setCurrentTrack, setIsPlaying, setIsShuffle } from '../store/actions/track.actions'
+import {
+  setTracks,
+  setCurrentTrack,
+  setIsPlaying,
+  setIsShuffle,
+} from '../store/actions/track.actions'
 
 import { updateStation } from '../store/actions/station.actions'
 import { useSelector } from 'react-redux'
 import { Loader } from './Loader'
 
 export function PlayList() {
-  const { onOpenStationsContextMenu, onCloseStationsContextMenu } = useOutletContext()
+  const { onOpenStationsContextMenu, onCloseStationsContextMenu } =
+    useOutletContext()
   const params = useParams()
   const [playlist, setPlaylist] = useState(null)
 
   // console.log(params)
 
-  const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
-  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
-  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
-  const isShuffle = useSelector((storeState) => storeState.trackModule.isShuffle)
-  const stations = useSelector((storeState) => storeState.stationModule.stations)
+  const playListToPlay = useSelector(
+    (storeState) => storeState.trackModule.tracks
+  )
+  const currentTrack = useSelector(
+    (storeState) => storeState.trackModule.currentTrack
+  )
+  const isPlaying = useSelector(
+    (storeState) => storeState.trackModule.isPlaying
+  )
+  const isShuffle = useSelector(
+    (storeState) => storeState.trackModule.isShuffle
+  )
+  const stations = useSelector(
+    (storeState) => storeState.stationModule.stations
+  )
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   const [clickedTrackId, setClickedTrackId] = useState(null)
 
@@ -34,7 +56,9 @@ export function PlayList() {
       const fac = new FastAverageColor()
       const imgElement = document.querySelector('.playlist-cover')
       const background = document.querySelector('.playlist-header')
-      const backgroundTrackList = document.querySelector('.background-track-list')
+      const backgroundTrackList = document.querySelector(
+        '.background-track-list'
+      )
       const stickyPlayBtnWrapper = document.querySelector(
         '.sticky-play-btn-wrapper'
       )
@@ -42,13 +66,13 @@ export function PlayList() {
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
         fac
-         .getColorAsync(imgElement, { algorithm: 'sqrt' })
+          .getColorAsync(imgElement, { algorithm: 'sqrt' })
           .then((color) => {
             background.style.backgroundColor = color.rgba
             // console.log('color.rgba:', color.rgba)
             background.style.backgroundImage = `linear-gradient(in oklch to bottom, ${color.rgba}, transparent), none`
             backgroundTrackList.style.backgroundImage = `linear-gradient(to top, rgba(18, 18, 18, 0.6) 0%, ${color.rgba} 300%), var(--background-noise)`
-             stickyPlayBtnWrapper.style.background= `
+            stickyPlayBtnWrapper.style.background = `
             linear-gradient(rgba(0, 0, 0) -80%, ${color.rgba} 300%)
           `
           })
@@ -59,7 +83,7 @@ export function PlayList() {
     }
   }, [playlist])
 
-    useEffect(() => {
+  useEffect(() => {
     const mainPlayBtn = document.querySelector('.main-play-btn')
     const stickyWrapper = document.querySelector('.sticky-play-btn-wrapper')
     const stickyContainer = document.querySelector('.sticky-play-btn-container')
@@ -68,15 +92,18 @@ export function PlayList() {
     if (!mainPlayBtn || !stickyWrapper || !stickyContainer || !container) return
 
     // IntersectionObserver for setting container opacity when mainPlayBtn is out of frame
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          stickyContainer.style.opacity = '1'
-        } else {
-          stickyContainer.style.opacity = '0'
-        }
-      })
-    }, { root:container , rootMargin: '-100px 0px 0px 0px' })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            stickyContainer.style.opacity = '1'
+          } else {
+            stickyContainer.style.opacity = '0'
+          }
+        })
+      },
+      { root: container, rootMargin: '-100px 0px 0px 0px' }
+    )
 
     observer.observe(mainPlayBtn)
 
@@ -107,20 +134,22 @@ export function PlayList() {
   }, [playlist])
 
   function isTrackCurrentlyPlaying(track) {
-    return currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+    return (
+      currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying
+    )
   }
 
-  async function loadPlaylist() {    
+  async function loadPlaylist() {
     try {
       if (params.albumId) {
-         const playlist = await spotifyService.getAlbumNewRelease(params.albumId) 
-         setPlaylist(playlist)
+        const playlist = await spotifyService.getAlbumNewRelease(params.albumId)
+        setPlaylist(playlist)
+      } else if (params.playlistId) {
+        const playlist = await spotifyService.getTracksPlaylist(
+          params.playlistId
+        )
+        setPlaylist(playlist)
       }
-      else if (params.playlistId) {
-         const playlist = await spotifyService.getTracksPlaylist(params.playlistId) 
-         setPlaylist(playlist)
-      }
-      
     } catch (error) {
       console.error('Failed loading playlists:', error)
     }
@@ -147,7 +176,9 @@ export function PlayList() {
       }
 
       // Get YouTube ID for the track
-      const youtubeId = await getYoutubeId(track.name + ' ' + track.artists[0]?.name)
+      const youtubeId = await getYoutubeId(
+        track.name + ' ' + track.artists[0]?.name
+      )
       const trackWithYoutube = {
         ...track,
         youtubeId,
@@ -200,10 +231,14 @@ export function PlayList() {
 
   async function onAddToLikedSongs(track) {
     try {
-      const likedSongs = stations.find((station) => station.title === 'Liked Songs')
+      const likedSongs = stations.find(
+        (station) => station.title === 'Liked Songs'
+      )
       if (!likedSongs) return
 
-      const isTrackInLikedSongs = likedSongs.tracks.some((t) => t.spotifyId === track.spotifyId)
+      const isTrackInLikedSongs = likedSongs.tracks.some(
+        (t) => t.spotifyId === track.spotifyId
+      )
       if (isTrackInLikedSongs) {
         console.log('Track already in Liked Songs')
         return
@@ -274,7 +309,9 @@ export function PlayList() {
       const firstTrack = playlistQueue[0]
       if (firstTrack) {
         // Only fetch YouTube ID for the track that will actually be played
-        const youtubeId = await getYoutubeId(firstTrack.name + ' ' + firstTrack.artists[0]?.name)
+        const youtubeId = await getYoutubeId(
+          firstTrack.name + ' ' + firstTrack.artists[0]?.name
+        )
         const trackWithYoutube = {
           ...firstTrack,
           youtubeId,
@@ -302,21 +339,23 @@ export function PlayList() {
 
   // console.log('playlist:', playlist)
 
-  if (!playlist) return (
-    <section className="playlist-container">
-      <div className="loader-center">
-        <Loader />
-      </div>
-    </section>
-  )
+  if (!playlist)
+    return (
+      <section className="playlist-container">
+        <div className="loader-center">
+          <Loader />
+        </div>
+      </section>
+    )
 
   return (
     <section className="playlist-container station-search">
-
-      
       <div className="sticky-play-btn-wrapper">
         <div className="sticky-play-btn-container">
-          {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
+          {isPlaying &&
+          playlist.tracks
+            .map((track) => track.name === currentTrack.name)
+            .includes(true) ? (
             <button onClick={onPause} className=" sticky-play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
@@ -343,27 +382,51 @@ export function PlayList() {
 
       <div className="playlist-header">
         {playlist.playlist.imgUrl && (
-          <img src={playlist.playlist.imgUrl} alt={playlist.playlist.name} className="playlist-cover" />
+          <img
+            src={playlist.playlist.imgUrl}
+            alt={playlist.playlist.name}
+            className="playlist-cover"
+          />
         )}
         <div className="playlist-info">
           <p>{playlist.playlist.isPublic}</p>
           <h1 className="playlist-name">{playlist.playlist.name}</h1>
-          <p className="playlist-description">{playlist.playlist.description}</p>
+          <p className="playlist-description">
+            {playlist.playlist.description}
+          </p>
           <div className="playlist-meta">
-            <img className="owner-profile-img" src={playlist.playlist.ownerProfileImg || playlist.playlist.artists[0]?.imgUrl} alt={playlist.playlist.owner} />
-            <span>{playlist.playlist.owner || playlist.playlist.artists[0]?.name}</span>
+            <img
+              className="owner-profile-img"
+              src={
+                playlist.playlist.ownerProfileImg ||
+                playlist.playlist.artists[0]?.imgUrl
+              }
+              alt={playlist.playlist.owner}
+            />
+            <span>
+              {playlist.playlist.owner || playlist.playlist.artists[0]?.name}
+            </span>
             <span> • </span>
-           {playlist.playlist.followers < 1000 ? <span>{playlist.playlist.followers} saves </span> : <span>{(playlist.tracks.length)} songs </span>}
-           {playlist.playlist.followers && <span> • </span>}
-           {playlist.playlist.followers && <span>{playlist.playlist.tracksTotal} songs </span>}
+            {playlist.playlist.followers < 1000 ? (
+              <span>{playlist.playlist.followers} saves </span>
+            ) : (
+              <span>{playlist.tracks.length} songs </span>
+            )}
+            {playlist.playlist.followers && <span> • </span>}
+            {playlist.playlist.followers && (
+              <span>{playlist.playlist.tracksTotal} songs </span>
+            )}
           </div>
         </div>
-        <div className='background-track-list'></div>
+        <div className="background-track-list"></div>
       </div>
 
       <div className="station-btns-container">
         <div className="action-btns">
-          {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
+          {isPlaying &&
+          playlist.tracks
+            .map((track) => track.name === currentTrack.name)
+            .includes(true) ? (
             <button onClick={onPause} className="play-btn main-play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
@@ -384,8 +447,8 @@ export function PlayList() {
               <SvgIcon iconName="play" className="play" />
             </button>
           )}
-          <button 
-            className={`shuffle-btn ${isShuffle ? 'active' : ''}`} 
+          <button
+            className={`shuffle-btn ${isShuffle ? 'active' : ''}`}
             onClick={() => onShuffle()}
           >
             <SvgIcon iconName="shuffle" />
@@ -419,12 +482,20 @@ export function PlayList() {
             <div className="track-num ">
               {isTrackCurrentlyPlaying(track) ? (
                 hoveredTrackIdx === idx ? (
-                  <SvgIcon iconName="pause" className="pause" onClick={() => onPause()} />
+                  <SvgIcon
+                    iconName="pause"
+                    className="pause"
+                    onClick={() => onPause()}
+                  />
                 ) : (
                   <SvgIcon iconName="equalizer" className="equalizer" />
                 )
               ) : hoveredTrackIdx === idx ? (
-                <SvgIcon iconName="play" className="play" onClick={() => onPlay(track)} />
+                <SvgIcon
+                  iconName="play"
+                  className="play"
+                  onClick={() => onPlay(track)}
+                />
               ) : (
                 idx + 1
               )}
@@ -432,29 +503,44 @@ export function PlayList() {
 
             <div className="track-title">
               {track.album?.imgUrl && (
-                <img src={track.album.imgUrl} alt={`${track.name} cover`} className="track-img" />
+                <img
+                  src={track.album.imgUrl}
+                  alt={`${track.name} cover`}
+                  className="track-img"
+                />
               )}
               <div className="track-text">
-                 <NavLink
-                to={`/track/${track.spotifyId}`}
-                className="track-name nav-link"
-              >
-                {track.name}
-              </NavLink>
+                <NavLink
+                  to={`/track/${track.spotifyId}`}
+                  className="track-name nav-link"
+                >
+                  {track.name}
+                </NavLink>
                 <div className="track-artists">
-                   <NavLink key={track.artists[0].id[0]} to={`/artist/${track.artists[0].id[0]}`}>
-                    <span className="nav-link">
-                      {track.artists[0].name}
-                    </span>
+                  <NavLink
+                    key={track.artists[0].id[0]}
+                    to={`/artist/${track.artists[0].id[0]}`}
+                  >
+                    <span className="nav-link">{track.artists[0].name}</span>
                   </NavLink>
                 </div>
               </div>
             </div>
 
-            <div className="track-album">{track.album?.name}</div>
+            <div className="track-album">
+              <NavLink
+                to={`/album/${track.album?.spotifyId}`}
+                className="album-name nav-link"
+              >
+                {track.album?.name}
+              </NavLink>
+            </div>
+
             <div className="track-duration-container">
               <SvgIcon
-                iconName={isTrackInStation(track) ? 'inStation' : 'addLikedSong'}
+                iconName={
+                  isTrackInStation(track) ? 'inStation' : 'addLikedSong'
+                }
                 className="add-to-playlist"
                 title="Add to Playlist"
                 onClick={
