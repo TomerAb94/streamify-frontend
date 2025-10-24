@@ -394,10 +394,11 @@ a.playlist-item {
 }
 
 .playlist-container {
+  position: relative;
   grid-area: station-index;
   display: grid;
   overflow-y: scroll;
-  grid-template-rows: 276px 104px auto;
+  grid-template-rows: 0px 276px 104px auto;
 
   grid-auto-flow: column;
   .playlist-header {
@@ -412,39 +413,90 @@ a.playlist-item {
       height: 232px;
       width: 232px;
     }
-
   }
 
-     & .track-list {
-        padding: 0 24px
-      }
-
+  & .track-list {
+    padding: 0 24px;
+  }
 
   .station-btns-container {
     z-index: 1;
-      & .action-btns {
-        padding-left: 32px;
-          gap: 8px;
-        & .play-btn  {
-          display: flex;
-          justify-content: center;
-          height: 56px;
-          width: 56px;
-          margin: 0;
+    & .action-btns {
+      padding-left: 32px;
+      gap: 8px;
+      & .play-btn {
+        display: flex;
+        justify-content: center;
+        height: 56px;
+        width: 56px;
+        margin: 0;
 
-          svg {
-            width: 20px;
-            height: 20px;
-          }
+        svg {
+          width: 20px;
+          height: 20px;
         }
-         .shuffle-btn{
-            height: 32x;
-          width: 32px;
+      }
+      .shuffle-btn {
+        height: 32x;
+        width: 32px;
         > span {
           padding: 0;
         }
-           }
       }
-   
     }
+  }
+
+  > .sticky-play-btn-wrapper {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 0;
+    width: 100%;
+    align-items: center;
+    z-index: 3;
+    overflow: hidden;
+    opacity: 0;
+    transition: height 0.3s ease-out, opacity 0.3s ease-out;
+    border-radius: 8px 8px 0 0;
+
+    > .sticky-play-btn-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      border-radius: 8px 8px 0 0;
+      gap: 8px;
+      padding: 0 16px;
+      transition: opacity 0.4s ease-out;
+
+      > .station-title {
+        font-size: 1.6rem;
+      }
+
+      > button {
+        background-color: var(--green-pin);
+        padding: 16px;
+        > span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          > svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--color-primary);
+          }
+        }
+
+        &:hover {
+          background-color: var(--green-play);
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    &.height {
+      height: 64px;
+    }
+  }
 }

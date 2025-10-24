@@ -35,6 +35,9 @@ export function PlayList() {
       const imgElement = document.querySelector('.playlist-cover')
       const background = document.querySelector('.playlist-header')
       const backgroundTrackList = document.querySelector('.background-track-list')
+      const stickyPlayBtnWrapper = document.querySelector(
+        '.sticky-play-btn-wrapper'
+      )
 
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
@@ -45,11 +48,61 @@ export function PlayList() {
             // console.log('color.rgba:', color.rgba)
             background.style.backgroundImage = `linear-gradient(in oklch to bottom, ${color.rgba}, transparent), none`
             backgroundTrackList.style.backgroundImage = `linear-gradient(to top, rgba(18, 18, 18, 0.6) 0%, ${color.rgba} 300%), var(--background-noise)`
+             stickyPlayBtnWrapper.style.background= `
+            linear-gradient(rgba(0, 0, 0) -80%, ${color.rgba} 300%)
+          `
           })
           .catch((e) => {
             console.log(e)
           })
       }
+    }
+  }, [playlist])
+
+    useEffect(() => {
+    const mainPlayBtn = document.querySelector('.main-play-btn')
+    const stickyWrapper = document.querySelector('.sticky-play-btn-wrapper')
+    const stickyContainer = document.querySelector('.sticky-play-btn-container')
+    const container = document.querySelector('.playlist-container')
+
+    if (!mainPlayBtn || !stickyWrapper || !stickyContainer || !container) return
+
+    // IntersectionObserver for setting container opacity when mainPlayBtn is out of frame
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          stickyContainer.style.opacity = '1'
+        } else {
+          stickyContainer.style.opacity = '0'
+        }
+      })
+    }, { root:container , rootMargin: '-100px 0px 0px 0px' })
+
+    observer.observe(mainPlayBtn)
+
+    // Scroll listener for progressive opacity on wrapper and immediate height change
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop
+      let opacity = 0
+      if (scrollTop > 50) opacity = 0.45
+      if (scrollTop > 100) opacity = 0.65
+      if (scrollTop > 200) opacity = 1
+      stickyWrapper.style.opacity = opacity
+
+      // Change height immediately on first scroll
+      if (scrollTop > 0) {
+        stickyWrapper.classList.add('height')
+      } else {
+        stickyWrapper.classList.remove('height')
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+
+    // Cleanup
+    return () => {
+      observer.disconnect()
+      container.removeEventListener('scroll', handleScroll)
     }
   }, [playlist])
 
@@ -259,6 +312,35 @@ export function PlayList() {
 
   return (
     <section className="playlist-container station-search">
+
+      
+      <div className="sticky-play-btn-wrapper">
+        <div className="sticky-play-btn-container">
+          {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
+            <button onClick={onPause} className=" sticky-play-btn">
+              <SvgIcon iconName="pause" className="pause" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(playlist.tracks[0])
+                }
+              }}
+              className="sticky-play-btn"
+              // disabled={!station.tracks || station.tracks.length === 0}
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
+          <span className="station-title">{playlist.title}</span>
+        </div>
+      </div>
+
       <div className="playlist-header">
         {playlist.playlist.imgUrl && (
           <img src={playlist.playlist.imgUrl} alt={playlist.playlist.name} className="playlist-cover" />
@@ -282,7 +364,7 @@ export function PlayList() {
       <div className="station-btns-container">
         <div className="action-btns">
           {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
-            <button onClick={onPause} className="play-btn">
+            <button onClick={onPause} className="play-btn main-play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
           ) : (
@@ -296,7 +378,7 @@ export function PlayList() {
                   onPlay(playlist.tracks[0])
                 }
               }}
-              className="play-btn"
+              className="play-btn main-play-btn"
               // disabled={!station.tracks || station.tracks.length === 0}
             >
               <SvgIcon iconName="play" className="play" />
