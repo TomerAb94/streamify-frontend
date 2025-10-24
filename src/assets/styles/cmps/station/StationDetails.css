@@ -1,4 +1,5 @@
 .station-details {
+  position: relative;
   grid-area: station-index;
   color: var(--color-white-fff);
   border-radius: 8px;
@@ -117,7 +118,6 @@
     /* position: relative; */
 
     & .action-btns {
-     
       position: relative;
       display: flex;
       align-items: center;
@@ -326,26 +326,25 @@
   & .playing {
     color: var(--green-checked);
   }
-    .station-btns-container {
-  
-      & .action-btns {
-         padding-left: 32px;
-          gap: 8px;
-        & .play-btn  {
-          display: flex;
-          justify-content: center;
-          height: 56px;
-          width: 56px;
-          margin: 0;
+  .station-btns-container {
+    & .action-btns {
+      padding-left: 32px;
+      gap: 8px;
+      & .play-btn {
+        display: flex;
+        justify-content: center;
+        height: 56px;
+        width: 56px;
+        margin: 0;
 
-          svg {
-            width: 20px;
-            height: 20px;
-          }
+        svg {
+          width: 20px;
+          height: 20px;
         }
-         .shuffle-btn{
-            height: 32x;
-          width: 32px;
+      }
+      .shuffle-btn {
+        height: 32x;
+        width: 32px;
         > span {
           padding: 0;
         }

@@ -3,9 +3,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
-
   background-color: var(--color-primary);
+  flex-wrap: nowrap;
+
+  > * { min-width: 0; }
 
   /* Left area */
   & .track-info {
@@ -15,7 +16,7 @@
     width: 30%;
     padding-inline-start: 8px;
     gap: 8px;
-
+    
     > .track-cover {
       border-radius: 4px;
       width: 56px;
@@ -76,6 +77,8 @@
     justify-content: center;
     align-items: center;
     width: 40%;
+    max-width: 722px;
+    min-width: 0;
 
     > .player-btns {
       display: flex;
@@ -162,22 +165,29 @@
       display: flex;
       align-items: center;
       width: 100%;
+      gap: 8px;
+      min-width: 0;
 
       > .time {
+        flex: 0 0 50px;
         font-size: 0.75rem;
         color: var(--color-text-secondary);
         font-family: Circular-thin;
+        min-width: 50px;
+
+        &.right { text-align: right; }
+        &.left { text-align: left; }
       }
 
       > .time-range {
         --webkit-appearance: none;
         appearance: none;
         width: 100%;
-        margin: 0 8px;
         height: 4px;
         border-radius: 2px;
         cursor: pointer;
         background: var(--color-secondary-3);
+        margin: 0;
 
         &::-webkit-slider-thumb {
           appearance: none;
@@ -202,6 +212,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    min-width: 180px;
 
     & .volume-container {
       display: flex;

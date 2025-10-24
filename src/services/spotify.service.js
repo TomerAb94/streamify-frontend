@@ -88,14 +88,13 @@ async function makeSpotifyRequest(endpoint) {
 
 async function getSearchedTracks(query, limit = 5, offset = 0) {
   const tracksFromSpotify = await searchTracks(query, limit, offset)
-  // console.log(tracksFromSpotify)
   let tracks = tracksFromSpotify.tracks.items
 
   tracks = tracks.map((track) => {
     return {
       spotifyId: track.id,
       name: track.name,
-      album: { name: track.album.name, imgUrl: track.album.images[0].url },
+      album: { name: track.album.name, imgUrl: track.album.images[0].url, spotifyId: track.album.id },
       artists: [
         {
           name: track.artists.map((artist) => artist.name).join(', '),
@@ -357,7 +356,8 @@ async function getTracksPlaylist(playlistId) {
             name: track.name,
             album: { 
               name: track.album.name, 
-              imgUrl: track.album.images?.[0]?.url 
+              imgUrl: track.album.images?.[0]?.url,
+              spotifyId: track.album.id
             },
             artists: [{
               name: track.artists.map((artist) => artist.name).join(', '),

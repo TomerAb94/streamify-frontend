@@ -60,6 +60,14 @@
   & .duration-header-icon,
   & .track-duration-container {
     justify-self: center;
+
+    > .duration {
+      > .duration-svg {
+        fill: var(--songs-table-color);
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 
   & .track-header {
@@ -93,7 +101,7 @@
     & .track-album,
     & .track-duration-container {
       color: var(--songs-table-color);
-      font-family: 'Circular-thin','Arimo';
+      font-family: 'Circular-thin', 'Arimo';
     }
 
     & .play {
@@ -132,12 +140,6 @@
   & .track-title {
     display: flex;
     align-items: center;
-  }
-
-  & .duration-svg {
-    fill: var(--songs-table-color);
-    width: 16px;
-    height: 16px;
   }
 
   & .playing-track {

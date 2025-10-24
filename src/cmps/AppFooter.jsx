@@ -412,7 +412,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
           </div>
         </div>
         <div className="track-timeline">
-          <span className="time">{currentTrackTime}</span>
+          <span className="time right">{currentTrackTime}</span>
           <input
             className="time-range"
             type="range"
@@ -441,7 +441,7 @@ export function AppFooter({ onToggleQueue, isQueueOpen, onToggleNowPlaying, isNo
                 var(--color-secondary-3) 100%)`,
             }}
           />
-          <span className="time">{currentTrack?.duration}</span>
+          <span className="time left">{currentTrack?.duration}</span>
         </div>
       </div>
 

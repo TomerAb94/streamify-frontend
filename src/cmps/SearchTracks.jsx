@@ -35,7 +35,7 @@ export function SearchTracks() {
 
   async function loadSearchedTracks() {
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr)
+      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr,20)
       setSearchedTracks(spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)
@@ -259,7 +259,14 @@ export function SearchTracks() {
               </div>
             </div>
 
-            <div className="track-album">{track.album?.name}</div>
+            <div className="track-album">
+              <NavLink
+                to={`/album/${track.album?.spotifyId}`}
+                className="album-name nav-link"
+              >
+                {track.album?.name}
+              </NavLink>
+              </div>
             <div className="track-duration-container">
               <SvgIcon
                 iconName={

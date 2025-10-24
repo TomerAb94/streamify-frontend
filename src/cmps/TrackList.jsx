@@ -205,7 +205,14 @@ export function TrackList({ tracks, onPlay, onPause }) {
             </div>
           </div>
 
-          <div className="track-album">{track.album?.name}</div>
+          <div className="track-album">
+            <NavLink
+                to={`/album/${track.album?.spotifyId}`}
+                className="album-name nav-link"
+              >
+                {track.album?.name}
+              </NavLink>
+          </div>
           <div className="track-duration-container">
             <SvgIcon
               iconName={isTrackInStation(track) ? 'inStation' : 'addLikedSong'}

@@ -68,22 +68,78 @@ export function StationDetails() {
       const fac = new FastAverageColor()
       const imgElement = document.querySelector('.avg-img')
       const background = document.querySelector('.details-header')
-      const backgroundTrackList = document.querySelector('.background-track-list')
+      const backgroundTrackList = document.querySelector(
+        '.background-track-list'
+      )
+      const stickyPlayBtnWrapper = document.querySelector(
+        '.sticky-play-btn-wrapper'
+      )
+
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
         fac
           .getColorAsync(imgElement, { algorithm: 'dominant' })
           .then((color) => {
             background.style.backgroundColor = color.rgba
- backgroundTrackList.style.backgroundImage = `
+            backgroundTrackList.style.backgroundImage = `
             linear-gradient(to top,rgba(18, 18, 18,0.6) 0%, ${color.rgba} 300%),
             var(--background-noise)
+          `
+            stickyPlayBtnWrapper.style.background= `
+            linear-gradient(rgba(0, 0, 0) -80%, ${color.rgba} 300%)
           `
           })
           .catch((e) => {
             console.log(e)
           })
       }
+    }
+  }, [station])
+
+  useEffect(() => {
+    const mainPlayBtn = document.querySelector('.main-play-btn')
+    const stickyWrapper = document.querySelector('.sticky-play-btn-wrapper')
+    const stickyContainer = document.querySelector('.sticky-play-btn-container')
+    const container = document.querySelector('.station-details')
+
+    if (!mainPlayBtn || !stickyWrapper || !stickyContainer || !container) return
+
+    // IntersectionObserver for setting container opacity when mainPlayBtn is out of frame
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          stickyContainer.style.opacity = '1'
+        } else {
+          stickyContainer.style.opacity = '0'
+        }
+      })
+    }, { root:container , rootMargin: '-100px 0px 0px 0px' })
+
+    observer.observe(mainPlayBtn)
+
+    // Scroll listener for progressive opacity on wrapper and immediate height change
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop
+      let opacity = 0
+      if (scrollTop > 50) opacity = 0.45
+      if (scrollTop > 1500) opacity = 0.65
+      if (scrollTop > 300) opacity = 1
+      stickyWrapper.style.opacity = opacity
+
+      // Change height immediately on first scroll
+      if (scrollTop > 0) {
+        stickyWrapper.classList.add('height')
+      } else {
+        stickyWrapper.classList.remove('height')
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+
+    // Cleanup
+    return () => {
+      observer.disconnect()
+      container.removeEventListener('scroll', handleScroll)
     }
   }, [station])
 
@@ -123,7 +179,7 @@ export function StationDetails() {
   async function onPlay(track) {
     // Set the current station ID
     setCurrentStationId(station._id)
-    
+
     // Clear existing playlist
     if (playlist && playlist.length) {
       await setTracks([])
@@ -163,7 +219,7 @@ export function StationDetails() {
   async function onShuffle() {
     // Set the current station ID
     setCurrentStationId(station._id)
-    
+
     // Toggle shuffle state
     const newShuffleState = !isShuffle
     setIsShuffle(newShuffleState)
@@ -231,9 +287,7 @@ export function StationDetails() {
     if (!currentTrack || !station || !station.tracks) return false
     return (
       currentStationId === station._id &&
-      station.tracks.some(
-        (track) => track.spotifyId === currentTrack.spotifyId
-      )
+      station.tracks.some((track) => track.spotifyId === currentTrack.spotifyId)
     )
   }
 
@@ -287,8 +341,35 @@ export function StationDetails() {
 
   return (
     <section className="station-details">
+
+      <div className="sticky-play-btn-wrapper">
+        <div className="sticky-play-btn-container">
+          {isStationCurrentlyPlaying() && isPlaying ? (
+            <button onClick={onPause} className="sticky-play-btn">
+              <SvgIcon iconName="pause" className="pause" />
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && isStationCurrentlyPlaying() && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(station.tracks[0])
+                }
+              }}
+              className="sticky-play-btn"
+              disabled={!station.tracks || station.tracks.length === 0}
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
+          <span className="station-title">{station.title}</span>
+        </div>
+      </div>
+
       <header className="details-header">
-        
         <div className="station-img">
           {station.stationImgUrl ? (
             <img
@@ -315,15 +396,13 @@ export function StationDetails() {
             <span className="tracks-count">{station.tracks.length} tracks</span>
           </div>
         </div>
-           <div className="background-track-list"></div>
+        <div className="background-track-list"></div>
       </header>
-
-   
 
       <div className="station-btns-container">
         <div className="action-btns">
           {isStationCurrentlyPlaying() && isPlaying ? (
-            <button onClick={onPause} className="play-btn">
+            <button onClick={onPause} className="play-btn main-play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
           ) : (
@@ -337,7 +416,7 @@ export function StationDetails() {
                   onPlay(station.tracks[0])
                 }
               }}
-              className="play-btn"
+              className="play-btn main-play-btn"
               disabled={!station.tracks || station.tracks.length === 0}
             >
               <SvgIcon iconName="play" className="play" />
