@@ -1,84 +1,4 @@
 & .queue {
-  display: none;
-  scrollbar-width: thin;
-  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
-  background-color: var(--color-secondary);
-  grid-area: side-bar;
-  border-radius: 8px;
-  overflow-y: hidden;
-
-  &.open {
-    display: flex;
-    flex-direction: column;
-
-    & .queue-icon {
-      color: var(--green-clicked);
-    }
-  }
-
-  /* header */
-  > .queue-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 16px;
-
-    > h1 {
-      margin: 0;
-      padding: 0 6px;
-      font-size: 1.1rem;
-    }
-
-    /* close btn */
-    > button {
-      background: none;
-      padding: 8px;
-
-      &:hover {
-        background-color: var(--color-hover);
-
-        & .close-svg {
-          fill: var(--color-text-primary);
-        }
-      }
-
-            > span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-        > .close-svg {
-          height: 16px;
-          width: 16px;
-          fill: var(--color-text-secondary);
-        }
-      }
-    }
-  }
-
-  /* track list */
-  & .queue-track-list {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    gap: 24px;
-    overflow-y: scroll;
-
-    & .track-area {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-
-      > h2 {
-        margin: 0;
-        padding-inline: 8px;
-        font-size: 1.1rem;
-      }
-    }
-  }
-}
-
-& .now-playing {
     display: none;
     scrollbar-width: thin;
     scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
@@ -90,14 +10,108 @@
     &.open {
         display: flex;
         flex-direction: column;
+
+        & .queue-icon {
+            color: var(--green-clicked);
+        }
+    }
+
+    /* header */
+    > .queue-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 16px;
+
+        > h1 {
+            margin: 0;
+            padding: 0 6px;
+            font-size: 1.1rem;
+        }
+
+        /* close btn */
+        > button {
+            background: none;
+            padding: 8px;
+
+            &:hover {
+                background-color: var(--color-hover);
+
+                & .close-svg {
+                    fill: var(--color-text-primary);
+                }
+            }
+
+            > span {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                > .close-svg {
+                    height: 16px;
+                    width: 16px;
+                    fill: var(--color-text-secondary);
+                }
+            }
+        }
+    }
+
+    /* track list */
+    & .queue-track-list {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        gap: 24px;
+        overflow-y: scroll;
+
+        & .track-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+
+            > h2 {
+                margin: 0;
+                padding-inline: 8px;
+                font-size: 1.1rem;
+            }
+        }
+    }
+}
+
+& .now-playing {
+    display: none;
+    scrollbar-width: thin;
+    scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
+    background-color: var(--color-secondary);
+    grid-area: side-bar;
+    border-radius: 8px;
+    overflow-y: hidden;
+
+    container-type: inline-size;
+    container-name: nowPlayingSidebar;
+
+    &.open {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.scrolled {
+        > .np-header {
+            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.45),
+                0 10px 25px rgba(0, 0, 0, 0.4), 0 25px 50px rgba(0, 0, 0, 0.35);
+
+            &::after {
+                opacity: 1;
+            }
+        }
     }
 
     > .np-header {
         position: sticky;
         top: 0;
         z-index: 1;
-        height: 64px;
-        padding: 0px 16px;
+        flex: 0 0 64px;
+        padding: 0 16px;
         display: flex;
         align-items: center;
         background: linear-gradient(
@@ -107,6 +121,25 @@
                 100%
         );
         backdrop-filter: blur(6px);
+        transition: box-shadow 220ms ease-in-out;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 24px; 
+            pointer-events: none;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.55),
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0)
+            );
+            opacity: 0;
+            transition: opacity 220ms ease-in-out;
+        }
 
         > .np-heading {
             margin: 0;
@@ -145,7 +178,6 @@
 
     .np-meta {
         display: flex;
-        align-items: flex-start;
         justify-content: space-between;
         gap: 12px;
         margin-top: 16px;
@@ -154,11 +186,9 @@
             min-width: 0;
             display: flex;
             flex-direction: column;
-            gap: 4px;
-
             > .np-title {
                 margin: 0;
-                font-size: 1.25rem;
+                font-size: 1.5rem;
                 line-height: 1.25;
                 white-space: nowrap;
                 overflow: hidden;
@@ -172,21 +202,260 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                font-family: 'Circular-thini', 'Arimo';
             }
         }
         > .np-like {
             background: none;
             padding: 0px;
-            border-radius: 6px;
+            border-radius: 9999px;
+            margin: 0;
+            vertical-align: middle;
 
             > span > svg {
-                width: 22px;
-                height: 22px;
+                width: 24px;
+                height: 24px;
                 fill: var(--color-text-secondary);
             }
 
             &[aria-pressed='true'] > span > svg {
                 fill: var(--green-checked);
+            }
+
+            @container nowPlayingSidebar (max-width: 351px) {
+                > span > svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+    .np-empty {
+        padding: 16px;
+        display: grid;
+        gap: 6px;
+        color: var(--color-text-secondary);
+
+        > p {
+            margin: 0;
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        > .hint {
+            font-size: 0.95rem;
+
+            .np-browse-link {
+                color: var(--color-white-fff);
+                text-decoration: underline;
+                text-underline-offset: 2px;
+
+                &:hover {
+                    color: var(--color-white-hover);
+                }
+            }
+        }
+    }
+
+    & .np-artist-section {
+        padding-top: 8px;
+        cursor: pointer;
+    }
+
+    & .np-artist-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--color-secondary-2);
+    }
+
+    & .np-artist-art {
+        position: relative;
+        margin: 0;
+
+        > .np-artist-hero {
+            aspect-ratio: 3 / 2;
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            background-position: 50% 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: block;
+        }
+
+        > .np-artist-label {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            height: 25px;
+            background: none;
+        }
+    }
+
+    & .np-artist-info {
+        display: grid;
+        padding: 16px;
+        background-color: var(--color-padding-btn);
+        border-radius: 0 0 8px 8px;
+
+        > .np-artist-name {
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        > .np-artist-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 8px;
+            padding-bottom: 12px;
+
+            > .np-artist-metric {
+                margin: 0;
+                color: var(--color-text-secondary);
+                font-family: 'Circular-thini', 'Arimo';
+                font-size: 1rem;
+
+                > span {
+                    margin-inline-start: 4px;
+                }
+            }
+
+            > .np-artist-follow {
+                padding: 6px 12px;
+                border-radius: 9999px;
+                background: transparent;
+                border: 1px solid hsla(0, 0%, 100%, 0.3);
+                color: var(--color-white-fff);
+                font-size: 0.9rem;
+                transition: all 0.1s ease;
+                margin: 0;
+
+                &:hover {
+                    border-color: var(--color-text-secondary);
+                }
+
+                &.following {
+                    &:hover {
+                        border-color: var(--color-text-secondary);
+                    }
+                }
+            }
+        }
+
+        > .np-artist-desc {
+            margin-bottom: 8px;
+            color: var(--color-text-secondary);
+
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+            font-family: 'Circular-thini', 'Arimo';
+            font-size: 0.875rem;
+        }
+    }
+
+    & .np-credits-card {
+        display: grid;
+        background: var(--color-padding-btn);
+        border-radius: 8px;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    & .np-credits-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 25px;
+
+        > .np-credits-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        > .np-credits-showall {
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            margin: 0 0 0 10px;
+            border-radius: 9999px;
+            cursor: pointer;
+            padding: 0;
+
+            &:hover {
+                color: var(--color-white-hover);
+                text-decoration: underline;
+            }
+        }
+    }
+
+    & .np-credits-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        row-gap: 12px;
+    }
+
+    & .np-credits-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 0 4px 0;
+    }
+
+    & .np-credits-left {
+        min-width: 0;
+        display: grid;
+        gap: 2px;
+
+        > .np-credits-name {
+            font-size: 1rem;
+            line-height: 1.25;
+            font-family: 'Circular-thini', 'Arimo';
+        }
+
+        > .np-credits-roles {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            font-family: 'Circular-thini', 'Arimo';
+        }
+    }
+
+    & .np-credits-follow {
+        padding: 6px 12px;
+        border-radius: 9999px;
+        background: transparent;
+        border: 1px solid hsla(0, 0%, 100%, 0.3);
+        color: var(--color-white-fff);
+        font-size: 0.9rem;
+        transition: border-color 0.12s ease;
+        margin: 0;
+        white-space: nowrap;
+
+        &:hover {
+            border-color: var(--color-text-secondary);
+        }
+
+        &.following {
+            color: var(--color-white-fff);
+            border-color: var(--color-text-secondary);
+
+            &:hover {
+                border-color: var(--color-white-fff);
             }
         }
     }
