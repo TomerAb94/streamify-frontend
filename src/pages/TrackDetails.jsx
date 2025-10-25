@@ -47,7 +47,7 @@ export function TrackDetails() {
       }
 
       // Get YouTube ID for the track
-      const youtubeId = await getYoutubeId(track.name + ' ' + track.artists[0]?.name)
+      const youtubeId = await getYoutubeId(track.name)
       const trackWithYoutube = {
         ...track,
         youtubeId,

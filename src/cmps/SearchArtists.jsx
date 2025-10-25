@@ -70,7 +70,7 @@ export function SearchArtists() {
               index > 0
                 ? fullArtistData.topTracks[index - 1].spotifyId
                 : fullArtistData.topTracks[fullArtistData.topTracks.length - 1].spotifyId,
-            youtubeId: await getYoutubeId(track.name + ' ' + track.artists[0]?.name),
+            youtubeId: await getYoutubeId(track.name),
           }
         })
       )
