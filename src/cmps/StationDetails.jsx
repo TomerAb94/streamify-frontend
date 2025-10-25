@@ -169,7 +169,7 @@ export function StationDetails() {
   async function onAddTrack(track) {
     const stationToSave = { ...station }
     track.dateAdded = Date.now()
-    stationToSave.tracks.push(track)
+    stationToSave.tracks.unshift(track)
 
     try {
       await updateStation(stationToSave)
@@ -435,7 +435,7 @@ export function StationDetails() {
 
       <TrackList tracks={station.tracks} onPlay={onPlay} onPause={onPause} />
 
-      <div className="search-tracks">
+      <div className="search-tracks-container">
         <h2>Let's find something for your playlist</h2>
 
         <div className="search-wrapper">

@@ -3,12 +3,9 @@
   grid-area: station-index;
   color: var(--color-white-fff);
   border-radius: 8px;
-  overflow-y: auto;
+  overflow-y:auto;
  background-color: var(--color-secondary);
-  /* scrollbar-width: thin;
-  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent; */
-
-
+ 
     &::-webkit-scrollbar {
       --webkit-appearance: none;
       appearance: none;
@@ -196,7 +193,7 @@
     }
   }
 
-  & .search-tracks {
+  & .search-tracks-container {
     padding: 0 24px;
     margin: 24px;
     padding-bottom: 80px;
