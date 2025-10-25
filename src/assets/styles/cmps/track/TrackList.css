@@ -50,6 +50,9 @@
   }
 
   & .track-text {
+     white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     & .playing {
       color: var(--green-checked);
     }
@@ -124,6 +127,9 @@
     & .track-duration-container {
       color: var(--songs-table-color);
       font-family: 'Circular-thin', 'Arimo';
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     & .play {
