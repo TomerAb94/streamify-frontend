@@ -127,6 +127,9 @@
     & .track-duration-container {
       color: var(--songs-table-color);
       font-family: 'Circular-thin', 'Arimo';
+    }
+
+    & .track-album {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -147,6 +150,7 @@
       & .date-added {
         color: var(--color-white-fff);
       }
+
 
       & .pause {
         fill: #fff;
