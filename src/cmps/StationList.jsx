@@ -146,7 +146,7 @@ export function StationList({
               index > 0
                 ? station.tracks[index - 1].spotifyId
                 : station.tracks[station.tracks.length - 1].spotifyId,
-            youtubeId: await getYoutubeId(track.name),
+            youtubeId: await getYoutubeId(track.name + ' ' + track.artists[0]?.name),
           }
         })
       )

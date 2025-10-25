@@ -11,7 +11,7 @@ const VIDEOS_STORAGE_KEY = 'videosDB'
 
 let gVideoMap = loadFromStorage(VIDEOS_STORAGE_KEY) || {}
 
-const ytURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&videoEmbeddable=true&type=video&key=${YT_API_KEY}`
+const ytURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&videoEmbeddable=true&type=video&key=${YT_API_KEY}`
 
 function getVideos(keyword) {
 	if (gVideoMap[keyword]) {
