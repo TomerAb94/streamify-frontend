@@ -47,16 +47,14 @@ export function StationSearch() {
 
   async function loadSearchedAll() {
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(
+      const spotifyTracks = await spotifyService.getSpotifyItems(
+        'search',
         params.searchStr,
         4
       )
-      const spotifyArtists = await spotifyService.getSearchArtists(
-        params.searchStr
-      )
-      const spotifyAlbums = await spotifyService.getSearchedAlbums(
-        params.searchStr
-      )
+      const spotifyArtists = await spotifyService.getSpotifyItems('artists', params.searchStr)
+      const spotifyAlbums = await spotifyService.getSpotifyItems('albums', params.searchStr)
+   
       const combinedResults = {
         tracks: spotifyTracks,
         artists: spotifyArtists,
@@ -145,7 +143,7 @@ export function StationSearch() {
       setCurrentStationId(artist.spotifyId)
 
       // Get full artist data including top tracks
-      const fullArtistData = await spotifyService.getArtistData(artist.spotifyId)
+      const fullArtistData = await spotifyService.getSpotifyItems('artistData', artist.spotifyId)
       
       // Clear existing playlist
       if (playlist && playlist.length) {
@@ -191,7 +189,7 @@ export function StationSearch() {
       setCurrentStationId(album.spotifyId)
 
       // Get full album data including tracks
-      const fullAlbumData = await spotifyService.getAlbumNewRelease(album.spotifyId)
+      const fullAlbumData = await spotifyService.getSpotifyItems(album.spotifyId)
       
       // Clear existing playlist
       if (playlist && playlist.length) {

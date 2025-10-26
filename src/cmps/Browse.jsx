@@ -14,7 +14,7 @@ export function Browse() {
 
   async function loadGenres() {
     try {
-      const genres = await spotifyService.getGenres()
+      const genres = await spotifyService.getSpotifyItems('getGenres')
     //   console.log('genres:', genres)
       setGenres(genres)
     } catch (error) {
@@ -24,7 +24,7 @@ export function Browse() {
 
 
   async function onSelectGenre(genre) {
-    const playlists = await spotifyService.getGenrePlaylists(genre)
+    const playlists = await spotifyService.getSpotifyItems('getGenrePlaylists', genre)
     // console.log('playlists:', playlists)
     setSelectedGenre(genre)
    

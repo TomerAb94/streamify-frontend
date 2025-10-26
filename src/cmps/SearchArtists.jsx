@@ -51,7 +51,7 @@ export function SearchArtists() {
       setCurrentlyPlayingArtist(artist)
       
       // Get full artist data including top tracks
-      const fullArtistData = await spotifyService.getArtistData(artist.spotifyId)
+      const fullArtistData = await spotifyService.getSpotifyItems('artistData', artist.spotifyId)
       
       // Clear existing playlist
       if (playlist && playlist.length) {

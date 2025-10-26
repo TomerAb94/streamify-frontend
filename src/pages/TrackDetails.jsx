@@ -34,7 +34,7 @@ export function TrackDetails() {
   }, [params.Id])
 
   async function loadTrack(trackId) {
-    const track = await spotifyService.getFullTrackData(trackId)
+    const track = await spotifyService.getSpotifyItems('getFullTrackData',trackId)
     setTrack(track)
     console.log(track)
   }

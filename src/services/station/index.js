@@ -33,7 +33,7 @@ function getEmptyStation() {
 function getDefaultFilter() {
   return {
     txt: '',
-    loggedinUser: userService.getLoggedinUser(),
+    loggedinUser: userService.getLoggedinUser() || '',
     sortField: '',
     sortDir: '',
   }

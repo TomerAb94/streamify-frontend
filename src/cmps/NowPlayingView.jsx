@@ -65,7 +65,7 @@ export function NowPlayingView({ currentTrack, isOpen }) {
                     setArtistImg(null)
                     return
                 }
-                const artist = await spotifyService.getArtist(artistId)
+                const artist = await spotifyService.getSpotifyItems('artist',artistId)
                 if (!ignore) {
                     setArtistImg(artist?.images?.[0]?.url || null)
                 }

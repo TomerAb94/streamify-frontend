@@ -159,7 +159,7 @@ export function StationDetails() {
   async function loadSearchedTracks(searchTerm = searchBy) {
     if (!searchTerm) return
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(searchTerm)
+      const spotifyTracks = await spotifyService.getSpotifyItems('search',searchTerm)
       setSearchedTracks(spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)

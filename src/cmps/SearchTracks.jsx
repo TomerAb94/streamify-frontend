@@ -35,7 +35,7 @@ export function SearchTracks() {
 
   async function loadSearchedTracks() {
     try {
-      const spotifyTracks = await spotifyService.getSearchedTracks(params.searchStr,20)
+      const spotifyTracks = await spotifyService.getSpotifyItems('search', params.searchStr, 20)
       setSearchedTracks(spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)

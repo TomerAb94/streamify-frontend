@@ -67,7 +67,7 @@ export function ArtistDetails() {
 
 
   async function loadArtist(artistId) {
-    const artist = await spotifyService.getArtistData(artistId)
+    const artist = await spotifyService.getSpotifyItems('artistData', artistId)
     setArtist(artist)
   }
 

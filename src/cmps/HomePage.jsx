@@ -59,7 +59,7 @@ export function HomePage() {
 
   async function loadPlaylist(albumId) {
     try {
-      const playlist = await spotifyService.getAlbumNewRelease(albumId)
+      const playlist = await spotifyService.getSpotifyItems('getAlbumNewRelease',albumId)
       // console.log('playlist:', playlist)
       return playlist
     } catch (error) {
@@ -69,7 +69,7 @@ export function HomePage() {
 
   async function loadArtists() {
     try {
-      const artists = await spotifyService.getSearchArtists('השירים של ישראל')
+      const artists = await spotifyService.getSpotifyItems('artists', 'השירים של ישראל')
       // console.log('artists:', artists)
       return artists
     } catch (error) {
@@ -78,7 +78,7 @@ export function HomePage() {
   }
 
   async function loadNewAlbumsReleases() {
-    const { albums } = await spotifyService.getNewAlbumsReleases()
+    const { albums } = await spotifyService.getSpotifyItems('albumReleases')
     setAlbums(albums)
   }
 
@@ -116,7 +116,7 @@ export function HomePage() {
     try {
       // Set this artist as currently playing and clear album
       // Get full artist data including top tracks
-      const fullArtistData = await spotifyService.getArtistData(artist.spotifyId)
+      const fullArtistData = await spotifyService.getSpotifyItems('artistData',artist.spotifyId)
 
       // Clear existing playlist
       if (playListToPlay && playListToPlay.length) {
