@@ -140,10 +140,10 @@ export function AppHeader() {
 
         {user && (
           <button className="user-info">
-            <Link to={`user/${user._id}`}>
-              {user.imgUrl && <img src={user.imgUrl} alt="user" />}
+            {/* <Link to={`user/${user._id}`}> */}
+              {user.imgUrl && <img src={user.imgUrl} alt="user" onClick={onLogout}/>}
               {/* {user.fullname} */}
-            </Link>
+            {/* </Link> */}
             {/* <button onClick={onLogout}>logout</button> */}
           </button>
         )}

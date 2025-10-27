@@ -65,10 +65,7 @@ export async function signup(credentials) {
 export async function logout() {
   try {
     await userService.logout()
-    store.dispatch({
-      type: SET_USER,
-      user: null,
-    })
+    store.dispatch({type: SET_USER,user: null,})
     socketService.logout()
   } catch (err) {
     console.log('Cannot logout', err)
@@ -81,6 +78,7 @@ export async function loadUser(userId) {
     const user = await userService.getById(userId)
     console.log('User loaded:', user)
     store.dispatch({ type: SET_WATCHED_USER, user })
+    
   } catch (err) {
     showErrorMsg('Cannot load user')
     console.log('Cannot load user', err)

@@ -1,3 +1,4 @@
+import { setStations } from '../../store/actions/station.actions'
 import { httpService } from '../http.service'
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
@@ -52,6 +53,7 @@ async function signup(userCred) {
 
 async function logout() {
 	sessionStorage.removeItem(STORAGE_KEY_LOGGEDIN_USER)
+	await setStations([])
 	return await httpService.post('auth/logout')
 }
 
