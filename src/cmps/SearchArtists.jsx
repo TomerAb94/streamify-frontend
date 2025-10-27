@@ -95,7 +95,7 @@ export function SearchArtists() {
 
   async function getYoutubeId(str) {
     try {
-      const res = await youtubeService.getVideos(str)
+      const res = await youtubeService.getYoutubeItems(str)
       return res?.[0]?.id || null
     } catch (err) {
       console.error('Error fetching YouTube URL:', err)

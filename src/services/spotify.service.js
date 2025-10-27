@@ -1,15 +1,4 @@
-import { replace } from "react-router"
-
 import { httpService } from "./http.service" 
-
-const CLIENT_ID = 'bc0de1d56cf04139b055dab040514fc2'
-const CLIENT_SECRET = 'a95e1562557f434489e50790a67ab105'
-const TOKEN_URL = 'https://accounts.spotify.com/api/token'
-const API_BASE_URL = 'https://api.spotify.com/v1'
-
-let accessToken = null
-let tokenExpiryTime = null
-
 export const spotifyService = {
   getAccessToken,
   // searchTracks,

@@ -47,9 +47,9 @@ export function StationIndex() {
 
   const mainContainerRef = useRef(null)
 
-  // useEffect(() => {
-  //   loadStations(filterBy)
-  // }, [filterBy])
+  useEffect(() => {
+    loadStations(filterBy)
+  }, [filterBy])
 
   function onRemoveStation(stationId) {
     if (!loggedInUser) {

@@ -1,17 +1,19 @@
 import { loadFromStorage, saveToStorage } from './util.service.js'
+import { httpService } from './http.service.js'
 import axios from 'axios'
 
 export const youtubeService = {
 	getVideos,
+	getYoutubeItems
 }
 
-const YT_API_KEY = 'AIzaSyBI5sWC-degJz4OEhmVR39xp6wvP5eEA74'
 
-const VIDEOS_STORAGE_KEY = 'videosDB'
+async function getYoutubeItems(query='') {
 
-let gVideoMap = loadFromStorage(VIDEOS_STORAGE_KEY) || {}
+  return await httpService.get(`youtube`, {query})
+ 
+}
 
-const ytURL = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&videoEmbeddable=true&type=video&key=${YT_API_KEY}`
 
 function getVideos(keyword) {
 	if (gVideoMap[keyword]) {

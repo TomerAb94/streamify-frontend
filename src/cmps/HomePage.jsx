@@ -69,7 +69,7 @@ export function HomePage() {
 
   async function loadArtists() {
     try {
-      const artists = await spotifyService.getSpotifyItems('artists', 'השירים של ישראל')
+      const artists = await spotifyService.getSpotifyItems('artists', 'israel best artists')
       // console.log('artists:', artists)
       return artists
     } catch (error) {
@@ -157,7 +157,7 @@ export function HomePage() {
 
   async function getYoutubeId(str) {
     try {
-      const res = await youtubeService.getVideos(encodeURIComponent(str))
+      const res = await youtubeService.getYoutubeItems(encodeURIComponent(str))
       return res?.[0]?.id || null
     } catch (err) {
       console.error('Error fetching YouTube URL:', err)
