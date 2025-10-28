@@ -416,6 +416,7 @@ a.playlist-item {
     .playlist-cover {
       height: 232px;
       width: 232px;
+      flex-shrink: 0;
     }
   }
 
