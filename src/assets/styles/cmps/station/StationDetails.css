@@ -270,7 +270,7 @@
           }
 
           & .search-track-album {
-            font-family: Circular-thin;
+           font-family: 'Circular-thin', 'Arimo';
           }
 
           & .btn-container {

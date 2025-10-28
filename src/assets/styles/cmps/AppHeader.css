@@ -189,7 +189,7 @@
   padding: 12px 48px 12px 48px; 
   color: var(--color-text-secondary);
   font-size: 16px;
-  font-family: 'Circular thin','Arimo';
+  font-family: 'Circular-thin', 'Arimo';
 
   &::placeholder{
     color: var(--color-text-secondary);

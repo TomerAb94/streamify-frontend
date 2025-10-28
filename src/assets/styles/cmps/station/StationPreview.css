@@ -21,7 +21,7 @@
 
       > .station-title {
         color: var(--color-text-primary);
-
+          font-family: 'Circular-thin', 'Arimo';
         &.active-station {
           color: var(--green-checked);
         }
