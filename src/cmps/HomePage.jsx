@@ -157,7 +157,7 @@ export function HomePage() {
 
   async function getYoutubeId(str) {
     try {
-      const res = await youtubeService.getYoutubeItems(encodeURIComponent(str))
+      const res = await youtubeService.getYoutubeItems(str)
       return res?.[0]?.id || null
     } catch (err) {
       console.error('Error fetching YouTube URL:', err)
