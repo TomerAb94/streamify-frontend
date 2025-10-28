@@ -42,6 +42,8 @@ export function StationDetails() {
     (storeState) => storeState.trackModule.currentStationId
   )
 
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+
   const [searchBy, setSearchBy] = useState('')
   const [searchedTracks, setSearchedTracks] = useState([])
   const [isModalEditOpen, setIsModalEditOpen] = useState(false)
@@ -393,7 +395,7 @@ export function StationDetails() {
             {station.title}
           </h1>
           <div className="creator-info">
-            <img src={station.createdBy.imgUrl} alt="Profile Image" />
+            <img src={loggedInUser.imgUrl} alt="Profile Image" />
             <span className="creator-name">{station.createdBy.fullname}</span>
             <span className="tracks-count">{station.tracks.length} tracks</span>
           </div>
