@@ -145,7 +145,7 @@ export function PlayList() {
         const playlist = await spotifyService.getSpotifyItems('getAlbumNewRelease',params.albumId)
         setPlaylist(playlist)
       } else if (params.playlistId) {
-        const playlist = await spotifyService.getSpotifyItems('getTrackPlaylist', params.playlistId)
+        const playlist = await spotifyService.getSpotifyItems('getTracksPlaylist', params.playlistId)
         setPlaylist(playlist)
       }
     } catch (error) {
