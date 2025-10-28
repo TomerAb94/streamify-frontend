@@ -57,10 +57,11 @@
     > .track-name {
       font-family: Circular-thin;
       font-size: 1rem;
+      font-family: 'Circular-thin', 'Arimo';
     }
 
     > .artist-name {
-      font-family: Circular-thin;
+      font-family: 'Circular-thin', 'Arimo';
       font-size: 0.875rem;
       color: var(--songs-table-color);
     }
