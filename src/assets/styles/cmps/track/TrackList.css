@@ -170,6 +170,7 @@
   & .track-title {
     display: flex;
     align-items: center;
+    font-family: 'Circular','Arimo';
   }
 
   & .playing-track {
