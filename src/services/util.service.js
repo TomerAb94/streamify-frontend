@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 export function makeId(length = 6) {
     var txt = ''
     var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -50,4 +52,13 @@ export function saveToStorage(key, value) {
 export function loadFromStorage(key) {
     const data = localStorage.getItem(key)
     return (data) ? JSON.parse(data) : undefined
+}
+
+export function useDebounce(func, timeout = 300) {
+  const timer = useRef()
+
+  return (...args) => {
+    clearTimeout(timer.current)
+    timer.current = setTimeout(() => func(...args), timeout)
+  }
 }

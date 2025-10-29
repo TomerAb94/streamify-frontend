@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service'
 import { logout } from '../store/actions/user.actions'
 import { SvgIcon } from './SvgIcon'
-import { debounce } from '../services/util.service'
+import { debounce,useDebounce } from '../services/util.service'
 
 export function AppHeader() {
   const user = useSelector((storeState) => storeState.userModule.user)
@@ -17,6 +17,7 @@ export function AppHeader() {
   const navigate = useNavigate()
   const location = useLocation()
 
+  const debouncedSearch = useDebounce((txt) => setSearchBy(txt), 300)
 
   useEffect(() => {
     if (searchBy.length > 0) {
@@ -33,10 +34,10 @@ export function AppHeader() {
 
   // window.filterBy = filterBy
   
-  function handleInput({ target }) {
-    const txt = target.value
-     debounce(() => setSearchBy(txt), 300)()
-  }
+ function handleInput({ target }) {
+  const txt = target.value
+  debouncedSearch(txt)
+}
 
   function backToHome() {
     navigate('/')
