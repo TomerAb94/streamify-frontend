@@ -1,3 +1,8 @@
+/* Hide mobile footer by default */
+.app-footer-mobile {
+  display: none;
+}
+
 .main-container {
   display: grid;
   grid-template-columns: minmax(100px, 420px) 1fr minmax(100px, 420px);
@@ -32,29 +37,99 @@
   /* height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight)); */
 }
 
+@media (max-width: 624px) {
+  .main-container {
+    grid-template-columns: auto;
+    grid-template-rows: repeat(auto-fill,1fr);
+    grid-template-areas:
+      'app-header app-header'
+      'station-index station-index'
+      'app-footer-mobile app-footer-mobile';
+     
+    .app-footer {
+      display: none;
+    }
+    .app-header {
+      .search-bar {
+        display: none;
+      }
+      /* .user-profile{
+      display: none;
+    } */
+      .logo {
+        display: none;
+      }
+    }
+    .station-list-container {
+      display: none;
+    }
+   
+  }
+  
+
+  .station-list {
+    grid-area: station-list;
+  }
+
+  .user-profile {
+    grid-area: 'user-profile';
+  }
+
+  .app-footer-mobile {
+    grid-area: app-footer-mobile;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--color-primary);
+    padding: 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      
+      svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+      }
+      
+      span {
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      
+      &:hover,
+      &.active {
+        color: var(--color-text-primary);
+      }
+    }
+  }
+
+}
+
+
+
 .sample-grid-layout {
   display: grid;
   grid-template-columns: 12px 1fr 12px;
 
   @media (min-width: 624px) {
-    grid-template-columns: minmax(12px, 1fr) minmax(auto, 624px) minmax(
-        12px,
-        1fr
-      );
+    grid-template-columns: minmax(12px, 1fr) minmax(auto, 624px) minmax(12px, 1fr);
   }
 
   @media (min-width: 784px) {
-    grid-template-columns: minmax(12px, 1fr) minmax(auto, 784px) minmax(
-        12px,
-        1fr
-      );
+    grid-template-columns: minmax(12px, 1fr) minmax(auto, 784px) minmax(12px, 1fr);
   }
 
   @media (min-width: 1048px) {
-    grid-template-columns: minmax(12px, 1fr) minmax(auto, 1048px) minmax(
-        12px,
-        1fr
-      );
+    grid-template-columns: minmax(12px, 1fr) minmax(auto, 1048px) minmax(12px, 1fr);
   }
 
   > * {
