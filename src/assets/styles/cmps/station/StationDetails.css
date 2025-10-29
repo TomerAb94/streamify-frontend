@@ -9,7 +9,6 @@
   &::-webkit-scrollbar {
     --webkit-appearance: none;
     appearance: none;
-
   }
 
   &:hover {
@@ -18,7 +17,7 @@
       background-color: hsla(0, 0%, 100%, 0.3);
       transition: background-color 1s;
     }
-    
+
     &::-webkit-scrollbar-thumb:hover {
       background-color: hsla(0, 0%, 100%, 0.4);
     }
@@ -109,11 +108,14 @@
           color: var(--color-text-secondary);
         }
       }
+
+      > .station-type {
+        text-transform: capitalize;
+      }
     }
   }
 
   & .station-btns-container {
-
     & .action-btns {
       position: relative;
       display: flex;
@@ -231,7 +233,10 @@
 
         & .search-track-row {
           display: grid;
-          grid-template-columns: minmax(180px, 4fr) minmax(120px, 2fr) minmax(120px, 1fr);
+          grid-template-columns: minmax(180px, 4fr) minmax(120px, 2fr) minmax(
+              120px,
+              1fr
+            );
           grid-template-rows: 100%;
           align-items: center;
           padding: 8px 16px;
@@ -269,7 +274,7 @@
           }
 
           & .search-track-album {
-           font-family: 'Circular-thin', 'Arimo';
+            font-family: 'Circular-thin', 'Arimo';
           }
 
           & .btn-container {

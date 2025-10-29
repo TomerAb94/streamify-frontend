@@ -161,7 +161,10 @@ export function StationDetails() {
   async function loadSearchedTracks(searchTerm = searchBy) {
     if (!searchTerm) return
     try {
-      const spotifyTracks = await spotifyService.getSpotifyItems('search',searchTerm)
+      const spotifyTracks = await spotifyService.getSpotifyItems(
+        'search',
+        searchTerm
+      )
       setSearchedTracks(spotifyTracks)
     } catch (err) {
       console.error('Error loading tracks:', err)
@@ -386,7 +389,7 @@ export function StationDetails() {
           )}
         </div>
         <div className="station-info">
-          <span>{station.stationType}</span>
+          <span className="station-type">{station.stationType}</span>
           <h1
             {...(station.tags[0] !== 'Liked Songs' && {
               onClick: () => openModalEdit(),
