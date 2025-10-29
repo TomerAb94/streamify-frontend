@@ -6,7 +6,9 @@
   background-color: var(--color-primary);
   flex-wrap: nowrap;
 
-  > * { min-width: 0; }
+  > * {
+    min-width: 0;
+  }
 
   /* Left area */
   & .track-info {
@@ -16,7 +18,7 @@
     width: 30%;
     padding-inline-start: 8px;
     gap: 8px;
-    
+
     > .track-cover {
       border-radius: 4px;
       width: 56px;
@@ -35,7 +37,7 @@
       display: flex;
       flex-direction: column;
       margin: 0 8px;
-       font-family: 'Circular-thini','Arimo';
+      font-family: 'Circular-thini', 'Arimo';
 
       > .title {
         font-size: 0.875rem;
@@ -140,7 +142,8 @@
         }
       }
 
-      & .shuffle-btn, & .repeat-btn {
+      & .shuffle-btn,
+      & .repeat-btn {
         position: relative;
         &.active {
           & svg {
@@ -150,7 +153,7 @@
           &::after {
             content: '';
             position: absolute;
-            top: 80%;
+            top: 90%;
             right: 50%;
             translate: 50%;
             width: 4px;
@@ -158,6 +161,16 @@
             background-color: var(--green-clicked);
             border-radius: 50%;
           }
+
+          &:hover {
+            & svg {
+              fill: var(--green-checked);
+            }
+          }
+        }
+
+        &:hover {
+          transform: scale(1);
         }
       }
     }
@@ -175,8 +188,12 @@
         font-family: Circular-thin;
         min-width: 50px;
 
-        &.right { text-align: right; }
-        &.left { text-align: left; }
+        &.right {
+          text-align: right;
+        }
+        &.left {
+          text-align: left;
+        }
       }
 
       > .time-range {
@@ -269,27 +286,6 @@
       }
     }
 
-    & .queue-btn {
-      position: relative;
-      &.active {
-        & svg {
-          fill: var(--green-clicked);
-        }
-
-        &::after {
-          content: '';
-          position: absolute;
-          top: 80%;
-          right: 50%;
-          translate: 50%;
-          width: 4px;
-          height: 4px;
-          background-color: var(--green-clicked);
-          border-radius: 50%;
-        }
-      }
-    }
-
     & .now-btn {
       position: relative;
       &.active {
@@ -307,6 +303,39 @@
           height: 4px;
           background-color: var(--green-clicked);
           border-radius: 50%;
+        }
+
+        &:hover {
+          & svg {
+            fill: var(--green-checked);
+          }
+        }
+      }
+    }
+
+    & .queue-btn {
+      position: relative;
+      &.active {
+        & svg {
+          fill: var(--green-clicked);
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 80%;
+          right: 50%;
+          translate: 50%;
+          width: 5px;
+          height: 4px;
+          background-color: var(--green-clicked);
+          border-radius: 50%;
+        }
+
+        &:hover {
+          & svg {
+            fill: var(--green-checked);
+          }
         }
       }
     }
