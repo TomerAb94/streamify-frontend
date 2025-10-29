@@ -189,7 +189,7 @@ export function StationSearch() {
       setCurrentStationId(album.spotifyId)
 
       // Get full album data including tracks
-      const fullAlbumData = await spotifyService.getSpotifyItems(album.spotifyId)
+      const fullAlbumData = await spotifyService.getSpotifyItems('getAlbumNewRelease',album.spotifyId)
       
       // Clear existing playlist
       if (playlist && playlist.length) {
