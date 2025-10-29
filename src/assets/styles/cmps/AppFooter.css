@@ -53,6 +53,7 @@
       padding: 8px;
 
       &:hover {
+        transform: scale(1);
         & svg {
           fill: var(--color-white-fff);
         }
@@ -234,6 +235,7 @@
     & .volume-container {
       display: flex;
       align-items: center;
+      padding-right:8px ;
 
       & .volume-input {
         --webkit-appearance: none;
