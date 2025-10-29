@@ -427,7 +427,7 @@ a.playlist-item {
   .station-btns-container {
     z-index: 1;
     & .action-btns {
-      padding-left: 32px;
+      padding-left: 22px;
       gap: 8px;
       & .play-btn {
         display: flex;

@@ -325,7 +325,7 @@
   }
   .station-btns-container {
     & .action-btns {
-      padding-left: 32px;
+      padding-left: 22px;
       gap: 8px;
       & .play-btn {
         display: flex;
