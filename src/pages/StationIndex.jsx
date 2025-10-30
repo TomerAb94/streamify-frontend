@@ -17,6 +17,7 @@ import { stationService } from '../services/station/'
 import { StationList } from '../cmps/StationList'
 import { AppHeader } from '../cmps/AppHeader'
 import { AppFooter } from '../cmps/AppFooter'
+import { AppFooterMobile } from '../cmps/AppFooter-mobile'
 import { ModalRemove } from '../cmps/ModalRemove'
 import { PlaylistQueue } from '../cmps/PlaylistQueue'
 import { NowPlayingView } from '../cmps/NowPlayingView'
@@ -222,6 +223,8 @@ export function StationIndex() {
         onAddStation={onAddStation}
         onOpenStationsContextMenu={onOpenStationsContextMenu}
       />
+
+      <AppFooterMobile />
 
       {contextMenuData?.isOpen && (
         <StationsContextMenu
