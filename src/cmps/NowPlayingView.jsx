@@ -221,12 +221,7 @@ export function NowPlayingView({ isOpen, onOpenQueue, onPlay }) {
         }
     }
 
-    function isAlbumClickable() {
-        console.log('albumId:', albumId)
-        console.log('resolvedAlbumId:', resolvedAlbumId)
-
-        return Boolean(albumId || resolvedAlbumId)
-    }
+    const canGo = Boolean(albumId || resolvedAlbumId)
 
     return (
         <aside
@@ -270,19 +265,25 @@ export function NowPlayingView({ isOpen, onOpenQueue, onPlay }) {
                             <div className="np-meta">
                                 <div className="np-meta-left">
                                     {albumId || resolvedAlbumId ? (
-                                        <NavLink
-                                            to={`/album/${
-                                                albumId || resolvedAlbumId
-                                            }`}
-                                            className="np-title np-link-underline"
+                                        <button
+                                            type="button"
+                                            onClick={handleGoAlbum}
+                                            className="np-title np-link-underline as-button"
+                                            title={
+                                                canGo
+                                                    ? 'Open album'
+                                                    : 'Resolving album…'
+                                            }
+                                            aria-disabled={!canGo}
+                                            data-clickable={canGo}
                                         >
                                             {currentTrack.name}
-                                        </NavLink>
+                                        </button>
                                     ) : (
                                         <button
                                             type="button"
                                             onClick={handleGoAlbum}
-                                            className="np-title np-link-underline"
+                                            className="np-title np-link-underline as-button"
                                             title="Open album"
                                         >
                                             {currentTrack.name}

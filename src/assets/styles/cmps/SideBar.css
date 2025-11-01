@@ -715,4 +715,15 @@
             text-underline-offset: 2px;
         }
     }
+
+    & .np-title.as-button {
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        text-align: left;
+        border-radius: 0;
+        transform: none;
+    }
 }
