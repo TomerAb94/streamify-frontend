@@ -1,11 +1,29 @@
 & .queue {
     display: none;
-    scrollbar-width: thin;
-    scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
     background-color: var(--color-secondary);
     grid-area: side-bar;
     border-radius: 8px;
     overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      --wbkit-appearance: none;
+      appearance: none;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        width: 15px;
+        background-color: hsla(0, 0%, 100%, 0.3);
+        transition: background-color 1s;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: hsla(0, 0%, 100%, 0.4);
+      }
+      &::-webkit-scrollbar-thumb:active {
+        background-color: hsla(0, 0%, 100%, 0.6);
+      }
+    }
 
     &.open {
         display: flex;
@@ -64,6 +82,26 @@
         gap: 24px;
         overflow-y: scroll;
 
+        &::-webkit-scrollbar {
+          --wbkit-appearance: none;
+          appearance: none;
+        }
+
+        &:hover {
+          &::-webkit-scrollbar-thumb {
+            width: 15px;
+            background-color: hsla(0, 0%, 100%, 0.3);
+            transition: background-color 1s;
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background-color: hsla(0, 0%, 100%, 0.4);
+          }
+          &::-webkit-scrollbar-thumb:active {
+            background-color: hsla(0, 0%, 100%, 0.6);
+          }
+        }
+
         & .track-area {
             display: flex;
             flex-direction: column;
@@ -80,12 +118,30 @@
 
 & .now-playing {
     display: none;
-    scrollbar-width: thin;
-    scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
     background-color: var(--color-secondary);
     grid-area: side-bar;
     border-radius: 8px;
     overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      --wbkit-appearance: none;
+      appearance: none;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        width: 15px;
+        background-color: hsla(0, 0%, 100%, 0.3);
+        transition: background-color 1s;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: hsla(0, 0%, 100%, 0.4);
+      }
+      &::-webkit-scrollbar-thumb:active {
+        background-color: hsla(0, 0%, 100%, 0.6);
+      }
+    }
 
     container-type: inline-size;
     container-name: nowPlayingSidebar;
@@ -155,8 +211,26 @@
         gap: 16px;
         padding: 0px 16px 16px 16px;
         overflow-y: auto;
-        scrollbar-width: thin;
-        scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
+
+        &::-webkit-scrollbar {
+          --wbkit-appearance: none;
+          appearance: none;
+        }
+
+        &:hover {
+          &::-webkit-scrollbar-thumb {
+            width: 15px;
+            background-color: hsla(0, 0%, 100%, 0.3);
+            transition: background-color 1s;
+          }
+
+          &::-webkit-scrollbar-thumb:hover {
+            background-color: hsla(0, 0%, 100%, 0.4);
+          }
+          &::-webkit-scrollbar-thumb:active {
+            background-color: hsla(0, 0%, 100%, 0.6);
+          }
+        }
     }
 
     .np-art {
@@ -211,6 +285,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                font-family: 'Circular-thini', 'Arimo';
             }
 
             > .np-artists {
