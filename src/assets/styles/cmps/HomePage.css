@@ -388,6 +388,9 @@
   .albums-container {
     grid-template-columns: repeat(auto-fit, 190px);
   }
+  .genres-list {
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+  }
 
   .user-station {
     height: 48px;
@@ -422,6 +425,7 @@
   position: absolute;
   height: 256px;
   transition-property: background;
+  transition-duration: 1s;
   -webkit-transition-duration: 1s;
   opacity: 1;
 }

@@ -41,7 +41,7 @@
 .genres-list {
   grid-area: station-index;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
   gap: 16px;
   justify-items: center;
   align-items: center;
