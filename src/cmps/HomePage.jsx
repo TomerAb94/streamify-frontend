@@ -69,7 +69,7 @@ export function HomePage() {
 
   async function loadArtists() {
     try {
-      const artists = await spotifyService.getSpotifyItems('artists', 'israel best artists')
+      const artists = await spotifyService.getSpotifyItems('artists', 'האמנים המובילים של ישראל')
       // console.log('artists:', artists)
       return artists
     } catch (error) {
