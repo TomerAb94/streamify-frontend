@@ -233,10 +233,10 @@ export function NowPlayingView({ isOpen, onOpenQueue, onPlay }) {
                 <h1
                     className="np-heading"
                     title={
-                        hasTrack ? currentTrack.name : 'No song playing yet...'
+                        hasTrack ? currentTrack.album.name : 'No song playing yet...'
                     }
                 >
-                    {hasTrack ? currentTrack.name : 'No song playing yet...'}
+                    {hasTrack ? currentTrack.album.name : 'No song playing yet...'}
                 </h1>
             </header>
 
