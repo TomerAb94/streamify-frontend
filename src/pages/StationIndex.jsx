@@ -207,11 +207,11 @@ export function StationIndex() {
       />
 
       <NowPlayingView
-        currentTrack={currentTrack}
         isPlaying={isPlaying}
         onPlay={onPlay}
         onPause={onPause}
         onClose={closePanel}
+        onOpenQueue={() => setOpenPanel('queue')}
         isOpen={openPanel === 'now'}
       />
 

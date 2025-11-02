@@ -97,19 +97,17 @@
 
     &.scrolled {
         > .np-header {
-            box-shadow: 0 4px 4px rgba(0, 0, 0, 0.45),
-                0 10px 25px rgba(0, 0, 0, 0.4), 0 25px 50px rgba(0, 0, 0, 0.35);
-
-            &::after {
-                opacity: 1;
-            }
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        &::after {
+            opacity: 1;
         }
     }
 
     > .np-header {
         position: sticky;
         top: 0;
-        z-index: 1;
         flex: 0 0 64px;
         padding: 0 16px;
         display: flex;
@@ -129,7 +127,7 @@
             left: 0;
             right: 0;
             bottom: -1px;
-            height: 24px; 
+            height: 16px;
             pointer-events: none;
             background: linear-gradient(
                 to bottom,
@@ -155,22 +153,42 @@
         display: flex;
         flex-direction: column;
         gap: 16px;
-        padding: 0px 16px;
+        padding: 0px 16px 16px 16px;
         overflow-y: auto;
         scrollbar-width: thin;
         scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
     }
 
     .np-art {
-        > img {
-            width: 100%;
-            height: auto;
+        .np-cover-btn {
             display: block;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
             border-radius: 8px;
+            transform: none;
+
+            img {
+                width: 100%;
+                height: auto;
+                display: block;
+                border-radius: 8px;
+            }
+            &:hover > img {
+                transform: none;
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--green-clicked);
+                outline-offset: 2px;
+            }
         }
-        > .art-placeholder {
+
+        /* optional fallback style if image missing */
+        .art-placeholder {
             width: 100%;
-            aspect-ratio: 1/1;
+            aspect-ratio: 1 / 1;
             border-radius: 8px;
             background: var(--color-secondary-3);
         }
@@ -309,7 +327,21 @@
             line-height: 1.25;
         }
 
+        &.np-link-underline {
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.15s ease, text-decoration-color 0.15s ease;
+
+            &:hover {
+                text-decoration: underline;
+                text-decoration-color: var(--color-white-fff);
+                text-underline-offset: 2px;
+                color: var(--color-white-hover);
+            }
+        }
+
         > .np-artist-row {
+            min-width: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -318,24 +350,22 @@
             padding-bottom: 12px;
 
             > .np-artist-metric {
-                margin: 0;
                 color: var(--color-text-secondary);
                 font-family: 'Circular-thini', 'Arimo';
                 font-size: 1rem;
-
-                > span {
-                    margin-inline-start: 4px;
-                }
+                word-break: normal;
+                min-width: 0;
             }
 
             > .np-artist-follow {
-                padding: 6px 12px;
+                padding: 4px 16px;
+                min-height: 32px;
                 border-radius: 9999px;
                 background: transparent;
                 border: 1px solid hsla(0, 0%, 100%, 0.3);
                 color: var(--color-white-fff);
                 font-size: 0.9rem;
-                transition: all 0.1s ease;
+                transition: border-color 0.12s ease;
                 margin: 0;
 
                 &:hover {
@@ -343,8 +373,11 @@
                 }
 
                 &.following {
+                    color: var(--color-white-fff);
+                    border-color: var(--color-text-secondary);
+
                     &:hover {
-                        border-color: var(--color-text-secondary);
+                        border-color: var(--color-white-fff);
                     }
                 }
             }
@@ -436,7 +469,8 @@
     }
 
     & .np-credits-follow {
-        padding: 6px 12px;
+        padding: 4px 16px;
+        min-height: 32px;
         border-radius: 9999px;
         background: transparent;
         border: 1px solid hsla(0, 0%, 100%, 0.3);
@@ -458,5 +492,238 @@
                 border-color: var(--color-white-fff);
             }
         }
+    }
+    & .np-next-card {
+        background: var(--color-padding-btn);
+        border-radius: 8px;
+        padding: 16px 16px 8px 16px;
+        display: grid;
+        gap: 8px;
+    }
+
+    & .np-next-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 25px;
+    }
+
+    & .np-next-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    & .np-open-queue {
+        background: transparent;
+        border: 0px;
+        color: var(--color-text-secondary);
+        font-size: 0.875rem;
+        border-radius: 9999px;
+        padding: 0;
+        margin: 0 0 0 10px;
+        cursor: pointer;
+        min-block-size: 32px;
+    }
+    & .np-open-queue:hover {
+        color: var(--color-white-hover);
+        text-decoration: underline;
+    }
+
+    & .np-next-box-hover {
+        margin-inline: -8px -8px;
+    }
+
+    & .np-next-box-hover:hover {
+        background: var(--color-secondary-3);
+        border-radius: 8px;
+    }
+
+    & .np-next-row {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        background: transparent;
+        border: none;
+        text-align: left;
+        padding: 8px;
+        margin: 0px;
+        border-radius: 8px;
+        cursor: pointer;
+        transform: none;
+
+        &:hover {
+            .np-next-art {
+                filter: brightness(0.6);
+            }
+
+            .np-next-overlay {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    }
+
+    & .np-next-art {
+        width: 48px;
+        height: 48px;
+        border-radius: 4px;
+        display: block;
+    }
+
+    & .np-next-art-wrap {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+        border-radius: 4px;
+        overflow: hidden;
+
+        & .np-next-overlay {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+
+            .playHomePage {
+                width: 24px;
+                height: 24px;
+                fill: var(--color-white-fff);
+                display: block;
+            }
+        }
+    }
+
+    & .np-next-text {
+        min-width: 0;
+        display: grid;
+        gap: 2px;
+    }
+
+    & .np-next-name {
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: 'Circular-thini', 'Arimo';
+        font-size: 1rem;
+        color: var(--color-white-fff);
+    }
+
+    & .np-next-sub {
+        color: var(--color-text-secondary);
+        font-family: 'Circular-thini', 'Arimo';
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    & .np-next-empty {
+        color: var(--color-text-secondary);
+        font-size: 0.9rem;
+        padding-inline: 8px;
+    }
+
+    & .np-cover-btn {
+        /* reset button look */
+        appearance: none;
+        -webkit-appearance: none;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        display: block;
+        width: 100%;
+        border-radius: 8px;
+        cursor: pointer;
+
+        > img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: transform 160ms ease;
+        }
+
+        &:hover > img {
+            transform: scale(1.02);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--color-white-fff);
+            outline-offset: 2px;
+            border-radius: 10px;
+        }
+    }
+
+    /* 3) title-as-link OR title-as-button (same visuals) */
+    & .np-title {
+        margin: 0;
+        font-size: 1.5rem;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &.np-link-underline {
+            color: var(--color-white-fff);
+            cursor: pointer;
+            text-decoration: none;
+            transition: text-underline-offset 120ms ease, color 120ms ease,
+                text-decoration-color 120ms ease;
+
+            &:hover {
+                color: var(--color-white-hover);
+                /* text-decoration: underline; */
+                text-decoration-color: var(--color-white-fff);
+                text-underline-offset: 2px;
+            }
+        }
+
+        /* reset when it's a <button class="np-title ..."> */
+        &:where(button) {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            border: 0;
+            padding: 0;
+            text-align: left; /* keep ellipsis working nicely */
+        }
+
+        &:where(button):focus-visible {
+            outline: 2px solid var(--color-white-fff);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+    }
+
+    /* 4) underline utility should style both <a> and <button> uniformly */
+    & .np-link-underline {
+        text-decoration: none;
+        transition: text-underline-offset 120ms ease, color 120ms ease,
+            text-decoration-color 120ms ease;
+
+        &:hover {
+            text-decoration: underline;
+            text-decoration-color: var(--color-white-fff);
+            text-underline-offset: 2px;
+        }
+    }
+
+    & .np-title.as-button {
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        text-align: left;
+        border-radius: 0;
+        transform: none;
     }
 }
