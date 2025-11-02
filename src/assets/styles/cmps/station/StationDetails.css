@@ -437,3 +437,32 @@
   position: relative;
   z-index: 1;
 }
+
+@media (max-width: 624px) {
+  .station-details{
+
+    > .details-header{
+      height: 100px;
+      
+      > .station-img{
+        display: none;
+
+        > img{
+          display: none;
+        }
+      }
+
+      > .station-info{
+        > .station-type{
+          display: none;
+        }
+        > h1{
+          font-size: 2rem;
+        }
+        > .creator-info{
+          display: none;
+        }
+      }
+    }
+  }
+}
