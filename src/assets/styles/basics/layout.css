@@ -63,7 +63,22 @@
     .station-list-container {
       display: none;
     }
+     &.sidebar-open {
+    grid-template-columns: auto;
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-areas:
+       'app-header app-header'
+      'station-index station-index'
+      'app-footer-mobile app-footer-mobile';
+      
+    .now-playing{
+        display: none;
+      }  
   }
+  
+  }
+
+  
 
   .user-profile {
     grid-area: 'user-profile';
@@ -110,6 +125,7 @@
       display: none;
     }
   }
+ 
 }
 
 .sample-grid-layout {
