@@ -431,7 +431,7 @@
 
 @media (max-width: 667px) {
   .user-stations {
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
     padding-left: 12px;
     padding-right: 12px;
   }
@@ -443,54 +443,53 @@
     padding-left: 12px;
     width: 100vw;
   }
-  .user-stations-background{
+  .user-stations-background {
     width: 100vw;
   }
 
   .home {
-
     width: 100vw;
 
     .albums-container {
-      
       gap: 8px;
       padding-left: 12px;
       padding-right: 12px;
       overscroll-behavior: contain;
       width: 100vw;
-      
-     
-        grid-template-columns: repeat(2, minmax(150px, 1fr));
-     
+
+      grid-template-columns: repeat(2, minmax(150px, 1fr));
+
       .album-item {
         padding: 0;
         &:hover {
           background-color: transparent;
         }
       }
-     
-        & .artists-container {
+    }
+
+    .home-content {
+      width: 100vw;
+      .stations-type {
+        display: none;
+      }
+      .new-artists-header {
+        padding-left: 12px;
+      }
+      & .artists-container {
+        padding: 0;
+        gap: 0;
         & > .artist-item {
-            &:hover {
-                background-color: transparent;
-            }
+          &:hover {
+            background-color: transparent;
+          }
         }
+      }
+    }
+    .station-title {
+      display: flex;
+      flex-wrap: wrap;
+      white-space: normal;
+      word-break: break-word;
     }
   }
-  
-      .home-content {
-        width: 100vw;
-        .stations-type{
-          display: none;
-        }
-      }
-      .station-title{
-          display: flex;
-  flex-wrap: wrap;
-  white-space: normal;
-  word-break: break-word; 
-      }
-      
-}
-
 }
