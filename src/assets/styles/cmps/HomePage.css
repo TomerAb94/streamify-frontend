@@ -492,4 +492,7 @@
       word-break: break-word;
     }
   }
+  .app-footer-mobile {
+    width: 100vw; 
+}
 }
