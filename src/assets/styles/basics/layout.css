@@ -37,7 +37,7 @@
   /* height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight)); */
 }
 
-@media (max-width: 624px) {
+@media (max-width: 667px) {
   .main-container {
     grid-template-columns: auto;
     grid-template-rows: repeat(auto-fill, 1fr);
@@ -45,7 +45,7 @@
       'app-header app-header'
       'station-index station-index'
       'app-footer-mobile app-footer-mobile';
-
+    padding: 0;
     .app-footer {
       display: none;
     }
