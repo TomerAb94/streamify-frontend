@@ -75,6 +75,12 @@
         display: none;
       }  
   }
+
+  .app-header{
+    .stations-type{
+      display: flex;
+      gap: 8px;}
+  }
   
   }
 

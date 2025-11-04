@@ -78,6 +78,7 @@ export function AppHeader() {
             />
           </svg>
         </NavLink>
+    
       </div>
 
       <div className="search-bar">
@@ -149,6 +150,7 @@ export function AppHeader() {
           </button>
         )}
       </div>
+     <div className="stations-type"><button className="active">All</button><button>Music</button><button>Podcasts</button></div>
     </div>
   )
 }

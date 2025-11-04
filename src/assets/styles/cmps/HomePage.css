@@ -488,7 +488,7 @@
           display: flex;
   flex-wrap: wrap;
   white-space: normal;
-  word-break: break-word; /* למקרה שאין רווחים */
+  word-break: break-word; 
       }
       
 }
