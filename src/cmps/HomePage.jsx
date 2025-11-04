@@ -286,7 +286,7 @@ export function HomePage() {
                     </div>
                   )}
 
-                  {station.title}
+                  <div className="station-title">{station.title}</div>
                 </div>
                 {isStationPlaying ? (
                   hoveredStationId === station._id ? (
