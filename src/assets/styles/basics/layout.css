@@ -116,7 +116,7 @@
       color: var(--color-white-fff);
       font-weight: 600;
       z-index: 1;
-      
+     
 
       .now-playing-mobile-title{
        font-family: 'Circular-thini', 'Arimo';
@@ -129,6 +129,24 @@
         color: var(--color-text-secondary);
       }
 
+     .play-container,.pause-container{
+        position: absolute;
+        right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        width: 20px;
+        height: 20px;
+        color: var(--color-white-fff);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+          fill: white;
+       padding-bottom: 8px;
+      }
+
+      
+     
       .now-playing-mobile-img {
         width: 40px;
         height: 40px;
@@ -140,7 +158,9 @@
           object-fit: cover;
         }
       }
+ 
     }
+ 
     }
 
 
@@ -234,3 +254,4 @@
     grid-row: span 3;
   }
 }
+

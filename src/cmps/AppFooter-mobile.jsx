@@ -4,6 +4,8 @@ import { SvgIcon } from './SvgIcon'
 import { FastAverageColor } from 'fast-average-color'
 import { NavLink } from 'react-router-dom'
 
+import {setIsPlaying} from '../store/actions/track.actions'
+
 export function AppFooterMobile() {
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
@@ -27,6 +29,16 @@ export function AppFooterMobile() {
     }
   }, [currentTrack?.spotifyId])
 
+  function onPlay(event) {
+    event.stopPropagation()
+    setIsPlaying(true)
+  }
+
+  function onPause(event) {
+    event.stopPropagation()
+    setIsPlaying(false)
+  }
+
   return (
     <div className="app-footer-mobile">
       {currentTrack && (
@@ -36,6 +48,11 @@ export function AppFooterMobile() {
             <div className="now-playing-mobile-title">{currentTrack?.name}</div>
             <div className="now-playing-mobile-artist">{currentTrack?.artists[0].name}</div>
           </div>
+          {!isPlaying ? (
+            <SvgIcon iconName="play" className="play-container" onClick={(event) => onPlay(event)} />
+          ) : (
+            <SvgIcon iconName="pause" className="pause-container" onClick={(event) => onPause(event)} />
+          )}
         </div>
       )}
 
