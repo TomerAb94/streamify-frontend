@@ -101,22 +101,33 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 
     .now-playing-mobile {
+      
       display: flex;
       gap: 8px;
-      width: 100%;
+      width: calc(100% - 16px);
       height: 50px;
       position: absolute;
-      top: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: red;
+      top: -58px;
+    
       padding-left: 12px;
       padding-top: 5px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      color: white;
+      color: var(--color-white-fff);
       font-weight: 600;
       z-index: 1;
+      
+
+      .now-playing-mobile-title{
+       font-family: 'Circular-thini', 'Arimo';
+       font-weight: 100;
+      }
+
+      .now-playing-mobile-artist{
+        font-size: 0.9rem;
+        font-family: 'Circular-thini', 'Arimo-light';
+        color: var(--color-text-secondary);
+      }
 
       .now-playing-mobile-img {
         width: 40px;

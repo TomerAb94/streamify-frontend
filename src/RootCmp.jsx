@@ -106,7 +106,8 @@ export function RootCmp() {
             currentTrack?.youtubeId || ''
           }`}
           playing={isPlaying}
-          volume={volume}
+          // volume={volume}
+          volume={0.02}
           controls={false} // Hide native controls
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleEnded}
