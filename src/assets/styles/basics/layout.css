@@ -39,6 +39,7 @@
 
 @media (max-width: 667px) {
   .main-container {
+    height: 100dvh;
     grid-template-columns: auto;
     grid-template-rows: repeat(auto-fill, 1fr);
     grid-template-areas:
