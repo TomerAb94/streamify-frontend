@@ -68,7 +68,8 @@ export function ArtistDetails() {
 
   async function loadArtist(artistId) {
     const artist = await spotifyService.getSpotifyItems('artistData', artistId)
-    setArtist(artist)
+    console.log('artist:', artist)
+      setArtist(artist)
   }
 
   async function onPlay(track) {
@@ -90,7 +91,7 @@ export function ArtistDetails() {
             index > 0
               ? artist.topTracks[index - 1].spotifyId
               : artist.topTracks[artist.topTracks.length - 1].spotifyId,
-          youtubeId: await getYoutubeId(track.name),
+          youtubeId: await getYoutubeId(track.artists[0]?.name + ' ' + track.name),
         }
       })
     )
@@ -164,7 +165,7 @@ export function ArtistDetails() {
             index > 0
               ? tracksToPlay[index - 1].spotifyId
               : tracksToPlay[tracksToPlay.length - 1].spotifyId,
-          youtubeId: await getYoutubeId(track.name),
+          youtubeId: await getYoutubeId(track.artists[0]?.name + ' ' + track.name),
         }
       })
     )

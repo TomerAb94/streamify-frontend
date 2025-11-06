@@ -123,6 +123,8 @@ export function HomePage() {
         await setTracks([])
       }
 
+      console.log('fullArtistData:', fullArtistData)
+
       const playlistQueue = await Promise.all(
         fullArtistData.topTracks.map(async (track, index) => {
           return {
@@ -135,15 +137,16 @@ export function HomePage() {
               index > 0
                 ? fullArtistData.topTracks[index - 1].spotifyId
                 : fullArtistData.topTracks[fullArtistData.topTracks.length - 1].spotifyId,
-            youtubeId: await getYoutubeId(track.name),
+            
+            youtubeId: await getYoutubeId(track.artists[0]?.name + ' ' + track.name),
             spotifyArtistId: artist.spotifyId,
           }
         })
       )
-
+      
       // Set the entire playlist at once
       await setTracks(playlistQueue)
-
+      console.log('playlistQueue:', playlistQueue)
       // Set the first track and start playing
       const firstTrack = playlistQueue[0]
       if (firstTrack) {
@@ -156,6 +159,7 @@ export function HomePage() {
   }
 
   async function getYoutubeId(str) {
+    console.log('str:', str)
     try {
       const res = await youtubeService.getYoutubeItems(str)
       return res?.[0]?.id || null
@@ -213,7 +217,7 @@ export function HomePage() {
       if (playListToPlay && playListToPlay.length) {
         await setTracks([])
       }
-
+      
       const youtubeId = await getYoutubeId(playlistQueue[0].name + ' ' + playlistQueue[0].artists[0]?.name)
       const trackWithYoutube = {
         ...playlistQueue[0],
