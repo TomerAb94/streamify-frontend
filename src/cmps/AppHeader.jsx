@@ -128,6 +128,8 @@ export function AppHeader() {
         </div>
       </div>
 
+          
+
       <div className="user-profile">
         {!user && (
           <>
@@ -150,7 +152,7 @@ export function AppHeader() {
           </button>
         )}
       </div>
-     <div className="stations-type"><button className="active">All</button><button>Music</button><button>Podcasts</button></div>
+ <div className="stations-type"><button className="active">All</button><button>Music</button><button>Podcasts</button></div>
     </div>
   )
 }

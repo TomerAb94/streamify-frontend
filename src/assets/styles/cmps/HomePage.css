@@ -437,7 +437,12 @@
   }
   .stations-type {
     padding-left: 12px;
-    width: 100vw;
+    width: 100%;
+    padding-right: 0;
+ 
+    button{
+      font-size: 12px;
+    }
   }
   .new-albums-header {
     padding-left: 12px;
