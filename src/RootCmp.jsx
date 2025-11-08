@@ -54,18 +54,18 @@ export function RootCmp() {
       return 'home-page'
     } else if (location.pathname === '/search') {
       return 'browse-page'
-    } else if (location.pathname.startsWith('/search/')) {
-      return 'search-page'
+    } else if (location.pathname.startsWith('/search')) {
+      return 'browse-page'
     } else if (location.pathname === '/library') {
       return 'library-page'
     } else if (location.pathname.startsWith('/station/')) {
-      return 'station-page'
+      return 'inner-page'
     } else if (location.pathname.startsWith('/album/')) {
-      return 'album-page'
+      return 'inner-page'
     } else if (location.pathname.startsWith('/artist/')) {
-      return 'artist-page'
+      return 'inner-page'
     } else if (location.pathname.startsWith('/browse/')) {
-      return 'browse-page'
+      return 'inner-page'
     }
     return ''
   }
@@ -134,8 +134,8 @@ export function RootCmp() {
             currentTrack?.youtubeId || ''
           }`}
           playing={isPlaying}
-          // volume={volume}
-          volume={0.02}
+          volume={volume}
+          // volume={0.02}
           controls={false} // Hide native controls
           onTimeUpdate={handleTimeUpdate}
           onEnded={handleEnded}

@@ -135,6 +135,9 @@
 .stations-type{
   display: none;
 }
+.back-btn{
+  display: none;
+}
 }
 
 .search-bar {

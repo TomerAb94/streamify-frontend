@@ -153,6 +153,7 @@ export function AppHeader() {
         )}
       </div>
  <div className="stations-type"><button className="active">All</button><button>Music</button><button>Podcasts</button></div>
+   <div className='back-btn' onClick={() => navigate(-1)}><SvgIcon iconName="back"/></div>
     </div>
   )
 }

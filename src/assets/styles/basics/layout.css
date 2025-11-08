@@ -132,17 +132,27 @@
     }
   }
 
-  &.browse-page{
+  &.browse-page,&.artist-page{
     .app-header{
         grid-template-areas: 
       'search-bar';
     }
     .user-profile,.stations-type{
-      display: none;}
+      display: none;
+    }
 
       .genres-list,.browse-header{
         width: 100vw;
       }
+  }
+
+  &.inner-page{
+     .user-profile,.stations-type,.search-bar{
+      display: none;
+    }
+    .back-btn{
+      display: block;
+    }
   }
   
   }
