@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 
 import {
   loadStations,
@@ -24,7 +24,7 @@ import { NowPlayingView } from '../cmps/NowPlayingView'
 import { StationsContextMenu } from '../cmps/StationsContextMenu'
 import { setCurrentTrack, setIsPlaying } from '../store/actions/track.actions'
 
-export function StationIndex() {
+export function StationIndex({ location: locationClass }) {
   const [filterBy, setFilterBy] = useState(stationService.getDefaultFilter())
   const [isModalRemoveOpen, setIsModalRemoveOpen] = useState(false)
   const [stationToRemove, setStationToRemove] = useState(null)
@@ -32,6 +32,7 @@ export function StationIndex() {
   const [contextMenuData, setContextMenuData] = useState(null) // { track, isOpen, x, y } 
   
   const navigate = useNavigate()
+  const location = useLocation()
 
   const stations = useSelector(
     (storeState) => storeState.stationModule.stations
@@ -171,7 +172,7 @@ export function StationIndex() {
   return (
     <section
       ref={mainContainerRef}
-      className={`main-container ${openPanel ? 'sidebar-open' : ''}`}
+      className={`main-container ${openPanel ? 'sidebar-open' : ''} ${locationClass || ''}`}
       onClick={(ev) => {
         // Close context menu when clicking anywhere outside of it
         if (contextMenuData?.isOpen) {

@@ -41,7 +41,7 @@
   .main-container {
     height: 100dvh;
     grid-template-columns: auto;
-    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-rows: auto auto var(--FooterHeight);
     grid-template-areas:
       'app-header app-header'
       'station-index station-index'
@@ -53,8 +53,27 @@
     .app-header {
       padding-left:12px;
       padding-right:12px;
+      height: auto;
+     
+      grid-template-areas: 
+      'search-bar'
+      'user-profile'
+      'stations-type';
       .search-bar {
-        display: none;
+        grid-area: search-bar;
+        /* display: none; */
+        /* width: 100vw; */
+        .search-wrapper{
+          width: calc(100vw - 24px);
+        }
+        .home-btn-container{
+          display: none;
+        }
+        .search-wrapper{
+         .browse{
+          display: none;
+         }
+        }
       }
       /* .user-profile{
       display: none;
@@ -63,7 +82,7 @@
         display: none;
       }
       .user-profile{
-        
+        grid-area: 'user-profile';
         .login-link{
           height:32px;
           font-size: 12px;
@@ -92,9 +111,38 @@
   }
 
   .app-header{
+    height: 64px;
     .stations-type{
+      grid-area: stations-type;
       display: flex;
       gap: 8px;}
+      
+  }
+
+  &.home-page{
+    .app-header{
+        grid-template-areas: 
+      
+      'user-profile stations-type';
+   
+      
+    }
+    .search-bar{
+      display: none;
+    }
+  }
+
+  &.browse-page{
+    .app-header{
+        grid-template-areas: 
+      'search-bar';
+    }
+    .user-profile,.stations-type{
+      display: none;}
+
+      .genres-list,.browse-header{
+        width: 100vw;
+      }
   }
   
   }
@@ -130,7 +178,7 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       color: var(--color-white-fff);
       font-weight: 600;
-      z-index: 1;
+      z-index: 10;
      
 
       .now-playing-mobile-title{
@@ -205,6 +253,8 @@
         color: var(--color-text-primary);
       }
     }
+
+
   }
   * {
     ::-webkit-scrollbar {

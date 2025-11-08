@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Routes, Route } from 'react-router'
 import { useSelector } from 'react-redux'
 import ReactPlayer from 'react-player'
@@ -41,6 +42,33 @@ export function RootCmp() {
 
   // A ref to the ReactPlayer instance, required for seekTo() on player
   const playerRef = useRef(null)
+  const location = useLocation()
+
+
+ 
+  
+
+  function onChangeLocation(location) {
+   
+    if (location.pathname === '/') {
+      return 'home-page'
+    } else if (location.pathname === '/search') {
+      return 'browse-page'
+    } else if (location.pathname.startsWith('/search/')) {
+      return 'search-page'
+    } else if (location.pathname === '/library') {
+      return 'library-page'
+    } else if (location.pathname.startsWith('/station/')) {
+      return 'station-page'
+    } else if (location.pathname.startsWith('/album/')) {
+      return 'album-page'
+    } else if (location.pathname.startsWith('/artist/')) {
+      return 'artist-page'
+    } else if (location.pathname.startsWith('/browse/')) {
+      return 'browse-page'
+    }
+    return ''
+  }
 
   // Sync the player's progress (seconds played) - from player → to Redux
   const handleTimeUpdate = useCallback(() => {
@@ -77,7 +105,7 @@ export function RootCmp() {
     <>
       <UserMsg />
       <Routes>
-        <Route element={<StationIndex />}>
+        <Route element={<StationIndex location={onChangeLocation(location)} />}>
           <Route path="" element={<HomePage />} />
           <Route path="/album/:albumId"  element={<PlayList/>} />
           <Route path="/search" element={<Browse />} />
