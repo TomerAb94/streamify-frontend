@@ -152,6 +152,7 @@
     }
     .back-btn{
       display: block;
+      fill: var( --color-text-secondary);
     }
   }
   
