@@ -171,6 +171,7 @@
             display: flex;
             position: fixed; 
             top: 40px;
+           
             left: 50%;
             transform: translate(-50%, -50%);
             
@@ -178,6 +179,10 @@
             width: 100%;
             justify-content: center;
             align-items: center;
+
+            .header{
+               padding-left: 0;
+            }
       
           }
         }
@@ -214,7 +219,8 @@
             top: 40px;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: red;
+            padding-left: 0;
+            padding-left: 0px;
             z-index: 10;
           }
         }
