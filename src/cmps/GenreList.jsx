@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
@@ -19,9 +19,37 @@ export function GenreList() {
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
 
+
+  const [isHeaderVisible, setIsHeaderVisible] = useState()
+  const myRef = useRef()
+
   useEffect(() => {
     loadPlaylists()
   }, [params.genreId])
+
+
+  useEffect(() => {
+    if (!myRef.current) return
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting & (entry.isIntersecting !== isHeaderVisible)) {
+          // console.log('הכותרת יצאה מהמסך!', myRef.current)
+          setIsHeaderVisible(false)
+        } else {
+          // console.log('הכותרת נראית במסך!', myRef.current)
+          setIsHeaderVisible(true)
+        }
+      })
+    })
+
+    observer.observe(myRef.current)
+
+    // cleanup function
+    return () => {
+      observer.disconnect()
+    }
+  }, [playlists])
 
   async function loadPlaylists() {
     try {
@@ -100,12 +128,17 @@ export function GenreList() {
   return (
     <>
       <div className="browse-container">
+          <span className='transparent-div' ref={myRef}></span>
         <div
-          className="genre-header"
+          className={`genre-header ${isHeaderVisible ? '' : 'not-visible'}`}
           style={{ background: `linear-gradient(to bottom,${color}, rgba(0, 0, 0, 0.01) 100%)` }}
         >
-          <h1 className="header">{genreName}</h1>
+         
+          <h1 className={`header `}>{genreName}</h1>
+         
         </div>
+
+
         <div className="playlists-container">
           {playlists.map((station) => {
             const isStationPlaying = isPlaylistPlaying(station.id)

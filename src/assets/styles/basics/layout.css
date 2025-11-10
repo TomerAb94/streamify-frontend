@@ -155,7 +155,7 @@
       }
       .back-btn {
         display: block;
-        fill: var(--color-text-secondary);
+        fill: var(--color-white-fff);
       }
       .app-header {
         grid-template-areas: none;
@@ -166,6 +166,20 @@
       .browse-container {
         .genre-header {
           height: 15vh;
+
+          &.not-visible {
+            display: flex;
+            position: fixed; 
+            top: 40px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+            z-index: 2;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+      
+          }
         }
         .playlists-container {
           grid-template-columns: repeat(2, 1fr);
@@ -194,6 +208,15 @@
           margin: 0;
           padding-left: 12px;
           padding-bottom: 12px;
+
+          &.not-visible {
+            position: fixed; /* או absolute אם בתוך קונטיינר */
+            top: 40px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            z-index: 10;
+          }
         }
       }
     }
