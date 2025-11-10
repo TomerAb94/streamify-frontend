@@ -158,6 +158,7 @@
 .playlists-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  
   border-radius: 12px;
   overflow-y: auto;
 }
@@ -281,7 +282,7 @@
 a.playlist-item {
   position: relative;
   display: grid;
-  grid-template-rows: 200px 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr;
   padding: 12px;
   border-radius: 8px;
   background-color: transparent;
@@ -294,11 +295,12 @@ a.playlist-item {
   position: relative;
   img {
     position: relative;
-    height: 100%;
-    width: 100%;
+    /* height: 100%;
+    width: 100%; */
     border-radius: 6px;
     object-fit: cover;
     transition: transform 0.3s ease;
+    aspect-ratio: 1/1;
   }
   .play-container {
     position: absolute;
