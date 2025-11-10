@@ -141,6 +141,8 @@
       .genres-list,
       .browse-header {
         width: 100vw;
+        padding-left: 12px;
+        padding-right: 12px;
       }
     }
 
