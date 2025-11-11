@@ -386,7 +386,7 @@ export function PlayList() {
           />
         )}
         <div className="playlist-info">
-          <p>{playlist.playlist.isPublic}</p>
+          <p className='playlist-public'>{playlist.playlist.isPublic}</p>
           <h1 className="playlist-name">{playlist.playlist.name}</h1>
           <p className="playlist-description">
             {playlist.playlist.description}
