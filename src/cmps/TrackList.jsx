@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { SvgIcon } from './SvgIcon'
 import { NavLink, useNavigate, useOutletContext } from 'react-router-dom'
@@ -24,6 +24,22 @@ export function TrackList({ tracks, onPlay, onPause }) {
 
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   const [clickedTrackId, setClickedTrackId] = useState(null)
+
+  
+    const useIsMobile = (breakpoint = 768) => {
+      const [isMobile, setIsMobile] = useState(window.innerWidth <= breakpoint)
+  
+      useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= breakpoint)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+      }, [breakpoint])
+  
+      return isMobile
+    }
+  
+    const isMobile = useIsMobile()
+
 
   const navigate = useNavigate()
 
@@ -159,6 +175,7 @@ export function TrackList({ tracks, onPlay, onPause }) {
           onClick={(ev) => {
             handleCloseStationsContextMenu(ev)
             handleRowClick(track)
+            onPlay(track)
           }}
         >
           <div
@@ -203,7 +220,35 @@ export function TrackList({ tracks, onPlay, onPause }) {
                 className="track-img"
               />
             )}
-            <div className="track-text">
+
+              {isMobile && isTrackCurrentlyPlaying(track) ? (
+                 <div className="track-text">
+        
+                       <SvgIcon iconName="equalizer" className="equalizer" />
+              <NavLink
+                to={`/track/${track.spotifyId}`}
+                className="track-name nav-link"
+              >
+                {track.name}
+              </NavLink>
+                 
+                
+              <div className="track-artists">
+                {track.artists.map((artist, i) => (
+                  <NavLink key={artist.id} to={`/artist/${artist.id?.[i]}`}>
+                    <span className="nav-link artist-name">
+                      {artist.name}
+                      {i < track.artists.length - 1 ? ', ' : ''}
+                    </span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+
+
+           ) : (
+
+             <div className="track-text">
               <NavLink
                 to={`/track/${track.spotifyId}`}
                 className="track-name nav-link"
@@ -221,6 +266,18 @@ export function TrackList({ tracks, onPlay, onPause }) {
                 ))}
               </div>
             </div>
+
+
+
+            )}
+
+
+
+
+
+
+
+
           </div>
 
           <div className="track-album">

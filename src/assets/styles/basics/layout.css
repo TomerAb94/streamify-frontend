@@ -278,6 +278,29 @@
         }
       }
     }
+    .station-details{
+      .track-list{
+         padding-left: 12px;
+          padding-right: 12px;
+          display: grid;
+          grid-template-rows: auto;
+          gap: 8px;
+        .track-row{
+          .track-title{
+            .track-text{
+              
+              .svg-icon{
+                display: inline-block;
+               .equalizer-svg {
+                  display: inline-block;
+                  height: 14px;
+               }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .user-profile {
