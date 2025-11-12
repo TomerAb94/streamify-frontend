@@ -169,7 +169,7 @@
   & .track-title {
     display: flex;
     align-items: center;
-    font-family: 'Circular', 'Arimo';
+    font-family: 'Circular-thin', 'Arimo';
   }
 
   & .playing-track {
@@ -226,6 +226,15 @@
       &:hover {
         > .add-liked-song {
           fill: var(--color-white-fff);
+        }
+      }
+    }
+  }
+  .track-row{
+    .track-title{
+      .track-text{
+        .equalizer-svg{
+          display: none;
         }
       }
     }
