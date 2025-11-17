@@ -131,6 +131,7 @@ export function PlayList() {
       } else if (params.playlistId) {
         const playlist = await spotifyService.getSpotifyItems('getTracksPlaylist', params.playlistId)
         setPlaylist(playlist)
+        console.log('playlist:', playlist)
       }
     } catch (error) {
       console.error('Failed loading playlists:', error)
@@ -314,15 +315,14 @@ export function PlayList() {
     <section className="playlist-container station-search">
       <div className="sticky-play-btn-wrapper">
         <div className="sticky-play-btn-container">
+           <div>{`${playlist? playlist.playlist.name : ''}`}</div>
           {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
-            
-            <>
           
-             <div>{`${currentTrack.album?.name || ''}`}</div>
-            <button onClick={onPause} className=" sticky-play-btn">
-              <SvgIcon iconName="pause" className="pause" />
-            </button>
-            </>
+             
+              <button onClick={onPause} className=" sticky-play-btn">
+                <SvgIcon iconName="pause" className="pause" />
+              </button>
+          
           ) : (
             <button
               onClick={() => {
@@ -445,12 +445,13 @@ export function PlayList() {
               {isMobile && isTrackCurrentlyPlaying(track) ? (
                 <div className="track-text">
                   <SvgIcon iconName="equalizer" className="equalizer" />
-                  <NavLink to={`/track/${track.spotifyId}`} className={`track-name nav-link ${currentTrack?.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+                  <NavLink
+                    to={`/track/${track.spotifyId}`}
+                    className={`track-name nav-link ${currentTrack?.spotifyId === track.spotifyId ? 'playing' : ''}`}
+                  >
                     {track.name}
                   </NavLink>
-                 
-                
-                
+
                   <div className="track-artists">
                     <NavLink key={track.artists[0].id[0]} to={`/artist/${track.artists[0].id[0]}`}>
                       <span className="nav-link">{track.artists[0].name}</span>
@@ -459,7 +460,10 @@ export function PlayList() {
                 </div>
               ) : (
                 <div className="track-text">
-                  <div to={`/track/${track.spotifyId}`} className={`track-name nav-link ${currentTrack?.spotifyId === track.spotifyId ? 'playing' : ''}`}>
+                  <div
+                    to={`/track/${track.spotifyId}`}
+                    className={`track-name nav-link ${currentTrack?.spotifyId === track.spotifyId ? 'playing' : ''}`}
+                  >
                     {track.name}
                   </div>
                   <div className="track-artists">
