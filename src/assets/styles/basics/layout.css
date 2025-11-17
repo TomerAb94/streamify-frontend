@@ -291,6 +291,20 @@
         .top-tracks {
           width: 100vw;
         }
+        .top-tracks{
+          .track-list{
+            .track-row{
+              .track-text{
+                display: flex;
+                gap: 1px;
+                .equalizer-svg{
+                  display: inline-block;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
         .action-btns {
           padding-left: 12px;
         }
@@ -366,7 +380,6 @@
             font-size: 16px;
           }
         }
-        
       }
       .search-tracks-container {
         padding: 0 12px;
