@@ -225,12 +225,12 @@ export function TrackList({ tracks, onPlay, onPause }) {
                  <div className="track-text">
         
                        <SvgIcon iconName="equalizer" className="equalizer" />
-              <NavLink
+              <div
                 to={`/track/${track.spotifyId}`}
                 className="track-name nav-link"
               >
                 {track.name}
-              </NavLink>
+              </div>
                  
                 
               <div className="track-artists">
@@ -249,12 +249,12 @@ export function TrackList({ tracks, onPlay, onPause }) {
            ) : (
 
              <div className="track-text">
-              <NavLink
+              <div
                 to={`/track/${track.spotifyId}`}
                 className="track-name nav-link"
               >
                 {track.name}
-              </NavLink>
+              </div>
               <div className="track-artists">
                 {track.artists.map((artist, i) => (
                   <NavLink key={artist.id} to={`/artist/${artist.id?.[i]}`}>

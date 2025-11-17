@@ -440,7 +440,7 @@ export function PlayList() {
               {isMobile && isTrackCurrentlyPlaying(track) ? (
                 <div className="track-text">
                   <SvgIcon iconName="equalizer" className="equalizer" />
-                  <NavLink to={`/track/${track.spotifyId}`} className="track-name nav-link">
+                  <NavLink to={`/track/${track.spotifyId}`} className={`track-name nav-link ${currentTrack?.spotifyId === track.spotifyId ? 'playing' : ''}`}>
                     {track.name}
                   </NavLink>
                  
@@ -454,9 +454,9 @@ export function PlayList() {
                 </div>
               ) : (
                 <div className="track-text">
-                  <NavLink to={`/track/${track.spotifyId}`} className="track-name nav-link">
+                  <div to={`/track/${track.spotifyId}`} className={`track-name nav-link ${currentTrack?.spotifyId === track.spotifyId ? 'playing' : ''}`}>
                     {track.name}
-                  </NavLink>
+                  </div>
                   <div className="track-artists">
                     <NavLink key={track.artists[0].id[0]} to={`/artist/${track.artists[0].id[0]}`}>
                       <span className="nav-link">{track.artists[0].name}</span>
