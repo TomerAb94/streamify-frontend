@@ -38,6 +38,13 @@
 }
 
 @media (max-width: 667px) {
+  .main-container:has(.app-footer-mobile .now-playing-mobile) {
+  .station-details {
+    .search-tracks-container {
+      margin-bottom: 50px;
+    }
+  }
+}
   .main-container {
     height: 100dvh;
     grid-template-columns: auto;
@@ -471,9 +478,14 @@
           height: 100%;
           object-fit: cover;
         }
+       
       }
     }
+  
   }
+
+
+
 
   .mobile-nav-item {
     display: flex;
