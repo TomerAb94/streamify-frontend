@@ -325,6 +325,9 @@
         .track-row {
           .track-title {
             .track-text {
+             .track-name.nav-link {
+                display: inline;
+              }
               .svg-icon {
                 display: inline-block;
                 .equalizer-svg {
