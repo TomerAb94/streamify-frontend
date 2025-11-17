@@ -177,7 +177,7 @@
           &.not-visible {
             display: flex;
             position: fixed;
-            top: 40px;
+            top: 25px;
 
             left: 50%;
             transform: translate(-50%, -50%);
@@ -189,6 +189,8 @@
 
             .header {
               padding-left: 0;
+              padding-bottom: 0;
+              padding-top: 10px;
             }
           }
         }
