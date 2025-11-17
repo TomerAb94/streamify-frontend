@@ -315,9 +315,14 @@ export function PlayList() {
       <div className="sticky-play-btn-wrapper">
         <div className="sticky-play-btn-container">
           {isPlaying && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) ? (
+            
+            <>
+          
+             <div>{`${currentTrack.album?.name || ''}`}</div>
             <button onClick={onPause} className=" sticky-play-btn">
               <SvgIcon iconName="pause" className="pause" />
             </button>
+            </>
           ) : (
             <button
               onClick={() => {
