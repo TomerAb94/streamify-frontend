@@ -41,7 +41,7 @@
   .main-container {
     height: 100dvh;
     grid-template-columns: auto;
-    grid-template-rows: auto auto var(--FooterHeight);
+    grid-template-rows: auto 1fr var(--FooterHeight);
     grid-template-areas:
       'app-header app-header'
       'station-index station-index'
@@ -279,6 +279,41 @@
           top: 25px;
         }
       }
+      .artist-details {
+        .action-btns,
+        .top-tracks {
+          width: 100vw;
+        }
+        .action-btns {
+          padding-left: 12px;
+        }
+        .track-list {
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          .track-row {
+            width: 100vw;
+          }
+        }
+        & > .artist-details-header {
+          & > .img-header-container {
+            > .artist-details-info {
+              left: 12px;
+              bottom: 5px;
+              h1 {
+                font-size: 3rem;
+              }
+              > .verified-artist {
+                position: relative;
+                left: 12px;
+              }
+            }
+          }
+        }
+
+     
+      }
     }
     .station-details {
       .track-list {
@@ -329,18 +364,39 @@
         padding-top: 12px;
         background-color: transparent;
         position: relative;
-       margin: 0;
-       
-       h2{
-        font-size: 18px;
-        padding-left: 0;}
-         .search-wrapper{
-        .search-tracks-input{
-          width: 100%;
+        margin: 0;
+
+        h2 {
+          font-size: 18px;
+          padding-left: 0;
+        }
+        .search-wrapper {
+          .search-tracks-input {
+            width: 100%;
+          }
         }
       }
+      .details-header {
+        padding-left: 12px;
+        padding-bottom: 12px;
       }
-     
+          .search-tracks-container {
+           .search-wrapper {
+             .search-track-list {
+              margin: 0;
+              grid-template-rows: auto;
+              padding-bottom: 0;
+              padding-top: 10px;
+               .search-track-row {
+                padding: 0;
+                grid-template-columns: auto 1fr;
+                .search-track-album{
+                  display: none;
+                }
+              }
+            }
+          }
+        }
     }
   }
 
