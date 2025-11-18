@@ -289,11 +289,15 @@
         }
       }
       .artist-details {
+        overflow-x: hidden;
         .action-btns,
         .top-tracks {
           width: 100vw;
+          
         }
         .top-tracks{
+          padding-left: 12px;
+          padding-right: 12px;
           .track-list{
             .track-row{
               .track-text{
