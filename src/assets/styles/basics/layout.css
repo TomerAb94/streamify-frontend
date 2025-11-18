@@ -295,6 +295,40 @@
           width: 100vw;
           
         }
+           & > .sticky-play-btn-wrapper {
+            position: absolute;
+            z-index: 2;
+            display: flex;
+        & > .sticky-play-btn-container {
+          justify-content: center;
+          width: 100vw;
+        
+          height: 64px;
+          display: flex;
+        .artist{
+          align-self: center;
+        }
+          > .sticky-play-btn {
+            background-color: var(--green-pin);
+            padding: 16px;
+            position: fixed;
+            top: 25px;
+            right: 12px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg {
+              width: 20px;
+              height: 20px;
+            }
+          }
+          > .station-title {
+            font-size: 16px;
+          }
+        }
+      }
         .top-tracks{
           padding-left: 12px;
           padding-right: 12px;
