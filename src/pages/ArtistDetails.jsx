@@ -30,9 +30,12 @@ export function ArtistDetails() {
     (storeState) => storeState.trackModule.isShuffle
   )
 
+  
+
   useEffect(() => {
     if (params.Id && params.Id !== '') {
       loadArtist(params.Id)
+      
     }
 
   }, [params.Id])
@@ -78,7 +81,7 @@ export function ArtistDetails() {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             stickyContainer.style.opacity = '1'
-            console.log('show:')
+            // console.log('show:')
         } else {
             stickyContainer.style.opacity = '0'
           }
@@ -114,6 +117,10 @@ export function ArtistDetails() {
     }
   }, [artist])
 
+
+  async function onResume() {
+    await setIsPlaying(true)
+  }
 
 
   async function loadArtist(artistId) {
@@ -274,7 +281,7 @@ if (!artist) return
                   onResume()
                 } else {
                   // Otherwise start playing from first track
-                  onPlay(playlist.tracks[0])
+                  onPlay(artist.topTracks[0])
                 }
               }}
               className="sticky-play-btn"

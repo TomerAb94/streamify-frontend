@@ -8,6 +8,10 @@
   scrollbar-width: thin;
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
 
+  .sticky-play-btn-wrapper{
+    position: absolute;;
+  }
+
   > .artist-details-header {
     width: 100%;
 
