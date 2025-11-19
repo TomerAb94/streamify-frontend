@@ -198,6 +198,7 @@ export function SearchTracks() {
             onClick={(ev) => {
               handleCloseStationsContextMenu(ev)
               handleRowClick(track)
+              onPlay(track)
             }}
           >
             <div

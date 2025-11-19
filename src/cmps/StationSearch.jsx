@@ -38,7 +38,7 @@ export function StationSearch() {
     async function fetchSearchResults() {
       if (params.searchStr) {
         await loadSearchedAll()
-        console.log(searchedAll)
+        // console.log(searchedAll)
       }
     }
 
@@ -92,7 +92,7 @@ export function StationSearch() {
 
       // Get YouTube ID for the track
       const youtubeId = await getYoutubeId(track.name)
-      console.log(youtubeId)
+      // console.log(youtubeId)
 
       const trackWithYoutube = {
         ...track,
