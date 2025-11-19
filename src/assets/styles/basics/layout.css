@@ -307,6 +307,10 @@
             .artist {
               align-self: center;
             }
+
+            .svg-icon{
+              display: flex;
+            }
             > .sticky-play-btn {
               background-color: var(--green-pin);
               padding: 16px;
