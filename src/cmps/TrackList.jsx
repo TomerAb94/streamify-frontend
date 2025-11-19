@@ -294,7 +294,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
           </div>
 
           <div className="track-duration-container">
-            <SvgIcon
+            {loggedInUser && (
+                  <SvgIcon
               iconName={isTrackInStation(track) ? 'inStation' : 'addLikedSong'}
               className="add-to-playlist"
               title="Add to Playlist"
@@ -304,6 +305,8 @@ export function TrackList({ tracks, onPlay, onPause }) {
                   : () => onAddToLikedSongs(track)
               }
             />
+            )}
+        
             <span className="track-duration">{track.duration}</span>
           </div>
         </div>

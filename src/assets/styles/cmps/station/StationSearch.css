@@ -199,6 +199,11 @@
   > .songs-list {
     > .track-list {
       > .track-row {
+        .track-title{
+          &.playing{
+            color: var(--green-play);
+          }
+        }
         > .track-duration-container {
           display: grid;
           align-items: center;

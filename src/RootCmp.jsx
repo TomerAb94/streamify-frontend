@@ -103,7 +103,7 @@ export function RootCmp() {
 
   return (
     <>
-      <UserMsg />
+      {/* <UserMsg /> */}
       <Routes>
         <Route element={<StationIndex location={onChangeLocation(location)} />}>
           <Route path="" element={<HomePage />} />

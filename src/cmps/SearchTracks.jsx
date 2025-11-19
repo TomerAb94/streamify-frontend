@@ -26,6 +26,8 @@ export function SearchTracks() {
   const [searchedTracks, setSearchedTracks] = useState([])
   const [hoveredTrackIdx, setHoveredTrackIdx] = useState(null)
   const [clickedTrackId, setClickedTrackId] = useState(null)
+  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+
 
   useEffect(() => {
     if (params.searchStr) {
@@ -231,6 +233,7 @@ export function SearchTracks() {
 
             <div className="track-title">
               {track.album?.imgUrl && (
+                
                 <img
                   src={track.album.imgUrl}
                   alt={`${track.name} cover`}
@@ -239,6 +242,7 @@ export function SearchTracks() {
               )}
               <div className="track-text">
                 {/* <NavLink to={`/track/${track.spotifyId}`}> */}
+                <SvgIcon iconName="equalizer" className="equalizer" />
                   <span
                     className={`track-name nav-link ${
                       currentTrack && currentTrack.spotifyId === track.spotifyId
@@ -269,7 +273,8 @@ export function SearchTracks() {
               </NavLink>
               </div>
             <div className="track-duration-container">
-              <SvgIcon
+{loggedInUser && (
+  <SvgIcon
                 iconName={
                   isTrackInStation(track) ? 'inStation' : 'addLikedSong'
                 }
@@ -281,6 +286,8 @@ export function SearchTracks() {
                     : () => onAddToLikedSongs(track)
                 }
               />
+)}
+              
               <span className="track-duration">{track.duration}</span>
             </div>
           </div>
