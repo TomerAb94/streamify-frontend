@@ -238,7 +238,7 @@ export function SearchTracks() {
                 />
               )}
               <div className="track-text">
-                <NavLink to={`/track/${track.spotifyId}`}>
+                {/* <NavLink to={`/track/${track.spotifyId}`}> */}
                   <span
                     className={`track-name nav-link ${
                       currentTrack && currentTrack.spotifyId === track.spotifyId
@@ -248,7 +248,7 @@ export function SearchTracks() {
                   >
                     {track.name}
                   </span>
-                </NavLink>
+                {/* </NavLink> */}
                 <div className="track-artists">
                   <NavLink
                     key={track.artists[0].id[0]}
