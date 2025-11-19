@@ -39,12 +39,12 @@
 
 @media (max-width: 667px) {
   .main-container:has(.app-footer-mobile .now-playing-mobile) {
-  .station-details {
-    .search-tracks-container {
-      margin-bottom: 50px;
+    .station-details {
+      .search-tracks-container {
+        margin-bottom: 50px;
+      }
     }
   }
-}
   .main-container {
     height: 100dvh;
     grid-template-columns: auto;
@@ -293,51 +293,50 @@
         .action-btns,
         .top-tracks {
           width: 100vw;
-          
         }
-           & > .sticky-play-btn-wrapper {
-            position: absolute;
-            z-index: 2;
-            display: flex;
-        & > .sticky-play-btn-container {
-          justify-content: center;
-          width: 100vw;
-        
-          height: 64px;
+        & > .sticky-play-btn-wrapper {
+          position: absolute;
+          z-index: 2;
           display: flex;
-        .artist{
-          align-self: center;
-        }
-          > .sticky-play-btn {
-            background-color: var(--green-pin);
-            padding: 16px;
-            position: fixed;
-            top: 25px;
-            right: 12px;
-            width: 56px;
-            height: 56px;
-            display: flex;
+          & > .sticky-play-btn-container {
             justify-content: center;
-            align-items: center;
-            svg {
-              width: 20px;
-              height: 20px;
+            width: 100vw;
+
+            height: 64px;
+            display: flex;
+            .artist {
+              align-self: center;
+            }
+            > .sticky-play-btn {
+              background-color: var(--green-pin);
+              padding: 16px;
+              position: fixed;
+              top: 25px;
+              right: 12px;
+              width: 56px;
+              height: 56px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              svg {
+                width: 20px;
+                height: 20px;
+              }
+            }
+            > .station-title {
+              font-size: 16px;
             }
           }
-          > .station-title {
-            font-size: 16px;
-          }
         }
-      }
-        .top-tracks{
+        .top-tracks {
           padding-left: 12px;
           padding-right: 12px;
-          .track-list{
-            .track-row{
-              .track-text{
+          .track-list {
+            .track-row {
+              .track-text {
                 display: flex;
                 gap: 1px;
-                .equalizer-svg{
+                .equalizer-svg {
                   display: inline-block;
                   height: 14px;
                 }
@@ -372,8 +371,6 @@
             }
           }
         }
-
-     
       }
     }
     .station-details {
@@ -386,7 +383,7 @@
         .track-row {
           .track-title {
             .track-text {
-             .track-name.nav-link {
+              .track-name.nav-link {
                 display: inline;
               }
               .svg-icon {
@@ -444,23 +441,23 @@
         padding-left: 12px;
         padding-bottom: 12px;
       }
-          .search-tracks-container {
-           .search-wrapper {
-             .search-track-list {
-              margin: 0;
-              grid-template-rows: auto;
-              padding-bottom: 0;
-              padding-top: 10px;
-               .search-track-row {
-                padding: 0;
-                grid-template-columns: auto 1fr;
-                .search-track-album{
-                  display: none;
-                }
+      .search-tracks-container {
+        .search-wrapper {
+          .search-track-list {
+            margin: 0;
+            grid-template-rows: auto;
+            padding-bottom: 0;
+            padding-top: 10px;
+            .search-track-row {
+              padding: 0;
+              grid-template-columns: auto 1fr;
+              .search-track-album {
+                display: none;
               }
             }
           }
         }
+      }
     }
   }
 
@@ -486,13 +483,69 @@
       position: absolute;
       top: -50px;
 
-      padding-left: 12px;
+      padding-left: 8px;
       padding-top: 5px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       color: var(--color-white-fff);
       font-weight: 600;
       z-index: 10;
+
+      .now-playing-mobile-info {
+        position: relative;
+      }
+
+      .track-timeline {
+        .time-range {
+          width: 100%;
+          
+          height: 4px;
+          appearance: none;
+          border-radius: 4px;
+          outline: none;
+        }
+
+        input[type='range'] {
+          height: 1px;
+          bottom: 0px;
+          left: 0;
+          right: 0;
+          position: absolute;
+          margin-left: 8px;
+          margin-right: 8px;
+          width: calc(100% - 16px);
+
+          & :-webkit-slider-thumb {
+            -webkit-appearance: none;
+
+            height: 36px;
+            width: 16px;
+
+            background: #ffffff;
+          }
+        }
+
+        input[type='range']::-moz-range-thumb {
+          /* display: none; */
+          -webkit-appearance: none;
+          width: 0;
+          height: 0;
+        }
+
+        .time-range::-webkit-slider-runnable-track {
+       
+          height: 1px;
+          border-radius: 1px;
+          background: transparent;
+        }
+
+        .time-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 0;
+          height: 0;
+          display: none;
+        }
+      }
 
       .now-playing-mobile-title {
         font-family: 'Circular-thini', 'Arimo';
@@ -516,7 +569,7 @@
         width: 20px;
         height: 20px;
         color: var(--color-white-fff);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
         cursor: pointer;
         fill: white;
         padding-bottom: 8px;
@@ -532,14 +585,9 @@
           height: 100%;
           object-fit: cover;
         }
-       
       }
     }
-  
   }
-
-
-
 
   .mobile-nav-item {
     display: flex;
