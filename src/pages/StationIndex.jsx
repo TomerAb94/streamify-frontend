@@ -100,7 +100,7 @@ export function StationIndex({ location: locationClass }) {
     try {
       const savedStation = await addStation(station)
       console.log('Station added:', savedStation)
-      navigate(`station/${savedStation._id}`)
+      navigate(`/station/${savedStation._id}`)
       
       // loggedInUser.ownedStationIds = loggedInUser.ownedStationIds || []
       loggedInUser.ownedStationIds.push(savedStation._id)

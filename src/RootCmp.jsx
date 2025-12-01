@@ -61,6 +61,10 @@ export function RootCmp() {
       return 'library-page'
     } else if (location.pathname.startsWith('/station/')) {
       return 'inner-page'
+
+       } else if (location.pathname.startsWith('/library/station/')) {
+      return 'inner-page'
+    
     } else if (location.pathname.startsWith('/album/')) {
       return 'inner-page'
     } else if (location.pathname.startsWith('/artist/')) {
@@ -120,6 +124,7 @@ export function RootCmp() {
           <Route path="/browse/genre/:genreName"  element={<GenreList />} />
           <Route path="/browse/genre/:genreName/:playlistId"  element={<PlayList />} />
           <Route path="/library"  element={<MobileLibrary/>} />
+          <Route path="/library/station/:stationId"  element={<StationDetails/>} />
         </Route>
 
         <Route path="auth" element={<LoginSignup />}>
