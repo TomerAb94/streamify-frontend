@@ -97,7 +97,7 @@ export function PlayList() {
     const handleScroll = () => {
       const scrollTop = container.scrollTop
       let opacity = 0
-      if (scrollTop > 50) opacity = 0.45
+      if (scrollTop > 50) opacity = 1
       if (scrollTop > 100) opacity = 0.65
       if (scrollTop > 200) opacity = 1
       stickyWrapper.style.opacity = opacity

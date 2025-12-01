@@ -21,6 +21,7 @@ import { GenreList } from './cmps/GenreList.jsx'
 import { PlayList } from './cmps/PlayList.jsx'
 
 import { setProgressSec, setSeekToSec, setCurrentTrack, setIsPlaying } from './store/actions/track.actions.js'
+import { MobileLibrary } from './pages/MobileLibrary.jsx'
 
 export function RootCmp() {
   const currentTrack = useSelector(
@@ -118,7 +119,7 @@ export function RootCmp() {
           <Route path="/browse" element={<Browse />} />
           <Route path="/browse/genre/:genreName"  element={<GenreList />} />
           <Route path="/browse/genre/:genreName/:playlistId"  element={<PlayList />} />
-      
+          <Route path="/library"  element={<MobileLibrary/>} />
         </Route>
 
         <Route path="auth" element={<LoginSignup />}>

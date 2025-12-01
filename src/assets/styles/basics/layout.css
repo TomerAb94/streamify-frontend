@@ -486,6 +486,30 @@
         }
       }
     }
+    &.library-page {
+      grid-template-areas:
+        'app-header'
+        'station-index'
+        'app-footer-mobile';
+
+      .app-header {
+        grid-template-areas: 'user-profile';
+      }
+      .search-bar,
+      .stations-type {
+        display: none;
+      }
+
+      .mobile-library-container {
+        display: grid;
+        grid-area: station-index;
+        overflow-y: auto;
+        .station-list-container {
+          grid-area: unset;
+          display: block;
+        }
+      }
+    }
     .station-details {
       overflow-x: hidden;
       .track-list {
@@ -607,6 +631,9 @@
 
       .now-playing-mobile-info {
         position: relative;
+                      
+                min-width: 0;
+                overflow: hidden;
       }
 
       .track-timeline {
@@ -663,12 +690,22 @@
       .now-playing-mobile-title {
         font-family: 'Circular-thini', 'Arimo';
         font-weight: 100;
+    
+       white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+                  padding-right: 25px;
       }
 
       .now-playing-mobile-artist {
         font-size: 0.9rem;
         font-family: 'Circular-thini', 'Arimo-light';
         color: var(--color-text-secondary);
+
+               white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+                  padding-right: 25px;
       }
 
       .play-container,
@@ -691,7 +728,7 @@
       .now-playing-mobile-img {
         width: 40px;
         height: 40px;
-        overflow: hidden;
+        /* overflow: hidden; */
         border-radius: 4px;
         img {
           width: 100%;
