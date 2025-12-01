@@ -24,33 +24,20 @@ import { setProgressSec, setSeekToSec, setCurrentTrack, setIsPlaying } from './s
 import { MobileLibrary } from './pages/MobileLibrary.jsx'
 
 export function RootCmp() {
-  const currentTrack = useSelector(
-    (storeState) => storeState.trackModule.currentTrack
-  )
-  const isPlaying = useSelector(
-    (storeState) => storeState.trackModule.isPlaying
-  )
+  const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
+  const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
 
-  const volume = useSelector(
-    (storeState) => storeState.trackModule.volume
-  )
+  const volume = useSelector((storeState) => storeState.trackModule.volume)
 
   const seekToSec = useSelector((storeState) => storeState.trackModule.seekToSec)
   const playlist = useSelector((storeState) => storeState.trackModule.tracks)
-  const isRepeat = useSelector(
-    (storeState) => storeState.trackModule.isRepeat
-  )
+  const isRepeat = useSelector((storeState) => storeState.trackModule.isRepeat)
 
   // A ref to the ReactPlayer instance, required for seekTo() on player
   const playerRef = useRef(null)
   const location = useLocation()
 
-
- 
-  
-
   function onChangeLocation(location) {
-   
     if (location.pathname === '/') {
       return 'home-page'
     } else if (location.pathname === '/search') {
@@ -61,10 +48,8 @@ export function RootCmp() {
       return 'library-page'
     } else if (location.pathname.startsWith('/station/')) {
       return 'inner-page'
-
-       } else if (location.pathname.startsWith('/library/station/')) {
+    } else if (location.pathname.startsWith('/library/station/')) {
       return 'inner-page'
-    
     } else if (location.pathname.startsWith('/album/')) {
       return 'inner-page'
     } else if (location.pathname.startsWith('/artist/')) {
@@ -98,7 +83,7 @@ export function RootCmp() {
       setIsPlaying(true) // Restart playback
     } else if (currentTrack.nextId && playlist.length) {
       // Otherwise, play the next track
-      const nextTrack = playlist.find(track => track.spotifyId === currentTrack.nextId)
+      const nextTrack = playlist.find((track) => track.spotifyId === currentTrack.nextId)
       if (nextTrack) {
         setCurrentTrack(nextTrack)
         setIsPlaying(true)
@@ -112,7 +97,7 @@ export function RootCmp() {
       <Routes>
         <Route element={<StationIndex location={onChangeLocation(location)} />}>
           <Route path="" element={<HomePage />} />
-          <Route path="/album/:albumId"  element={<PlayList/>} />
+          <Route path="/album/:albumId" element={<PlayList />} />
           <Route path="/search" element={<Browse />} />
           <Route path="/search/:searchStr" element={<StationSearch />} />
           <Route path="/search/tracks/:searchStr" element={<SearchTracks />} />
@@ -121,10 +106,10 @@ export function RootCmp() {
           <Route path="/track/:Id" element={<TrackDetails />} />
           <Route path="/artist/:Id" element={<ArtistDetails />} />
           <Route path="/browse" element={<Browse />} />
-          <Route path="/browse/genre/:genreName"  element={<GenreList />} />
-          <Route path="/browse/genre/:genreName/:playlistId"  element={<PlayList />} />
-          <Route path="/library"  element={<MobileLibrary/>} />
-          <Route path="/library/station/:stationId"  element={<StationDetails/>} />
+          <Route path="/browse/genre/:genreName" element={<GenreList />} />
+          <Route path="/browse/genre/:genreName/:playlistId" element={<PlayList />} />
+          <Route path="/library" element={<MobileLibrary />} />
+          <Route path="/library/station/:stationId" element={<StationDetails />} />
         </Route>
 
         <Route path="auth" element={<LoginSignup />}>
@@ -136,9 +121,7 @@ export function RootCmp() {
       <div className="youtube-video">
         <ReactPlayer
           ref={playerRef}
-          src={`https://www.youtube.com/watch?v=${
-            currentTrack?.youtubeId || ''
-          }`}
+          src={`https://www.youtube.com/watch?v=${currentTrack?.youtubeId || ''}`}
           playing={isPlaying}
           volume={volume}
           // volume={0.02}
