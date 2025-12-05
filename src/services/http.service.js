@@ -35,8 +35,11 @@ async function ajax(endpoint, method = 'GET', data = null) {
         console.log(`Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `, data)
         console.dir(err)
         if (err.response && err.response.status === 401) {
-            sessionStorage.clear()
-            window.location.assign('/')
+            // Don't redirect if we're already on the auth page
+            if (!window.location.pathname.includes('/auth/')) {
+                sessionStorage.clear()
+                window.location.assign('/')
+            }
         }
         throw err
     }
