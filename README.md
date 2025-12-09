@@ -1,4 +1,4 @@
-# Coding Academy React Frontend
+# Streamify React Frontend
 
 Modern React application built with Vite, featuring a complete frontend infrastructure for teaching full-stack development.
 
