@@ -126,9 +126,9 @@ export function StationDetails() {
     const handleScroll = () => {
       const scrollTop = container.scrollTop
       let opacity = 0
-      if (scrollTop > 50) opacity = 0.45
-      if (scrollTop > 1500) opacity = 0.65
-      if (scrollTop > 300) opacity = 1
+      if (scrollTop > 50) opacity = 1
+      // if (scrollTop > 150) opacity = 0.65
+      // if (scrollTop > 300) opacity = 1
       stickyWrapper.style.opacity = opacity
 
       // Change height immediately on first scroll

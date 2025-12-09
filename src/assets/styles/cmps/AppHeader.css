@@ -1,4 +1,4 @@
-.app-header {
+.app-header { 
  
   grid-area: app-header;
   display: grid;
@@ -132,6 +132,12 @@
       }
     } */
   }
+.stations-type{
+  display: none;
+}
+.back-btn{
+  display: none;
+}
 }
 
 .search-bar {

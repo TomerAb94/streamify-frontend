@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
 import { userService } from '../services/user'
-import { login, signup,updateUser } from '../store/actions/user.actions'
+import { login, signup, updateUser } from '../store/actions/user.actions'
 import { ImgUploader } from '../cmps/ImgUploader'
 
 import { stationService } from '../services/station'
@@ -32,21 +32,34 @@ export function Login() {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    loadUsers()
-  }, [])
+  // useEffect(() => {
+  //   loadUsers()
+  //   console.log('users:', users)
+  // }, [])
 
-  async function loadUsers() {
-    const users = await userService.getUsers()
-    setUsers(users)
-  }
+  // async function loadUsers() {
+
+  //   const users = await userService.getUsers()
+  //   setUsers(users)
+  // }
 
   async function onLogin(ev = null) {
-    if (ev) ev.preventDefault()
+    // console.log('ev:', ev)
+    ev.preventDefault()
+    ev.stopPropagation()
 
-    if (!credentials.username) return
-    await login(credentials)
-    navigate('/')
+    if (!credentials.username || !credentials.password) return
+
+    try {
+      const user = await login(credentials)
+      console.log('user:', user)
+      if (user) {
+        navigate('/')
+      }
+    } catch (err) {
+      console.error('Login failed:', err)
+      // כאן אפשר להוסיף הודעת שגיאה למשתמש
+    }
   }
 
   function handleChange(ev) {
@@ -57,18 +70,16 @@ export function Login() {
 
   return (
     <form className="login-form" onSubmit={onLogin}>
-      <select
-        name="username"
-        value={credentials.username}
+      <input name="username" type='text' placeholder="Username" value={credentials.username} onChange={handleChange} required/>
+
+      <input
+        name="password"
+        placeholder="Password"
+        type="password"
+        value={credentials.password}
         onChange={handleChange}
-      >
-        <option value="">Select User</option>
-        {users.map((user) => (
-          <option key={user._id} value={user.username}>
-            {user.fullname}
-          </option>
-        ))}
-      </select>
+        required
+      />
       <button>Login</button>
     </form>
   )
@@ -93,8 +104,7 @@ export function Signup() {
   async function onSignup(ev = null) {
     if (ev) ev.preventDefault()
 
-    if (!credentials.username || !credentials.password || !credentials.fullname)
-      return
+    if (!credentials.username || !credentials.password || !credentials.fullname) return
 
     const defaultStation = stationService.getDefaultStation(credentials)
 

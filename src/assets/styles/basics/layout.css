@@ -37,21 +37,50 @@
   /* height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight)); */
 }
 
-@media (max-width: 624px) {
+@media (max-width: 667px) {
+  .main-container:has(.app-footer-mobile .now-playing-mobile) {
+    .station-details {
+      .search-tracks-container {
+        margin-bottom: 50px;
+      }
+    }
+  }
   .main-container {
+    height: 100dvh;
     grid-template-columns: auto;
-    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-template-rows: auto 1fr var(--FooterHeight);
     grid-template-areas:
       'app-header app-header'
       'station-index station-index'
       'app-footer-mobile app-footer-mobile';
-
+    padding: 0;
     .app-footer {
       display: none;
     }
     .app-header {
+      padding-left: 12px;
+      padding-right: 12px;
+      height: auto;
+      padding-top: 8px;
+      grid-template-areas:
+        'search-bar'
+        'user-profile'
+        'stations-type';
       .search-bar {
-        display: none;
+        grid-area: search-bar;
+        /* display: none; */
+        /* width: 100vw; */
+        .search-wrapper {
+          width: calc(100vw - 24px);
+        }
+        .home-btn-container {
+          display: none;
+        }
+        .search-wrapper {
+          .browse {
+            display: none;
+          }
+        }
       }
       /* .user-profile{
       display: none;
@@ -59,9 +88,514 @@
       .logo {
         display: none;
       }
+      .user-profile {
+        grid-area: 'user-profile';
+        .login-link {
+          height: 32px;
+          font-size: 12px;
+          padding: 8px 25px;
+        }
+        .signup-link {
+          font-size: 12px;
+          padding: 0;
+        }
+      }
     }
     .station-list-container {
       display: none;
+    }
+    &.sidebar-open {
+      grid-template-columns: auto;
+      grid-template-rows: repeat(auto-fill, 1fr);
+      grid-template-areas:
+        'app-header app-header'
+        'station-index station-index'
+        'app-footer-mobile app-footer-mobile';
+
+      .now-playing {
+        display: none;
+      }
+    }
+
+    .app-header {
+      /* height: 64px; */
+      .stations-type {
+        grid-area: stations-type;
+        display: flex;
+        gap: 8px;
+      }
+    }
+
+    &.home-page {
+      .app-header {
+        grid-template-areas: 'user-profile stations-type';
+      }
+      .search-bar {
+        display: none;
+      }
+    }
+
+    &.browse-page,
+    &.artist-page {
+      .app-header {
+        grid-template-areas: 'search-bar';
+      }
+
+      &.browse-page {
+        .search-results {
+          padding-left: 12px;
+
+          .results-container {
+            grid-template-columns: none;
+            grid-template-rows: none;
+            gap: 8px;
+            margin-top: 0;
+            display: block;
+            .top-result {
+              h2 {
+                min-height: 0;
+                margin: 0;
+                padding-bottom: 12px;
+                padding-left: 12px;
+              }
+              .top-result-item {
+                margin-left: 12px;
+                margin-right: 12px;
+                padding: 10px;
+              }
+            }
+            .songs-result {
+              h2 {
+                min-height: 0;
+                margin: 0;
+                padding-top: 12px;
+                padding-left: 12px;
+              }
+              .songs-list {
+                padding-left: 12px;
+
+                .track-list {
+                  gap: 8px;
+                  padding: 0;
+                  .track-row {
+                    padding: 8px;
+                    justify-content: space-between;
+                    .track-title {
+                      .track-text {
+                        .track-name {
+                          display: inline;
+                        }
+                        .equalizer-svg {
+                          display: inline;
+                          height: 14px;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .station-search {
+          .search-nav {
+            padding: 12px;
+          }
+          & .search-results {
+            padding: 0;
+            & > .results-container {
+              & > .artist-result {
+                h2 {
+                  padding-left: 12px;
+                  min-height: 0;
+                  margin: 0;
+                  padding-top: 12px;
+                }
+                > .artists-container {
+                  padding-left: 0;
+                  gap: 0;
+                  & :first-child {
+                    /* padding-left: 0; */
+                  }
+                }
+              }
+              > .album-result {
+                h2 {
+                  padding-left: 12px;
+                  min-height: 0;
+                  margin: 0;
+                }
+                .albums-container {
+                  padding-left: 12px;
+                  padding-right: 12px;
+                  display: grid;
+                  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                  gap: 8px;
+                  .album-item {
+                    aspect-ratio: 1 / 1;
+                    width: 100%;
+                    padding: 0;
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      border-radius: 8px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .user-profile,
+      .stations-type {
+        display: none;
+      }
+
+      .genres-list,
+      .browse-header {
+        width: 100vw;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+
+    &.inner-page {
+      gap: 0;
+      .user-profile,
+      .stations-type,
+      .search-bar {
+        display: none;
+      }
+      .back-btn {
+        display: block;
+        fill: var(--color-white-fff);
+      }
+      .app-header {
+        grid-template-areas: none;
+        position: fixed;
+        z-index: 10;
+        background: transparent;
+      }
+      .browse-container {
+        .genre-header {
+          height: 15vh;
+
+          &.not-visible {
+            display: flex;
+            position: fixed;
+            top: 25px;
+
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            z-index: 2;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+
+            .header {
+              padding-left: 0;
+              padding-bottom: 0;
+              padding-top: 10px;
+            }
+          }
+        }
+        .playlists-container {
+          grid-template-columns: repeat(2, 1fr);
+          padding-left: 12px;
+          padding-right: 12px;
+          gap: 8px;
+
+          a.playlist-item {
+            padding: 0px;
+            grid-template-rows: auto 1fr 1fr;
+          }
+          .playlist-item {
+            .playlist-img-container {
+              img {
+                height: auto;
+                width: auto;
+                aspect-ratio: 1 / 1;
+              }
+            }
+          }
+        }
+
+        .header {
+          padding: 0;
+          font-size: 18px;
+          margin: 0;
+          padding-left: 12px;
+          padding-bottom: 12px;
+
+          &.not-visible {
+            position: fixed; /* או absolute אם בתוך קונטיינר */
+            top: 40px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding-left: 0;
+            padding-left: 0px;
+            z-index: 10;
+          }
+        }
+      }
+
+      .playlist-container {
+        grid-template-rows: 0px 376px 104px auto;
+        .playlist-header {
+          display: grid;
+          grid-auto-flow: row;
+          padding: 20px 12px;
+          width: 100vw;
+          img {
+            justify-self: center;
+            align-self: center;
+          }
+
+          .playlist-info {
+            padding: 0;
+            height: 100%;
+            .playlist-public {
+              display: none;
+            }
+            .playlist-name {
+              font-size: 16px;
+            }
+          }
+        }
+        .station-btns-container {
+          .action-btns {
+            padding-left: 12px;
+            padding-right: 12px;
+            width: 100vw;
+          }
+        }
+        .track-list {
+          padding-left: 12px;
+          padding-right: 12px;
+          display: grid;
+          grid-template-rows: auto;
+          gap: 8px;
+          width: 100vw;
+          .track-row {
+            .track-title {
+              .track-text {
+                .equalizer-svg {
+                  display: inline-block;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
+        .sticky-play-btn {
+          position: fixed;
+          right: 12px;
+          top: 25px;
+        }
+      }
+      .artist-details {
+        overflow-x: hidden;
+        .action-btns,
+        .top-tracks {
+          width: 100vw;
+        }
+        & > .sticky-play-btn-wrapper {
+          position: absolute;
+          z-index: 2;
+          display: flex;
+          & > .sticky-play-btn-container {
+            justify-content: center;
+            width: 100vw;
+
+            height: 64px;
+            display: flex;
+            .artist {
+              align-self: center;
+            }
+
+            .svg-icon {
+              display: flex;
+            }
+            > .sticky-play-btn {
+              background-color: var(--green-pin);
+              padding: 16px;
+              position: fixed;
+              top: 25px;
+              right: 12px;
+              width: 56px;
+              height: 56px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              svg {
+                width: 20px;
+                height: 20px;
+              }
+            }
+            > .station-title {
+              font-size: 16px;
+            }
+          }
+        }
+        .top-tracks {
+          padding-left: 12px;
+          padding-right: 12px;
+          .track-list {
+            .track-row {
+              .track-text {
+                display: flex;
+                gap: 1px;
+                .equalizer-svg {
+                  display: inline-block;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
+        .action-btns {
+          padding-left: 12px;
+        }
+        .track-list {
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          .track-row {
+            width: 100vw;
+          }
+        }
+        & > .artist-details-header {
+          & > .img-header-container {
+            > .artist-details-info {
+              left: 12px;
+              bottom: 5px;
+              h1 {
+                font-size: 3rem;
+              }
+              > .verified-artist {
+                position: relative;
+                left: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.library-page {
+      grid-template-areas:
+        'app-header'
+        'station-index'
+        'app-footer-mobile';
+
+      .app-header {
+        grid-template-areas: 'user-profile';
+      }
+      .search-bar,
+      .stations-type {
+        display: none;
+      }
+
+      .mobile-library-container {
+        display: grid;
+        grid-area: station-index;
+        overflow-y: auto;
+        .station-list-container {
+          grid-area: unset;
+          display: block;
+        }
+      }
+    }
+    .station-details {
+      overflow-x: hidden;
+      .track-list {
+        padding-left: 12px;
+        padding-right: 12px;
+        display: grid;
+        grid-template-rows: auto;
+        gap: 8px;
+        .track-row {
+          .track-title {
+            .track-text {
+              .track-name.nav-link {
+                display: inline;
+              }
+              .svg-icon {
+                display: inline-block;
+                .equalizer-svg {
+                  display: inline-block;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .station-btns-container {
+        .action-btns {
+          padding-left: 12px;
+        }
+      }
+      & > .sticky-play-btn-wrapper {
+        & > .sticky-play-btn-container {
+          justify-content: center;
+
+          > .sticky-play-btn {
+            background-color: var(--green-pin);
+            padding: 16px;
+            position: fixed;
+            top: 25px;
+            right: 12px;
+          }
+          > .station-title {
+            font-size: 16px;
+          }
+        }
+      }
+      .search-tracks-container {
+        padding: 0 12px;
+        /* margin: 24px; */
+        padding-bottom: 12px;
+        padding-top: 12px;
+        background-color: transparent;
+        position: relative;
+        margin: 0;
+
+        h2 {
+          font-size: 18px;
+          padding-left: 0;
+        }
+        .search-wrapper {
+          .search-tracks-input {
+            width: 100%;
+          }
+        }
+      }
+      .details-header {
+        padding-left: 12px;
+        padding-bottom: 12px;
+      }
+      .search-tracks-container {
+        .search-wrapper {
+          .search-track-list {
+            margin: 0;
+            grid-template-rows: auto;
+            padding-bottom: 0;
+            padding-top: 10px;
+            .search-track-row {
+              padding: 0;
+              grid-template-columns: auto 1fr;
+              .search-track-album {
+                display: none;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
@@ -70,6 +604,7 @@
   }
 
   .app-footer-mobile {
+    position: relative;
     grid-area: app-footer-mobile;
     display: flex;
     justify-content: space-around;
@@ -78,37 +613,162 @@
     padding: 8px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 
-    .mobile-nav-item {
+    .now-playing-mobile {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 8px 12px;
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      transition: color 0.3s ease;
+      gap: 8px;
+      width: calc(100% - 16px);
+      height: 50px;
+      position: absolute;
+      top: -50px;
 
-      svg {
-        width: 24px;
-        height: 24px;
-        fill: currentColor;
+      padding-left: 8px;
+      padding-top: 5px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      color: var(--color-white-fff);
+      font-weight: 600;
+      z-index: 10;
+
+      .now-playing-mobile-info {
+        position: relative;
+                      
+                min-width: 0;
+                overflow: hidden;
       }
 
-      span {
-        font-size: 0.75rem;
-        font-weight: 500;
+      .track-timeline {
+        .time-range {
+          width: 100%;
+
+          height: 4px;
+          appearance: none;
+          border-radius: 4px;
+          outline: none;
+        }
+
+        input[type='range'] {
+          height: 1px;
+          bottom: 0px;
+          left: 0;
+          right: 0;
+          position: absolute;
+          margin-left: 8px;
+          margin-right: 8px;
+          width: calc(100% - 16px);
+
+          & :-webkit-slider-thumb {
+            -webkit-appearance: none;
+
+            height: 36px;
+            width: 16px;
+
+            background: #ffffff;
+          }
+        }
+
+        input[type='range']::-moz-range-thumb {
+          /* display: none; */
+          -webkit-appearance: none;
+          width: 0;
+          height: 0;
+        }
+
+        .time-range::-webkit-slider-runnable-track {
+          height: 1px;
+          border-radius: 1px;
+          background: transparent;
+        }
+
+        .time-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 0;
+          height: 0;
+          display: none;
+        }
       }
 
-      &:hover,
-      &.active {
-        color: var(--color-text-primary);
+      .now-playing-mobile-title {
+        font-family: 'Circular-thini', 'Arimo';
+        font-weight: 100;
+    
+       white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+                  padding-right: 25px;
+      }
+
+      .now-playing-mobile-artist {
+        font-size: 0.9rem;
+        font-family: 'Circular-thini', 'Arimo-light';
+        color: var(--color-text-secondary);
+
+               white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+                  padding-right: 25px;
+      }
+
+      .play-container,
+      .pause-container {
+        position: absolute;
+        right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        width: 20px;
+        height: 20px;
+        color: var(--color-white-fff);
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); */
+        cursor: pointer;
+        fill: white;
+        padding-bottom: 8px;
+      }
+
+      .now-playing-mobile-img {
+        width: 40px;
+        height: 40px;
+        /* overflow: hidden; */
+        border-radius: 4px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
     }
   }
-  * {
-    ::-webkit-scrollbar {
-      display: none;
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
     }
+
+    span {
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    &:hover,
+    &.active {
+      color: var(--color-text-primary);
+    }
+  }
+}
+* {
+  ::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -117,24 +777,15 @@
   grid-template-columns: 12px 1fr 12px;
 
   @media (min-width: 624px) {
-    grid-template-columns: minmax(12px, 1fr) minmax(auto, 624px) minmax(
-        12px,
-        1fr
-      );
+    grid-template-columns: minmax(12px, 1fr) minmax(auto, 624px) minmax(12px, 1fr);
   }
 
   @media (min-width: 784px) {
-    grid-template-columns: minmax(12px, 1fr) minmax(auto, 784px) minmax(
-        12px,
-        1fr
-      );
+    grid-template-columns: minmax(12px, 1fr) minmax(auto, 784px) minmax(12px, 1fr);
   }
 
   @media (min-width: 1048px) {
-    grid-template-columns: minmax(12px, 1fr) minmax(auto, 1048px) minmax(
-        12px,
-        1fr
-      );
+    grid-template-columns: minmax(12px, 1fr) minmax(auto, 1048px) minmax(12px, 1fr);
   }
 
   > * {

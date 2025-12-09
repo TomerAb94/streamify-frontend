@@ -3,7 +3,7 @@
   grid-area: station-index;
   background-color: var(--color-secondary);
   border-radius: 8px;
-  
+
   /* padding: 0 30px; */
   /* height: calc(100vh - 150px); */
   overflow-y: auto;
@@ -25,25 +25,26 @@
     gap: 16px;
     overflow-x: auto;
     padding-bottom: 8px;
-    
-      &::-webkit-scrollbar {
+
+    &::-webkit-scrollbar {
       --wbkit-appearance: none;
       appearance: none;
     }
 
-    &:hover{
-    &::-webkit-scrollbar-thumb {
-      width: 15px;
-      background-color: hsla(0, 0%, 100%, 0.3);
-      transition: background-color 1s;
-    }
+    &:hover {
+      &::-webkit-scrollbar-thumb {
+        width: 15px;
+        background-color: hsla(0, 0%, 100%, 0.3);
+        transition: background-color 1s;
+      }
 
-    &::-webkit-scrollbar-thumb:hover {
-      background-color: hsla(0, 0%, 100%, 0.4);
+      &::-webkit-scrollbar-thumb:hover {
+        background-color: hsla(0, 0%, 100%, 0.4);
+      }
+      &::-webkit-scrollbar-thumb:active {
+        background-color: hsla(0, 0%, 100%, 0.6);
+      }
     }
-    &::-webkit-scrollbar-thumb:active {
-      background-color: hsla(0, 0%, 100%, 0.6);
-    }}
     > .artist-item {
       flex-shrink: 0;
       position: relative;
@@ -98,12 +99,12 @@
     }
   }
 
-   &::-webkit-scrollbar {
-      --wbkit-appearance: none;
-      appearance: none;
-    }
+  &::-webkit-scrollbar {
+    --wbkit-appearance: none;
+    appearance: none;
+  }
 
-    &:hover{
+  &:hover {
     &::-webkit-scrollbar-thumb {
       width: 15px;
       background-color: hsla(0, 0%, 100%, 0.3);
@@ -115,10 +116,8 @@
     }
     &::-webkit-scrollbar-thumb:active {
       background-color: hsla(0, 0%, 100%, 0.6);
-    }}
-
-
-
+    }
+  }
 }
 
 .stations-type {
@@ -164,7 +163,7 @@
     font-family: Circular-thin;
 
     &:hover {
-     background-color: hsla(0, 0%, 100%, 0.2);
+      background-color: hsla(0, 0%, 100%, 0.2);
       transform: scale(1);
     }
 
@@ -240,10 +239,6 @@
   &:hover {
     cursor: pointer;
     background: hsla(0, 0%, 100%, 0.2);
-  }
-
-  .user-station:nth-child(2) {
-    color: red;
   }
 
   .pause-container {
@@ -388,6 +383,9 @@
   .albums-container {
     grid-template-columns: repeat(auto-fit, 190px);
   }
+  .genres-list {
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+  }
 
   .user-station {
     height: 48px;
@@ -416,17 +414,91 @@
   border-radius: 8px;
   background-color: rgb(116, 95, 232);
 
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%),
-    var(--background-noise);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%), var(--background-noise);
   transition-timing-function: ease;
   position: absolute;
   height: 256px;
   transition-property: background;
+  transition-duration: 1s;
   -webkit-transition-duration: 1s;
   opacity: 1;
 }
 
 .home-content {
   position: relative;
-  border-radius: 8px
+  border-radius: 8px;
+}
+
+@media (max-width: 667px) {
+  .user-stations {
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .stations-type {
+    padding-left: 12px;
+    width: 100%;
+    padding-right: 0;
+ 
+    button{
+      font-size: 12px;
+    }
+  }
+  .new-albums-header {
+    padding-left: 12px;
+    width: 100vw;
+  }
+  .user-stations-background {
+    width: 100vw;
+  }
+
+  .home {
+    width: 100vw;
+
+    .albums-container {
+      gap: 8px;
+      padding-left: 12px;
+      padding-right: 12px;
+      overscroll-behavior: contain;
+      width: 100vw;
+
+      grid-template-columns: repeat(2, minmax(150px, 1fr));
+
+      .album-item {
+        padding: 0;
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+
+    .home-content {
+      width: 100vw;
+      .stations-type {
+        display: none;
+      }
+      .new-artists-header {
+        padding-left: 12px;
+      }
+      & .artists-container {
+        padding: 0;
+        gap: 0;
+        & > .artist-item {
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    .station-title {
+      display: flex;
+      flex-wrap: wrap;
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+  .app-footer-mobile {
+    width: 100vw; 
+  
+}
 }

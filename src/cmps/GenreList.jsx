@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { spotifyService } from '../services/spotify.service'
 import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
 import { SvgIcon } from './SvgIcon'
@@ -19,9 +19,35 @@ export function GenreList() {
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
 
+  const [isHeaderVisible, setIsHeaderVisible] = useState()
+  const myRef = useRef()
+
   useEffect(() => {
     loadPlaylists()
   }, [params.genreId])
+
+  useEffect(() => {
+    if (!myRef.current) return
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting & (entry.isIntersecting !== isHeaderVisible)) {
+          // console.log('הכותרת יצאה מהמסך!', myRef.current)
+          setIsHeaderVisible(false)
+        } else {
+          // console.log('הכותרת נראית במסך!', myRef.current)
+          setIsHeaderVisible(true)
+        }
+      })
+    })
+
+    observer.observe(myRef.current)
+
+    // cleanup function
+    return () => {
+      observer.disconnect()
+    }
+  }, [playlists])
 
   async function loadPlaylists() {
     try {
@@ -35,7 +61,7 @@ export function GenreList() {
 
   async function loadPlaylist(stationId) {
     try {
-      const playlist = await spotifyService.getSpotifyItems('getTracksPlaylist',stationId)
+      const playlist = await spotifyService.getSpotifyItems('getTracksPlaylist', stationId)
       // console.log('playlist:', playlist)
       return playlist
     } catch (error) {
@@ -48,8 +74,6 @@ export function GenreList() {
     try {
       const playlistSpotifyDetails = await loadPlaylist(stationId)
       const { tracks, playlist } = playlistSpotifyDetails
-
-     
 
       if (playListToPlay && playListToPlay.length) {
         await setTracks([])
@@ -71,7 +95,7 @@ export function GenreList() {
 
   async function getYoutubeId(str) {
     try {
-      const res = await youtubeService.getYoutubeItems((str))
+      const res = await youtubeService.getYoutubeItems(str)
       return res?.[0]?.id || null
     } catch (err) {
       console.error('Error fetching YouTube URL:', err)
@@ -89,23 +113,36 @@ export function GenreList() {
     return currentTrack?.spotifyPlaylistId === playlistId
   }
 
-  if (!playlists.length) return (
-    <div className="browse-container">
-      <div className="loader-center">
-        <Loader />
+  if (!playlists.length)
+    return (
+      <div className="browse-container">
+        <div className="loader-center">
+          <Loader />
+        </div>
       </div>
-    </div>
-  )
+    )
 
   return (
     <>
       <div className="browse-container">
-        <div
-          className="genre-header"
-          style={{ background: `linear-gradient(to bottom,${color}, rgba(0, 0, 0, 0.01) 100%)` }}
-        >
-          <h1 className="header">{genreName}</h1>
-        </div>
+        <span className="transparent-div" ref={myRef}></span>
+
+        {isHeaderVisible ? (
+          <div
+            className={`genre-header`}
+            style={{ background: `linear-gradient(to bottom,${color}, rgba(0, 0, 0, 0.01) 100%)` }}
+          >
+            <h1 className={`header `}>{genreName}</h1>
+          </div>
+        ) : (
+          <div
+            className={`genre-header not-visible`}
+            style={{ background: `linear-gradient(to bottom,${color}, rgba(0, 0, 0,1) 100%)` }}
+          >
+            <h1 className={`header `}>{genreName}</h1>
+          </div>
+        )}
+
         <div className="playlists-container">
           {playlists.map((station) => {
             const isStationPlaying = isPlaylistPlaying(station.id)

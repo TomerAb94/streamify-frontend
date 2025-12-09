@@ -8,6 +8,10 @@
   scrollbar-width: thin;
   scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
 
+  .sticky-play-btn-wrapper{
+    position: absolute;;
+  }
+
   > .artist-details-header {
     width: 100%;
 
@@ -150,17 +154,20 @@
         }
       }
     }
-
-    
   }
 
   > .top-tracks {
-            z-index: 1;
+    z-index: 1;
     padding: clamp(16px, 16px + (100cqw - 600px)/424 * 8, 24px);
   }
 
   > .top-tracks {
-    > .track-list {
+    .track-list {
+      .track-row {
+        .track-title.playing {
+          color: var(--green-checked);
+        }
+      }
       > .track-row:hover {
         > .track-duration-container {
           > .add-to-playlist {
@@ -171,30 +178,31 @@
     }
   }
 
-  & .artist-name{
+  & .artist-name {
     display: none;
   }
-    & .action-btns {
-        padding-left: 32px;
-          gap: 8px;
-        & .play-btn  {
-          display: flex;
-          justify-content: center;
-          height: 56px;
-          width: 56px;
-          margin: 0;
+  & .action-btns {
+    padding-left: 32px;
+    gap: 8px;
+    & .play-btn {
+      display: flex;
+      justify-content: center;
+      height: 56px;
+      width: 56px;
+      margin: 0;
 
-          svg.play,svg.pause {
-            width: 20px;
-            height: 20px;
-          }
-        }
-         .shuffle-btn{
-            height: 32x;
-          width: 32px;
-        > span {
-          padding: 0;
-        }
-           }
+      svg.play,
+      svg.pause {
+        width: 20px;
+        height: 20px;
       }
+    }
+    .shuffle-btn {
+      height: 32x;
+      width: 32px;
+      > span {
+        padding: 0;
+      }
+    }
+  }
 }

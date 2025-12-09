@@ -30,9 +30,12 @@ export function ArtistDetails() {
     (storeState) => storeState.trackModule.isShuffle
   )
 
+  
+
   useEffect(() => {
     if (params.Id && params.Id !== '') {
       loadArtist(params.Id)
+      
     }
 
   }, [params.Id])
@@ -41,7 +44,7 @@ export function ArtistDetails() {
     if (artist && artist.imgUrls?.[0]) {
       const fac = new FastAverageColor()
       const imgElement = document.querySelector('.avg-img')
-
+      const stickyContainer = document.querySelector('.sticky-play-btn-container')
       const backgroundTrackList = document.querySelector('.background-track-list')
       if (imgElement) {
         imgElement.crossOrigin = 'Anonymous'
@@ -53,6 +56,7 @@ export function ArtistDetails() {
             linear-gradient(to top,rgba(0, 0, 0, 0.6) 0, ${color.rgba} 300%),
             var(--background-noise)
           `
+          stickyContainer.style.background = `linear-gradient(rgb(0, 0, 0) -80%, ${color.rgba} 300%)`
           })
           .catch((e) => {
             console.log(e)
@@ -62,13 +66,67 @@ export function ArtistDetails() {
     
   }, [artist])
 
+  useEffect(() => {
+    const mainPlayBtn = document.querySelector('.main-play-btn')
+    const stickyWrapper = document.querySelector('.sticky-play-btn-wrapper')
+    const stickyContainer = document.querySelector('.sticky-play-btn-container')
+    const container = document.querySelector('.artist-details')
+    
+
+    if (!mainPlayBtn || !stickyWrapper || !stickyContainer || !container) return
+
+    // IntersectionObserver for setting container opacity when mainPlayBtn is out of frame
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            stickyContainer.style.opacity = '1'
+            // console.log('show:')
+        } else {
+            stickyContainer.style.opacity = '0'
+          }
+        })
+      },
+      { root: container, rootMargin: '-100px 0px 0px 0px' }
+    )
+
+    observer.observe(mainPlayBtn)
+
+    // Scroll listener for progressive opacity on wrapper and immediate height change
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop
+      let opacity = 0
+    
+      if (scrollTop > 300) opacity = 1
+      stickyWrapper.style.opacity = opacity
+
+      // Change height immediately on first scroll
+      // if (scrollTop > 0) {
+      //   stickyWrapper.classList.add('height')
+      // } else {
+      //   stickyWrapper.classList.remove('height')
+      // }
+    }
+
+    container.addEventListener('scroll', handleScroll)
+
+    // Cleanup
+    return () => {
+      observer.disconnect()
+      container.removeEventListener('scroll', handleScroll)
+    }
+  }, [artist])
 
 
+  async function onResume() {
+    await setIsPlaying(true)
+  }
 
 
   async function loadArtist(artistId) {
     const artist = await spotifyService.getSpotifyItems('artistData', artistId)
-    setArtist(artist)
+    console.log('artist:', artist)
+      setArtist(artist)
   }
 
   async function onPlay(track) {
@@ -90,7 +148,7 @@ export function ArtistDetails() {
             index > 0
               ? artist.topTracks[index - 1].spotifyId
               : artist.topTracks[artist.topTracks.length - 1].spotifyId,
-          youtubeId: await getYoutubeId(track.name),
+          youtubeId: await getYoutubeId(track.artists[0]?.name + ' ' + track.name),
         }
       })
     )
@@ -164,7 +222,7 @@ export function ArtistDetails() {
             index > 0
               ? tracksToPlay[index - 1].spotifyId
               : tracksToPlay[tracksToPlay.length - 1].spotifyId,
-          youtubeId: await getYoutubeId(track.name),
+          youtubeId: await getYoutubeId(track.artists[0]?.name + ' ' + track.name),
         }
       })
     )
@@ -203,6 +261,39 @@ if (!artist) return
     )
   return (
     <section className="artist-details">
+          <div className="sticky-play-btn-wrapper">
+        <div className="sticky-play-btn-container" style={{backgroundColor:'backgroundTrackList.style.backgroundImage'}}>
+           <div className='artist'>{`${artist? artist.name : '123'}`}</div>
+          {isPlaying 
+          // && playlist.tracks.map((track) => track.name === currentTrack.name).includes(true) 
+          ? (
+          
+             
+              <button onClick={onPause} className="sticky-play-btn">
+                <SvgIcon iconName="pause" className="pause" />
+              </button>
+          
+          ) : (
+            <button
+              onClick={() => {
+                // If there's a current track from this station that's paused, just resume
+                if (currentTrack && !isPlaying) {
+                  onResume()
+                } else {
+                  // Otherwise start playing from first track
+                  onPlay(artist.topTracks[0])
+                }
+              }}
+              className="sticky-play-btn"
+              // disabled={!station.tracks || station.tracks.length === 0}
+            >
+              <SvgIcon iconName="play" className="play" />
+            </button>
+          )}
+          <span className="station-title">{playlist.title}</span>
+        </div>
+      </div>
+
       <header className="artist-details-header">
         <div className="img-header-container">
           <img src={artist?.imgUrls?.[0]} alt={artist?.name} className='avg-img' />
@@ -223,7 +314,7 @@ if (!artist) return
       </header>
       <div className="action-btns">
         {isStationCurrentlyPlaying() && isPlaying ? (
-          <button onClick={onPause} className="play-btn">
+          <button onClick={onPause} className="play-btn main-play-btn">
                 <SvgIcon iconName="pause" className="pause" />
               </button>
             ) : (
@@ -233,7 +324,7 @@ if (!artist) return
           }}
           className="play-btn"
         >
-          <SvgIcon iconName="play" className="play" />
+          <SvgIcon iconName="play" className="play main-play-btn" />
         </button>
          )} 
         <button 
