@@ -30,7 +30,7 @@ export function Login() {
     fullname: '',
   })
 
-  const [iserror, setIsError] = useState(false)
+  const [isError, setIsError] = useState(false)
 
   const navigate = useNavigate()
 
@@ -51,7 +51,6 @@ export function Login() {
       console.error('Login failed:', err)
       setIsError(true)
       console.log('Invalid username or password')
-      // כאן אפשר להוסיף הודעת שגיאה למשתמש
     }
   }
 
@@ -59,6 +58,7 @@ export function Login() {
     const field = ev.target.name
     const value = ev.target.value
     setCredentials({ ...credentials, [field]: value })
+    setIsError(false)
   }
 
   return (
@@ -80,7 +80,11 @@ export function Login() {
         onChange={handleChange}
         required
       />
-      {iserror && <div className="error-message" style={{ color: 'red' }}>Invalid username or password</div>}
+      {isError && (
+        <div className="error-message" style={{ color: 'red' }}>
+          Invalid username or password
+        </div>
+      )}
       <button>Login</button>
     </form>
   )
@@ -89,6 +93,7 @@ export function Login() {
 export function Signup() {
   const [credentials, setCredentials] = useState(userService.getEmptyUser())
   const navigate = useNavigate()
+  const [isError, setIsError] = useState(false)
 
   function clearState() {
     setCredentials({ username: '', password: '', fullname: '', imgUrl: '' })
@@ -100,25 +105,34 @@ export function Signup() {
     const field = ev.target.name
     const value = ev.target.value
     setCredentials({ ...credentials, [field]: value })
+    setIsError(false)
   }
 
   async function onSignup(ev = null) {
     if (ev) ev.preventDefault()
-
     if (!credentials.username || !credentials.password || !credentials.fullname) return
-
     const defaultStation = stationService.getDefaultStation(credentials)
-
     try {
       const user = await signup(credentials)
       const savedStation = await addStation(defaultStation)
+      console.log('user:', user)
+      console.log('user:', savedStation)
+
+      // Initialize ownedStationIds if it doesn't exist
+      if (!user.ownedStationIds) {
+        user.ownedStationIds = []
+      }
       user.ownedStationIds.push(savedStation._id)
-      const savedUser = await updateUser(user)
+      
+      await updateUser(user)
+      await login(credentials)
+      navigate('/')
+
     } catch (err) {
       console.log('err:', err)
+      setIsError(true)
+      clearState()
     }
-    clearState()
-    navigate('/')
   }
 
   function onUploaded(imgUrl) {
@@ -135,6 +149,7 @@ export function Signup() {
         onChange={handleChange}
         required
       />
+
       <input
         type="text"
         name="username"
@@ -151,6 +166,11 @@ export function Signup() {
         onChange={handleChange}
         required
       />
+      {isError && (
+        <div className="error-message" style={{ color: 'red' }}>
+          Username already taken. Please choose another one.
+        </div>
+      )}
       <ImgUploader onUploaded={onUploaded} />
       <button>Signup</button>
     </form>
