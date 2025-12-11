@@ -30,18 +30,9 @@ export function Login() {
     fullname: '',
   })
 
+  const [iserror, setIsError] = useState(false)
+
   const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   loadUsers()
-  //   console.log('users:', users)
-  // }, [])
-
-  // async function loadUsers() {
-
-  //   const users = await userService.getUsers()
-  //   setUsers(users)
-  // }
 
   async function onLogin(ev = null) {
     // console.log('ev:', ev)
@@ -58,6 +49,8 @@ export function Login() {
       }
     } catch (err) {
       console.error('Login failed:', err)
+      setIsError(true)
+      console.log('Invalid username or password')
       // כאן אפשר להוסיף הודעת שגיאה למשתמש
     }
   }
@@ -70,7 +63,14 @@ export function Login() {
 
   return (
     <form className="login-form" onSubmit={onLogin}>
-      <input name="username" type='text' placeholder="Username" value={credentials.username} onChange={handleChange} required/>
+      <input
+        name="username"
+        type="text"
+        placeholder="Username"
+        value={credentials.username}
+        onChange={handleChange}
+        required
+      />
 
       <input
         name="password"
@@ -80,6 +80,7 @@ export function Login() {
         onChange={handleChange}
         required
       />
+      {iserror && <div className="error-message" style={{ color: 'red' }}>Invalid username or password</div>}
       <button>Login</button>
     </form>
   )
