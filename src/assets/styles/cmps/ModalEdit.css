@@ -198,6 +198,24 @@
   }
 }
 
+  @media (max-width: 667px) {
+
+    .modal-content {
+    & .edit-station-form{
+          display: grid;
+    grid-template: 32px 132px 32px auto / 1fr 1fr;
+    grid-template-areas:
+        'station-img title'
+        'station-img description'
+        '. save-button'
+        'disclaimer disclaimer';
+    grid-gap: 16px;
+    padding: 0 24px 24px;
+    }
+    }
+    
+  }
+
 .station-details {
   > .modal-content {
     > .edit-station-form {

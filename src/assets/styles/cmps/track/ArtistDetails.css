@@ -5,8 +5,8 @@
   border-radius: 8px;
   overflow: auto;
 
-  scrollbar-width: thin;
-  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent;
+  /* scrollbar-width: thin;
+  scrollbar-color: hsla(0, 0%, 100%, 0.3) transparent; */
 
   .sticky-play-btn-wrapper{
     position: absolute;;
