@@ -152,6 +152,9 @@ export function PlayList() {
     }
   }
   async function onPlay(track) {
+
+    if (isTrackCurrentlyPlaying(track)) return
+    
     try {
       // Clear existing playlist
       if (playListToPlay && playListToPlay.length) {
@@ -179,6 +182,7 @@ export function PlayList() {
   }
 
   async function onResume() {
+    
     await setIsPlaying(true)
   }
   function handleMouseEnter(idx) {
