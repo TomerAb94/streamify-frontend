@@ -1,0 +1,22 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Background circle with outline -->
+  <circle cx="256" cy="256" r="240" fill="#1DB954"  />
+
+  <!-- 8 uneven, messy bars -->
+  <rect x="60" y="260" width="25" height="110" rx="10" fill="black"/>
+  <rect x="90" y="210" width="25" height="160" rx="10" fill="black"/>
+  <rect x="120" y="285" width="25" height="85"  rx="10" fill="black"/>
+  <rect x="150" y="180" width="25" height="190" rx="10" fill="black"/>
+  <rect x="180" y="140" width="25" height="230" rx="10" fill="black"/>
+  <rect x="210" y="245" width="25" height="125" rx="10" fill="black"/>
+  <rect x="240" y="190" width="25" height="180" rx="10" fill="black"/>
+  <rect x="270" y="270" width="25" height="100" rx="10" fill="black"/>
+    <rect x="300" y="245" width="25" height="125" rx="10" fill="black"/>
+      <rect x="332" y="190" width="25" height="180" rx="10" fill="black"/>
+  <rect x="365" y="270" width="25" height="100" rx="10" fill="black"/>
+  <rect x="395" y="245" width="25" height="125" rx="10" fill="black"/>
+  <rect x="425" y="270" width="25" height="100" rx="10" fill="black"/>
+  
+
+</svg>

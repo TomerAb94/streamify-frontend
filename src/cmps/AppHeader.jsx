@@ -71,12 +71,33 @@ export function AppHeader() {
     <div className="app-header">
       <div className="logo" title="Streamify" onClick={onToggleHomeBtn}>
         <NavLink to="/">
-          <svg xmlns="http://www.w3.org/2000/svg" height="52" width="52" viewBox="-33.4974 -55.829 290.3108 334.974">
-            <path
-              d="M177.707 98.987c-35.992-21.375-95.36-23.34-129.719-12.912-5.519 1.674-11.353-1.44-13.024-6.958-1.672-5.521 1.439-11.352 6.96-13.029 39.443-11.972 105.008-9.66 146.443 14.936 4.964 2.947 6.59 9.356 3.649 14.31-2.944 4.963-9.359 6.6-14.31 3.653m-1.178 31.658c-2.525 4.098-7.883 5.383-11.975 2.867-30.005-18.444-75.762-23.788-111.262-13.012-4.603 1.39-9.466-1.204-10.864-5.8a8.717 8.717 0 015.805-10.856c40.553-12.307 90.968-6.347 125.432 14.833 4.092 2.52 5.38 7.88 2.864 11.968m-13.663 30.404a6.954 6.954 0 01-9.569 2.316c-26.22-16.025-59.223-19.644-98.09-10.766a6.955 6.955 0 01-8.331-5.232 6.95 6.95 0 015.233-8.334c42.533-9.722 79.017-5.538 108.448 12.446a6.96 6.96 0 012.31 9.57M111.656 0C49.992 0 0 49.99 0 111.656c0 61.672 49.992 111.66 111.657 111.66 61.668 0 111.659-49.988 111.659-111.66C223.316 49.991 173.326 0 111.657 0"
-              fill="#1ed660"
-            />
-          </svg>
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+
+  {/* <!-- Background circle with outline --> */}
+  <circle cx="256" cy="256" r="240" fill="#1DB954"
+  
+  // stroke="black" stroke-width="20"
+  />
+
+  {/* <!-- 8 uneven, messy bars --> */}
+  <rect x="60" y="260" width="25" height="110" rx="10" fill="black"/>
+  <rect x="90" y="210" width="25" height="160" rx="10" fill="black"/>
+  <rect x="120" y="285" width="25" height="85"  rx="10" fill="black"/>
+  <rect x="150" y="180" width="25" height="190" rx="10" fill="black"/>
+  <rect x="180" y="140" width="25" height="230" rx="10" fill="black"/>
+  <rect x="210" y="245" width="25" height="125" rx="10" fill="black"/>
+  <rect x="240" y="190" width="25" height="180" rx="10" fill="black"/>
+  <rect x="270" y="270" width="25" height="100" rx="10" fill="black"/>
+    <rect x="300" y="245" width="25" height="125" rx="10" fill="black"/>
+      <rect x="332" y="190" width="25" height="180" rx="10" fill="black"/>
+  <rect x="365" y="270" width="25" height="100" rx="10" fill="black"/>
+  <rect x="395" y="245" width="25" height="125" rx="10" fill="black"/>
+  <rect x="425" y="270" width="25" height="100" rx="10" fill="black"/>
+  
+
+</svg>
+
+
         </NavLink>
     
       </div>
@@ -154,6 +175,8 @@ export function AppHeader() {
       </div>
  <div className="stations-type"><button className="active">All</button><button>Music</button><button>Podcasts</button></div>
    <div className='back-btn' onClick={() => navigate(-1)}><SvgIcon iconName="back"/></div>
+   
     </div>
+    
   )
 }
