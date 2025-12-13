@@ -185,6 +185,7 @@ export function StationDetails() {
   }
 
   async function onPlay(track) {
+    if (currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying) return
     // Set the current station ID
     setCurrentStationId(station._id)
 

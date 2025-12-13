@@ -130,6 +130,7 @@ export function ArtistDetails() {
   }
 
   async function onPlay(track) {
+    if (currentTrack && currentTrack.spotifyId === track.spotifyId && isPlaying) return
     // Clear existing playlist
     if (playlist && playlist.length) {
       await setTracks([])
