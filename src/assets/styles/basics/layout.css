@@ -103,6 +103,8 @@
     }
     .station-list-container {
       display: none;
+      /* height: 100px;
+      width: 100px; */
     }
     &.sidebar-open {
       grid-template-columns: auto;
