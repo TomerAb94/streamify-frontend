@@ -509,7 +509,10 @@
         .station-list-container {
           grid-area: unset;
           display: block;
-                  overflow-y: auto;
+          .station-list-form{
+            height: calc(100% - 96px);
+          }
+               
         }
       }
     }
