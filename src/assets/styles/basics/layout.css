@@ -509,6 +509,7 @@
         .station-list-container {
           grid-area: unset;
           display: block;
+                  overflow-y: auto;
         }
       }
     }
