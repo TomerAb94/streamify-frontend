@@ -43,7 +43,7 @@ export function Login() {
 
     try {
       const user = await login(credentials)
-      console.log('user:', user)
+      // console.log('user:', user)
       if (user) {
         navigate('/')
       }

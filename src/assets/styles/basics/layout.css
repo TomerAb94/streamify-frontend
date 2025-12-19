@@ -37,6 +37,10 @@
   /* height: calc(100vh - var(--AppHeaderHeight) - var(--FooterHeight)); */
 }
 
+.mobile-library-container{
+display: none;
+}
+
 @media (max-width: 667px) {
   .main-container:has(.app-footer-mobile .now-playing-mobile) {
     .station-details {
