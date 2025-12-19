@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux'
 import { StationList } from '../cmps/StationList'
 import { loadStations, addStation, updateStation, removeStation } from '../store/actions/station.actions'
 import { useNavigate } from 'react-router'
+import { updateUser } from '../store/actions/user.actions'
 export function MobileLibrary() {
   const stations = useSelector((storeState) => storeState.stationModule.stations)
   const station = useSelector((storeState) => storeState.stationModule.station)
@@ -73,7 +74,7 @@ export function MobileLibrary() {
         console.log('Station added:', savedStation)
         navigate(`station/${savedStation._id}`)
         
-        // loggedInUser.ownedStationIds = loggedInUser.ownedStationIds || []
+        loggedInUser.ownedStationIds = loggedInUser.ownedStationIds || []
         loggedInUser.ownedStationIds.push(savedStation._id)
         const savedUser = await updateUser(loggedInUser)
        
