@@ -115,8 +115,6 @@ export function Signup() {
     try {
       const user = await signup(credentials)
       const savedStation = await addStation(defaultStation)
-      console.log('user:', user)
-      console.log('user:', savedStation)
 
       // Initialize ownedStationIds if it doesn't exist
       if (!user.ownedStationIds) {
