@@ -85,3 +85,20 @@ object {
   max-width: 100%;
   display: block;
 }
+
+/* Prevent white line/outline on mobile inputs */
+@media (max-width: 667px) {
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+    
+    &:focus,
+    &:active {
+      outline: 0 !important;
+      outline-offset: 0 !important;
+      box-shadow: 0 0 0 0 rgba(0,0,0,0) !important;
+      -webkit-box-shadow: 0 0 0 0 rgba(0,0,0,0) !important;
+    }
+  }
+}
