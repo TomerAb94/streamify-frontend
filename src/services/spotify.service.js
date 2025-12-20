@@ -25,9 +25,10 @@ export const spotifyService = {
 }
 
 
-async function getSpotifyItems(item='',query='',limit='') {
+async function getSpotifyItems(item='',query='') {
 
-  return await httpService.get(`spotify`, {item,query,limit})
+  // return await httpService.get(`spotify`, {item,query,limit})
+  return await httpService.get(`spotify`, {item,query})
  
 }
 
