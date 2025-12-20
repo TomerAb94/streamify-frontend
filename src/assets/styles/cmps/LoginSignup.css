@@ -200,16 +200,10 @@
 
 @media (max-width: 667px) {
   .login-page {
-    justify-content: start;
+        justify-content: start;
     padding: 1rem;
-    width: 100%;
-    height: 100dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    position: fixed;
-    top: 0;
-    left: 0;
-    
+  width: 100%;
+  height: 100dvh;
     nav {
       gap: 2rem;
       margin-bottom: 1.5rem;
@@ -224,28 +218,9 @@
   .signup-form {
     width: 100%;
     padding: 2rem 1.5rem;
-    margin-bottom: 2rem;
 
     > h2 {
       font-size: 1.5rem;
-    }
-
-    input,
-    select {
-      font-size: 16px !important;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      -webkit-tap-highlight-color: transparent;
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-      
-      &:focus {
-        outline: none !important;
-        box-shadow: none !important;
-        -webkit-box-shadow: none !important;
-        font-size: 16px !important;
-      }
     }
   }
 }

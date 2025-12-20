@@ -85,26 +85,3 @@ object {
   max-width: 100%;
   display: block;
 }
-
-/* Mobile-specific fixes for inputs */
-@media (max-width: 667px) {
-  input[type='text'],
-  input[type='email'],
-  input[type='password'],
-  input[type='search'],
-  textarea,
-  select {
-    font-size: 16px !important;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    -webkit-tap-highlight-color: transparent;
-    
-    &:focus {
-      outline: none !important;
-      box-shadow: none !important;
-      -webkit-box-shadow: none !important;
-      font-size: 16px !important;
-    }
-  }
-}
