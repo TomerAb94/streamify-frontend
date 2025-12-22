@@ -20,11 +20,14 @@ export function HomePage() {
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
   const currentStationId = useSelector((storeState) => storeState.trackModule.currentStationId)
+   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
   //  const stations = useSelector((storeState) => storeState.stationModule.stations)
   useEffect(() => {
     loadNewAlbumsReleases()
     loadArtistToHomePage()
-  }, [])
+  }, [loggedInUser])
+
+
 
      
 
