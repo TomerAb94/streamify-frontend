@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { spotifyService } from '../services/spotify.service'
 import { useSelector } from 'react-redux'
 import { youtubeService } from '../services/youtube.service'
-import { setTracks, setCurrentTrack, setIsPlaying,setCurrentStationId} from '../store/actions/track.actions'
+import { setTracks, setCurrentTrack, setIsPlaying, setCurrentStationId } from '../store/actions/track.actions'
 
 import { Loader } from './Loader'
 import { FastAverageColor } from 'fast-average-color'
@@ -15,39 +15,31 @@ export function HomePage() {
   const [albums, setAlbums] = useState([])
   const [artists, setArtists] = useState([])
   const [hoveredStationId, setHoveredStationId] = useState(null)
-  
+
   const currentTrack = useSelector((storeState) => storeState.trackModule.currentTrack)
   const isPlaying = useSelector((storeState) => storeState.trackModule.isPlaying)
   const playListToPlay = useSelector((storeState) => storeState.trackModule.tracks)
   const currentStationId = useSelector((storeState) => storeState.trackModule.currentStationId)
-  //  const loggedInUser = useSelector((storeState) => storeState.userModule.user)
+   const loggedInUser = useSelector((storeState) => storeState.userModule.user)
   //  const stations = useSelector((storeState) => storeState.stationModule.stations)
-  const [isHomeLoaded, setIsHomeLoaded] = useState(false)
-
-useEffect(() => {
-  if (isHomeLoaded) return
-
-  loadNewAlbumsReleases()
-  loadArtistToHomePage()
-
-  setIsHomeLoaded(true)
-}, [isHomeLoaded])
-
-
-     
+  // const [isHomeLoaded, setIsHomeLoaded] = useState(false)
 
   useEffect(() => {
-     const fac = new FastAverageColor()
+    loadNewAlbumsReleases()
+    loadArtistToHomePage()
+  }, [stations])
+
+
+
+
+  useEffect(() => {
+    const fac = new FastAverageColor()
     const imgElement = document.querySelector(`.station-img[data-station-id="${hoveredStationId || currentStationId}"]`)
     const background = document.querySelector('.user-stations-background')
-    if (!currentStationId)
-      { 
-        background.style.backgroundColor = 'rgb(116, 95, 232)'
-        background.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%), var(--background-noise)';
-      }
-
-
-
+    if (!currentStationId) {
+      background.style.backgroundColor = 'rgb(116, 95, 232)'
+      background.style.backgroundImage = 'linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 100%), var(--background-noise)'
+    }
 
     if (imgElement && background) {
       imgElement.crossOrigin = 'Anonymous'
@@ -63,11 +55,9 @@ useEffect(() => {
     }
   }, [hoveredStationId, currentStationId])
 
-
-
   async function loadPlaylist(albumId) {
     try {
-      const playlist = await spotifyService.getSpotifyItems('getAlbumNewRelease',albumId)
+      const playlist = await spotifyService.getSpotifyItems('getAlbumNewRelease', albumId)
       // console.log('playlist:', playlist)
       return playlist
     } catch (error) {
@@ -77,7 +67,7 @@ useEffect(() => {
 
   async function loadArtists() {
     try {
-      const artists = await spotifyService.getSpotifyItems('artists', 'האמנים המובילים של ישראל')
+      const artists = await spotifyService.getSpotifyItems('artists', 'best artists in israel')
       // console.log('artists:', artists)
       return artists
     } catch (error) {
@@ -124,7 +114,7 @@ useEffect(() => {
     try {
       // Set this artist as currently playing and clear album
       // Get full artist data including top tracks
-      const fullArtistData = await spotifyService.getSpotifyItems('artistData',artist.spotifyId)
+      const fullArtistData = await spotifyService.getSpotifyItems('artistData', artist.spotifyId)
 
       // Clear existing playlist
       if (playListToPlay && playListToPlay.length) {
@@ -145,13 +135,13 @@ useEffect(() => {
               index > 0
                 ? fullArtistData.topTracks[index - 1].spotifyId
                 : fullArtistData.topTracks[fullArtistData.topTracks.length - 1].spotifyId,
-            
+
             youtubeId: await getYoutubeId(track.artists[0]?.name + ' ' + track.name),
             spotifyArtistId: artist.spotifyId,
           }
         })
       )
-      
+
       // Set the entire playlist at once
       await setTracks(playlistQueue)
       console.log('playlistQueue:', playlistQueue)
@@ -187,10 +177,7 @@ useEffect(() => {
     if (!currentTrack || !isPlaying) return false
     // Only show pause if playing directly from artist/album, not from playlist
     if (currentTrack?.playlistId) return false
-    return (
-      currentTrack?.spotifyAlbumId === artistOrAlbumId ||
-      currentTrack?.spotifyArtistId === artistOrAlbumId
-    )
+    return currentTrack?.spotifyAlbumId === artistOrAlbumId || currentTrack?.spotifyArtistId === artistOrAlbumId
   }
 
   function isTrackPlayingFromPlaylist(playlistId) {
@@ -225,7 +212,7 @@ useEffect(() => {
       if (playListToPlay && playListToPlay.length) {
         await setTracks([])
       }
-      
+
       const youtubeId = await getYoutubeId(playlistQueue[0].name + ' ' + playlistQueue[0].artists[0]?.name)
       const trackWithYoutube = {
         ...playlistQueue[0],
@@ -253,6 +240,9 @@ useEffect(() => {
   }
 
   if (!stations || !albums || !artists) {
+    console.log('stations:',stations)
+    console.log('albums:',albums)
+    console.log('artists:',artists)
     return (
       <section className="home">
         <div className="loader-center">
@@ -274,7 +264,6 @@ useEffect(() => {
 
         <div className="user-stations">
           {stations.map((station) => {
-            
             const isStationPlaying = isTrackPlayingFromPlaylist(station._id)
             return (
               <NavLink
@@ -307,13 +296,12 @@ useEffect(() => {
                     <SvgIcon iconName="equalizer" className="equalizer-svg" />
                   )
                 ) : (
-                 <SvgIcon
-                  iconName="playHomePage"
-                  className="play-container"
-                  onClick={(event) => onPlayStationFromOutside(event, station._id)}
-                />
+                  <SvgIcon
+                    iconName="playHomePage"
+                    className="play-container"
+                    onClick={(event) => onPlayStationFromOutside(event, station._id)}
+                  />
                 )}
-              
               </NavLink>
             )
           })}
