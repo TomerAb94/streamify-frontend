@@ -240,9 +240,9 @@ export function HomePage() {
   }
 
   if (!stations || !albums || !artists) {
-    console.log('stations:',stations)
-    console.log('albums:',albums)
-    console.log('artists:',artists)
+    // console.log('stations:',stations)
+    // console.log('albums:',albums)
+    // console.log('artists:',artists)
     return (
       <section className="home">
         <div className="loader-center">
